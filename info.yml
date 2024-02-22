@@ -1,0 +1,72 @@
+project:
+  name: 'ISPP-2024-L1-05'
+  owner: 'L1'
+  teamId: '05'
+  identities: {}
+  notifications:
+    email: 'marnunrey2@alum.us.es'
+  members:
+    member1:
+      name: 'Sergio'
+      surname: 'Aguayo' 
+      githubUsername: 'Ahydul'
+    member2:
+      name: 'Aurora'
+      surname: 'Navas' 
+      githubUsername: 'auroranavas'
+    member3:
+      name: 'Claudia'
+      surname: 'Gilabert' 
+      githubUsername: 'claugp06'
+    member4:
+      name: 'Felix'
+      surname: 'Gudiel' 
+      githubUsername: 'FelixoGudiel'
+    member5:
+      name: 'Francisco'
+      surname: 'Calderón' 
+      githubUsername: 'fracalrod3'
+    member6:
+      name: 'Francisco'
+      surname: 'Rosso' 
+      githubUsername: 'FranciscoRossoR'
+    member7:
+      name: 'Iván'
+      surname: 'Ramírez' 
+      githubUsername: 'ivaramlar'
+    member8:
+      name: 'Manuel'
+      surname: 'Barcia' 
+      githubUsername: 'manbarjim2'
+    member9:
+      name: 'Juan Luis'
+      surname: 'Ruano' 
+      githubUsername: 'JuanluRM'
+    member10:
+      name: 'Manuel'
+      surname: 'Ortiz' 
+      githubUsername: 'manortbla'
+    member11:
+      name: 'María'
+      surname: 'Núñez' 
+      githubUsername: 'marnunrey2'
+    member12:
+      name: 'Marta'
+      surname: 'González' 
+      githubUsername: 'MartaInes'
+    member13:
+      name: 'Miguel Ángel'
+      surname: 'Romalde' 
+      githubUsername: 'MRomalde'
+    member14:
+      name: 'Pablo'
+      surname: 'Periañez' 
+      githubUsername: 'pabpercab1'
+    member15:
+      name: 'Pedro'
+      surname: 'Lopez' 
+      githubUsername: 'pedlopruz'
+    member16:
+      name: 'Samuel'
+      surname: 'Rodríguez' 
+      githubUsername: 'samrodman'
