@@ -92,7 +92,7 @@ class Family(models.Model):
 class Student(models.Model):
     education_center = models.CharField(max_length=255)
     current_education_year = models.CharField(
-        max_length=10, choices=CURRENT_EDUCATION_YEAR, default=THREE_YEARS
+        max_length=20, choices=CURRENT_EDUCATION_YEAR, default=THREE_YEARS
     )
     education_center_tutor = models.CharField(max_length=255)
     enrollment_document = models.FileField()
@@ -102,7 +102,6 @@ class Student(models.Model):
     family = models.ForeignKey(
         Family, on_delete=models.CASCADE, related_name="students"
     )
-    lessons = models.ManyToManyField("Lesson", related_name="students")
 
 
 class CenterExit(models.Model):
