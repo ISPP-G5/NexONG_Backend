@@ -90,6 +90,8 @@ class Family(models.Model):
 
 
 class Student(models.Model):
+    name = models.CharField(max_length=255)
+    surname = models.CharField(max_length=255)
     education_center = models.CharField(max_length=255)
     current_education_year = models.CharField(
         max_length=20, choices=CURRENT_EDUCATION_YEAR, default=THREE_YEARS
