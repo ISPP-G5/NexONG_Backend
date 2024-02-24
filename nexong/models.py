@@ -85,11 +85,38 @@ EVALUATION_TYPE = [
 ]
 
 
+class User(AbstractBaseUser):
+    name = models.CharField(max_length=50)
+    surname = models.CharField(max_length=100)
+    id_number = models.CharField(max_length=9, unique=True)
+    phone = models.IntegerField(
+        default=600000000,
+        validators=[MaxValueValidator(999999999), MinValueValidator(600000000)],
+    )
+    email = models.EmailField(unique=True)
+    role = models.CharField(
+        max_length=25,
+        choices=ROLE,
+        default=FAMILY,
+    )
+    password = models.CharField(max_length=500, null=False)
+    avatar = models.URLField(validators=[URLValidator()])
+    last_login = None
+    is_active = models.BooleanField(default=False)
+
+    USERNAME_FIELD = "email"
+    REQUIRED_FIELDS = ["email"]
+
+
 class Family(models.Model):
+    user = models.OneToOneField(User, on_delete=models.CASCADE, related_name="family")
+
     name = models.CharField(max_length=255)
 
 
 class Student(models.Model):
+    user = models.OneToOneField(User, on_delete=models.CASCADE, related_name="student")
+
     education_center = models.CharField(max_length=255)
     current_education_year = models.CharField(
         max_length=20, choices=CURRENT_EDUCATION_YEAR, default=THREE_YEARS
@@ -104,14 +131,9 @@ class Student(models.Model):
     )
 
 
-class CenterExit(models.Model):
-    authorization = models.FileField()
-    student = models.ForeignKey(
-        Student, on_delete=models.CASCADE, related_name="center_exits"
-    )
-
-
 class Partner(models.Model):
+    user = models.OneToOneField(User, on_delete=models.CASCADE, related_name="partner")
+
     iban = models.CharField(max_length=34, unique=True)
     quantity = models.IntegerField(default=0, validators=[MinValueValidator(0)])
     frequency = models.CharField(max_length=11, choices=FRECUENCY, default=MENSUAL)
@@ -122,6 +144,10 @@ class Partner(models.Model):
 
 
 class Volunteer(models.Model):
+    user = models.OneToOneField(
+        User, on_delete=models.CASCADE, related_name="volunteer"
+    )
+
     academic_formation = models.CharField(max_length=1000)
     motivation = models.CharField(max_length=1000)
     status = models.CharField(max_length=10, choices=STATUS, default=PENDING)
@@ -139,43 +165,17 @@ class Volunteer(models.Model):
 
 
 class Educator(models.Model):
+    user = models.OneToOneField(User, on_delete=models.CASCADE, related_name="educator")
+
     birthdate = models.DateField(null=True)
     academic_formation = models.CharField(max_length=1000)
 
 
-class User(AbstractBaseUser):
-    name = models.CharField(max_length=50)
-    surname = models.CharField(max_length=100)
-    id_number = models.CharField(max_length=9, unique=True)
-    phone = models.IntegerField(
-        default=600000000,
-        validators=[MaxValueValidator(999999999), MinValueValidator(600000000)],
+class CenterExit(models.Model):
+    authorization = models.FileField()
+    student = models.ForeignKey(
+        Student, on_delete=models.CASCADE, related_name="center_exits"
     )
-    email = models.EmailField(unique=True)
-    role = models.CharField(
-        max_length=25,
-        choices=ROLE,
-        default=FAMILY,
-    )
-    password = models.CharField(max_length=500, null=False)
-    avatar = models.URLField(validators=[URLValidator()])
-    family = models.OneToOneField(
-        Family, on_delete=models.CASCADE, blank=True, null=True
-    )
-    partner = models.OneToOneField(
-        Partner, on_delete=models.CASCADE, blank=True, null=True
-    )
-    volunteer = models.OneToOneField(
-        Volunteer, on_delete=models.CASCADE, blank=True, null=True
-    )
-    educator = models.OneToOneField(
-        Educator, on_delete=models.CASCADE, blank=True, null=True
-    )
-    last_login = None
-    is_active = models.BooleanField(default=False)
-
-    USERNAME_FIELD = "email"
-    REQUIRED_FIELDS = ["email"]
 
 
 class Meeting(models.Model):
@@ -207,7 +207,7 @@ class Lesson(models.Model):
     students = models.ManyToManyField(Student, related_name="lessons")
 
 
-class StudentEvaluation(models.Model):
+class Evaluation(models.Model):
     name = models.CharField(max_length=100)
     description = models.CharField(max_length=1000)
     grade_system = models.CharField(
@@ -219,28 +219,19 @@ class StudentEvaluation(models.Model):
     date = models.DateField()
     evaluation_type = models.CharField(
         max_length=10, choices=EVALUATION_TYPE, default=DAILY
+    )
+
+
+class StudentEvaluation(Evaluation):
+    lesson = models.ForeignKey(
+        Lesson, on_delete=models.CASCADE, related_name="student_evaluations"
     )
     student = models.ForeignKey(
         Student, on_delete=models.CASCADE, related_name="student_evaluations"
     )
-    lesson = models.ForeignKey(
-        Lesson, on_delete=models.CASCADE, related_name="student_evaluations"
-    )
 
 
-class LessonEvaluation(models.Model):
-    name = models.CharField(max_length=100)
-    description = models.CharField(max_length=1000)
-    grade_system = models.CharField(
-        max_length=20, choices=GRADESYSTEM, default=ZERO_TO_TEN
-    )
-    grade = models.IntegerField(
-        validators=[MinValueValidator(0), MaxValueValidator(10)], default=0
-    )
-    date = models.DateField()
-    evaluation_type = models.CharField(
-        max_length=10, choices=EVALUATION_TYPE, default=DAILY
-    )
+class LessonEvaluation(Evaluation):
     lesson = models.ForeignKey(
         Lesson, on_delete=models.CASCADE, related_name="lesson_evaluations"
     )
@@ -258,4 +249,4 @@ class Event(models.Model):
     start_date = models.DateTimeField(blank=True)
     end_date = models.DateTimeField(blank=True)
     lesson = models.ForeignKey(Lesson, on_delete=models.CASCADE)
-    volunteers = models.ManyToManyField("Volunteer", related_name="events")
+    educators = models.ManyToManyField(Educator, related_name="events")
