@@ -130,6 +130,8 @@ class Volunteer(models.Model):
     minor_authorization = models.FileField(null=True, blank=True)
     scanned_authorizer_id = models.FileField(null=True, blank=True)
     birthdate = models.DateField()
+    start_date = models.DateField()
+    end_date = models.DateField(null=True, blank=True)
 
 
 class Educator(models.Model):
