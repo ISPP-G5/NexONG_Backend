@@ -208,25 +208,6 @@ class Lesson(models.Model):
     students = models.ManyToManyField(Student, related_name="lessons")
 
 
-class Event(models.Model):
-    name = models.CharField(max_length=100)
-    description = models.CharField(max_length=1000)
-    place = models.CharField(max_length=1000)
-    capacity = models.IntegerField(default=0, validators=[MinValueValidator(0)])
-    max_volunteers = models.IntegerField(validators=[MinValueValidator(0)])
-    start_date = models.DateTimeField(blank=True)
-    end_date = models.DateTimeField(blank=True)
-    lesson = models.ForeignKey(Class, on_delete=models.CASCADE, null=True, blank=True)
-
-
-class Evaluation(models.Model):
-    name = models.CharField(max_length=100)
-    description = models.CharField(max_length=1000)
-    gradeSystem = models.CharField(
-        max_length=20, choices=GRADESYSTEM, default=ZERO_TO_TEN
-    )
-
-
 class StudentEvaluation(models.Model):
     name = models.CharField(max_length=100)
     description = models.CharField(max_length=1000)
