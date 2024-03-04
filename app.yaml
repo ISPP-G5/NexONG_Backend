@@ -13,4 +13,4 @@ handlers:
   - url: /.*
     script: auto
 
-entrypoint: gunicorn -b :$PORT your_project_name.wsgi
+entrypoint: gunicorn -b :$PORT src.wsgi
