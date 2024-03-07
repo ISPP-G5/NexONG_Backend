@@ -3,7 +3,7 @@ from nexong.api import permissions
 from nexong.api.Student.studentSerializer import StudentSerializer
 from rest_framework.response import Response
 from rest_framework import status
-
+from rest_framework.permissions import AllowAny
 from nexong.models import Student
 
 
@@ -11,7 +11,7 @@ class StudentApiViewSet(ModelViewSet):
     queryset = Student.objects.all()
     http_method_names = ["get", "post", "put", "delete"]
     serializer_class = StudentSerializer
-    permission_classes = [permissions.isAdminOrReadOnly]
+    permission_classes = [AllowAny]
 
     def destroy(self, request, *args, **kwargs):
         instance = self.get_object()

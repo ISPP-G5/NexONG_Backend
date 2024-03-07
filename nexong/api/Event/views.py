@@ -3,14 +3,14 @@ from rest_framework.response import Response
 from rest_framework import status
 from ...models import *
 from .eventSerializer import EventSerializer, LessonEventSerializer
-from .. import permissions
+from rest_framework.permissions import AllowAny
 
 
 class EventApiViewSet(ModelViewSet):
     queryset = Event.objects.all()
     http_method_names = ["get", "post", "put", "delete"]
     serializer_class = EventSerializer
-    permission_classes = [permissions.isAdminOrReadOnly]
+    permission_classes = [AllowAny]
 
     def destroy(self, request, *args, **kwargs):
         instance = self.get_object()
@@ -22,7 +22,7 @@ class LessonEventApiViewSet(ModelViewSet):
     queryset = LessonEvent.objects.all()
     http_method_names = ["get", "post", "put", "delete"]
     serializer_class = LessonEventSerializer
-    permission_classes = [permissions.isAdminOrReadOnly]
+    permission_classes = [AllowAny]
 
     def destroy(self, request, *args, **kwargs):
         instance = self.get_object()
