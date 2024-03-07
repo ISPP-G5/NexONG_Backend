@@ -5,6 +5,7 @@ from ...models import *
 from .lessonSerializer import *
 from rest_framework.permissions import AllowAny
 
+
 class LessonApiViewSet(ModelViewSet):
     queryset = Lesson.objects.all()
     http_method_names = ["get", "post", "put", "delete"]

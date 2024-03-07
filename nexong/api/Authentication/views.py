@@ -4,13 +4,13 @@ from rest_framework import status
 from ...models import *
 from .authSerializer import *
 
-#Autenticación desactivada temporalmente por desarrollo
-#def check_user_is_admin(request):
+# Autenticación desactivada temporalmente por desarrollo
+# def check_user_is_admin(request):
 #    user = request.user
 #    return user.is_staff
 
 
-#def check_user_is_authenticated(request):
+# def check_user_is_authenticated(request):
 #    user = request.user
 #    return user.is_authenticated
 
