@@ -6,18 +6,15 @@ from rest_framework.serializers import ModelSerializer
 from rest_framework.views import APIView
 from rest_framework.response import Response
 from django.contrib.auth import authenticate
+from rest_framework.serializers import Serializer
 
 
-class UserLoginView(APIView):
-    def post(self, request):
-        user = authenticate(
-            email=request.data["email"], password=request.data["password"]
-        )
-        if user:
-            token, created = Token.objects.get_or_create(user=user)
-            return Response({"token": token.key})
-        else:
-            return Response({"error": "Invalid credentials"}, status=401)
+class UserLoginSerializer(Serializer):
+    email = serializers.EmailField()
+    password = serializers.CharField(style={"input_type": "password"})
+
+    class Meta:
+        fields = ["email", "password"]
 
 
 class UserSerializer(ModelSerializer):

@@ -82,3 +82,26 @@ class EducationCenterApiViewSet(ModelViewSet):
         instance = self.get_object()
         self.perform_destroy(instance)
         return Response(status=status.HTTP_204_NO_CONTENT)
+
+
+class UserLoginView(APIView):
+    serializer_class = UserLoginSerializer
+
+    def post(self, request):
+        serializer = self.serializer_class(data=request.data)
+        if serializer.is_valid():
+            user = authenticate(
+                email=serializer.validated_data["email"],
+                password=serializer.validated_data["password"],
+            )
+            if user:
+                token, created = Token.objects.get_or_create(user=user)
+                return Response({"token": token.key})
+            else:
+                return Response({"error": "Invalid credentials"}, status=401)
+        else:
+            return Response(serializer.errors, status=400)
+
+    def get(self, request):
+        # Código para manejar solicitudes GET aquí
+        return Response({"message": "GET request received"})
