@@ -4,8 +4,12 @@ env: flex
 runtime: python311
 entrypoint: gunicorn -b :$PORT src.wsgi
 handlers:
-  - url: /.*
-    script: auto
+- url: /static              
+  static_dir: staticfiles/  
+- url: /media               
+  static_dir: mediafiles/   
+- url: /.*
+  script: auto
 
 runtime_config:
   python_version: 3
