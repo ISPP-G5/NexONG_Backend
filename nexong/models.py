@@ -197,7 +197,10 @@ class Educator(models.Model):
 class UserManager(BaseUserManager):
     def create_user(self, email, password=None):
         if not email:
-            raise ValueError("El campo email es obligatorio")
+            raise ValueError("No email provided")
+        if not password:
+            raise ValueError("No password provided")
+
         user = self.model(email=self.normalize_email(email))
         user.set_password(password)
         user.is_admin = False
@@ -284,9 +287,7 @@ class Lesson(models.Model):
     educator = models.ForeignKey(
         Educator, on_delete=models.CASCADE, related_name="lessons"
     )
-    students = models.ManyToManyField(
-        Student, related_name="lessons", blank=True, null=True
-    )
+    students = models.ManyToManyField(Student, related_name="lessons", blank=True)
     start_date = models.DateTimeField()
     end_date = models.DateTimeField()
 
@@ -349,10 +350,10 @@ class LessonEvent(models.Model):
     price = models.IntegerField(validators=[MinValueValidator(0)], default=0)
     educators = models.ManyToManyField(Educator, related_name="lesson_events")
     attendees = models.ManyToManyField(
-        Student, related_name="lesson_events", null=True, blank=True
+        Student, related_name="lesson_events", blank=True
     )
     volunteers = models.ManyToManyField(
-        Volunteer, related_name="lesson_events", null=True, blank=True
+        Volunteer, related_name="lesson_events", blank=True
     )
 
 
@@ -365,9 +366,7 @@ class Event(models.Model):
     start_date = models.DateTimeField()
     end_date = models.DateTimeField()
     price = models.IntegerField(validators=[MinValueValidator(0)], default=0)
-    attendees = models.ManyToManyField(
-        Student, related_name="events", null=True, blank=True
-    )
+    attendees = models.ManyToManyField(Student, related_name="events", blank=True)
     volunteers = models.ManyToManyField(Volunteer, related_name="events")
 
 
