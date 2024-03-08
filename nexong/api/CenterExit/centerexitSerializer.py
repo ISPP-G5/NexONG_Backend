@@ -19,6 +19,8 @@ class CenterExitSerializer(ModelSerializer):
     def validate(self, data):
         lesson_event = data["lesson_event"]
         student = data["student"]
-        if not lesson_event.attendees.filter(id = student.id).exists():
-            raise serializers.ValidationError("This student is not registered for this lesson event")
+        if not lesson_event.attendees.filter(id=student.id).exists():
+            raise serializers.ValidationError(
+                "This student is not registered for this lesson event"
+            )
         return data

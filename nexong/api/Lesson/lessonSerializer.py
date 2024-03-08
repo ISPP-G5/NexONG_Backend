@@ -50,13 +50,12 @@ class LessonSerializer(ModelSerializer):
 
         for student in attendees:
             if student.is_morning_student != attrs["is_morning_lesson"]:
-                validation_error["students"] = "There is a student with incorrect schedule (is a morning student or not)."
-        
+                validation_error[
+                    "students"
+                ] = "There is a student with incorrect schedule (is a morning student or not)."
+
         if validation_error:
             raise serializers.ValidationError(validation_error)
-        
-        
-                
 
         return attrs
 

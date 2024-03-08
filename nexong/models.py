@@ -330,7 +330,9 @@ class Event(models.Model):
     attendees = models.ManyToManyField(
         Student, related_name="events", null=True, blank=True
     )
-    volunteers = models.ManyToManyField(Volunteer, related_name="events", null=True, blank=True)
+    volunteers = models.ManyToManyField(
+        Volunteer, related_name="events", null=True, blank=True
+    )
 
 
 class CenterExitAuthorization(models.Model):

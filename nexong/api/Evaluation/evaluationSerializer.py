@@ -47,8 +47,8 @@ class StudentEvaluationSerializer(ModelSerializer):
         lesson = evaluation_type.lesson
         if not lesson.students.contains(student):
             validation_error[
-                    "student"
-                ] = "This student is not enrolled in the lesson of this evaluation type."
+                "student"
+            ] = "This student is not enrolled in the lesson of this evaluation type."
         if validation_error:
             raise serializers.ValidationError(validation_error)
 

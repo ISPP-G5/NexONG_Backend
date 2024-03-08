@@ -5,8 +5,6 @@ from nexong.models import EducationCenter, Family, Student
 
 
 class StudentSerializer(ModelSerializer):
-
-
     class Meta:
         model = Student
         fields = "__all__"
