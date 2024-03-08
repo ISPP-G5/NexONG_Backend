@@ -96,8 +96,4 @@ class EducationCenterSerializer(ModelSerializer):
     class Meta:
         model = EducationCenter
         fields = "__all__"
-        
-    def validate(self, data):
-        if EducationCenter.objects.filter(name = data["name"]).exists():
-            raise serializers.ValidationError("There is already a center with that name")
-        return data
+
