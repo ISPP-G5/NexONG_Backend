@@ -6,6 +6,7 @@ from .donationSerializer import DonationSerializer
 from .. import permissions
 import csv
 from django.http import HttpResponse
+from reportlab.pdfgen import canvas
 
 class DonationApiViewSet(ModelViewSet):
     queryset = Donation.objects.all()
@@ -33,5 +34,36 @@ def DonationsExportToCsv(request):
     # Write data rows
     for donation in queryset:
         writer.writerow([donation.quantity, donation.frequency, donation.quota_extension_document, donation.holder, donation.date])  # Replace field1, field2, etc. with your actual field names
+
+    return response
+
+def DonationsExportToPdf(request):
+    response = HttpResponse(content_type='application/pdf')
+    response['Content-Disposition'] = 'attachment; filename="Datos_Donaciones.pdf"'
+    # Create a PDF document
+    c = canvas.Canvas(response)
+
+    # Retrieve data from your model
+    queryset = Donation.objects.all()
+
+    # Set the starting y coordinate for drawing the text
+    y_coordinate = 750
+
+    # Write data rows
+    for donation in queryset:
+        data_row = [
+            'Cantidad: ' + str(donation.quantity), 
+            'Frecuencia: ' + str(donation.frequency), 
+            'Documento: '+ str(donation.quota_extension_document), 
+            'Titular: '+ str(donation.holder), 
+            'Fecha: ' + str(donation.date),
+            '---------------------------------------'
+        ]
+        for data in data_row:
+            c.drawString(100, y_coordinate, data)
+            y_coordinate -= 20  # Move to the next line
+
+    # Close the PDF document
+    c.save()
 
     return response
