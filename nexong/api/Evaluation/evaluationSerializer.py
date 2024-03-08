@@ -27,6 +27,7 @@ class StudentEvaluationSerializer(ModelSerializer):
     def validate(self, attrs):
         validation_error = {}
 
+        student = attrs.get["student"]
         evaluation_type = attrs.get("evaluation_type")
         grade = attrs.get("grade")
         grade_range = evaluation_type.grade_system
@@ -43,6 +44,11 @@ class StudentEvaluationSerializer(ModelSerializer):
                     "grade"
                 ] = "The grade must be in range from 1 to 5 for this evaluation type."
 
+        lesson = Lesson.objects.get(EvaluationType.objects.get(evaluation_type).lesson)
+        if not lesson.students.contains(student):
+            validation_error[
+                    "student"
+                ] = "This student is not enrolled in the lesson of this evaluation type."
         if validation_error:
             raise serializers.ValidationError(validation_error)
 

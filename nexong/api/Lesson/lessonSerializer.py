@@ -48,8 +48,16 @@ class LessonSerializer(ModelSerializer):
         if end_date <= start_date:
             validation_error["end_date"] = "The end date must be after the start date."
 
+        for studentId in attendees:
+            studentCheck = Student.object.get(studentId)
+            if studentCheck.is_morning_student != attrs["is_morning_lesson"]:
+                validation_error["students"] = "There is a student with incorrect schedule (is a morning student or not)."
+        
         if validation_error:
             raise serializers.ValidationError(validation_error)
+        
+        
+                
 
         return attrs
 
