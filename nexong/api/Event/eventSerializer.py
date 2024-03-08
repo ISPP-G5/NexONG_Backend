@@ -70,9 +70,9 @@ class LessonEventSerializer(ModelSerializer):
 
         for lessonEvent in  LessonEvent.objects.filter(
             lesson=lesson):
-            if ((start_date >= lessonEvent.start_date and start_date <= lessonEvent.end_date)
-                or (end_date >= lessonEvent.start_date and end_date <= lessonEvent.end_date)
-                or (start_date <= lessonEvent.start_date and end_date >= lessonEvent.end_date)):
+            if ((start_date > lessonEvent.start_date and start_date < lessonEvent.end_date)
+                or (end_date > lessonEvent.start_date and end_date < lessonEvent.end_date)
+                or (start_date < lessonEvent.start_date and end_date > lessonEvent.end_date)):
                 validation_error["end_date"] = "Another lesson event collides with this one. Choose a different set of dates."
 
         if validation_error:

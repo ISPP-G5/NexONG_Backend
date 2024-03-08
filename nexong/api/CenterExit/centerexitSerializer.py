@@ -1,7 +1,7 @@
 import datetime
 from rest_framework import serializers
 from rest_framework.serializers import ModelSerializer
-from nexong.models import CenterExitAuthorization, LessonEvent, Student
+from nexong.models import CenterExitAuthorization, Lesson, LessonEvent, Student
 
 
 class CenterExitSerializer(ModelSerializer):
@@ -17,6 +17,8 @@ class CenterExitSerializer(ModelSerializer):
         fields = "__all__"
 
     def validate(self, data):
-        if data["date"] < datetime.date.today() or data["time"] < datetime.date.today():
-            raise serializers.ValidationError("Meetings cannot be in the past")
+        lesson_event = data["lesson_event"]
+        student = data["student"]
+        if not lesson_event.attendees.filter(id = student.id).exists():
+            raise serializers.ValidationError("This student is not registered for this lesson event")
         return data

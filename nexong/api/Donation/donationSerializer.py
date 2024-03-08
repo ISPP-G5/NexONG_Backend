@@ -30,3 +30,5 @@ class DonationSerializer(ModelSerializer):
                 ] = "The iban does not match the expected pattern."
         if validation_error:
             raise serializers.ValidationError(validation_error)
+        
+        return data

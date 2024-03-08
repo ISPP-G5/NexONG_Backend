@@ -81,8 +81,8 @@ class VolunteerSerializer(ModelSerializer):
             raise serializers.ValidationError("Birthdate can't be greater than today")
         
         pattern = r'^\d{5}$'
-        if re.match(pattern, data["postal_code"]):
-            raise serializers.ValidationError("Unvalid postal code")
+        if not re.match(pattern, data["postal_code"]):
+            raise serializers.ValidationError("Invalid postal code")
         return data
 
 
@@ -98,6 +98,6 @@ class EducationCenterSerializer(ModelSerializer):
         fields = "__all__"
         
     def validate(self, data):
-        if EducationCenter.objects.get(name = data["name"]).exists:
+        if EducationCenter.objects.filter(name = data["name"]).exists():
             raise serializers.ValidationError("There is already a center with that name")
         return data
