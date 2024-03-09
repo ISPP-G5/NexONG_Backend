@@ -7,7 +7,7 @@ from .. import permissions
 import csv
 from django.http import HttpResponse
 from reportlab.pdfgen import canvas
-
+from openpyxl import Workbook
 
 class DonationApiViewSet(ModelViewSet):
     queryset = Donation.objects.all()
@@ -77,5 +77,30 @@ def DonationsExportToPdf(request):
 
     # Close the PDF document
     c.save()
+
+    return response
+
+def DonationsExportToExcel(request):
+    response = HttpResponse(content_type='application/vnd.openxmlformats-officedocument.spreadsheetml.sheet')
+    response['Content-Disposition'] = 'attachment; filename="Datos_Donaciones.xlsx"'
+
+    # Retrieve data from your model
+    queryset = Donation.objects.all()
+
+    # Create a new Excel workbook
+    workbook = Workbook()
+    sheet = workbook.active
+
+    # Write the header row
+    header_row = ['Cantidad', 'Frecuencia', 'QuotaExtensionDocument', 'Titular', 'Fecha']
+    sheet.append(header_row)
+
+    # Write data rows
+    for donation in queryset:
+        data_row = [donation.quantity, donation.frequency, donation.quota_extension_document.name, donation.holder, donation.date]
+        sheet.append(data_row)
+
+    # Save the workbook to the response
+    workbook.save(response)
 
     return response
