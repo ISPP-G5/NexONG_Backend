@@ -364,12 +364,8 @@ class Event(models.Model):
     start_date = models.DateTimeField()
     end_date = models.DateTimeField()
     price = models.FloatField(validators=[MinValueValidator(0.0)], default=0.0)
-    attendees = models.ManyToManyField(
-        Student, related_name="events", blank=True
-    )
-    volunteers = models.ManyToManyField(
-        Volunteer, related_name="events", blank=True
-    )
+    attendees = models.ManyToManyField(Student, related_name="events", blank=True)
+    volunteers = models.ManyToManyField(Volunteer, related_name="events", blank=True)
 
 
 class CenterExitAuthorization(models.Model):
