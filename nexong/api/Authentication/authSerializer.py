@@ -1,4 +1,5 @@
 import datetime
+import re
 from rest_framework import serializers
 from nexong.models import *
 from rest_framework.serializers import ModelSerializer
@@ -17,6 +18,37 @@ class UserSerializer(ModelSerializer):
     class Meta:
         model = User
         fields = "__all__"
+
+    def validate(self, data):
+        validation_error = {}
+        if data["role"] == "EDUCATOR" and data["educator"] is None:
+            validation_error["educator"] = 'Given role "EDUCATOR", this cannot be null.'
+        elif data["role"] == "VOLUNTEER" and data["volunteer"] is None:
+            validation_error[
+                "volunteer"
+            ] = 'Given role "VOLUNTEER", this cannot be null.'
+        elif data["role"] == "FAMILY" and data["family"] is None:
+            validation_error["family"] = 'Given role "FAMILY", this cannot be null.'
+        elif data["role"] == "PARTNER" and data["partner"] is None:
+            validation_error["partner"] = 'Given role "PARTNER", this cannot be null.'
+        elif data["role"] == "VOLUNTEER_PARTNER" and (
+            data["volunteer"] is None or data["partner"] is None
+        ):
+            validation_error[
+                "volunteer"
+            ] = 'Given role "VOLUNTEER", this cannot be null.'
+            validation_error["partner"] = 'Given role "PARTNER", this cannot be null.'
+
+        id_number = data["id_number"]
+        pattern = r"^\d{8}[A-Z]$"
+        if not re.match(pattern, id_number):
+            validation_error[
+                "id_number"
+            ] = "The id_number does not match the expected pattern."
+        if validation_error:
+            raise serializers.ValidationError(validation_error)
+
+        return data
 
 
 class EducatorSerializer(ModelSerializer):
@@ -49,6 +81,10 @@ class VolunteerSerializer(ModelSerializer):
     def validate(self, data):
         if data["birthdate"] > datetime.date.today():
             raise serializers.ValidationError("Birthdate can't be greater than today")
+
+        pattern = r"^\d{5}$"
+        if not re.match(pattern, data["postal_code"]):
+            raise serializers.ValidationError("Invalid postal code")
         return data
 
 
