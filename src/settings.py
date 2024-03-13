@@ -32,6 +32,7 @@ INSTALLED_APPS = [
     "rest_framework",
     "nexong",
     "corsheaders",
+    "drf_yasg",
 ]
 
 MIDDLEWARE = [
