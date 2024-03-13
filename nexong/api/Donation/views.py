@@ -8,6 +8,12 @@ import csv
 from django.http import HttpResponse
 from reportlab.pdfgen import canvas
 from openpyxl import Workbook
+from reportlab.lib.pagesizes import letter
+from reportlab.platypus import SimpleDocTemplate, Paragraph, Spacer, Table, TableStyle, Image
+from reportlab.lib.styles import getSampleStyleSheet
+from reportlab.lib import colors
+from datetime import datetime
+from django.shortcuts import get_object_or_404
 
 class DonationApiViewSet(ModelViewSet):
     queryset = Donation.objects.all()
@@ -23,19 +29,17 @@ class DonationApiViewSet(ModelViewSet):
 def DonationsExportToCsv(request):
     response = HttpResponse(content_type="text/csv")
     response["Content-Disposition"] = 'attachment; filename="Datos_Donaciones.csv"'
-
-    # Retrieve data from your model
+    #Retrieve data from your model
     queryset = Donation.objects.all()
 
-    # Create a CSV writer object
+    #Create a CSV writer object
     writer = csv.writer(response)
 
-    # Write the header row
     writer.writerow(
         ["Cantidad", " Frecuencia", " QuotaExtensionDocument", " Titular", " Fecha"]
     )
 
-    # Write data rows
+    #Write data rows
     for donation in queryset:
         writer.writerow(
             [
@@ -45,57 +49,125 @@ def DonationsExportToCsv(request):
                 donation.holder,
                 donation.date,
             ]
-        )  # Replace field1, field2, etc. with your actual field names
+        )
 
     return response
 
 def DonationsExportToPdf(request):
+    #Get data from request
+    startDate_str = request.GET.get('startdate')
+    endDate_str = request.GET.get('enddate')
+    actualDate= datetime.now().date()
+    partner_str = request.GET.get('partner')
+
+    #Comprobe if data exist
+    if not startDate_str:
+        startDate = None
+    else:
+        startDate = datetime.strptime(startDate_str, '%Y-%m-%d')
+    if not endDate_str:
+        endDate = None
+    else:
+        endDate = datetime.strptime(endDate_str, '%Y-%m-%d')
+    if not partner_str:
+        partner = 0
+    else:
+        partner = partner_str
+        userOfPartner = User.objects.filter(partner=partner).first()
+
+    #Filter donations
+    if startDate is not None and partner == 0:
+        queryset = Donation.objects.filter(date__gte=startDate, date__lte=endDate)
+    else:
+        if partner != 0 and startDate is not None:
+            queryset = Donation.objects.filter(date__gte=startDate, date__lte=endDate, partner=partner)
+        else:
+            if partner !=0 and startDate is None:
+                queryset = Donation.objects.filter(partner=partner)
+            else:
+                queryset= Donation.objects.all()
+            
+    if startDate is None and partner == 0:
+        filename = "Reporte de donaciones global.pdf"
+    else:
+        if partner != 0:
+            if startDate is None:
+                filename = f"Reporte_de_donaciones_de_{userOfPartner.name}.pdf"
+            else:
+                filename = f"Reporte_de_donaciones_entre_{startDate_str}_y_{endDate_str}_de_{userOfPartner.name}.pdf"
+        else:
+            filename = f"Reporte_de_donaciones_entre_{startDate_str}_y_{endDate_str}.pdf"
+
+    #Response Object
     response = HttpResponse(content_type='application/pdf')
-    response['Content-Disposition'] = 'attachment; filename="Datos_Donaciones.pdf"'
-    # Create a PDF document
-    c = canvas.Canvas(response)
+    response['Content-Disposition'] = f'attachment; filename={filename}'
+    styles = getSampleStyleSheet()
 
-    # Retrieve data from your model
-    queryset = Donation.objects.all()
+    #This is the PDF document
+    doc = SimpleDocTemplate(response, pagesize=letter)
 
-    # Set the starting y coordinate for drawing the text
-    y_coordinate = 750
+    #Create a Story list to hold elements
+    Story = []
 
-    # Write data rows
+    #Add cover page elements
+    logoPath = 'static/images/logo.png'
+    logo = Image(logoPath, width=200, height=100)
+    if partner == 0:
+        title = "Reporte de donaciones"
+    else:
+        title=f"Reporte de donaciones de {userOfPartner.name}"
+    startDateText = f"Fecha de inicio de los datos: {startDate_str}"
+    endDateText = f"Fecha de fin de los datos: {endDate_str}"
+    actualDateText = f"Fecha actual: {actualDate}"
+
+    if startDate is None:
+        cover_elements = [logo, Spacer(1, 12), Paragraph(title, styles['Title']), Spacer(1, 12), 
+                      Paragraph(actualDateText, styles['Normal'])]
+    else:
+        cover_elements = [logo, Spacer(1, 12), Paragraph(title, styles['Title']), Spacer(1, 12),
+                      Paragraph(actualDateText, styles['Normal']), Spacer(1, 6),
+                      Paragraph(startDateText, styles['Normal']), Spacer(1, 6),
+                      Paragraph(endDateText, styles['Normal'])]
+        
+    #Add cover elements to the Story
+    Story.extend(cover_elements)
+    #Separation for the table
+    Story.append(Spacer(1, 50))
+    table_data = [['Cantidad', 'Frecuencia', 'Titular', 'Fecha']]
+
     for donation in queryset:
-        data_row = [
-            'Cantidad: ' + str(donation.quantity), 
-            'Frecuencia: ' + str(donation.frequency), 
-            'Documento: '+ str(donation.quota_extension_document), 
-            'Titular: '+ str(donation.holder), 
-            'Fecha: ' + str(donation.date),
-            '---------------------------------------'
-        ]
-        for data in data_row:
-            c.drawString(100, y_coordinate, data)
-            y_coordinate -= 20  # Move to the next line
+        table_data.append([donation.quantity, donation.frequency, donation.holder, donation.date])
 
-    # Close the PDF document
-    c.save()
+    #Create a table 
+    table = Table(table_data)
+
+    #Table style
+    table.setStyle(TableStyle([('BACKGROUND', (0, 0), (-1, 0), colors.grey),
+                               ('TEXTCOLOR', (0, 0), (-1, 0), colors.whitesmoke),
+                               ('ALIGN', (0, 0), (-1, -1), 'CENTER'),
+                               ('FONTNAME', (0, 0), (-1, 0), 'Helvetica-Bold'),
+                               ('BOTTOMPADDING', (0, 0), (-1, 0), 12),
+                               ('BACKGROUND', (0, 1), (-1, -1), colors.beige),
+                               ('GRID', (0, 0), (-1, -1), 1, colors.black)]))
+
+    #Table to Story
+    Story.append(table)
+    doc.build(Story)
 
     return response
 
 def DonationsExportToExcel(request):
     response = HttpResponse(content_type='application/vnd.openxmlformats-officedocument.spreadsheetml.sheet')
     response['Content-Disposition'] = 'attachment; filename="Datos_Donaciones.xlsx"'
-
-    # Retrieve data from your model
     queryset = Donation.objects.all()
 
-    # Create a new Excel workbook
+    #Create a new Excel workbook
     workbook = Workbook()
     sheet = workbook.active
 
-    # Write the header row
     header_row = ['Cantidad', 'Frecuencia', 'QuotaExtensionDocument', 'Titular', 'Fecha']
     sheet.append(header_row)
 
-    # Write data rows
     for donation in queryset:
         data_row = [donation.quantity, donation.frequency, donation.quota_extension_document.name, donation.holder, donation.date]
         sheet.append(data_row)
