@@ -14,12 +14,14 @@ from reportlab.lib.styles import getSampleStyleSheet
 from reportlab.lib import colors
 from datetime import datetime
 from django.shortcuts import get_object_or_404
+from rest_framework.permissions import AllowAny
+
 
 class DonationApiViewSet(ModelViewSet):
     queryset = Donation.objects.all()
     http_method_names = ["get", "post", "put", "delete"]
     serializer_class = DonationSerializer
-
+    permission_classes = [AllowAny]
     def destroy(self, request, *args, **kwargs):
         instance = self.get_object()
         self.perform_destroy(instance)
