@@ -344,3 +344,10 @@ class CenterExitAuthorization(models.Model):
     lesson_event = models.ForeignKey(
         LessonEvent, on_delete=models.CASCADE, related_name="center_exit_authorizations"
     )
+
+
+class Suggestion(models.Model):
+    subject = models.CharField(max_length=100)
+    description = models.TextField()
+    email = models.EmailField(null=True, blank=True)
+    date = models.DateField()
