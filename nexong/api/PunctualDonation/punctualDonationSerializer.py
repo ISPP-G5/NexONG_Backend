@@ -8,6 +8,7 @@ class PunctualDonationSerializer(ModelSerializer):
         fields = [
             "id",
             "name",
+            "surname",
             "email",
             "proof_of_payment_document",
             "date",

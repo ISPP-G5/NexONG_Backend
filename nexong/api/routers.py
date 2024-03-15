@@ -17,9 +17,9 @@ router_api.register(prefix="meeting", viewset=MeetingApiViewSet, basename="meeti
 router_api.register(prefix="event", viewset=EventApiViewSet, basename="event")
 router_api.register(prefix="lesson", viewset=LessonApiViewSet, basename="lesson")
 router_api.register(
-    prefix="lesson-cttendance",
+    prefix="lesson-attendance",
     viewset=LessonAttendanceApiViewSet,
-    basename="lesson-cttendance",
+    basename="lesson-attendance",
 )
 router_api.register(prefix="donation", viewset=DonationApiViewSet, basename="donation")
 router_api.register(

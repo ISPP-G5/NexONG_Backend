@@ -168,6 +168,7 @@ class Donation(models.Model):
 
 class PunctualDonation(models.Model):
     name = models.CharField(max_length=255)
+    surname = models.CharField(max_length=255)
     email = models.EmailField(unique=True)
     proof_of_payment_document = models.FileField(upload_to="files/proof_of_payment")
     date = models.DateField()
@@ -175,6 +176,7 @@ class PunctualDonation(models.Model):
 
 class HomeDocument(models.Model):
     name = models.CharField(max_length=255)
+    surname = models.CharField(max_length=255)
     document = models.FileField(upload_to="files/home_document")
     date = models.DateField()
 
