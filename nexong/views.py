@@ -5,7 +5,6 @@ from mimetypes import guess_type
 
 
 def serve_file(request, path):
-    print(path)
     file_path = os.path.join(settings.MEDIA_ROOT, path)
     if os.path.exists(file_path) and os.path.isfile(file_path):
         with open(file_path, "rb") as file:
