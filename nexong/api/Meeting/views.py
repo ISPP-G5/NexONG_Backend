@@ -8,7 +8,7 @@ from rest_framework.permissions import AllowAny
 
 class MeetingApiViewSet(ModelViewSet):
     queryset = Meeting.objects.all()
-    http_method_names = ["get", "post", "put", "delete", "patch"]
+    http_method_names = ["get", "post", "put", "delete"]
     serializer_class = MeetingSerializer
     permission_classes = [AllowAny]
 

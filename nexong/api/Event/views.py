@@ -8,7 +8,7 @@ from rest_framework.permissions import AllowAny
 
 class EventApiViewSet(ModelViewSet):
     queryset = Event.objects.all()
-    http_method_names = ["get", "post", "put", "delete", "patch"]
+    http_method_names = ["get", "post", "put", "delete"]
     serializer_class = EventSerializer
     permission_classes = [AllowAny]
 
@@ -20,7 +20,7 @@ class EventApiViewSet(ModelViewSet):
 
 class LessonEventApiViewSet(ModelViewSet):
     queryset = LessonEvent.objects.all()
-    http_method_names = ["get", "post", "put", "delete", "patch"]
+    http_method_names = ["get", "post", "put", "delete"]
     serializer_class = LessonEventSerializer
     permission_classes = [AllowAny]
 

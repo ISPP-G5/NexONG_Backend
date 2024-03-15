@@ -8,7 +8,7 @@ from rest_framework.permissions import AllowAny
 
 class StudentEvaluationApiViewSet(ModelViewSet):
     queryset = StudentEvaluation.objects.all()
-    http_method_names = ["get", "post", "put", "delete", "patch"]
+    http_method_names = ["get", "post", "put", "delete"]
     serializer_class = StudentEvaluationSerializer
     permission_classes = [AllowAny]
 
@@ -20,7 +20,7 @@ class StudentEvaluationApiViewSet(ModelViewSet):
 
 class EvaluationTypeApiViewSet(ModelViewSet):
     queryset = EvaluationType.objects.all()
-    http_method_names = ["get", "post", "put", "delete", "patch"]
+    http_method_names = ["get", "post", "put", "delete"]
     serializer_class = EvaluationTypeSerializer
     permission_classes = [AllowAny]
 

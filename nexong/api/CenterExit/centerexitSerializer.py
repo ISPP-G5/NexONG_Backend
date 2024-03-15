@@ -17,10 +17,15 @@ class CenterExitSerializer(ModelSerializer):
         fields = "__all__"
 
     def validate(self, data):
-        lesson_event = data["lesson_event"]
-        student = data["student"]
-        if not lesson_event.attendees.filter(id=student.id).exists():
-            raise serializers.ValidationError(
-                "This student is not registered for this lesson event"
-            )
+        if "lesson_event" in data and "student" in data:
+            lesson_event = data["lesson_event"]
+            student = data["student"]
+            if not lesson_event.attendees.filter(id=student.id).exists():
+                raise serializers.ValidationError(
+                    "This student is not registered for this lesson event"
+                )
+        if "lesson_event" in data != "student" in data:
+             raise serializers.ValidationError(
+                    "If using PATCH, input both lesson_event and student"
+                )
         return data
