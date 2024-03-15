@@ -8,7 +8,7 @@ from rest_framework.permissions import AllowAny
 
 class HomeDocumentApiViewSet(ModelViewSet):
     queryset = HomeDocument.objects.all()
-    http_method_names = ["get", "post","put" ,"delete"]
+    http_method_names = ["get", "post", "put", "delete"]
     serializer_class = HomeDocumentSerializer
     permission_classes = [AllowAny]
 
