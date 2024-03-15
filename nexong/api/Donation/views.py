@@ -122,18 +122,11 @@ def obtainDataFromRequest(request):
 
 
 def DonationsExportToPdf(request):
-<<<<<<< HEAD
-    startDate_str, endDate_str, actualDate, startDate, partner, userOfPartner, queryset, filename = obtainDataFromRequest(request)
-    #Response Object
-    response = HttpResponse(content_type='application/pdf')
-    response['Content-Disposition'] = f'attachment; filename={filename}.pdf'
-=======
     (
         startDate_str,
         endDate_str,
         actualDate,
         startDate,
-        endDate,
         partner,
         userOfPartner,
         queryset,
@@ -142,7 +135,6 @@ def DonationsExportToPdf(request):
     # Response Object
     response = HttpResponse(content_type="application/pdf")
     response["Content-Disposition"] = f"attachment; filename={filename}.pdf"
->>>>>>> f8dc7530502173c42c825756aeb4dcc2705e60de
     styles = getSampleStyleSheet()
 
     # This is the PDF document
@@ -220,22 +212,7 @@ def DonationsExportToPdf(request):
 
 
 def DonationsExportToExcel(request):
-<<<<<<< HEAD
-    data = obtainDataFromRequest(request)
-    filename = data[-1]
-    queryset = data[-2]
-        
-    response = HttpResponse(content_type='application/vnd.openxmlformats-officedocument.spreadsheetml.sheet')
-    response['Content-Disposition'] = f'attachment; filename={filename}.xlsx'
-=======
     (
-        startDate_str,
-        endDate_str,
-        actualDate,
-        startDate,
-        endDate,
-        partner,
-        userOfPartner,
         queryset,
         filename,
     ) = obtainDataFromRequest(request)
@@ -243,7 +220,6 @@ def DonationsExportToExcel(request):
         content_type="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
     )
     response["Content-Disposition"] = f"attachment; filename={filename}.xlsx"
->>>>>>> f8dc7530502173c42c825756aeb4dcc2705e60de
 
     # Create a new Excel workbook
     workbook = Workbook()
