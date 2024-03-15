@@ -27,22 +27,28 @@ class StudentEvaluationSerializer(ModelSerializer):
     def validate(self, attrs):
         validation_error = {}
 
+        student = attrs.get("student")
         evaluation_type = attrs.get("evaluation_type")
         grade = attrs.get("grade")
         grade_range = evaluation_type.grade_system
 
         if grade_range == "ZERO_TO_ONE":
             if grade > 1:
-                validation_error["grade"] = (
-                    "The grade must be in range from 0 to 1 for this evaluation type."
-                )
+                validation_error[
+                    "grade"
+                ] = "The grade must be in range from 0 to 1 for this evaluation type."
 
         elif grade_range == "ONE_TO_FIVE":
             if grade > 5 or grade < 1:
-                validation_error["grade"] = (
-                    "The grade must be in range from 1 to 5 for this evaluation type."
-                )
+                validation_error[
+                    "grade"
+                ] = "The grade must be in range from 1 to 5 for this evaluation type."
 
+        lesson = evaluation_type.lesson
+        if not lesson.students.contains(student):
+            validation_error[
+                "student"
+            ] = "This student is not enrolled in the lesson of this evaluation type."
         if validation_error:
             raise serializers.ValidationError(validation_error)
 
