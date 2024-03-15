@@ -1,5 +1,3 @@
-import re
-from rest_framework import serializers
 from nexong.models import PunctualDonation
 from rest_framework.serializers import ModelSerializer
 

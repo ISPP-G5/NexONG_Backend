@@ -6,7 +6,6 @@ from django.core.validators import (
     MinValueValidator,
     URLValidator,
 )
-from django.utils import timezone
 
 ADMIN = "ADMIN"
 EDUCATOR = "EDUCATOR"
