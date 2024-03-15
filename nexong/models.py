@@ -365,4 +365,4 @@ class Suggestion(models.Model):
     subject = models.CharField(max_length=100)
     description = models.TextField()
     email = models.EmailField(null=True, blank=True)
-    date = models.DateField()
+    date = models.DateField(auto_now_add=True)
