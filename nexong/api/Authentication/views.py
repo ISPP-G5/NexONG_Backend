@@ -24,14 +24,14 @@ def process_instance(serializer_class, instance, data):
 
 
 class UserApiViewSet(ModelViewSet):
-    http_method_names = ["get", "post", "put", "delete"]
+    http_method_names = ["get", "post", "put", "delete", "patch"]
     serializer_class = UserSerializer
     queryset = User.objects.all()
 
 
 class EducatorApiViewSet(ModelViewSet):
     queryset = Educator.objects.all()
-    http_method_names = ["get", "post", "put", "delete"]
+    http_method_names = ["get", "post", "put", "delete", "patch"]
     serializer_class = EducatorSerializer
 
     def destroy(self, request, *args, **kwargs):
@@ -42,7 +42,7 @@ class EducatorApiViewSet(ModelViewSet):
 
 class PartnerApiViewSet(ModelViewSet):
     queryset = Partner.objects.all()
-    http_method_names = ["get", "post", "put", "delete"]
+    http_method_names = ["get", "post", "put", "delete", "patch"]
     serializer_class = PartnerSerializer
 
     def destroy(self, request, *args, **kwargs):
@@ -53,7 +53,7 @@ class PartnerApiViewSet(ModelViewSet):
 
 class VolunteerApiViewSet(ModelViewSet):
     queryset = Volunteer.objects.all()
-    http_method_names = ["get", "post", "put", "delete"]
+    http_method_names = ["get", "post", "put", "delete", "patch"]
     serializer_class = VolunteerSerializer
 
     def destroy(self, request, *args, **kwargs):
@@ -64,7 +64,7 @@ class VolunteerApiViewSet(ModelViewSet):
 
 class FamilyApiViewSet(ModelViewSet):
     queryset = Family.objects.all()
-    http_method_names = ["get", "post", "put", "delete"]
+    http_method_names = ["get", "post", "put", "delete", "patch"]
     serializer_class = FamilySerializer
 
     def destroy(self, request, *args, **kwargs):
@@ -75,7 +75,7 @@ class FamilyApiViewSet(ModelViewSet):
 
 class EducationCenterApiViewSet(ModelViewSet):
     queryset = EducationCenter.objects.all()
-    http_method_names = ["get", "post", "put", "delete"]
+    http_method_names = ["get", "post", "put", "delete", "patch"]
     serializer_class = EducationCenterSerializer
 
     def destroy(self, request, *args, **kwargs):

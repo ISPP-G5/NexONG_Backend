@@ -8,7 +8,7 @@ from .. import permissions
 
 class EventApiViewSet(ModelViewSet):
     queryset = Event.objects.all()
-    http_method_names = ["get", "post", "put", "delete"]
+    http_method_names = ["get", "post", "put", "delete", "patch"]
     serializer_class = EventSerializer
     permission_classes = [permissions.isAdminOrReadOnly]
 
@@ -20,7 +20,7 @@ class EventApiViewSet(ModelViewSet):
 
 class LessonEventApiViewSet(ModelViewSet):
     queryset = LessonEvent.objects.all()
-    http_method_names = ["get", "post", "put", "delete"]
+    http_method_names = ["get", "post", "put", "delete", "patch"]
     serializer_class = LessonEventSerializer
     permission_classes = [permissions.isAdminOrReadOnly]
 

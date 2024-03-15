@@ -8,7 +8,7 @@ from .. import permissions
 
 class MeetingApiViewSet(ModelViewSet):
     queryset = Meeting.objects.all()
-    http_method_names = ["get", "post", "put", "delete"]
+    http_method_names = ["get", "post", "put", "delete", "patch"]
     serializer_class = MeetingSerializer
     permission_classes = [permissions.isAdminOrReadOnly]
 

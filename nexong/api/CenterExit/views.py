@@ -8,7 +8,7 @@ from rest_framework import status
 
 class CenterExitApiViewSet(ModelViewSet):
     queryset = CenterExitAuthorization.objects.all()
-    http_method_names = ["get", "post", "put", "delete"]
+    http_method_names = ["get", "post", "put", "delete", "patch"]
     serializer_class = CenterExitSerializer
     permission_classes = [permissions.isAdminOrReadOnly]
 

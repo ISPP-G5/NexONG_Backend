@@ -8,7 +8,7 @@ from .. import permissions
 
 class StudentEvaluationApiViewSet(ModelViewSet):
     queryset = StudentEvaluation.objects.all()
-    http_method_names = ["get", "post", "put", "delete"]
+    http_method_names = ["get", "post", "put", "delete", "patch"]
     serializer_class = StudentEvaluationSerializer
     permission_classes = [permissions.isAdminOrReadOnly]
 
@@ -20,7 +20,7 @@ class StudentEvaluationApiViewSet(ModelViewSet):
 
 class EvaluationTypeApiViewSet(ModelViewSet):
     queryset = EvaluationType.objects.all()
-    http_method_names = ["get", "post", "put", "delete"]
+    http_method_names = ["get", "post", "put", "delete", "patch"]
     serializer_class = EvaluationTypeSerializer
     permission_classes = [permissions.isAdminOrReadOnly]
 
