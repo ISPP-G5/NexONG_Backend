@@ -19,7 +19,7 @@ router_api.register(prefix="lesson", viewset=LessonApiViewSet, basename="lesson"
 router_api.register(
     prefix="lesson-attendance",
     viewset=LessonAttendanceApiViewSet,
-    basename="lesson-attendance",
+    basename="lessonattendance",
 )
 router_api.register(prefix="donation", viewset=DonationApiViewSet, basename="donation")
 router_api.register(
@@ -30,7 +30,7 @@ router_api.register(
 )
 router_api.register(prefix="student", viewset=StudentApiViewSet, basename="student")
 router_api.register(
-    prefix="center-exit", viewset=CenterExitApiViewSet, basename="center-exit"
+    prefix="center-exit", viewset=CenterExitApiViewSet, basename="centerexit"
 )
 router_api.register(
     prefix="student-evaluation",
@@ -48,13 +48,13 @@ router_api.register(prefix="family", viewset=FamilyApiViewSet, basename="family"
 router_api.register(
     prefix="punctual-donation",
     viewset=PunctualDonationApiViewSet,
-    basename="punctual-donation",
+    basename="punctualdonation",
 )
 router_api.register(
-    prefix="home-document", viewset=HomeDocumentApiViewSet, basename="home-document"
+    prefix="home-document", viewset=HomeDocumentApiViewSet, basename="homedocument"
 )
 router_api.register(
     prefix="education-center",
     viewset=EducationCenterApiViewSet,
-    basename="education-center",
+    basename="educationcenter",
 )
