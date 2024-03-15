@@ -36,3 +36,4 @@ class QuarterMarksSerializer(ModelSerializer):
             raise serializers.ValidationError(
                 "The date in which the marks were received can't be greater than today"
             )
+        return data
