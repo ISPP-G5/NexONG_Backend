@@ -3,18 +3,16 @@ from rest_framework.response import Response
 from rest_framework import status
 from ...models import *
 from .donationSerializer import DonationSerializer
-from .. import permissions
+from rest_framework.permissions import AllowAny
 import csv
 from django.http import HttpResponse
-from reportlab.pdfgen import canvas
 from openpyxl import Workbook
 from reportlab.lib.pagesizes import letter
 from reportlab.platypus import SimpleDocTemplate, Paragraph, Spacer, Table, TableStyle, Image
 from reportlab.lib.styles import getSampleStyleSheet
 from reportlab.lib import colors
 from datetime import datetime
-from django.shortcuts import get_object_or_404
-from rest_framework.permissions import AllowAny
+
 
 
 class DonationApiViewSet(ModelViewSet):
@@ -22,10 +20,12 @@ class DonationApiViewSet(ModelViewSet):
     http_method_names = ["get", "post", "put", "delete"]
     serializer_class = DonationSerializer
     permission_classes = [AllowAny]
+
     def destroy(self, request, *args, **kwargs):
         instance = self.get_object()
         self.perform_destroy(instance)
         return Response(status=status.HTTP_204_NO_CONTENT)
+
 
 
 def DonationsExportToCsv(request):
@@ -55,7 +55,7 @@ def DonationsExportToCsv(request):
 
     return response
 
-def DonationsExportToPdf(request):
+def obtainDataFromRequest (request):
     #Get data from request
     startDate_str = request.GET.get('startdate')
     endDate_str = request.GET.get('enddate')
@@ -73,6 +73,7 @@ def DonationsExportToPdf(request):
         endDate = datetime.strptime(endDate_str, '%Y-%m-%d')
     if not partner_str:
         partner = 0
+        userOfPartner = None
     else:
         partner = partner_str
         userOfPartner = User.objects.filter(partner=partner).first()
@@ -90,19 +91,22 @@ def DonationsExportToPdf(request):
                 queryset= Donation.objects.all()
             
     if startDate is None and partner == 0:
-        filename = "Reporte de donaciones global.pdf"
+        filename = "Reporte de donaciones global."
     else:
         if partner != 0:
             if startDate is None:
-                filename = f"Reporte_de_donaciones_de_{userOfPartner.name}.pdf"
+                filename = f"Reporte_de_donaciones_de_{userOfPartner.name}."
             else:
-                filename = f"Reporte_de_donaciones_entre_{startDate_str}_y_{endDate_str}_de_{userOfPartner.name}.pdf"
+                filename = f"Reporte_de_donaciones_entre_{startDate_str}_y_{endDate_str}_de_{userOfPartner.name}."
         else:
-            filename = f"Reporte_de_donaciones_entre_{startDate_str}_y_{endDate_str}.pdf"
+            filename = f"Reporte_de_donaciones_entre_{startDate_str}_y_{endDate_str}."
+    return startDate_str, endDate_str, actualDate, startDate, endDate, partner, userOfPartner, queryset, filename
 
+def DonationsExportToPdf(request):
+    startDate_str, endDate_str, actualDate, startDate, endDate, partner, userOfPartner, queryset, filename = obtainDataFromRequest(request)
     #Response Object
     response = HttpResponse(content_type='application/pdf')
-    response['Content-Disposition'] = f'attachment; filename={filename}'
+    response['Content-Disposition'] = f'attachment; filename={filename}.pdf'
     styles = getSampleStyleSheet()
 
     #This is the PDF document
@@ -159,9 +163,9 @@ def DonationsExportToPdf(request):
     return response
 
 def DonationsExportToExcel(request):
+    startDate_str, endDate_str, actualDate, startDate, endDate, partner, userOfPartner, queryset, filename = obtainDataFromRequest(request)        
     response = HttpResponse(content_type='application/vnd.openxmlformats-officedocument.spreadsheetml.sheet')
-    response['Content-Disposition'] = 'attachment; filename="Datos_Donaciones.xlsx"'
-    queryset = Donation.objects.all()
+    response['Content-Disposition'] = f'attachment; filename={filename}.xlsx'
 
     #Create a new Excel workbook
     workbook = Workbook()
