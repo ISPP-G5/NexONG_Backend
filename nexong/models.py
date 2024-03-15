@@ -7,7 +7,6 @@ from django.core.validators import (
     URLValidator,
 )
 
-
 ADMIN = "ADMIN"
 EDUCATOR = "EDUCATOR"
 VOLUNTEER = "VOLUNTEER"
@@ -167,14 +166,27 @@ class Donation(models.Model):
     )
 
 
+class PunctualDonation(models.Model):
+    name = models.CharField(max_length=255)
+    surname = models.CharField(max_length=255)
+    email = models.EmailField(unique=True)
+    proof_of_payment_document = models.FileField(upload_to="files/proof_of_payment")
+    date = models.DateField()
+
+
+class HomeDocument(models.Model):
+    name = models.CharField(max_length=255)
+    surname = models.CharField(max_length=255)
+    document = models.FileField(upload_to="files/home_document")
+    date = models.DateField()
+
+
 class Volunteer(models.Model):
     academic_formation = models.CharField(max_length=1000)
     motivation = models.CharField(max_length=1000)
     status = models.CharField(max_length=10, choices=STATUS, default=PENDING)
     address = models.CharField(max_length=255)
-    postal_code = models.IntegerField(
-        validators=[MinValueValidator(00000), MaxValueValidator(90000)], default=10000
-    )
+    postal_code = models.CharField(max_length=255)
     enrollment_document = models.FileField(upload_to="files/volunteer_enrollment")
     registry_sheet = models.FileField(upload_to="files/volunteer_registry")
     sexual_offenses_document = models.FileField(upload_to="files/volunteer_offenses")
@@ -310,7 +322,7 @@ class LessonEvent(models.Model):
     start_date = models.DateTimeField()
     end_date = models.DateTimeField()
     lesson = models.ForeignKey(Lesson, on_delete=models.CASCADE)
-    price = models.IntegerField(validators=[MinValueValidator(0)], default=0)
+    price = models.FloatField(validators=[MinValueValidator(0.0)], default=0.0)
     educators = models.ManyToManyField(Educator, related_name="lesson_events")
     attendees = models.ManyToManyField(
         Student, related_name="lesson_events", null=True, blank=True
@@ -328,11 +340,13 @@ class Event(models.Model):
     max_attendees = models.IntegerField(validators=[MinValueValidator(0)])
     start_date = models.DateTimeField()
     end_date = models.DateTimeField()
-    price = models.IntegerField(validators=[MinValueValidator(0)], default=0)
+    price = models.FloatField(validators=[MinValueValidator(0.0)], default=0.0)
     attendees = models.ManyToManyField(
         Student, related_name="events", null=True, blank=True
     )
-    volunteers = models.ManyToManyField(Volunteer, related_name="events")
+    volunteers = models.ManyToManyField(
+        Volunteer, related_name="events", null=True, blank=True
+    )
 
 
 class CenterExitAuthorization(models.Model):
