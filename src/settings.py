@@ -123,5 +123,5 @@ STATIC_URL = "static/"
 
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 
-MEDIA_URL = 'NexONG_Backend/files/'
-MEDIA_ROOT ='files'
+MEDIA_URL = "NexONG_Backend/files/"
+MEDIA_ROOT = "files"
