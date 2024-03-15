@@ -25,7 +25,7 @@ class CenterExitSerializer(ModelSerializer):
                     "This student is not registered for this lesson event"
                 )
         if "lesson_event" in data != "student" in data:
-             raise serializers.ValidationError(
-                    "If using PATCH, input both lesson_event and student"
-                )
+            raise serializers.ValidationError(
+                "If using PATCH, input both lesson_event and student"
+            )
         return data
