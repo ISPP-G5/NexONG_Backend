@@ -103,7 +103,7 @@ def obtainDataFromRequest (request):
     return startDate_str, endDate_str, actualDate, startDate, endDate, partner, userOfPartner, queryset, filename
 
 def DonationsExportToPdf(request):
-    startDate_str, endDate_str, actualDate, startDate, endDate, partner, userOfPartner, queryset, filename = obtainDataFromRequest(request)
+    startDate_str, endDate_str, actualDate, startDate, partner, userOfPartner, queryset, filename = obtainDataFromRequest(request)
     #Response Object
     response = HttpResponse(content_type='application/pdf')
     response['Content-Disposition'] = f'attachment; filename={filename}.pdf'
@@ -163,7 +163,10 @@ def DonationsExportToPdf(request):
     return response
 
 def DonationsExportToExcel(request):
-    startDate_str, endDate_str, actualDate, startDate, endDate, partner, userOfPartner, queryset, filename = obtainDataFromRequest(request)        
+    data = obtainDataFromRequest(request)
+    filename = data[-1]
+    queryset = data[-2]
+        
     response = HttpResponse(content_type='application/vnd.openxmlformats-officedocument.spreadsheetml.sheet')
     response['Content-Disposition'] = f'attachment; filename={filename}.xlsx'
 
