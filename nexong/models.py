@@ -175,8 +175,7 @@ class PunctualDonation(models.Model):
 
 
 class HomeDocument(models.Model):
-    name = models.CharField(max_length=255)
-    surname = models.CharField(max_length=255)
+    title = models.CharField(max_length=255)
     document = models.FileField(upload_to="files/home_document")
     date = models.DateField()
 
