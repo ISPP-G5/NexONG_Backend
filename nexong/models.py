@@ -166,6 +166,7 @@ class Donation(models.Model):
         Partner, on_delete=models.CASCADE, related_name="donations"
     )
 
+
 class PunctualDonation(models.Model):
     name = models.CharField(max_length=255)
     email = models.EmailField(unique=True)
@@ -174,12 +175,12 @@ class PunctualDonation(models.Model):
     )
     date = models.DateField()
 
+
 class HomeDocument(models.Model):
     name = models.CharField(max_length=255)
-    document = models.FileField(
-        null=True, blank=True, upload_to="files/home_document"
-    )
+    document = models.FileField(null=True, blank=True, upload_to="files/home_document")
     date = models.DateField()
+
 
 class Volunteer(models.Model):
     academic_formation = models.CharField(max_length=1000)

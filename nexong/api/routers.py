@@ -45,8 +45,14 @@ router_api.register(
 router_api.register(prefix="educator", viewset=EducatorApiViewSet, basename="educator")
 router_api.register(prefix="partner", viewset=PartnerApiViewSet, basename="partner")
 router_api.register(prefix="family", viewset=FamilyApiViewSet, basename="family")
-router_api.register(prefix="punctualDonation", viewset=PunctualDonationApiViewSet, basename="punctualDonation")
-router_api.register(prefix="homeDocument", viewset=HomeDocumentApiViewSet, basename="homeDocument")
+router_api.register(
+    prefix="punctualDonation",
+    viewset=PunctualDonationApiViewSet,
+    basename="punctualDonation",
+)
+router_api.register(
+    prefix="homeDocument", viewset=HomeDocumentApiViewSet, basename="homeDocument"
+)
 router_api.register(
     prefix="educationCenter",
     viewset=EducationCenterApiViewSet,
