@@ -200,7 +200,7 @@ class UserManager(BaseUserManager):
         surname,
         id_number,
         password,
-        phone="123456789",
+        phone=None,
         is_staff=False,
     ):
 
