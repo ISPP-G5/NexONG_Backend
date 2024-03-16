@@ -10,83 +10,127 @@ from .authSerializer import *
 from auth0.authentication import Database, GetToken
 from auth0.exceptions import Auth0Error, RateLimitError
 from auth0.management import Auth0
-
-"""
-def process_instance(serializer_class, instance, data):
-    serializer = serializer_class(instance, data=data)
-    if serializer.is_valid():
-        serializer.save()
-        return Response(serializer.data, status=status.HTTP_201_CREATED)
-    return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+from rest_framework.generics import GenericAPIView
 
 
-
-class UserApiViewSet(ModelViewSet):
-    http_method_names = ["get", "post", "put", "delete"]
-    serializer_class = UserSerializer
-    queryset = User.objects.all()
-"""
-
-
-class UserViewSet(ModelViewSet):
-    queryset = User.objects.all()
-    serializer_class = UserSerializer
+class SignUpView(GenericAPIView):
     permission_classes = (AllowAny,)
+    serializer_class = UserSerializer
 
-    def create(self, request, *args, **kwargs):
-        serializer = self.get_serializer(data=request.data)
+    def post(self, request, *args, **kwargs):
+        serializer = self.serializer_class(data=request.data)
         serializer.is_valid(raise_exception=True)
+        db = Database(settings.AUTH0_DOMAIN, settings.AUTH0_CLIENT_ID)
         email = serializer.validated_data.pop("email")
         password = serializer.validated_data.pop("password")
-
-        custom_fields = {
-            field: serializer.validated_data.pop(field)
-            for field in ("name", "surname", "id_number", "role", "phone", "avatar")
-        }
+        user_data = User.objects.create_user(
+            email, password, **serializer.validated_data
+        )
 
         try:
-            # Create user instance with custom fields
-            user = User.objects.create_user(
-                email=email, password=password, **custom_fields
-            )
-
             # register user in auth0
-            db = Database(settings.AUTH0_DOMAIN, settings.AUTH0_CLIENT_ID)
             resp = db.signup(
-                email=user.email,
+                email=user_data.email,
                 password=password,
-                name=user.name,
-                surname=user.surname,
-                id_number=user.id_number,
-                role=user.role,
-                phone=user.phone,
-                avatar=user.avatar,
+                name=user_data.name,
+                surname=user_data.surname,
+                id_number=user_data.id_number,
+                role=user_data.role,
+                phone=user_data.phone,
+                avatar=user_data.avatar,
                 connection="Username-Password-Authentication",
             )
             logging.info(f"Auth0 API signup response => {resp}")
-            user.auth0_id = "auth0|" + resp["_id"]
+            user_data.auth0_id = "auth0|" + resp["_id"]
 
             # get roles from auth0
             mgmt_auth = Auth0(settings.AUTH0_DOMAIN, settings.AUTH0_MMT_API_TOKEN)
             role_id = mgmt_auth.roles.list()["roles"][0]["id"]
-            user.role_id = role_id
-            user.save()
+            user_data.role_id = role_id
+            user_data.save()
 
             # assign role to user in auth0
-            mgmt_auth.roles.add_users(role_id, users=[user.auth0_id])
+            mgmt_auth.roles.add_users(role_id, users=[user_data.auth0_id])
             return Response(
-                {"message": "User registered successfully."},
-                status=status.HTTP_201_CREATED,
+                {"message": "user registered successful."}, status=status.HTTP_200_OK
             )
         except (Auth0Error, RateLimitError) as e:
             logging.info(f"Auth0 signup error resp => {str(e)}")
-            user.delete()
+            user_data.delete()
             return Response(
                 {
-                    "message": "Something went wrong while creating the user. Please try again.",
+                    "message": "something went wrong while creating user please try again.",
                     "error": str(e),
                 },
                 status=status.HTTP_400_BAD_REQUEST,
+            )
+
+
+class LoginAPIView(GenericAPIView):
+    permission_classes = (AllowAny,)
+    serializer_class = LoginAuthSerializer
+
+    def post(self, request, *args, **kwargs):
+        serializer = self.serializer_class(data=request.data)
+        if serializer.is_valid(raise_exception=True):
+            try:
+                user_check = User.objects.get(
+                    email__iexact=serializer.validated_data["username"].lower().strip(),
+                    is_delete=False,
+                    is_active=True,
+                    is_superuser=False,
+                )
+            except User.DoesNotExist:
+                response = {
+                    "message": "Please enter correct username & password and try again",
+                }
+                return Response(response, status.HTTP_401_UNAUTHORIZED)
+            password = serializer.validated_data["password"]
+
+            # verify user's credentials using auth0
+            auth = GetToken(
+                settings.AUTH0_DOMAIN,
+                settings.AUTH0_CLIENT_ID,
+                client_secret=settings.AUTH0_CLIENT_SECRET,
+            )
+            try:
+                # login using auth0
+                resp = auth.login(
+                    username=serializer.validated_data["username"].lower().strip(),
+                    password=password,
+                    realm="Username-Password-Authentication",
+                )
+                logging.info(f"Auth0 login API resp => {resp}")
+            except (Auth0Error, RateLimitError) as e:
+                logging.info(f"Auth0 login API error resp => {str(e)}")
+                return Response(
+                    {
+                        "message": "Please enter valid username & password and try again",
+                        "error": str(e),
+                    },
+                    status.HTTP_401_UNAUTHORIZED,
+                )
+
+            user = authenticate(username=user_check.email, password=password)
+            if user and user.is_authenticated:
+                login(request, user)
+                return Response(
+                    {
+                        "message": "User logged-in successfully",
+                        "user": user.id,
+                        "access_token": resp["access_token"],
+                        "expires_in": resp["expires_in"],
+                        "token_type": resp["token_type"],
+                    },
+                    status=status.HTTP_200_OK,
+                )
+            return Response(
+                {"message": "Please enter valid username & password and try again"},
+                status.HTTP_401_UNAUTHORIZED,
+            )
+        else:
+            return Response(
+                serializer.error_messages, status=status.HTTP_400_BAD_REQUEST
             )
 
 
