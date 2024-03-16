@@ -193,23 +193,42 @@ class Educator(models.Model):
 
 
 class UserManager(BaseUserManager):
-    def create_user(self, email, password=None):
-        if not email:
-            raise ValueError("No email provided")
-        if not password:
-            raise ValueError("No password provided")
+    def create_user(
+        self,
+        email,
+        name,
+        surname,
+        id_number,
+        password,
+        phone="123456789",
+        is_staff=False,
+    ):
 
-        user = self.model(email=self.normalize_email(email))
+        user = self.model(
+            name=name,
+            surname=surname,
+            id_number=id_number,
+            phone=phone,
+            email=self.normalize_email(email),
+            is_staff=is_staff,
+        )
+
         user.set_password(password)
-        user.is_admin = False
-        user.is_staff = False
         user.save(using=self._db)
+
         return user
 
     def create_superuser(self, email, password=None):
-        user = self.create_user(email, password=password)
+        user = self.create_user(
+            email=email,
+            name="",
+            surname="",
+            id_number="",
+            is_staff=True,
+            password=password,
+        )
+
         user.is_admin = True
-        user.is_staff = True
         user.save(using=self._db)
         return user
 
@@ -222,7 +241,7 @@ class User(AbstractBaseUser):
 
     name = models.CharField(max_length=50)
     surname = models.CharField(max_length=100)
-    id_number = models.CharField(max_length=9, unique=True)
+    id_number = models.CharField(max_length=9)
     phone = models.IntegerField(
         validators=[MaxValueValidator(999999999), MinValueValidator(600000000)],
         blank=True,
@@ -256,8 +275,8 @@ class User(AbstractBaseUser):
 
     USERNAME_FIELD = "email"
 
-    is_admin = models.BooleanField()
-    is_staff = models.BooleanField()
+    is_admin = models.BooleanField(default=False)
+    is_staff = models.BooleanField(default=False)
 
     def __str__(self):
         return self.email

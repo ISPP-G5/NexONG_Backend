@@ -1,8 +1,7 @@
+from django.views import View
+from django.http import JsonResponse
 from rest_framework.viewsets import ModelViewSet
 from rest_framework.response import Response
-from rest_framework.authtoken.models import Token
-from rest_framework.views import APIView
-from django.contrib.auth import authenticate
 from rest_framework import status
 from ...models import *
 from .authSerializer import *
@@ -77,24 +76,10 @@ class EducationCenterApiViewSet(ModelViewSet):
         return Response(status=status.HTTP_204_NO_CONTENT)
 
 
-class UserLoginView(APIView):
-    serializer_class = UserLoginSerializer
+class RedirectSocial(View):
 
-    def post(self, request):
-        serializer = self.serializer_class(data=request.data)
-        if serializer.is_valid():
-            user = authenticate(
-                email=serializer.validated_data["email"],
-                password=serializer.validated_data["password"],
-            )
-            if user:
-                token, _ = Token.objects.get_or_create(user=user)
-                return Response({"token": token.key})
-            else:
-                return Response({"error": "Invalid credentials"}, status=401)
-        else:
-            return Response(serializer.errors, status=400)
-
-    def get(self, request):
-        # Código para manejar solicitudes GET aquí
-        return Response({"message": "GET request received"})
+    def get(self, request, *args, **kwargs):
+        code, state = str(request.GET["code"]), str(request.GET["state"])
+        json_obj = {"code": code, "state": state}
+        print(json_obj)
+        return JsonResponse(json_obj)

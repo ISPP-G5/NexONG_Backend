@@ -1,8 +1,10 @@
 from django.urls import path, include
 from .routers import router_api
-from .Authentication.views import UserLoginView
+from .Authentication.views import RedirectSocial
 
 urlpatterns = [
     path("", include(router_api.urls)),
-    path("login/", UserLoginView.as_view(), name="user_login"),
+    path("auth/", include("djoser.urls")),
+    path("auth/", include("djoser.urls.jwt")),
+    path("auth/", include("djoser.social.urls")),
 ]
