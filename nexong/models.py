@@ -111,10 +111,10 @@ class Student(models.Model):
     )
     education_center_tutor = models.CharField(max_length=255)
     enrollment_document = models.FileField(
-        upload_to="files/student_enrollment", null=True, blank=True
+        upload_to="student_enrollment", null=True, blank=True
     )
     scanned_sanitary_card = models.FileField(
-        upload_to="files/student_sanitary", null=True, blank=True
+        upload_to="student_sanitary", null=True, blank=True
     )
     nationality = models.CharField(max_length=255)
     birthdate = models.DateField()
@@ -135,7 +135,7 @@ class Student(models.Model):
 
 class QuarterMarks(models.Model):
     date = models.DateField()
-    marks = models.FileField(upload_to="files/quarter_marks")
+    marks = models.FileField(upload_to="quarter_marks")
     student = models.ForeignKey(
         Student, on_delete=models.CASCADE, related_name="quarter_marks"
     )
@@ -143,7 +143,7 @@ class QuarterMarks(models.Model):
 
 class Partner(models.Model):
     address = models.CharField(max_length=255, null=True, blank=True)
-    enrollment_document = models.FileField(upload_to="files/partner_enrollment")
+    enrollment_document = models.FileField(upload_to="partner_enrollment")
     birthdate = models.DateField(null=True)
 
 
@@ -158,7 +158,7 @@ class Donation(models.Model):
     frequency = models.CharField(max_length=11, choices=FREQUENCY, default=MONTHLY)
     holder = models.CharField(max_length=255)
     quota_extension_document = models.FileField(
-        null=True, blank=True, upload_to="files/partner_quota"
+        null=True, blank=True, upload_to="partner_quota"
     )
     date = models.DateField()
     partner = models.ForeignKey(
@@ -170,13 +170,13 @@ class PunctualDonation(models.Model):
     name = models.CharField(max_length=255)
     surname = models.CharField(max_length=255)
     email = models.EmailField(unique=True)
-    proof_of_payment_document = models.FileField(upload_to="files/proof_of_payment")
+    proof_of_payment_document = models.FileField(upload_to="proof_of_payment")
     date = models.DateField()
 
 
 class HomeDocument(models.Model):
     title = models.CharField(max_length=255)
-    document = models.FileField(upload_to="files/home_document")
+    document = models.FileField(upload_to="home_document")
     date = models.DateField()
 
 
@@ -186,15 +186,15 @@ class Volunteer(models.Model):
     status = models.CharField(max_length=10, choices=STATUS, default=PENDING)
     address = models.CharField(max_length=255)
     postal_code = models.CharField(max_length=255)
-    enrollment_document = models.FileField(upload_to="files/volunteer_enrollment")
-    registry_sheet = models.FileField(upload_to="files/volunteer_registry")
-    sexual_offenses_document = models.FileField(upload_to="files/volunteer_offenses")
-    scanned_id = models.FileField(upload_to="files/volunteer_id")
+    enrollment_document = models.FileField(upload_to="volunteer_enrollment")
+    registry_sheet = models.FileField(upload_to="volunteer_registry")
+    sexual_offenses_document = models.FileField(upload_to="volunteer_offenses")
+    scanned_id = models.FileField(upload_to="volunteer_id")
     minor_authorization = models.FileField(
-        null=True, blank=True, upload_to="files/volunteer_minor"
+        null=True, blank=True, upload_to="volunteer_minor"
     )
     scanned_authorizer_id = models.FileField(
-        null=True, blank=True, upload_to="files/volunteer_authorizer_id"
+        null=True, blank=True, upload_to="volunteer_authorizer_id"
     )
     birthdate = models.DateField()
     start_date = models.DateField()
@@ -349,7 +349,7 @@ class Event(models.Model):
 
 
 class CenterExitAuthorization(models.Model):
-    authorization = models.FileField(upload_to="files/centerexit_auth")
+    authorization = models.FileField(upload_to="centerexit_auth")
     student = models.ForeignKey(
         Student, on_delete=models.CASCADE, related_name="center_exits"
     )

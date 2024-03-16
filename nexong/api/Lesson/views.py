@@ -8,7 +8,7 @@ from rest_framework.permissions import AllowAny
 
 class LessonApiViewSet(ModelViewSet):
     queryset = Lesson.objects.all()
-    http_method_names = ["get", "post", "put", "delete"]
+    http_method_names = ["get", "post", "put", "delete", "patch"]
     serializer_class = LessonSerializer
     permission_classes = [AllowAny]
 
@@ -27,7 +27,7 @@ class LessonApiViewSet(ModelViewSet):
 
 class LessonAttendanceApiViewSet(ModelViewSet):
     queryset = LessonAttendance.objects.all()
-    http_method_names = ["get", "post", "put", "delete"]
+    http_method_names = ["get", "post", "put", "delete", "patch"]
     serializer_class = LessonAttendanceSerializer
     permission_classes = [AllowAny]
 

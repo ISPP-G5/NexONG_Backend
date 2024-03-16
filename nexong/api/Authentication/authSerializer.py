@@ -59,7 +59,7 @@ class PartnerSerializer(ModelSerializer):
         fields = "__all__"
 
     def validate(self, data):
-        if data["birthdate"] > datetime.date.today():
+        if "birthdate" in data and data["birthdate"] > datetime.date.today():
             raise serializers.ValidationError("Birthdate can't be greater than today")
         return data
 
@@ -70,11 +70,11 @@ class VolunteerSerializer(ModelSerializer):
         fields = "__all__"
 
     def validate(self, data):
-        if data["birthdate"] > datetime.date.today():
+        if "birthdate" in data and data["birthdate"] > datetime.date.today():
             raise serializers.ValidationError("Birthdate can't be greater than today")
 
         pattern = r"^\d{5}$"
-        if not re.match(pattern, data["postal_code"]):
+        if "postal_code" in data and not re.match(pattern, data["postal_code"]):
             raise serializers.ValidationError("Invalid postal code")
         return data
 
