@@ -21,5 +21,7 @@ urlpatterns = [
     path("admin/", admin.site.urls),
     path("api/", include(router_api.urls)),
     path("docs/", schema_view.with_ui("swagger", cache_timeout=0)),
-    re_path(r"^NexONG_Backend/files/(?P<path>.*)$", views.serve_file, name="serve_file"),
+    re_path(
+        r"^NexONG_Backend/files/(?P<path>.*)$", views.serve_file, name="serve_file"
+    ),
 ]
