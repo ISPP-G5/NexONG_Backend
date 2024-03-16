@@ -17,7 +17,22 @@ class LogoutAndBlacklistSerializer(Serializer):
 class CreateUserSerializer(UserCreateSerializer):
     class Meta(UserCreateSerializer.Meta):
         model = User
-        fields = ["email", "name", "surname", "id_number", "phone", "password"]
+        fields = ["email", "first_name", "last_name", "id_number", "phone", "password"]
+
+    def validate_first_name(self, data):
+        if not data:
+            raise serializers.ValidationError("This field may not be blank.")
+        return data
+
+    def validate_last_name(self, data):
+        if not data:
+            raise serializers.ValidationError("This field may not be blank.")
+        return data
+
+    def validate_id_number(self, data):
+        if not data:
+            raise serializers.ValidationError("This field may not be blank.")
+        return data
 
 
 class UserLoginSerializer(Serializer):
