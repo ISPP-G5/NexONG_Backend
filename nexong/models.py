@@ -121,6 +121,7 @@ class Student(models.Model):
     is_morning_student = models.BooleanField(default=False)
     status = models.CharField(max_length=10, choices=STATUS, default=PENDING, null=True)
     activities_during_exit = models.CharField(max_length=1000, null=True, blank=True)
+    avatar = models.FileField(upload_to="files/student_avatar", null=True, blank=True)
     education_center = models.ForeignKey(
         EducationCenter,
         on_delete=models.CASCADE,
@@ -223,7 +224,7 @@ class User(AbstractBaseUser):
         choices=ROLE,
         default=FAMILY,
     )
-    avatar = models.URLField(blank=True, null=True, validators=[URLValidator()])
+    avatar = models.FileField(upload_to="files/user_avatar", null=True, blank=True)
     family = models.OneToOneField(
         Family, on_delete=models.CASCADE, blank=True, null=True
     )
@@ -357,3 +358,10 @@ class CenterExitAuthorization(models.Model):
     lesson_event = models.ForeignKey(
         LessonEvent, on_delete=models.CASCADE, related_name="center_exit_authorizations"
     )
+
+
+class Suggestion(models.Model):
+    subject = models.CharField(max_length=100)
+    description = models.TextField()
+    email = models.EmailField(null=True, blank=True)
+    date = models.DateField(auto_now_add=True)

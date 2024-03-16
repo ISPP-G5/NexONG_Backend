@@ -1,7 +1,7 @@
 import datetime
 from rest_framework import serializers
 from rest_framework.serializers import ModelSerializer
-from nexong.models import EducationCenter, Family, Student
+from nexong.models import Student, QuarterMarks
 
 
 class StudentSerializer(ModelSerializer):
@@ -19,4 +19,18 @@ class StudentSerializer(ModelSerializer):
         if "birthdate" in data and data["birthdate"] > datetime.date.today():
             raise serializers.ValidationError("Birthdate can't be greater than today")
 
+        return data
+
+
+class QuarterMarksSerializer(ModelSerializer):
+    class Meta:
+        model = QuarterMarks
+        fields = "__all__"
+
+    def validate(self, data):
+        date = data["date"]
+        if date > datetime.date.today():
+            raise serializers.ValidationError(
+                "The date in which the marks were received can't be greater than today"
+            )
         return data
