@@ -99,7 +99,7 @@ class LogoutAndBlacklistRefreshTokenForUserView(APIView):
                 token = RefreshToken(refresh_token)
                 token.blacklist()
                 return Response(status=status.HTTP_205_RESET_CONTENT)
-            except Exception as e:
+            except Exception:
                 return Response(status=status.HTTP_400_BAD_REQUEST)
         else:
             return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
@@ -112,10 +112,9 @@ class ActivateUserView(APIView):
         access_token = request.headers.get("Authorization")
         url = "http://localhost:8000/api/auth/users/me"  # Actualiza con la URL de tu aplicación
         headers = {"Authorization": access_token}
-        response = requests.get(url, headers=headers)
+        response = requests.get(url, headers=headers, timeout=10)
         if response.status_code == 200:
             try:
-                datos_usuario = response.json()
                 email = response.json()["email"]
                 user = User.objects.get(email=email)
                 if not user.is_enabled and not user.id_number:
