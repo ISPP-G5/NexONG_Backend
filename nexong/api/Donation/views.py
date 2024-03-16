@@ -118,23 +118,33 @@ def obtainDataFromRequest(request):
         filename,
     )
 
+
 def DonationsExportToPdf(request):
     data = obtainDataFromRequest(request)
 
-    #Unpack values
-    startDate_str, endDate_str, actualDate, startDate, partner, userOfPartner, queryset, filename = data[:8]    
-    #Response Object
+    # Unpack values
+    (
+        startDate_str,
+        endDate_str,
+        actualDate,
+        startDate,
+        partner,
+        userOfPartner,
+        queryset,
+        filename,
+    ) = data[:8]
+    # Response Object
     response = HttpResponse(content_type="application/pdf")
     response["Content-Disposition"] = f"attachment; filename={filename}.pdf"
     styles = getSampleStyleSheet()
 
-    #This is the PDF document
+    # This is the PDF document
     doc = SimpleDocTemplate(response, pagesize=letter)
 
-    #Create a Story list to hold elements
+    # Create a Story list to hold elements
     Story = []
 
-    #Add cover page elements
+    # Add cover page elements
     logoPath = "static/images/logo.png"
     logo = Image(logoPath, width=200, height=100)
     if partner == 0:
@@ -203,7 +213,6 @@ def DonationsExportToPdf(request):
 
 
 def DonationsExportToExcel(request):
-
     # Get data from obtainDataFromRequest
     data = obtainDataFromRequest(request)
 
