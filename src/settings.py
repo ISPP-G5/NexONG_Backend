@@ -183,4 +183,18 @@ DJOSER = {
         "current_user": "nexong.api.Authentication.authSerializer.CreateUserSerializer",
         # "user_delete": "djoser.serializers.UserDeleteSerializer",
     },
+    "SOCIAL_AUTH_TOKEN_STRATEGY": "djoser.social.token.jwt.TokenStrategy",
+    "SOCIAL_AUTH_ALLOWED_REDIRECT_URIS": white_list,
 }
+
+SOCIAL_AUTH_GOOGLE_OAUTH2_KEY = (
+    "1029488722844-70al5fgm932ltlnd6uk7o8d2g8vmtj19.apps.googleusercontent.com"
+)
+SOCIAL_AUTH_GOOGLE_OAUTH2_SECRET = "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"
+SOCIAL_AUTH_GOOGLE_OAUTH2_SCOPE = [
+    "https://www.googleapis.com/auth/userinfo.email",
+    "https://www.googleapis.com/auth/userinfo.profile",
+    "openid",
+]
+
+SOCIAL_AUTH_GOOGLE_OAUTH2_EXTRA_DATA = ["first_name", "last_name"]
