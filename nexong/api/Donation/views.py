@@ -23,7 +23,7 @@ from datetime import datetime
 
 class DonationApiViewSet(ModelViewSet):
     queryset = Donation.objects.all()
-    http_method_names = ["get", "post", "put", "delete"]
+    http_method_names = ["get", "post", "put", "delete", "patch"]
     serializer_class = DonationSerializer
     permission_classes = [AllowAny]
 
