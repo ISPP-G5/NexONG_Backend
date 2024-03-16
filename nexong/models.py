@@ -197,7 +197,7 @@ class CustomUserManager(UserManager):
         if not email:
             raise ValueError("The given email must be set")
         if "id_number" not in extra_fields:
-            extra_fields.setdefault("is_active", False)
+            extra_fields.setdefault("is_enabled", False)
 
         user = super().create_user(
             username=username, email=email, password=password, **extra_fields
@@ -253,6 +253,8 @@ class User(AbstractUser):
     educator = models.OneToOneField(
         Educator, on_delete=models.CASCADE, blank=True, null=True
     )
+
+    is_enabled = models.BooleanField(default=True)
 
     USERNAME_FIELD = "email"
     REQUIRED_FIELDS = []

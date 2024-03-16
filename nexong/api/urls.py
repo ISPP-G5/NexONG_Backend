@@ -3,6 +3,7 @@ from .routers import router_api
 from .Authentication.views import (
     RedirectSocial,
     LogoutAndBlacklistRefreshTokenForUserView,
+    ActivateUserView,
 )
 
 urlpatterns = [
@@ -10,8 +11,9 @@ urlpatterns = [
     path("auth/", include("djoser.urls")),
     path("auth/", include("djoser.urls.jwt")),
     path("auth/", include("djoser.social.urls")),
+    path("auth/activate/", ActivateUserView.as_view(), name="activate-user"),
     path(
-        "auth/blacklist",
+        "auth/blacklist/",
         LogoutAndBlacklistRefreshTokenForUserView.as_view(),
         name="blacklist",
     ),

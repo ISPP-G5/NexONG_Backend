@@ -1,3 +1,4 @@
+import requests
 from django.views import View
 from django.http import JsonResponse
 from rest_framework.views import APIView
@@ -6,7 +7,6 @@ from rest_framework.response import Response
 from rest_framework import status
 from ...models import *
 from .authSerializer import *
-from rest_framework_simplejwt.tokens import RefreshToken
 
 
 def process_instance(serializer_class, instance, data):
@@ -83,7 +83,6 @@ class RedirectSocial(View):
     def get(self, request, *args, **kwargs):
         code, state = str(request.GET["code"]), str(request.GET["state"])
         json_obj = {"code": code, "state": state}
-        print(json_obj)
         return JsonResponse(json_obj)
 
 
@@ -97,7 +96,6 @@ class LogoutAndBlacklistRefreshTokenForUserView(APIView):
         if serializer.is_valid():
             try:
                 refresh_token = serializer.validated_data["refresh_token"]
-                print(refresh_token)
                 token = RefreshToken(refresh_token)
                 token.blacklist()
                 return Response(status=status.HTTP_205_RESET_CONTENT)
@@ -105,3 +103,26 @@ class LogoutAndBlacklistRefreshTokenForUserView(APIView):
                 return Response(status=status.HTTP_400_BAD_REQUEST)
         else:
             return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+
+class ActivateUserView(APIView):
+    authentication_classes = ()
+
+    def post(self, request):
+        access_token = request.headers.get("Authorization")
+        url = "http://localhost:8000/api/auth/users/me"  # Actualiza con la URL de tu aplicación
+        headers = {"Authorization": access_token}
+        response = requests.get(url, headers=headers)
+        if response.status_code == 200:
+            try:
+                datos_usuario = response.json()
+                email = response.json()["email"]
+                user = User.objects.get(email=email)
+                if not user.is_enabled and not user.id_number:
+                    user.is_enabled = True
+                    user.save()
+                return Response(status=status.HTTP_200_OK)
+            except Exception as e:
+                return Response(status=status.HTTP_400_BAD_REQUEST)
+        else:
+            return Response(status=response.status_code)
