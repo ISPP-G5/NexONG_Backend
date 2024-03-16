@@ -10,16 +10,13 @@ class StudentSerializer(ModelSerializer):
         fields = "__all__"
 
     def validate(self, data):
-        name = data["name"]
-        surname = data["surname"]
-
-        if name == "":
+        if "name" in data and data["name"] == "":
             raise serializers.ValidationError("Name can't be empty")
 
-        if surname == "":
+        if "surname" in data and data["surname"] == "":
             raise serializers.ValidationError("Surname can't be empty")
 
-        if data["birthdate"] > datetime.date.today():
+        if "birthdate" in data and data["birthdate"] > datetime.date.today():
             raise serializers.ValidationError("Birthdate can't be greater than today")
 
         return data

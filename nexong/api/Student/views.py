@@ -11,7 +11,7 @@ from nexong.models import Student, QuarterMarks
 
 class StudentApiViewSet(ModelViewSet):
     queryset = Student.objects.all()
-    http_method_names = ["get", "post", "put", "delete"]
+    http_method_names = ["get", "post", "put", "delete", "patch"]
     serializer_class = StudentSerializer
     permission_classes = [AllowAny]
 
