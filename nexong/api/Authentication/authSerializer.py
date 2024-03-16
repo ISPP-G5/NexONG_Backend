@@ -7,6 +7,13 @@ from rest_framework.serializers import Serializer
 from djoser.serializers import UserCreateSerializer
 
 
+class LogoutAndBlacklistSerializer(Serializer):
+    refresh_token = serializers.CharField()
+
+    class Meta:
+        fields = ["refresh_token"]
+
+
 class CreateUserSerializer(UserCreateSerializer):
     class Meta(UserCreateSerializer.Meta):
         model = User
