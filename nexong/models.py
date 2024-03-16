@@ -186,7 +186,7 @@ class Volunteer(models.Model):
         null=True, blank=True, upload_to="files/volunteer_authorizer_id"
     )
     birthdate = models.DateField()
-    start_date = models.DateField()
+    start_date = models.DateField(null=True, blank=True)
     end_date = models.DateField(null=True, blank=True)
 
 
