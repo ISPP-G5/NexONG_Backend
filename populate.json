@@ -51,13 +51,14 @@
             "is_morning_student": true,
             "activities_during_exit": "",
             "status": "ACCEPTED",
-            "current_education_year": "THREE_YEARS",
+            "current_education_year": "TRES AÑOS",
             "education_center_tutor": "Francisco Ibañez",
             "enrollment_document": "student_enrollment\\student_enrollment.txt",
             "scanned_sanitary_card": "student_sanitary\\student_sanitary.txt",
             "nationality" : "España",
             "birthdate" : "2021-04-13",
-            "family":1
+            "family":1,
+            "avatar": "student_avatar\\student_avatar.png"
             }
     },
     {
@@ -70,13 +71,14 @@
             "is_morning_student": false,
             "activities_during_exit": "",
             "status": "ACCEPTED",
-            "current_education_year": "FOURTH_PRIMARY",
+            "current_education_year": "CUARTO PRIMARIA",
             "education_center_tutor": "Francisco Ibañez",
             "enrollment_document": "student_enrollment\\student_enrollment.txt",
             "scanned_sanitary_card": "student_sanitary\\student_sanitary.txt",
             "nationality" : "España",
             "birthdate" : "2014-11-22",
-            "family":1
+            "family":1,
+            "avatar": "student_avatar\\student_avatar.png"
             }
     },
     {
@@ -89,13 +91,14 @@
             "is_morning_student": true,
             "activities_during_exit": "",
             "status": "ACCEPTED",
-            "current_education_year": "THREE_YEARS",
+            "current_education_year": "TRES AÑOS",
             "education_center_tutor": "Hulk Hogan",
             "enrollment_document": "student_enrollment\\student_enrollment.txt",
             "scanned_sanitary_card": "student_sanitary\\student_sanitary.txt",
             "nationality" : "Francia",
             "birthdate" : "2021-5-12",
-            "family":2
+            "family":2,
+            "avatar": "student_avatar\\student_avatar.png"
             }
     },
     {
@@ -108,13 +111,14 @@
             "is_morning_student": true,
             "activities_during_exit": "",
             "status": "ACCEPTED",
-            "current_education_year": "SECOND_SECONDARY",
+            "current_education_year": "SEGUNDO SECUNDARIA",
             "education_center_tutor": "Hulk Hogan",
             "enrollment_document": "student_enrollment\\student_enrollment.txt",
             "scanned_sanitary_card": "student_sanitary\\student_sanitary.txt",
             "nationality" : "España",
             "birthdate" : "2010-2-17",
-            "family":2
+            "family":2,
+            "avatar": "student_avatar\\student_avatar.png"
             }
     },
     {
@@ -127,13 +131,14 @@
             "is_morning_student": true,
             "activities_during_exit": "",
             "status": "ACCEPTED",
-            "current_education_year": "SECOND_SECONDARY",
+            "current_education_year": "SEGUNDO SECUNDARIA",
             "education_center_tutor": "Hulk Hogan",
             "enrollment_document": "student_enrollment\\student_enrollment.txt",
             "scanned_sanitary_card": "student_sanitary\\student_sanitary.txt",
             "nationality" : "España",
             "birthdate" : "2010-2-17",
-            "family":2
+            "family":2,
+            "avatar": "student_avatar\\student_avatar.png"
             }
     },
     {
@@ -146,13 +151,14 @@
             "is_morning_student": true,
             "activities_during_exit": "",
             "status": "ACCEPTED",
-            "current_education_year": "FOUR_YEARS",
+            "current_education_year": "TRES AÑOS",
             "education_center_tutor": "Francisco Ibañez",
             "enrollment_document": "student_enrollment\\student_enrollment.txt",
             "scanned_sanitary_card": "student_sanitary\\student_sanitary.txt",
             "nationality" : "España",
             "birthdate" : "2020-1-1",
-            "family":3
+            "family":3,
+            "avatar": "student_avatar\\student_avatar.png"
             }
     },
     {
@@ -165,13 +171,14 @@
             "is_morning_student": false,
             "activities_during_exit": "",
             "status": "ACCEPTED",
-            "current_education_year": "SIXTH_PRIMARY",
+            "current_education_year": "SEXTO PRIMARIA",
             "education_center_tutor": "Francisco Ibañez",
             "enrollment_document": "student_enrollment\\student_enrollment.txt",
             "scanned_sanitary_card": "student_sanitary\\student_sanitary.txt",
             "nationality" : "España",
             "birthdate" : "2012-10-21",
-            "family":3
+            "family":3,
+            "avatar": "student_avatar\\student_avatar.png"
             }
     },
     {
@@ -184,13 +191,14 @@
             "is_morning_student": false,
             "activities_during_exit": "",
             "status": "ACCEPTED",
-            "current_education_year": "SIXTH_PRIMARY",
+            "current_education_year": "SEXTO PRIMARIA",
             "education_center_tutor": "Hulk Hogan",
             "enrollment_document": "student_enrollment\\student_enrollment.txt",
             "scanned_sanitary_card": "student_sanitary\\student_sanitary.txt",
             "nationality" : "España",
             "birthdate" : "2012-9-21",
-            "family":4
+            "family":4,
+            "avatar": "student_avatar\\student_avatar.png"
             }
     },
     {
@@ -203,13 +211,14 @@
             "is_morning_student": false,
             "activities_during_exit": "",
             "status": "PENDING",
-            "current_education_year": "FOURTH_PRIMARY",
+            "current_education_year": "CUARTO PRIMARIA",
             "education_center_tutor": "Hulk Hogan",
             "enrollment_document": "student_enrollment\\student_enrollment.txt",
             "scanned_sanitary_card": "student_sanitary\\student_sanitary.txt",
             "nationality" : "España",
             "birthdate" : "2014-2-8",
-            "family":4
+            "family":4,
+            "avatar": "student_avatar\\student_avatar.png"
             }
     },
     {
@@ -222,13 +231,14 @@
             "is_morning_student": false,
             "activities_during_exit": "",
             "status": "REJECTED",
-            "current_education_year": "FIRST_SECONDARY",
+            "current_education_year": "PRIMERO SECUNDARIA",
             "education_center_tutor": "Hulk Hogan",
             "enrollment_document": "student_enrollment\\student_enrollment.txt",
             "scanned_sanitary_card": "student_sanitary\\student_sanitary.txt",
             "nationality" : "España",
             "birthdate" : "2011-2-22",
-            "family":4
+            "family":4,
+            "avatar": "student_avatar\\student_avatar.png"
             }
     },
     {
@@ -542,7 +552,7 @@
             "role": "EDUCATOR",
             "password": "profesol1",
             "email": "palomino@gmail.com",
-            "avatar": "https://avatars.githubusercontent.com/u/43956",
+            "avatar": "user_avatar\\educator_avatar.png",
             "family":null,
             "partner":null,
             "volunteer":null,
@@ -561,7 +571,7 @@
             "role": "EDUCATOR",
             "password": "profesol2",
             "email": "estrellabo@gmail.com",
-            "avatar": "https://avatars.githubusercontent.com/u/43956",
+            "avatar": "user_avatar\\educator_avatar.png",
             "family":null,
             "partner":null,
             "volunteer":null,
@@ -580,7 +590,7 @@
             "role": "VOLUNTEER",
             "password": "volutalio1",
             "email": "recientev@gmail.com",
-            "avatar": "https://i.kym-cdn.com/photos/images/newsfeed/002/598/602/a49.jpg",
+            "avatar": "user_avatar\\volunteer_avatar.png",
             "family":null,
             "partner":null,
             "volunteer":1,
@@ -598,7 +608,7 @@
             "role": "VOLUNTEER",
             "password": "volutalio2",
             "email": "ancianov@gmail.com",
-            "avatar": "https://i.kym-cdn.com/photos/images/newsfeed/002/598/602/a49.jpg",
+            "avatar": "user_avatar\\volunteer_avatar.png",
             "family":null,
             "partner":null,
             "volunteer":2,
@@ -617,7 +627,7 @@
             "role": "VOLUNTEER",
             "password": "volutalio3",
             "email": "verificadof@gmail.com",
-            "avatar": "https://i.kym-cdn.com/photos/images/newsfeed/002/598/602/a49.jpg",
+            "avatar": "user_avatar\\volunteer_avatar.png",
             "family":null,
             "partner":null,
             "volunteer":3,
@@ -636,7 +646,7 @@
             "role": "VOLUNTEER",
             "password": "volutalio4",
             "email": "pendientei@gmail.com",
-            "avatar": "https://i.kym-cdn.com/photos/images/newsfeed/002/598/602/a49.jpg",
+            "avatar": "user_avatar\\volunteer_avatar.png",
             "family":null,
             "partner":null,
             "volunteer":4,
@@ -655,7 +665,7 @@
             "role": "VOLUNTEER",
             "password": "volutalio5",
             "email": "rechazado@gmail.com",
-            "avatar": "https://i.kym-cdn.com/photos/images/newsfeed/002/598/602/a49.jpg",
+            "avatar": "user_avatar\\volunteer_avatar.png",
             "family":null,
             "partner":null,
             "volunteer":5,
@@ -674,7 +684,7 @@
             "role": "VOLUNTEER",
             "password": "volutalio6",
             "email": "desquicioh@gmail.com",
-            "avatar": "https://i.kym-cdn.com/photos/images/newsfeed/002/598/602/a49.jpg",
+            "avatar": "user_avatar\\volunteer_avatar.png",
             "family":null,
             "partner":null,
             "volunteer":6,
@@ -693,7 +703,7 @@
             "role": "VOLUNTEER",
             "password": "volutalio7",
             "email": "despistec@gmail.com",
-            "avatar": "https://i.kym-cdn.com/photos/images/newsfeed/002/598/602/a49.jpg",
+            "avatar": "user_avatar\\volunteer_avatar.png",
             "family":null,
             "partner":null,
             "volunteer":7,
@@ -712,7 +722,7 @@
             "role": "PARTNER",
             "password": "parnerio1",
             "email": "mandinero@gmail.com",
-            "avatar": "https://media.istockphoto.com/id/1342067848/photo/excited-african-guy-showing-dollar-money-cash-over-blue-background.jpg?s=612x612&w=0&k=20&c=7GW75apTo16dxHA1tXwoFaFmFshAHDaLhu2fOyJq1BI=",
+            "avatar": "user_avatar\\partner_avatar.png",
             "family":null,
             "partner":1,
             "volunteer":null,
@@ -731,7 +741,7 @@
             "role": "PARTNER",
             "password": "parnerio2",
             "email": "frasociado@gmail.com",
-            "avatar": "https://media.istockphoto.com/id/1342067848/photo/excited-african-guy-showing-dollar-money-cash-over-blue-background.jpg?s=612x612&w=0&k=20&c=7GW75apTo16dxHA1tXwoFaFmFshAHDaLhu2fOyJq1BI=",
+            "avatar": "user_avatar\\partner_avatar.png",
             "family":null,
             "partner":2,
             "volunteer":null,
@@ -750,7 +760,7 @@
             "role": "PARTNER",
             "password": "parnerio3",
             "email": "sofiver@gmail.com",
-            "avatar": "https://media.istockphoto.com/id/1342067848/photo/excited-african-guy-showing-dollar-money-cash-over-blue-background.jpg?s=612x612&w=0&k=20&c=7GW75apTo16dxHA1tXwoFaFmFshAHDaLhu2fOyJq1BI=",
+            "avatar": "user_avatar\\partner_avatar.png",
             "family":null,
             "partner":3,
             "volunteer":null,
@@ -769,7 +779,7 @@
             "role": "PARTNER",
             "password": "parnerio4",
             "email": "ladygg@gmail.com",
-            "avatar": "https://media.istockphoto.com/id/1342067848/photo/excited-african-guy-showing-dollar-money-cash-over-blue-background.jpg?s=612x612&w=0&k=20&c=7GW75apTo16dxHA1tXwoFaFmFshAHDaLhu2fOyJq1BI=",
+            "avatar": "user_avatar\\partner_avatar.png",
             "family":null,
             "partner":4,
             "volunteer":null,
@@ -788,7 +798,7 @@
             "role": "FAMILY",
             "password": "familia1",
             "email": "padree@gmail.com",
-            "avatar": "https://images.hola.com/images/027f-178e051fb317-8ce95081f1b5-1000/horizontal-1200/padre-e-hijo.jpg",
+            "avatar": "user_avatar\\family_avatar.png",
             "family":1,
             "partner":null,
             "volunteer":null,
@@ -807,7 +817,7 @@
             "role": "FAMILY",
             "password": "familia2",
             "email": "madret@gmail.com",
-            "avatar": "https://images.hola.com/images/027f-178e051fb317-8ce95081f1b5-1000/horizontal-1200/padre-e-hijo.jpg",
+            "avatar": "user_avatar\\family_avatar.png",
             "family":2,
             "partner":null,
             "volunteer":null,
@@ -826,7 +836,7 @@
             "role": "FAMILY",
             "password": "familia3",
             "email": "acogedor@gmail.com",
-            "avatar": "https://images.hola.com/images/027f-178e051fb317-8ce95081f1b5-1000/horizontal-1200/padre-e-hijo.jpg",
+            "avatar": "user_avatar\\family_avatar.png",
             "family":3,
             "partner":null,
             "volunteer":null,
@@ -845,7 +855,7 @@
             "role": "FAMILY",
             "password": "familia4",
             "email": "miembros@gmail.com",
-            "avatar": "https://images.hola.com/images/027f-178e051fb317-8ce95081f1b5-1000/horizontal-1200/padre-e-hijo.jpg",
+            "avatar": "user_avatar\\family_avatar.png",
             "family":4,
             "partner":null,
             "volunteer":null,
@@ -864,7 +874,7 @@
             "role": "EDUCATION_CENTER",
             "password": "centro1",
             "email": "centro1@gmail.com",
-            "avatar": "https://images.theconversation.com/files/270544/original/file-20190423-175514-1rng58t.jpg?ixlib=rb-1.1.0&rect=6%2C0%2C4236%2C2828&q=20&auto=format&w=320&fit=clip&dpr=2&usm=12&cs=strip",
+            "avatar": "user_avatar\\center_avatar.png",
             "family":null,
             "partner":null,
             "volunteer":null,
@@ -883,7 +893,7 @@
             "role": "EDUCATION_CENTER",
             "password": "centro2",
             "email": "centro2@gmail.com",
-            "avatar": "https://images.theconversation.com/files/270544/original/file-20190423-175514-1rng58t.jpg?ixlib=rb-1.1.0&rect=6%2C0%2C4236%2C2828&q=20&auto=format&w=320&fit=clip&dpr=2&usm=12&cs=strip",
+            "avatar": "user_avatar\\center_avatar.png",
             "family":null,
             "partner":null,
             "volunteer":null,
@@ -902,12 +912,32 @@
             "role": "ADMIN",
             "password": "admin",
             "email": "admin@gmail.com",
-            "avatar": "https://static.vecteezy.com/system/resources/previews/015/665/684/non_2x/man-with-the-inscription-admin-icon-outline-style-vector.jpg",
+            "avatar": "user_avatar\\admin_avatar.png",
             "family":null,
             "partner":null,
             "volunteer":null,
             "education_center":null,
             "educator":null
+            }
+    },
+    {
+        "model": "nexong.suggestion",
+        "pk": 1,
+        "fields": {
+            "subject": "Sugerencia positiva",
+            "description" : "Me gusta este sistema tan bien hecho",
+            "date":"2024-02-16",
+            "email":"contento@gmail.com"
+            }
+    },
+    {
+        "model": "nexong.suggestion",
+        "pk": 2,
+        "fields": {
+            "subject": "Sugerencia negativa",
+            "description" : "No me gusta este sistema",
+            "date":"2023-1-1",
+            "email":"descontento@gmail.com"
             }
     },
     {
