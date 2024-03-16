@@ -83,7 +83,6 @@ def obtainDataFromRequest(request):
     else:
         partner = partner_str
         userOfPartner = User.objects.filter(partner=partner).first()
-
     # Filter donations
     if startDate is not None and partner == 0:
         queryset = Donation.objects.filter(date__gte=startDate, date__lte=endDate)
@@ -113,37 +112,29 @@ def obtainDataFromRequest(request):
         endDate_str,
         actualDate,
         startDate,
-        endDate,
         partner,
         userOfPartner,
         queryset,
         filename,
     )
 
-
 def DonationsExportToPdf(request):
-    (
-        startDate_str,
-        endDate_str,
-        actualDate,
-        startDate,
-        partner,
-        userOfPartner,
-        queryset,
-        filename,
-    ) = obtainDataFromRequest(request)
-    # Response Object
+    data = obtainDataFromRequest(request)
+
+    #Unpack values
+    startDate_str, endDate_str, actualDate, startDate, partner, userOfPartner, queryset, filename = data[:8]    
+    #Response Object
     response = HttpResponse(content_type="application/pdf")
     response["Content-Disposition"] = f"attachment; filename={filename}.pdf"
     styles = getSampleStyleSheet()
 
-    # This is the PDF document
+    #This is the PDF document
     doc = SimpleDocTemplate(response, pagesize=letter)
 
-    # Create a Story list to hold elements
+    #Create a Story list to hold elements
     Story = []
 
-    # Add cover page elements
+    #Add cover page elements
     logoPath = "static/images/logo.png"
     logo = Image(logoPath, width=200, height=100)
     if partner == 0:
@@ -212,10 +203,13 @@ def DonationsExportToPdf(request):
 
 
 def DonationsExportToExcel(request):
-    (
-        queryset,
-        filename,
-    ) = obtainDataFromRequest(request)
+
+    # Get data from obtainDataFromRequest
+    data = obtainDataFromRequest(request)
+
+    # Unpack the first 8 values
+    queryset, filename = data[-2:]
+
     response = HttpResponse(
         content_type="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
     )
