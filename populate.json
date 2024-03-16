@@ -53,8 +53,8 @@
             "status": "ACCEPTED",
             "current_education_year": "THREE_YEARS",
             "education_center_tutor": "Francisco Ibañez",
-            "enrollment_document": "NexONG_Backend\\files\\student_enrollment\\student_enrollment.txt",
-            "scanned_sanitary_card": "NexONG_Backend\\files\\student_sanitary\\student_sanitary.txt",
+            "enrollment_document": "student_enrollment\\student_enrollment.txt",
+            "scanned_sanitary_card": "student_sanitary\\student_sanitary.txt",
             "nationality" : "España",
             "birthdate" : "2021-04-13",
             "family":1
@@ -72,8 +72,8 @@
             "status": "ACCEPTED",
             "current_education_year": "FOURTH_PRIMARY",
             "education_center_tutor": "Francisco Ibañez",
-            "enrollment_document": "NexONG_Backend\\files\\student_enrollment\\student_enrollment.txt",
-            "scanned_sanitary_card": "NexONG_Backend\\files\\student_sanitary\\student_sanitary.txt",
+            "enrollment_document": "student_enrollment\\student_enrollment.txt",
+            "scanned_sanitary_card": "student_sanitary\\student_sanitary.txt",
             "nationality" : "España",
             "birthdate" : "2014-11-22",
             "family":1
@@ -91,8 +91,8 @@
             "status": "ACCEPTED",
             "current_education_year": "THREE_YEARS",
             "education_center_tutor": "Hulk Hogan",
-            "enrollment_document": "NexONG_Backend\\files\\student_enrollment\\student_enrollment.txt",
-            "scanned_sanitary_card": "NexONG_Backend\\files\\student_sanitary\\student_sanitary.txt",
+            "enrollment_document": "student_enrollment\\student_enrollment.txt",
+            "scanned_sanitary_card": "student_sanitary\\student_sanitary.txt",
             "nationality" : "Francia",
             "birthdate" : "2021-5-12",
             "family":2
@@ -110,8 +110,8 @@
             "status": "ACCEPTED",
             "current_education_year": "SECOND_SECONDARY",
             "education_center_tutor": "Hulk Hogan",
-            "enrollment_document": "NexONG_Backend\\files\\student_enrollment\\student_enrollment.txt",
-            "scanned_sanitary_card": "NexONG_Backend\\files\\student_sanitary\\student_sanitary.txt",
+            "enrollment_document": "student_enrollment\\student_enrollment.txt",
+            "scanned_sanitary_card": "student_sanitary\\student_sanitary.txt",
             "nationality" : "España",
             "birthdate" : "2010-2-17",
             "family":2
@@ -129,8 +129,8 @@
             "status": "ACCEPTED",
             "current_education_year": "SECOND_SECONDARY",
             "education_center_tutor": "Hulk Hogan",
-            "enrollment_document": "NexONG_Backend\\files\\student_enrollment\\student_enrollment.txt",
-            "scanned_sanitary_card": "NexONG_Backend\\files\\student_sanitary\\student_sanitary.txt",
+            "enrollment_document": "student_enrollment\\student_enrollment.txt",
+            "scanned_sanitary_card": "student_sanitary\\student_sanitary.txt",
             "nationality" : "España",
             "birthdate" : "2010-2-17",
             "family":2
@@ -148,8 +148,8 @@
             "status": "ACCEPTED",
             "current_education_year": "FOUR_YEARS",
             "education_center_tutor": "Francisco Ibañez",
-            "enrollment_document": "NexONG_Backend\\files\\student_enrollment\\student_enrollment.txt",
-            "scanned_sanitary_card": "NexONG_Backend\\files\\student_sanitary\\student_sanitary.txt",
+            "enrollment_document": "student_enrollment\\student_enrollment.txt",
+            "scanned_sanitary_card": "student_sanitary\\student_sanitary.txt",
             "nationality" : "España",
             "birthdate" : "2020-1-1",
             "family":3
@@ -167,8 +167,8 @@
             "status": "ACCEPTED",
             "current_education_year": "SIXTH_PRIMARY",
             "education_center_tutor": "Francisco Ibañez",
-            "enrollment_document": "NexONG_Backend\\files\\student_enrollment\\student_enrollment.txt",
-            "scanned_sanitary_card": "NexONG_Backend\\files\\student_sanitary\\student_sanitary.txt",
+            "enrollment_document": "student_enrollment\\student_enrollment.txt",
+            "scanned_sanitary_card": "student_sanitary\\student_sanitary.txt",
             "nationality" : "España",
             "birthdate" : "2012-10-21",
             "family":3
@@ -186,8 +186,8 @@
             "status": "ACCEPTED",
             "current_education_year": "SIXTH_PRIMARY",
             "education_center_tutor": "Hulk Hogan",
-            "enrollment_document": "NexONG_Backend\\files\\student_enrollment\\student_enrollment.txt",
-            "scanned_sanitary_card": "NexONG_Backend\\files\\student_sanitary\\student_sanitary.txt",
+            "enrollment_document": "student_enrollment\\student_enrollment.txt",
+            "scanned_sanitary_card": "student_sanitary\\student_sanitary.txt",
             "nationality" : "España",
             "birthdate" : "2012-9-21",
             "family":4
@@ -205,8 +205,8 @@
             "status": "PENDING",
             "current_education_year": "FOURTH_PRIMARY",
             "education_center_tutor": "Hulk Hogan",
-            "enrollment_document": "NexONG_Backend\\files\\student_enrollment\\student_enrollment.txt",
-            "scanned_sanitary_card": "NexONG_Backend\\files\\student_sanitary\\student_sanitary.txt",
+            "enrollment_document": "student_enrollment\\student_enrollment.txt",
+            "scanned_sanitary_card": "student_sanitary\\student_sanitary.txt",
             "nationality" : "España",
             "birthdate" : "2014-2-8",
             "family":4
@@ -236,7 +236,7 @@
         "pk": 1,
         "fields" : {
             "date": "2024-01-21",
-            "marks" : "NexONG_Backend\\files\\quarter_marks\\quarter_marks.txt",
+            "marks" : "quarter_marks\\quarter_marks.txt",
             "student": 1
             }
     },
@@ -245,7 +245,7 @@
         "pk": 2,
         "fields" : {
             "date": "2024-01-21",
-            "marks" : "NexONG_Backend\\files\\quarter_marks\\quarter_marks.txt",
+            "marks" : "quarter_marks\\quarter_marks.txt",
             "student": 3
             }
     },
@@ -254,7 +254,7 @@
         "pk": 3,
         "fields" : {
             "date": "2024-01-21",
-            "marks" : "NexONG_Backend\\files\\quarter_marks\\quarter_marks.txt",
+            "marks" : "quarter_marks\\quarter_marks.txt",
             "student": 6
             }
     },
@@ -263,7 +263,7 @@
         "pk": 1,
         "fields": {
             "address": "Insulinde 11",
-            "enrollment_document":"NexONG_Backend\\files\\partner_enrollment\\partner_enrollment.txt",
+            "enrollment_document":"partner_enrollment\\partner_enrollment.txt",
             "birthdate": "1956-07-05"
             }
     },
@@ -272,7 +272,7 @@
         "pk": 2,
         "fields": {
             "address": "Katia 13",
-            "enrollment_document":"NexONG_Backend\\files\\partner_enrollment\\partner_enrollment.txt",
+            "enrollment_document":"partner_enrollment\\partner_enrollment.txt",
             "birthdate": "1973-03-05"
             }
     },
@@ -281,7 +281,7 @@
         "pk": 3,
         "fields": {
             "address": "Graad 26",
-            "enrollment_document":"NexONG_Backend\\files\\partner_enrollment\\partner_enrollment.txt",
+            "enrollment_document":"partner_enrollment\\partner_enrollment.txt",
             "birthdate": "1981-01-23"
             }
     },
@@ -290,7 +290,7 @@
         "pk": 4,
         "fields": {
             "address": "Ilinaara 48",
-            "enrollment_document":"NexONG_Backend\\files\\partner_enrollment\\partner_enrollment.txt",
+            "enrollment_document":"partner_enrollment\\partner_enrollment.txt",
             "birthdate": "1986-03-28"
             }
     },
@@ -302,7 +302,7 @@
             "iban" : "ES7614656137308238282572",
             "quantity": 12,
             "frequency": "ANNUAL",
-            "quota_extension_document": "NexONG_Backend\\files\\partner_quota\\partner_quota.txt",
+            "quota_extension_document": "partner_quota\\partner_quota.txt",
             "date":"2023-07-21",
             "partner":1
             }
@@ -328,7 +328,7 @@
             "iban" : "ES2104872956123218423845",
             "quantity": 98,
             "frequency": "QUARTERLY",
-            "quota_extension_document": "NexONG_Backend\\files\\partner_quota\\partner_quota.txt",
+            "quota_extension_document": "partner_quota\\partner_quota.txt",
             "date":"2023-11-30",
             "partner":3
             }
@@ -341,7 +341,7 @@
             "iban" : "ES7704875667823641839789",
             "quantity": 1045,
             "frequency": "SIXMONTHLY",
-            "quota_extension_document": "NexONG_Backend\\files\\partner_quota\\partner_quota.txt",
+            "quota_extension_document": "partner_quota\\partner_quota.txt",
             "date":"2024-01-22",
             "partner":4
             }
@@ -386,12 +386,12 @@
             "status":"ACCEPTED",
             "address": "Rue de Saint-Ghislain 2",
             "postal_code": 33317,
-            "enrollment_document" : "NexONG_Backend\\files\\volunteer_enrollment\\volunteer_enrollment.txt",
-            "registry_sheet": "NexONG_Backend\\files\\volunteer_registry\\volunteer_registry.txt",
-            "sexual_offenses_document": "NexONG_Backend\\files\\volunteer_offenses\\volunteer_offenses.txt",
-            "scanned_id": "NexONG_Backend\\files\\volunteer_id\\volunteer_id.txt",
-            "minor_authorization": "NexONG_Backend\\files\\volunteer_minor\\volunteer_minor.txt",
-            "scanned_authorizer_id": "NexONG_Backend\\files\\volunteer_authorizer\\volunteer_authorizer.txt",
+            "enrollment_document" : "volunteer_enrollment\\volunteer_enrollment.txt",
+            "registry_sheet": "volunteer_registry\\volunteer_registry.txt",
+            "sexual_offenses_document": "volunteer_offenses\\volunteer_offenses.txt",
+            "scanned_id": "volunteer_id\\volunteer_id.txt",
+            "minor_authorization": "volunteer_minor\\volunteer_minor.txt",
+            "scanned_authorizer_id": "volunteer_authorizer\\volunteer_authorizer.txt",
             "birthdate" : "1995-11-22",
             "start_date": "2024-01-23",
             "end_date": null
@@ -406,12 +406,12 @@
             "status":"ACCEPTED",
             "address": "Rue de Saint-Ghislain 2",
             "postal_code": 33317,
-            "enrollment_document" : "NexONG_Backend\\files\\volunteer_enrollment\\volunteer_enrollment.txt",
-            "registry_sheet": "NexONG_Backend\\files\\volunteer_registry\\volunteer_registry.txt",
-            "sexual_offenses_document": "NexONG_Backend\\files\\volunteer_offenses\\volunteer_offenses.txt",
-            "scanned_id": "NexONG_Backend\\files\\volunteer_id\\volunteer_id.txt",
-            "minor_authorization": "NexONG_Backend\\files\\volunteer_minor\\volunteer_minor.txt",
-            "scanned_authorizer_id": "NexONG_Backend\\files\\volunteer_authorizer\\volunteer_authorizer.txt",
+            "enrollment_document" : "volunteer_enrollment\\volunteer_enrollment.txt",
+            "registry_sheet": "volunteer_registry\\volunteer_registry.txt",
+            "sexual_offenses_document": "volunteer_offenses\\volunteer_offenses.txt",
+            "scanned_id": "volunteer_id\\volunteer_id.txt",
+            "minor_authorization": "volunteer_minor\\volunteer_minor.txt",
+            "scanned_authorizer_id": "volunteer_authorizer\\volunteer_authorizer.txt",
             "birthdate" : "1942-06-11",
             "start_date": "2020-02-12",
             "end_date": null
@@ -426,12 +426,12 @@
             "status":"ACCEPTED",
             "address": "Martinaise 4",
             "postal_code": 24191,
-            "enrollment_document" : "NexONG_Backend\\files\\volunteer_enrollment\\volunteer_enrollment.txt",
-            "registry_sheet": "NexONG_Backend\\files\\volunteer_registry\\volunteer_registry.txt",
-            "sexual_offenses_document": "NexONG_Backend\\files\\volunteer_offenses\\volunteer_offenses.txt",
-            "scanned_id": "NexONG_Backend\\files\\volunteer_id\\volunteer_id.txt",
-            "minor_authorization": "NexONG_Backend\\files\\volunteer_minor\\volunteer_minor.txt",
-            "scanned_authorizer_id": "NexONG_Backend\\files\\volunteer_authorizer\\volunteer_authorizer.txt",
+            "enrollment_document" : "volunteer_enrollment\\volunteer_enrollment.txt",
+            "registry_sheet": "volunteer_registry\\volunteer_registry.txt",
+            "sexual_offenses_document": "volunteer_offenses\\volunteer_offenses.txt",
+            "scanned_id": "volunteer_id\\volunteer_id.txt",
+            "minor_authorization": "volunteer_minor\\volunteer_minor.txt",
+            "scanned_authorizer_id": "volunteer_authorizer\\volunteer_authorizer.txt",
             "birthdate" : "1973-03-05",
             "start_date": "2017-06-18",
             "end_date": null
@@ -446,12 +446,12 @@
             "status":"PENDING",
             "address": "Sanara 1",
             "postal_code": 17769,
-            "enrollment_document" : "NexONG_Backend\\files\\volunteer_enrollment\\volunteer_enrollment.txt",
-            "registry_sheet": "NexONG_Backend\\files\\volunteer_registry\\volunteer_registry.txt",
-            "sexual_offenses_document": "NexONG_Backend\\files\\volunteer_offenses\\volunteer_offenses.txt",
-            "scanned_id": "NexONG_Backend\\files\\volunteer_id\\volunteer_id.txt",
-            "minor_authorization": "NexONG_Backend\\files\\volunteer_minor\\volunteer_minor.txt",
-            "scanned_authorizer_id": "NexONG_Backend\\files\\volunteer_authorizer\\volunteer_authorizer.txt",
+            "enrollment_document" : "volunteer_enrollment\\volunteer_enrollment.txt",
+            "registry_sheet": "volunteer_registry\\volunteer_registry.txt",
+            "sexual_offenses_document": "volunteer_offenses\\volunteer_offenses.txt",
+            "scanned_id": "volunteer_id\\volunteer_id.txt",
+            "minor_authorization": "volunteer_minor\\volunteer_minor.txt",
+            "scanned_authorizer_id": "volunteer_authorizer\\volunteer_authorizer.txt",
             "birthdate" : "1988-08-15",
             "start_date": null,
             "end_date": null
@@ -466,12 +466,12 @@
             "status":"REJECTED",
             "address": "Seol 8",
             "postal_code": 18304,
-            "enrollment_document" : "NexONG_Backend\\files\\volunteer_enrollment\\volunteer_enrollment.txt",
-            "registry_sheet": "NexONG_Backend\\files\\volunteer_registry\\volunteer_registry.txt",
-            "sexual_offenses_document": "NexONG_Backend\\files\\volunteer_offenses\\volunteer_offenses.txt",
-            "scanned_id": "NexONG_Backend\\files\\volunteer_id\\volunteer_id.txt",
-            "minor_authorization": "NexONG_Backend\\files\\volunteer_minor\\volunteer_minor.txt",
-            "scanned_authorizer_id": "NexONG_Backend\\files\\volunteer_authorizer\\volunteer_authorizer.txt",
+            "enrollment_document" : "volunteer_enrollment\\volunteer_enrollment.txt",
+            "registry_sheet": "volunteer_registry\\volunteer_registry.txt",
+            "sexual_offenses_document": "volunteer_offenses\\volunteer_offenses.txt",
+            "scanned_id": "volunteer_id\\volunteer_id.txt",
+            "minor_authorization": "volunteer_minor\\volunteer_minor.txt",
+            "scanned_authorizer_id": "volunteer_authorizer\\volunteer_authorizer.txt",
             "birthdate" : "1971-05-13",
             "start_date": null,
             "end_date": null
@@ -486,12 +486,12 @@
             "status":"ACCEPTED",
             "address": "Seol 9",
             "postal_code": 18304,
-            "enrollment_document" : "NexONG_Backend\\files\\volunteer_enrollment\\volunteer_enrollment.txt",
-            "registry_sheet": "NexONG_Backend\\files\\volunteer_registry\\volunteer_registry.txt",
-            "sexual_offenses_document": "NexONG_Backend\\files\\volunteer_offenses\\volunteer_offenses.txt",
-            "scanned_id": "NexONG_Backend\\files\\volunteer_id\\volunteer_id.txt",
-            "minor_authorization": "NexONG_Backend\\files\\volunteer_minor\\volunteer_minor.txt",
-            "scanned_authorizer_id": "NexONG_Backend\\files\\volunteer_authorizer\\volunteer_authorizer.txt",
+            "enrollment_document" : "volunteer_enrollment\\volunteer_enrollment.txt",
+            "registry_sheet": "volunteer_registry\\volunteer_registry.txt",
+            "sexual_offenses_document": "volunteer_offenses\\volunteer_offenses.txt",
+            "scanned_id": "volunteer_id\\volunteer_id.txt",
+            "minor_authorization": "volunteer_minor\\volunteer_minor.txt",
+            "scanned_authorizer_id": "volunteer_authorizer\\volunteer_authorizer.txt",
             "birthdate" : "1971-05-13",
             "start_date": "2015-04-08",
             "end_date": "2023-11-12"
@@ -506,12 +506,12 @@
             "status":"EXPIRED",
             "address": "Jamrock 13",
             "postal_code": 24191,
-            "enrollment_document" : "NexONG_Backend\\files\\volunteer_enrollment\\volunteer_enrollment.txt",
-            "registry_sheet": "NexONG_Backend\\files\\volunteer_registry\\volunteer_registry.txt",
-            "sexual_offenses_document": "NexONG_Backend\\files\\volunteer_offenses\\volunteer_offenses.txt",
-            "scanned_id": "NexONG_Backend\\files\\volunteer_id\\volunteer_id.txt",
-            "minor_authorization": "NexONG_Backend\\files\\volunteer_minor\\volunteer_minor.txt",
-            "scanned_authorizer_id": "NexONG_Backend\\files\\volunteer_authorizer\\volunteer_authorizer.txt",
+            "enrollment_document" : "volunteer_enrollment\\volunteer_enrollment.txt",
+            "registry_sheet": "volunteer_registry\\volunteer_registry.txt",
+            "sexual_offenses_document": "volunteer_offenses\\volunteer_offenses.txt",
+            "scanned_id": "volunteer_id\\volunteer_id.txt",
+            "minor_authorization": "volunteer_minor\\volunteer_minor.txt",
+            "scanned_authorizer_id": "volunteer_authorizer\\volunteer_authorizer.txt",
             "birthdate" : "2000-03-7",
             "start_date": "2019-02-01",
             "end_date": "2024-01-20"
@@ -1474,7 +1474,7 @@
         "model": "nexong.centerexitauthorization",
         "pk": 1,
         "fields": {
-            "authorization": "NexONG_Backend\\files\\centerexit_authorization\\centerexit_authorization.txt",
+            "authorization": "centerexit_authorization\\centerexit_authorization.txt",
             "student" : 4,
             "is_authorized": true,
             "lesson_event":1
@@ -1484,7 +1484,7 @@
         "model": "nexong.centerexitauthorization",
         "pk": 2,
         "fields": {
-            "authorization": "NexONG_Backend\\files\\centerexit_authorization\\centerexit_authorization.txt",
+            "authorization": "centerexit_authorization\\centerexit_authorization.txt",
             "student" : 5,
             "is_authorized": false,
             "lesson_event":1
@@ -1494,7 +1494,7 @@
         "model": "nexong.centerexitauthorization",
         "pk": 3,
         "fields": {
-            "authorization": "NexONG_Backend\\files\\centerexit_authorization\\centerexit_authorization.txt",
+            "authorization": "centerexit_authorization\\centerexit_authorization.txt",
             "student" : 2,
             "is_authorized": true,
             "lesson_event":2
@@ -1504,7 +1504,7 @@
         "model": "nexong.centerexitauthorization",
         "pk": 4,
         "fields": {
-            "authorization": "NexONG_Backend\\files\\centerexit_authorization\\centerexit_authorization.txt",
+            "authorization": "centerexit_authorization\\centerexit_authorization.txt",
             "student" : 7,
             "is_authorized": true,
             "lesson_event":2

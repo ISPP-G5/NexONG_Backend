@@ -5,16 +5,6 @@ from ...models import *
 from .authSerializer import *
 
 
-def check_user_is_admin(request):
-    user = request.user
-    return user.is_staff
-
-
-def check_user_is_authenticated(request):
-    user = request.user
-    return user.is_authenticated
-
-
 def process_instance(serializer_class, instance, data):
     serializer = serializer_class(instance, data=data)
     if serializer.is_valid():
@@ -42,7 +32,7 @@ class EducatorApiViewSet(ModelViewSet):
 
 class PartnerApiViewSet(ModelViewSet):
     queryset = Partner.objects.all()
-    http_method_names = ["get", "post", "put", "delete"]
+    http_method_names = ["get", "post", "put", "delete", "patch"]
     serializer_class = PartnerSerializer
 
     def destroy(self, request, *args, **kwargs):
@@ -53,7 +43,7 @@ class PartnerApiViewSet(ModelViewSet):
 
 class VolunteerApiViewSet(ModelViewSet):
     queryset = Volunteer.objects.all()
-    http_method_names = ["get", "post", "put", "delete"]
+    http_method_names = ["get", "post", "put", "delete", "patch"]
     serializer_class = VolunteerSerializer
 
     def destroy(self, request, *args, **kwargs):

@@ -43,9 +43,9 @@ class LessonEventSerializer(ModelSerializer):
         max_volunteers = attrs.get("max_volunteers")
 
         if max_volunteers < num_volunteers:
-            validation_error["max_volunteers"] = (
-                "max_volunteers must be higher or equal to the number of volunteers selected."
-            )
+            validation_error[
+                "max_volunteers"
+            ] = "max_volunteers must be higher or equal to the number of volunteers selected."
 
         lesson = attrs.get("lesson")
         if lesson:
@@ -54,9 +54,9 @@ class LessonEventSerializer(ModelSerializer):
             attendees = attrs.get("attendees")
             for attendee in attendees:
                 if attendee.id not in student_lesson_ids:
-                    validation_error["attendees"] = (
-                        "The attendees must be students of the lesson selected."
-                    )
+                    validation_error[
+                        "attendees"
+                    ] = "The attendees must be students of the lesson selected."
 
         start_date = attrs.get("start_date")
         if start_date <= datetime.now(timezone.utc):
@@ -67,6 +67,25 @@ class LessonEventSerializer(ModelSerializer):
             validation_error["end_date"] = "The end date must be in the future."
         if end_date <= start_date:
             validation_error["end_date"] = "The end date must be after the start date."
+
+        for lessonEvent in LessonEvent.objects.filter(lesson=lesson):
+            if (
+                (
+                    start_date > lessonEvent.start_date
+                    and start_date < lessonEvent.end_date
+                )
+                or (
+                    end_date > lessonEvent.start_date
+                    and end_date < lessonEvent.end_date
+                )
+                or (
+                    start_date < lessonEvent.start_date
+                    and end_date > lessonEvent.end_date
+                )
+            ):
+                validation_error[
+                    "end_date"
+                ] = "Another lesson event collides with this one. Choose a different set of dates."
 
         if validation_error:
             raise serializers.ValidationError(validation_error)
@@ -111,9 +130,9 @@ class EventSerializer(ModelSerializer):
             validation_error["start_date"] = "The start date must be in the future."
 
         if max_attendees < num_attendees:
-            validation_error["max_attendees"] = (
-                "max_attendees must be higher or equal to the number of attendees selected."
-            )
+            validation_error[
+                "max_attendees"
+            ] = "max_attendees must be higher or equal to the number of attendees selected."
 
         volunteers_emails = attrs.get("volunteers")
         num_volunteers = len(volunteers_emails)
@@ -126,9 +145,9 @@ class EventSerializer(ModelSerializer):
             validation_error["end_date"] = "The end date must be after the start date."
 
         if max_volunteers < num_volunteers:
-            validation_error["max_volunteers"] = (
-                "max_volunteers must be higher or equal to the number of volunteers selected."
-            )
+            validation_error[
+                "max_volunteers"
+            ] = "max_volunteers must be higher or equal to the number of volunteers selected."
 
         if validation_error:
             raise serializers.ValidationError(validation_error)

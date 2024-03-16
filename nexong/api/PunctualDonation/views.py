@@ -1,16 +1,15 @@
 from rest_framework.viewsets import ModelViewSet
-from nexong.api import permissions
-from nexong.api.Student.studentSerializer import StudentSerializer
 from rest_framework.response import Response
 from rest_framework import status
+from ...models import *
+from .punctualDonationSerializer import PunctualDonationSerializer
 from rest_framework.permissions import AllowAny
-from nexong.models import Student
 
 
-class StudentApiViewSet(ModelViewSet):
-    queryset = Student.objects.all()
-    http_method_names = ["get", "post", "put", "delete", "patch"]
-    serializer_class = StudentSerializer
+class PunctualDonationApiViewSet(ModelViewSet):
+    queryset = PunctualDonation.objects.all()
+    http_method_names = ["get", "post", "delete"]
+    serializer_class = PunctualDonationSerializer
     permission_classes = [AllowAny]
 
     def destroy(self, request, *args, **kwargs):

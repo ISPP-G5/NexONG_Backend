@@ -8,6 +8,8 @@ from .Event.views import *
 from .Lesson.views import *
 from .Donation.views import *
 from .Evaluation.views import *
+from .PunctualDonation.views import *
+from .HomeDocument.views import *
 
 router_api = DefaultRouter()
 router_api.register(prefix="user", viewset=UserApiViewSet, basename="user")
@@ -15,9 +17,9 @@ router_api.register(prefix="meeting", viewset=MeetingApiViewSet, basename="meeti
 router_api.register(prefix="event", viewset=EventApiViewSet, basename="event")
 router_api.register(prefix="lesson", viewset=LessonApiViewSet, basename="lesson")
 router_api.register(
-    prefix="lessonAttendance",
+    prefix="lesson-attendance",
     viewset=LessonAttendanceApiViewSet,
-    basename="lessonAttendance",
+    basename="lessonattendance",
 )
 router_api.register(prefix="donation", viewset=DonationApiViewSet, basename="donation")
 router_api.register(
@@ -28,7 +30,7 @@ router_api.register(
 )
 router_api.register(prefix="student", viewset=StudentApiViewSet, basename="student")
 router_api.register(
-    prefix="centerexit", viewset=CenterExitApiViewSet, basename="centerexit"
+    prefix="center-exit", viewset=CenterExitApiViewSet, basename="centerexit"
 )
 router_api.register(
     prefix="student-evaluation",
@@ -44,7 +46,15 @@ router_api.register(prefix="educator", viewset=EducatorApiViewSet, basename="edu
 router_api.register(prefix="partner", viewset=PartnerApiViewSet, basename="partner")
 router_api.register(prefix="family", viewset=FamilyApiViewSet, basename="family")
 router_api.register(
-    prefix="educationCenter",
+    prefix="punctual-donation",
+    viewset=PunctualDonationApiViewSet,
+    basename="punctualdonation",
+)
+router_api.register(
+    prefix="home-document", viewset=HomeDocumentApiViewSet, basename="homedocument"
+)
+router_api.register(
+    prefix="education-center",
     viewset=EducationCenterApiViewSet,
-    basename="educationCenter",
+    basename="educationcenter",
 )
