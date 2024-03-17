@@ -357,7 +357,7 @@
             }
     },
     {
-        "model": "nexong.puctualdonation",
+        "model": "nexong.punctualdonation",
         "pk": 1,
         "fields": {
             "name": "Timido",
@@ -368,7 +368,7 @@
             }
     },
     {
-        "model": "nexong.puctualdonation",
+        "model": "nexong.punctualdonation",
         "pk": 2,
         "fields": {
             "name": "OtroDonador",
