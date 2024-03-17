@@ -1,7 +1,8 @@
-from nexong.api.Event.views import EventApiViewSet
+from .Event.views import *
 from rest_framework.routers import DefaultRouter
-from nexong.api.CenterExit.views import CenterExitApiViewSet
-from nexong.api.Student.views import StudentApiViewSet
+from .CenterExit.views import *
+from .Student.views import *
+from .Suggestion.views import *
 from .Authentication.views import *
 from .Meeting.views import *
 from .Event.views import *
@@ -57,4 +58,12 @@ router_api.register(
     prefix="education-center",
     viewset=EducationCenterApiViewSet,
     basename="educationcenter",
+)
+router_api.register(
+    prefix="quarter-marks",
+    viewset=QuarterMarksApiViewSet,
+    basename="quartermarks",
+)
+router_api.register(
+    prefix="suggestion", viewset=SuggestionApiViewSet, basename="suggestion"
 )
