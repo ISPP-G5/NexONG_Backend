@@ -8,11 +8,12 @@ from django.core.validators import (
 )
 
 ADMIN = "ADMIN"
-EDUCATOR = "EDUCATOR"
-VOLUNTEER = "VOLUNTEER"
-FAMILY = "FAMILY"
-PARTNER = "PARTNER"
-VOLUNTEER_PARTNER = "VOLUNTEER_PARTNER"
+EDUCATOR = "EDUCADOR"
+VOLUNTEER = "VOLUNTARIO"
+FAMILY = "FAMILIA"
+PARTNER = "SOCIO"
+VOLUNTEER_PARTNER = "VOLUNTARIO_SOCIO"
+EDUCATION_CENTER = "CENTRO EDUCATIVO"
 ROLE = [
     (ADMIN, "Administrador"),
     (VOLUNTEER, "Voluntario"),
@@ -20,21 +21,22 @@ ROLE = [
     (FAMILY, "Familia"),
     (PARTNER, "Socio"),
     (VOLUNTEER_PARTNER, "Voluntario y socio"),
+    (EDUCATION_CENTER, "Centro educativo")
 ]
-PENDING = "PENDING"
-ACCEPTED = "ACCEPTED"
-REJECTED = "REJECTED"
-EXPIRED = "EXPIRED"
+PENDING = "PENDIENTE"
+ACCEPTED = "ACEPTADO"
+REJECTED = "RECHAZADO"
+EXPIRED = "CADUCADO"
 STATUS = [
     (PENDING, "Pendiente"),
     (ACCEPTED, "Aceptado"),
     (REJECTED, "Rechazado"),
     (EXPIRED, "Caducado"),
 ]
-ANNUAL = "ANNUAL"
-MONTHLY = "MONTHLY"
-QUARTERLY = "QUARTERLY"
-SIXMONTHLY = "SIX-MONTHLY"
+ANNUAL = "ANUAL"
+MONTHLY = "MENSUAL"
+QUARTERLY = "TRIMESTRAL"
+SIXMONTHLY = "SEMESTRAL"
 FREQUENCY = [
     (ANNUAL, "Anual"),
     (MONTHLY, "Mensual"),
@@ -70,28 +72,28 @@ CURRENT_EDUCATION_YEAR = [
     (FOURTH_SECONDARY, "Cuarto de secundaria"),
 ]
 
-ZERO_TO_ONE = "ZERO_TO_ONE"
-ONE_TO_FIVE = "ONE_TO_FIVE"
-ZERO_TO_TEN = "ZERO_TO_TEN"
+ZERO_TO_ONE = "CERO A UNO"
+ONE_TO_FIVE = "UNO A CINCO"
+ZERO_TO_TEN = "CERO A DIEZ"
 GRADESYSTEM = [
     (ZERO_TO_ONE, "0-1"),
     (ONE_TO_FIVE, "1-5"),
     (ZERO_TO_TEN, "0-10"),
 ]
-DAILY = "DAILY"
-ANNUAL = "ANNUAL"
+DAILY = "DIARIO"
+ANNUAL = "ANUAL"
 EVALUATION_TYPE = [
     (DAILY, "Diario"),
     (ANNUAL, "Anual"),
 ]
 WEEKDAYS = [
-    ("MONDAY", "Lunes"),
-    ("TUESDAY", "Martes"),
-    ("WEDNESDAY", "Miércoles"),
-    ("THURSDAY", "Jueves"),
-    ("FRIDAY", "Viernes"),
-    ("SATURDAY", "Sábado"),
-    ("SUNDAY", "Domingo"),
+    ("LUNES", "Lunes"),
+    ("MARTES", "Martes"),
+    ("MIERCOLES", "Miércoles"),
+    ("JUEVES", "Jueves"),
+    ("VIERNES", "Viernes"),
+    ("SABADO", "Sábado"),
+    ("DOMINGO", "Domingo"),
 ]
 
 
