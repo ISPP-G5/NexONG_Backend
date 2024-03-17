@@ -21,7 +21,7 @@ ROLE = [
     (FAMILY, "Familia"),
     (PARTNER, "Socio"),
     (VOLUNTEER_PARTNER, "Voluntario y socio"),
-    (EDUCATION_CENTER, "Centro educativo")
+    (EDUCATION_CENTER, "Centro educativo"),
 ]
 PENDING = "PENDIENTE"
 ACCEPTED = "ACEPTADO"
