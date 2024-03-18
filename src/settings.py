@@ -1,6 +1,7 @@
 import os
 from pathlib import Path
 from datetime import timedelta
+from decouple import config
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -197,10 +198,9 @@ DJOSER = {
     "SOCIAL_AUTH_ALLOWED_REDIRECT_URIS": white_list,
 }
 
-SOCIAL_AUTH_GOOGLE_OAUTH2_KEY = (
-    "1029488722844-70al5fgm932ltlnd6uk7o8d2g8vmtj19.apps.googleusercontent.com"
-)
-SOCIAL_AUTH_GOOGLE_OAUTH2_SECRET = "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"
+SOCIAL_AUTH_GOOGLE_OAUTH2_KEY = config("GOOGLE_OAUTH2_KEY")
+SOCIAL_AUTH_GOOGLE_OAUTH2_SECRET = config("GOOGLE_OAUTH2_SECRET")
+
 SOCIAL_AUTH_GOOGLE_OAUTH2_SCOPE = [
     "https://www.googleapis.com/auth/userinfo.email",
     "https://www.googleapis.com/auth/userinfo.profile",
