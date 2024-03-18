@@ -24,5 +24,6 @@ urlpatterns = [
     path("docs/", schema_view.with_ui("swagger", cache_timeout=0)),
     path("api/", include(api_urls)),
     re_path(
-        r"^NexONG_Backend/files/(?P<path>.*)$", views.serve_file, name="serve_file"),
+        r"^NexONG_Backend/files/(?P<path>.*)$", views.serve_file, name="serve_file"
+    ),
 ]
