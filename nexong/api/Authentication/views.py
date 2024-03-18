@@ -122,6 +122,6 @@ class ActivateUserView(APIView):
                     user.save()
                 return Response(status=status.HTTP_200_OK)
             except Exception as e:
-                return Response(status=status.HTTP_400_BAD_REQUEST)
+                return Response(e.args, status=status.HTTP_400_BAD_REQUEST)
         else:
             return Response(status=response.status_code)
