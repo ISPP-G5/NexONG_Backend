@@ -80,7 +80,6 @@ class EducationCenterApiViewSet(ModelViewSet):
 
 
 class RedirectSocial(View):
-
     def get(self, request, *args, **kwargs):
         code, state = str(request.GET["code"]), str(request.GET["state"])
         json_obj = {"code": code, "state": state}
