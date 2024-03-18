@@ -7,7 +7,6 @@ from django.core.validators import (
     URLValidator,
 )
 
-
 ADMIN = "ADMIN"
 EDUCATOR = "EDUCATOR"
 VOLUNTEER = "VOLUNTEER"
@@ -112,16 +111,17 @@ class Student(models.Model):
     )
     education_center_tutor = models.CharField(max_length=255)
     enrollment_document = models.FileField(
-        upload_to="files/student_enrollment", null=True, blank=True
+        upload_to="student_enrollment", null=True, blank=True
     )
     scanned_sanitary_card = models.FileField(
-        upload_to="files/student_sanitary", null=True, blank=True
+        upload_to="student_sanitary", null=True, blank=True
     )
     nationality = models.CharField(max_length=255)
     birthdate = models.DateField()
     is_morning_student = models.BooleanField(default=False)
     status = models.CharField(max_length=10, choices=STATUS, default=PENDING, null=True)
     activities_during_exit = models.CharField(max_length=1000, null=True, blank=True)
+    avatar = models.FileField(upload_to="files/student_avatar", null=True, blank=True)
     education_center = models.ForeignKey(
         EducationCenter,
         on_delete=models.CASCADE,
@@ -136,7 +136,7 @@ class Student(models.Model):
 
 class QuarterMarks(models.Model):
     date = models.DateField()
-    marks = models.FileField(upload_to="files/quarter_marks")
+    marks = models.FileField(upload_to="quarter_marks")
     student = models.ForeignKey(
         Student, on_delete=models.CASCADE, related_name="quarter_marks"
     )
@@ -144,7 +144,7 @@ class QuarterMarks(models.Model):
 
 class Partner(models.Model):
     address = models.CharField(max_length=255, null=True, blank=True)
-    enrollment_document = models.FileField(upload_to="files/partner_enrollment")
+    enrollment_document = models.FileField(upload_to="partner_enrollment")
     birthdate = models.DateField(null=True)
 
 
@@ -159,12 +159,26 @@ class Donation(models.Model):
     frequency = models.CharField(max_length=11, choices=FREQUENCY, default=MONTHLY)
     holder = models.CharField(max_length=255)
     quota_extension_document = models.FileField(
-        null=True, blank=True, upload_to="files/partner_quota"
+        null=True, blank=True, upload_to="partner_quota"
     )
     date = models.DateField()
     partner = models.ForeignKey(
         Partner, on_delete=models.CASCADE, related_name="donations"
     )
+
+
+class PunctualDonation(models.Model):
+    name = models.CharField(max_length=255)
+    surname = models.CharField(max_length=255)
+    email = models.EmailField()
+    proof_of_payment_document = models.FileField(upload_to="proof_of_payment")
+    date = models.DateField()
+
+
+class HomeDocument(models.Model):
+    title = models.CharField(max_length=255)
+    document = models.FileField(upload_to="home_document")
+    date = models.DateField()
 
 
 class Volunteer(models.Model):
@@ -173,15 +187,15 @@ class Volunteer(models.Model):
     status = models.CharField(max_length=10, choices=STATUS, default=PENDING)
     address = models.CharField(max_length=255)
     postal_code = models.CharField(max_length=255)
-    enrollment_document = models.FileField(upload_to="files/volunteer_enrollment")
-    registry_sheet = models.FileField(upload_to="files/volunteer_registry")
-    sexual_offenses_document = models.FileField(upload_to="files/volunteer_offenses")
-    scanned_id = models.FileField(upload_to="files/volunteer_id")
+    enrollment_document = models.FileField(upload_to="volunteer_enrollment")
+    registry_sheet = models.FileField(upload_to="volunteer_registry")
+    sexual_offenses_document = models.FileField(upload_to="volunteer_offenses")
+    scanned_id = models.FileField(upload_to="volunteer_id")
     minor_authorization = models.FileField(
-        null=True, blank=True, upload_to="files/volunteer_minor"
+        null=True, blank=True, upload_to="volunteer_minor"
     )
     scanned_authorizer_id = models.FileField(
-        null=True, blank=True, upload_to="files/volunteer_authorizer_id"
+        null=True, blank=True, upload_to="volunteer_authorizer_id"
     )
     birthdate = models.DateField()
     start_date = models.DateField()
@@ -237,7 +251,7 @@ class User(AbstractUser):
         choices=ROLE,
         default=FAMILY,
     )
-    avatar = models.URLField(blank=True, null=True, validators=[URLValidator()])
+    avatar = models.FileField(upload_to="files/user_avatar", null=True, blank=True)
     family = models.OneToOneField(
         Family, on_delete=models.CASCADE, blank=True, null=True
     )
@@ -363,7 +377,7 @@ class Event(models.Model):
 
 
 class CenterExitAuthorization(models.Model):
-    authorization = models.FileField(upload_to="files/centerexit_auth")
+    authorization = models.FileField(upload_to="centerexit_auth")
     student = models.ForeignKey(
         Student, on_delete=models.CASCADE, related_name="center_exits"
     )
@@ -371,3 +385,10 @@ class CenterExitAuthorization(models.Model):
     lesson_event = models.ForeignKey(
         LessonEvent, on_delete=models.CASCADE, related_name="center_exit_authorizations"
     )
+
+
+class Suggestion(models.Model):
+    subject = models.CharField(max_length=100)
+    description = models.TextField()
+    email = models.EmailField(null=True, blank=True)
+    date = models.DateField(auto_now_add=True)

@@ -1,3 +1,4 @@
+import os
 from pathlib import Path
 from datetime import timedelta
 
@@ -36,6 +37,7 @@ INSTALLED_APPS = [
     "djoser",
     "social_django",
     "rest_framework_simplejwt.token_blacklist",
+    "drf_yasg",
 ]
 
 MIDDLEWARE = [
@@ -206,3 +208,6 @@ SOCIAL_AUTH_GOOGLE_OAUTH2_SCOPE = [
 ]
 
 SOCIAL_AUTH_GOOGLE_OAUTH2_EXTRA_DATA = ["first_name", "last_name"]
+
+MEDIA_URL = "NexONG_Backend/files/"
+MEDIA_ROOT = "files"
