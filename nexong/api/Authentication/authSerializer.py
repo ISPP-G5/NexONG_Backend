@@ -3,6 +3,44 @@ import re
 from rest_framework import serializers
 from nexong.models import *
 from rest_framework.serializers import ModelSerializer
+from rest_framework.serializers import Serializer
+from djoser.serializers import UserCreateSerializer
+
+
+class LogoutAndBlacklistSerializer(Serializer):
+    refresh_token = serializers.CharField()
+
+    class Meta:
+        fields = ["refresh_token"]
+
+
+class CreateUserSerializer(UserCreateSerializer):
+    class Meta(UserCreateSerializer.Meta):
+        model = User
+        fields = ["email", "first_name", "last_name", "id_number", "phone", "password"]
+
+    def validate_first_name(self, data):
+        if not data:
+            raise serializers.ValidationError("This field may not be blank.")
+        return data
+
+    def validate_last_name(self, data):
+        if not data:
+            raise serializers.ValidationError("This field may not be blank.")
+        return data
+
+    def validate_id_number(self, data):
+        if not data:
+            raise serializers.ValidationError("This field may not be blank.")
+        return data
+
+
+class UserLoginSerializer(Serializer):
+    email = serializers.EmailField()
+    password = serializers.CharField(style={"input_type": "password"})
+
+    class Meta:
+        fields = ["email", "password"]
 
 
 class UserSerializer(ModelSerializer):
