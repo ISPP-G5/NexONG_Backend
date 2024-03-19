@@ -2,48 +2,59 @@
 
 # Getting started with NexONG_Backend
 
-Follow this guide to setup the project:
+Follow this guide to set up the project:
 
-### Configure virtual enviroment
+### 1. Clone the repository
+- Clone NexONG-backend repository `git clone https://github.com/ISPP-G5/NexONG_Backend.git` in the directory of your choice.
+
+### 2. Configure the virtual environment
+#### Linux
 - Install virtualenv `pip install virtualenv`
-- Create a project directory `mkdir nexong-env`
-- Move to env directory with `cd nexong-env`
-- Create virtual enviroment `virtualenv venv -p python3.11`
-- Activate virtual enviroment
-    - **(Unix)** with `source venv/bin/activate` 
-    - **(Windows)** follow this guide https://linuxhint.com/activate-virtualenv-windows/
-> Note: if you are not going to use the app, dont forget to deactivate the virtualenv by simply writing `deactivate`
+- In the root directory of the project you just cloned, create the virtual environment by running 
+- Create virtual environment `python3 -m venv myenv`, myenv being what you want to name the virtual environment
+- Activate virtual environment with `source venv/bin/activate`
   
-### Clone and install requirements
-- Clone NexONG-backend repository `git clone https://github.com/ISPP-G5/NexONG_Backend.git`
-- Move to NexOng repo with `cd NexONG_Backend`
+#### Windows
+You can create the Windows virtual environment by running commands as in Linux [here](https://linuxhint.com/activate-virtualenv-windows/). However, I think the easiest option is creating it through VSCode.
+- Open the cloned project in VSCode
+- Press `ctrl+shift+p` on your keyboard
+- Select the option `Python: Select Interpreter`
+- Press `+ Create Virtual Environment`
+- Select `Venv`
+- Select `Python 3.11`
+- If there is a pop-up about the requirements, just press `OK`
+- To activate it, close the VSCode window and open it again.
+- You should be able to see `(.myenv)` on the terminal, something like this:
+
+![image](https://github.com/ISPP-G5/NexONG_Backend/assets/73229219/585b1dad-3b52-45d9-860b-d37cbbc39a6d)
+
+### 3. Install requirements
 - Install project dependencies `pip install -r requirements.txt`
 
-### Create the database
-- Install postgres from the official website https://www.postgresql.org/download/
+### 4. Create the database
 #### Unix
+- Install postgres running `sudo apt install postgresql`
 - Access the postgres instance with `sudo su - postgres`
 - Create the user for the database `psql -c "create user nexong with password 'nexong'"`
 - Create the database `psql -c "create database nexongdb owner nexong"`
 - Set the role `psql -c "ALTER USER nexong CREATEDB"`
 
 #### Windows
-- Access the instalation folder `C:\Program Files\PostgreSQL\16\bin` and execute `psql -U postgres`
+- Install postgres on your machine from the official website https://www.postgresql.org/download/
+- Access the installation folder `C:\Program Files\PostgreSQL\16\bin` and execute `psql -U postgres`
 - Create the user for the database `CREATE USER nexong WITH PASSWORD 'nexong';`
 - Create the database `create database nexongdb owner nexong;`
 - Set the role `ALTER USER nexong CREATEDB;`
 
 _You can check if the database is corrrectly created using `\l` in the psql instance_
 
-### Migrate the app
-- Migrate the app `./manage.py makemigrations` & `./manage.py migrate` or `manage.py makemigrations` & `manage.py migrate`
+### 5. Migrate the app and populate the database
+In the root folder of the project, run:
+- `python manage.py makemigrations nexong`
+- `python manage.py migrate`
+- `python manage.py loaddata populate.json`
 
-### Create superuser
-- `./manage.py createsuperuser`
-
-### Done! now run the app
-- Run the API `./manage.py runserver` or `manage.py runserver`
+### 6. Run the app
+In the root folder of the project, run:
+- `python manage.py runserver`
 - Access to the DEMO API on `http://127.0.0.1:8000/demoapi/`
-
-### Populate the database
-- Populate the database `./manage.py loaddata populate.json` or `manage.py loaddata populate.json`
