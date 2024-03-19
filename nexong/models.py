@@ -1,6 +1,6 @@
 from decimal import Decimal
 from django.db import models
-from django.contrib.auth.models import AbstractBaseUser
+from django.contrib.auth.models import AbstractUser, UserManager
 from django.core.validators import (
     MaxValueValidator,
     MinValueValidator,
@@ -208,10 +208,37 @@ class Educator(models.Model):
     birthdate = models.DateField(null=True)
 
 
-class User(AbstractBaseUser):
-    name = models.CharField(max_length=50)
-    surname = models.CharField(max_length=100)
-    id_number = models.CharField(max_length=9, unique=True)
+class CustomUserManager(UserManager):
+    def create_user(self, email, username="None", password=None, **extra_fields):
+        if not email:
+            raise ValueError("The given email must be set")
+        if "id_number" not in extra_fields:
+            extra_fields.setdefault("is_enabled", False)
+
+        user = super().create_user(
+            username=username, email=email, password=password, **extra_fields
+        )
+        user.username = None
+
+        user.save(using=self._db)
+        return user
+
+    def create_superuser(self, email, username="None", password=None, **extra_fields):
+        if not email:
+            raise ValueError("The given email must be set")
+        user = super().create_superuser(
+            username=username, email=email, password=password, **extra_fields
+        )
+        user.username = None
+        user.save(using=self._db)
+        return user
+
+
+class User(AbstractUser):
+    objects = CustomUserManager()
+
+    username = models.CharField(max_length=100, null=True, blank=True)
+    id_number = models.CharField(max_length=9, null=True)
     phone = models.IntegerField(
         validators=[MaxValueValidator(999999999), MinValueValidator(600000000)],
         blank=True,
@@ -243,7 +270,13 @@ class User(AbstractBaseUser):
         Educator, on_delete=models.CASCADE, blank=True, null=True
     )
 
+    is_enabled = models.BooleanField(default=True)
+
     USERNAME_FIELD = "email"
+    REQUIRED_FIELDS = []
+
+    def __str__(self):
+        return self.email
 
 
 class Meeting(models.Model):
@@ -262,9 +295,7 @@ class Lesson(models.Model):
     educator = models.ForeignKey(
         Educator, on_delete=models.CASCADE, related_name="lessons"
     )
-    students = models.ManyToManyField(
-        Student, related_name="lessons", blank=True, null=True
-    )
+    students = models.ManyToManyField(Student, related_name="lessons", blank=True)
     start_date = models.DateTimeField()
     end_date = models.DateTimeField()
 
@@ -327,10 +358,10 @@ class LessonEvent(models.Model):
     price = models.FloatField(validators=[MinValueValidator(0.0)], default=0.0)
     educators = models.ManyToManyField(Educator, related_name="lesson_events")
     attendees = models.ManyToManyField(
-        Student, related_name="lesson_events", null=True, blank=True
+        Student, related_name="lesson_events", blank=True
     )
     volunteers = models.ManyToManyField(
-        Volunteer, related_name="lesson_events", null=True, blank=True
+        Volunteer, related_name="lesson_events", blank=True
     )
 
 
@@ -343,12 +374,8 @@ class Event(models.Model):
     start_date = models.DateTimeField()
     end_date = models.DateTimeField()
     price = models.FloatField(validators=[MinValueValidator(0.0)], default=0.0)
-    attendees = models.ManyToManyField(
-        Student, related_name="events", null=True, blank=True
-    )
-    volunteers = models.ManyToManyField(
-        Volunteer, related_name="events", null=True, blank=True
-    )
+    attendees = models.ManyToManyField(Student, related_name="events", blank=True)
+    volunteers = models.ManyToManyField(Volunteer, related_name="events", blank=True)
 
 
 class CenterExitAuthorization(models.Model):
