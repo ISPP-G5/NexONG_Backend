@@ -28,4 +28,5 @@ urlpatterns = [
     ),
     path("redirect-social/", RedirectSocial.as_view()),
     path("export/csv/students", StudentsExportToCsv, name="export_csv_all_students"),
+    path("export/pdf/students", StudentsExportToPdf, name="export_pdf_all_students"),
 ]

@@ -11,6 +11,19 @@ import csv
 import codecs
 from django.http import HttpResponse
 from django.utils.encoding import smart_str
+from datetime import datetime
+from openpyxl import Workbook
+from reportlab.lib.pagesizes import letter
+from reportlab.platypus import (
+    SimpleDocTemplate,
+    Paragraph,
+    Spacer,
+    Table,
+    TableStyle,
+    Image,
+)
+from reportlab.lib.styles import getSampleStyleSheet
+from reportlab.lib import colors
 
 
 class StudentApiViewSet(ModelViewSet):
@@ -75,5 +88,81 @@ def StudentsExportToCsv(request):
             smart_str(student.education_center),
             smart_str(student.family)
         ])
+
+    return response
+
+
+def StudentsExportToPdf(request):
+    actualDate = datetime.now().date()
+    response = HttpResponse(content_type="application/pdf")
+    response["Content-Disposition"] = f"attachment; filename=Estudiantes.pdf"
+    styles = getSampleStyleSheet()
+    queryset = Student.objects.all()
+
+    # This is the PDF document
+    doc = SimpleDocTemplate(response, pagesize=letter)
+
+    # Create a Story list to hold elements
+    Story = []
+
+    # Add cover page elements
+    logoPath = "static/images/logo.png"
+    logo = Image(logoPath, width=200, height=100)
+    title = "Estudiantes"
+    actualDateText = f"Fecha actual: {actualDate}"
+
+    cover_elements = [
+        logo,
+        Spacer(1, 12),
+        Paragraph(title, styles["Title"]),
+        Spacer(1, 12),
+        Paragraph(actualDateText, styles["Normal"]),
+        Spacer(1, 6),
+    ]
+
+    # Add cover elements to the Story
+    Story.extend(cover_elements)
+    # Separation for the table
+    Story.append(Spacer(1, 10))
+    table_data = [["Nombre", "Apellido", "Curso Actual", "Nacionalidad", "Nacimiento", "De Mañana", "Estado","Centro Educativo", "Familia"]]
+
+    for student in queryset:
+        # Truncate long strings
+        table_row = [
+            student.name[:15] if isinstance(student.name, str) and len(student.name) > 15 else student.name,
+            student.surname[:15] if isinstance(student.surname, str) and len(student.surname) > 15 else student.surname,
+            student.current_education_year[:15] if isinstance(student.current_education_year, str) and len(student.current_education_year) > 15 else student.current_education_year,
+            student.nationality[:15] if isinstance(student.nationality, str) and len(student.nationality) > 15 else student.nationality,
+            str(student.birthdate)[:15] if isinstance(student.birthdate, str) and len(str(student.birthdate)) > 15 else student.birthdate,
+            student.is_morning_student,
+            student.status,
+            student.education_center.name[:20] if isinstance(student.education_center, str) and len(student.education_center) > 20 else student.education_center.name,
+            student.family[:20] if isinstance(student.family, str) and len(student.family) > 20 else student.family
+        ]
+        table_data.append(table_row)
+
+    # Create a table
+    table = Table(table_data, colWidths=[40, 60, 90, 50, 45, 45, 60, 133, 80])  # Adjust the column width as needed
+
+    # Table style
+    table.setStyle(
+        TableStyle(
+            [
+                ("BACKGROUND", (0, 0), (-1, 0), colors.grey),
+                ("TEXTCOLOR", (0, 0), (-1, 0), colors.whitesmoke),
+                ("ALIGN", (0, 0), (-1, -1), "CENTER"),
+                ("FONTNAME", (0, 0), (-1, 0), "Helvetica-Bold"),
+                ("BOTTOMPADDING", (0, 0), (-1, 0), 12),
+                ("BACKGROUND", (0, 1), (-1, -1), colors.beige),
+                ("GRID", (0, 0), (-1, -1), 1, colors.black),
+                ("FONTSIZE", (0, 0), (-1, -1), 8),  # Adjust the font size as needed
+                ("WORDWRAP", (0, 0), (-1, -1), True),  # Allow word wrapping
+            ]
+        )
+    )
+
+    # Table to Story
+    Story.append(table)
+    doc.build(Story)
 
     return response
