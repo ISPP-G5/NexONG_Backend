@@ -166,3 +166,41 @@ def StudentsExportToPdf(request):
     doc.build(Story)
 
     return response
+
+
+def StudentsExportToExcel(request):
+
+    queryset = Student.objects.all()
+
+    response = HttpResponse(
+        content_type="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
+    )
+    response["Content-Disposition"] = f"attachment; filename=Estudiantes.xlsx"
+
+    # Create a new Excel workbook
+    workbook = Workbook()
+    sheet = workbook.active
+
+    header_row = [
+        "Nombre", "Apellido", "Curso Actual", "Nacionalidad", "Nacimiento", "De Mañana", "Estado","Centro Educativo", "Familia"
+    ]
+    sheet.append(header_row)
+
+    for student in queryset:
+        data_row = [
+            student.name,
+            student.surname,
+            student.current_education_year,
+            student.nationality,
+            student.birthdate,
+            student.is_morning_student,
+            student.status,
+            student.education_center.name,
+            student.family.name
+        ]
+        sheet.append(data_row)
+
+    # Save the workbook to the response
+    workbook.save(response)
+
+    return response
