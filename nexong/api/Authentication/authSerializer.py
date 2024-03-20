@@ -50,23 +50,23 @@ class UserSerializer(ModelSerializer):
 
     def validate(self, data):
         validation_error = {}
-        if data["role"] == "EDUCATOR" and data["educator"] is None:
-            validation_error["educator"] = 'Given role "EDUCATOR", this cannot be null.'
-        elif data["role"] == "VOLUNTEER" and data["volunteer"] is None:
+        if data["role"] == "EDUCADOR" and data["educator"] is None:
+            validation_error["educator"] = 'Given role "EDUCADOR", this cannot be null.'
+        elif data["role"] == "VOLUNTARIO" and data["volunteer"] is None:
             validation_error[
                 "volunteer"
-            ] = 'Given role "VOLUNTEER", this cannot be null.'
-        elif data["role"] == "FAMILY" and data["family"] is None:
-            validation_error["family"] = 'Given role "FAMILY", this cannot be null.'
-        elif data["role"] == "PARTNER" and data["partner"] is None:
-            validation_error["partner"] = 'Given role "PARTNER", this cannot be null.'
-        elif data["role"] == "VOLUNTEER_PARTNER" and (
+            ] = 'Given role "VOLUNTARIO", this cannot be null.'
+        elif data["role"] == "FAMILIA" and data["family"] is None:
+            validation_error["family"] = 'Given role "FAMILIA", this cannot be null.'
+        elif data["role"] == "SOCIO" and data["partner"] is None:
+            validation_error["partner"] = 'Given role "SOCIO", this cannot be null.'
+        elif data["role"] == "VOLUNTARIO_SOCIO" and (
             data["volunteer"] is None or data["partner"] is None
         ):
             validation_error[
                 "volunteer"
-            ] = 'Given role "VOLUNTEER", this cannot be null.'
-            validation_error["partner"] = 'Given role "PARTNER", this cannot be null.'
+            ] = 'Given role "VOLUNTARIO", this cannot be null.'
+            validation_error["partner"] = 'Given role "SOCIO", this cannot be null.'
 
         id_number = data["id_number"]
         pattern = r"^\d{8}[A-Z]$"
