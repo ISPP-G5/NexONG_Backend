@@ -157,6 +157,7 @@ def obtainPunctualDonationsDataFromRequest(request):
         filename,
     )
 
+
 def CreateResponseObject(filename):
     # Response Object
     response = HttpResponse(content_type="application/pdf")
@@ -179,6 +180,8 @@ def CreateResponseObject(filename):
         Story,
         logo,
     )
+
+
 def CreateTableFromResponse(table_data, Story, doc):
     # Create a table
     table = Table(table_data)
@@ -201,7 +204,11 @@ def CreateTableFromResponse(table_data, Story, doc):
     # Table to Story
     Story.append(table)
     doc.build(Story)
-def CreateCoverElements(startDate, logo, title, styles, actualDateText, startDateText, endDateText, Story):
+
+
+def CreateCoverElements(
+    startDate, logo, title, styles, actualDateText, startDateText, endDateText, Story
+):
     if startDate is None:
         cover_elements = [
             logo,
@@ -229,6 +236,7 @@ def CreateCoverElements(startDate, logo, title, styles, actualDateText, startDat
     Story.append(Spacer(1, 50))
     return Story
 
+
 def DonationsExportToPdf(request):
     data = obtainDataFromRequest(request)
 
@@ -255,12 +263,21 @@ def DonationsExportToPdf(request):
     if partner == 0:
         title = "Reporte de donaciones"
     else:
-        title = f"Reporte de donaciones de {userOfPartner.first_name} {userOfPartner.last_name}" 
+        title = f"Reporte de donaciones de {userOfPartner.first_name} {userOfPartner.last_name}"
     startDateText = f"Fecha de inicio de los datos: {startDate_str}"
     endDateText = f"Fecha de fin de los datos: {endDate_str}"
     actualDateText = f"Fecha actual: {actualDate}"
 
-    StoryUpdated = CreateCoverElements(startDate, logo, title, styles, actualDateText, startDateText, endDateText, Story)
+    StoryUpdated = CreateCoverElements(
+        startDate,
+        logo,
+        title,
+        styles,
+        actualDateText,
+        startDateText,
+        endDateText,
+        Story,
+    )
     table_data = [["Cantidad", "Frecuencia", "Titular", "Fecha"]]
 
     for donation in queryset:
@@ -285,7 +302,7 @@ def PunctualDonationsExportToPdf(request):
         queryset,
         filename,
     ) = data[:6]
-   
+
     dataFromResponse = CreateResponseObject(filename)
     (
         response,
@@ -299,7 +316,16 @@ def PunctualDonationsExportToPdf(request):
     endDateText = f"Fecha de fin de los datos: {endDate_str}"
     actualDateText = f"Fecha actual: {actualDate}"
 
-    StoryUpdated = CreateCoverElements(startDate, logo, title, styles, actualDateText, startDateText, endDateText, Story)
+    StoryUpdated = CreateCoverElements(
+        startDate,
+        logo,
+        title,
+        styles,
+        actualDateText,
+        startDateText,
+        endDateText,
+        Story,
+    )
 
     table_data = [["Nombre", "Apellidos", "Documento", "Fecha"]]
 
