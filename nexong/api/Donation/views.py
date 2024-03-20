@@ -152,20 +152,7 @@ def obtainPunctualDonationsDataFromRequest(request):
         filename,
     )
 
-def DonationsExportToPdf(request):
-    data = obtainDataFromRequest(request)
-
-    # Unpack values
-    (
-        startDate_str,
-        endDate_str,
-        actualDate,
-        startDate,
-        partner,
-        userOfPartner,
-        queryset,
-        filename,
-    ) = data[:8]
+def CreateResponseObject(filename):
     # Response Object
     response = HttpResponse(content_type="application/pdf")
     response["Content-Disposition"] = f"attachment; filename={filename}.pdf"
@@ -180,14 +167,36 @@ def DonationsExportToPdf(request):
     # Add cover page elements
     logoPath = "static/images/logo.png"
     logo = Image(logoPath, width=200, height=100)
-    if partner == 0:
-        title = "Reporte de donaciones"
-    else:
-        title = f"Reporte de donaciones de {userOfPartner.first_name} {userOfPartner.last_name}" 
-    startDateText = f"Fecha de inicio de los datos: {startDate_str}"
-    endDateText = f"Fecha de fin de los datos: {endDate_str}"
-    actualDateText = f"Fecha actual: {actualDate}"
+    return (
+        response,
+        styles,
+        doc,
+        Story,
+        logo,
+    )
+def CreateTableFromResponse(table_data, Story, doc):
+    # Create a table
+    table = Table(table_data)
 
+    # Table style
+    table.setStyle(
+        TableStyle(
+            [
+                ("BACKGROUND", (0, 0), (-1, 0), colors.grey),
+                ("TEXTCOLOR", (0, 0), (-1, 0), colors.whitesmoke),
+                ("ALIGN", (0, 0), (-1, -1), "CENTER"),
+                ("FONTNAME", (0, 0), (-1, 0), "Helvetica-Bold"),
+                ("BOTTOMPADDING", (0, 0), (-1, 0), 12),
+                ("BACKGROUND", (0, 1), (-1, -1), colors.beige),
+                ("GRID", (0, 0), (-1, -1), 1, colors.black),
+            ]
+        )
+    )
+
+    # Table to Story
+    Story.append(table)
+    doc.build(Story)
+def CreateCoverElements(startDate, logo, title, styles, actualDateText, startDateText, endDateText, Story):
     if startDate is None:
         cover_elements = [
             logo,
@@ -213,6 +222,40 @@ def DonationsExportToPdf(request):
     Story.extend(cover_elements)
     # Separation for the table
     Story.append(Spacer(1, 50))
+    return Story
+
+def DonationsExportToPdf(request):
+    data = obtainDataFromRequest(request)
+
+    # Unpack values
+    (
+        startDate_str,
+        endDate_str,
+        actualDate,
+        startDate,
+        partner,
+        userOfPartner,
+        queryset,
+        filename,
+    ) = data[:8]
+
+    dataFromResponse = CreateResponseObject(filename)
+    (
+        response,
+        styles,
+        doc,
+        Story,
+        logo,
+    ) = dataFromResponse[:5]
+    if partner == 0:
+        title = "Reporte de donaciones"
+    else:
+        title = f"Reporte de donaciones de {userOfPartner.first_name} {userOfPartner.last_name}" 
+    startDateText = f"Fecha de inicio de los datos: {startDate_str}"
+    endDateText = f"Fecha de fin de los datos: {endDate_str}"
+    actualDateText = f"Fecha actual: {actualDate}"
+
+    StoryUpdated = CreateCoverElements(startDate, logo, title, styles, actualDateText, startDateText, endDateText, Story)
     table_data = [["Cantidad", "Frecuencia", "Titular", "Fecha"]]
 
     for donation in queryset:
@@ -220,27 +263,7 @@ def DonationsExportToPdf(request):
             [donation.quantity, donation.frequency, donation.holder, donation.date]
         )
 
-    # Create a table
-    table = Table(table_data)
-
-    # Table style
-    table.setStyle(
-        TableStyle(
-            [
-                ("BACKGROUND", (0, 0), (-1, 0), colors.grey),
-                ("TEXTCOLOR", (0, 0), (-1, 0), colors.whitesmoke),
-                ("ALIGN", (0, 0), (-1, -1), "CENTER"),
-                ("FONTNAME", (0, 0), (-1, 0), "Helvetica-Bold"),
-                ("BOTTOMPADDING", (0, 0), (-1, 0), 12),
-                ("BACKGROUND", (0, 1), (-1, -1), colors.beige),
-                ("GRID", (0, 0), (-1, -1), 1, colors.black),
-            ]
-        )
-    )
-
-    # Table to Story
-    Story.append(table)
-    doc.build(Story)
+    CreateTableFromResponse(table_data, StoryUpdated, doc)
 
     return response
 
@@ -256,50 +279,22 @@ def PunctualDonationsExportToPdf(request):
         queryset,
         filename,
     ) = data[:6]
-    # Response Object
-    response = HttpResponse(content_type="application/pdf")
-    response["Content-Disposition"] = f"attachment; filename={filename}.pdf"
-    styles = getSampleStyleSheet()
-
-    # This is the PDF document
-    doc = SimpleDocTemplate(response, pagesize=letter)
-
-    # Create a Story list to hold elements
-    Story = []
-
-    # Add cover page elements
-    logoPath = "static/images/logo.png"
-    logo = Image(logoPath, width=200, height=100)
+   
+    dataFromResponse = CreateResponseObject(filename)
+    (
+        response,
+        styles,
+        doc,
+        Story,
+        logo,
+    ) = dataFromResponse[:5]
     title = "Reporte de donaciones puntuales"
     startDateText = f"Fecha de inicio de los datos: {startDate_str}"
     endDateText = f"Fecha de fin de los datos: {endDate_str}"
     actualDateText = f"Fecha actual: {actualDate}"
 
-    if startDate is None:
-        cover_elements = [
-            logo,
-            Spacer(1, 12),
-            Paragraph(title, styles["Title"]),
-            Spacer(1, 12),
-            Paragraph(actualDateText, styles["Normal"]),
-        ]
-    else:
-        cover_elements = [
-            logo,
-            Spacer(1, 12),
-            Paragraph(title, styles["Title"]),
-            Spacer(1, 12),
-            Paragraph(actualDateText, styles["Normal"]),
-            Spacer(1, 6),
-            Paragraph(startDateText, styles["Normal"]),
-            Spacer(1, 6),
-            Paragraph(endDateText, styles["Normal"]),
-        ]
+    StoryUpdated = CreateCoverElements(startDate, logo, title, styles, actualDateText, startDateText, endDateText, Story)
 
-    # Add cover elements to the Story
-    Story.extend(cover_elements)
-    # Separation for the table
-    Story.append(Spacer(1, 50))
     table_data = [["Nombre", "Apellidos", "Documento", "Fecha"]]
 
     for donation in queryset:
@@ -307,28 +302,7 @@ def PunctualDonationsExportToPdf(request):
             [donation.name, donation.surname, donation.proof_of_payment_document, donation.date]
         )
 
-    # Create a table
-    table = Table(table_data)
-
-    # Table style
-    table.setStyle(
-        TableStyle(
-            [
-                ("BACKGROUND", (0, 0), (-1, 0), colors.grey),
-                ("TEXTCOLOR", (0, 0), (-1, 0), colors.whitesmoke),
-                ("ALIGN", (0, 0), (-1, -1), "CENTER"),
-                ("FONTNAME", (0, 0), (-1, 0), "Helvetica-Bold"),
-                ("BOTTOMPADDING", (0, 0), (-1, 0), 12),
-                ("BACKGROUND", (0, 1), (-1, -1), colors.beige),
-                ("GRID", (0, 0), (-1, -1), 1, colors.black),
-            ]
-        )
-    )
-
-    # Table to Story
-    Story.append(table)
-    doc.build(Story)
-
+    CreateTableFromResponse(table_data, StoryUpdated, doc)
     return response
 
 def DonationsExportToExcel(request):
