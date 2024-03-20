@@ -118,6 +118,7 @@ def obtainDataFromRequest(request):
         filename,
     )
 
+
 def obtainPunctualDonationsDataFromRequest(request):
     # Get data from request
     startDate_str = request.GET.get("startdate")
@@ -135,14 +136,18 @@ def obtainPunctualDonationsDataFromRequest(request):
         endDate = datetime.strptime(endDate_str, "%Y-%m-%d")
     # Filter donations
     if startDate is not None:
-        queryset = PunctualDonation.objects.filter(date__gte=startDate, date__lte=endDate)
+        queryset = PunctualDonation.objects.filter(
+            date__gte=startDate, date__lte=endDate
+        )
     else:
         queryset = PunctualDonation.objects.all()
 
     if startDate is None:
         filename = "Reporte de donaciones puntuales global"
     else:
-        filename = f"Reporte_de_donaciones_puntuales_entre_{startDate_str}_y_{endDate_str}"
+        filename = (
+            f"Reporte_de_donaciones_puntuales_entre_{startDate_str}_y_{endDate_str}"
+        )
     return (
         startDate_str,
         endDate_str,
@@ -267,6 +272,7 @@ def DonationsExportToPdf(request):
 
     return response
 
+
 def PunctualDonationsExportToPdf(request):
     data = obtainPunctualDonationsDataFromRequest(request)
 
@@ -299,11 +305,17 @@ def PunctualDonationsExportToPdf(request):
 
     for donation in queryset:
         table_data.append(
-            [donation.name, donation.surname, donation.proof_of_payment_document, donation.date]
+            [
+                donation.name,
+                donation.surname,
+                donation.proof_of_payment_document,
+                donation.date,
+            ]
         )
 
     CreateTableFromResponse(table_data, StoryUpdated, doc)
     return response
+
 
 def DonationsExportToExcel(request):
     # Get data from obtainDataFromRequest
@@ -344,6 +356,7 @@ def DonationsExportToExcel(request):
     workbook.save(response)
 
     return response
+
 
 def PunctualDonationsExportToExcel(request):
     # Get data from obtainDataFromRequest
