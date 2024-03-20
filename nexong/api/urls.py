@@ -16,7 +16,11 @@ urlpatterns = [
         DonationsExportToExcel,
         name="export_excel_all_donations",
     ),
-    path("export/pdf/punctualdonations", PunctualDonationsExportToPdf, name="export_pdf_all_punctualdonations"),
+    path(
+        "export/pdf/punctualdonations",
+        PunctualDonationsExportToPdf,
+        name="export_pdf_all_punctualdonations",
+    ),
     path(
         "export/excel/punctualdonations",
         PunctualDonationsExportToExcel,

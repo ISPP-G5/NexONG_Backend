@@ -118,6 +118,7 @@ def obtainDataFromRequest(request):
         filename,
     )
 
+
 def obtainPunctualDonationsDataFromRequest(request):
     # Get data from request
     startDate_str = request.GET.get("startdate")
@@ -135,14 +136,18 @@ def obtainPunctualDonationsDataFromRequest(request):
         endDate = datetime.strptime(endDate_str, "%Y-%m-%d")
     # Filter donations
     if startDate is not None:
-        queryset = PunctualDonation.objects.filter(date__gte=startDate, date__lte=endDate)
+        queryset = PunctualDonation.objects.filter(
+            date__gte=startDate, date__lte=endDate
+        )
     else:
         queryset = PunctualDonation.objects.all()
 
     if startDate is None:
         filename = "Reporte de donaciones puntuales global"
     else:
-        filename = f"Reporte_de_donaciones_puntuales_entre_{startDate_str}_y_{endDate_str}"
+        filename = (
+            f"Reporte_de_donaciones_puntuales_entre_{startDate_str}_y_{endDate_str}"
+        )
     return (
         startDate_str,
         endDate_str,
@@ -151,6 +156,7 @@ def obtainPunctualDonationsDataFromRequest(request):
         queryset,
         filename,
     )
+
 
 def DonationsExportToPdf(request):
     data = obtainDataFromRequest(request)
@@ -183,7 +189,7 @@ def DonationsExportToPdf(request):
     if partner == 0:
         title = "Reporte de donaciones"
     else:
-        title = f"Reporte de donaciones de {userOfPartner.first_name} {userOfPartner.last_name}" 
+        title = f"Reporte de donaciones de {userOfPartner.first_name} {userOfPartner.last_name}"
     startDateText = f"Fecha de inicio de los datos: {startDate_str}"
     endDateText = f"Fecha de fin de los datos: {endDate_str}"
     actualDateText = f"Fecha actual: {actualDate}"
@@ -243,6 +249,7 @@ def DonationsExportToPdf(request):
     doc.build(Story)
 
     return response
+
 
 def PunctualDonationsExportToPdf(request):
     data = obtainPunctualDonationsDataFromRequest(request)
@@ -304,7 +311,12 @@ def PunctualDonationsExportToPdf(request):
 
     for donation in queryset:
         table_data.append(
-            [donation.name, donation.surname, donation.proof_of_payment_document, donation.date]
+            [
+                donation.name,
+                donation.surname,
+                donation.proof_of_payment_document,
+                donation.date,
+            ]
         )
 
     # Create a table
@@ -330,6 +342,7 @@ def PunctualDonationsExportToPdf(request):
     doc.build(Story)
 
     return response
+
 
 def DonationsExportToExcel(request):
     # Get data from obtainDataFromRequest
@@ -370,6 +383,7 @@ def DonationsExportToExcel(request):
     workbook.save(response)
 
     return response
+
 
 def PunctualDonationsExportToExcel(request):
     # Get data from obtainDataFromRequest
