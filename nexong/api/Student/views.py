@@ -127,104 +127,379 @@ def obtainDataFromRequest(request):
     else:
         morning = morning
     # Filter donations
-    if name is None and surname is None and nationality is None and family is None and morning is None:
-        queryset =  Student.objects.all()
+    if (
+        name is None
+        and surname is None
+        and nationality is None
+        and family is None
+        and morning is None
+    ):
+        queryset = Student.objects.all()
         filename = "Reporte de estudiantes global."
-    elif name is None and surname is None and nationality is None and family is None and morning is not None:
-        queryset =  Student.objects.filter(is_morning_student=morning)
+    elif (
+        name is None
+        and surname is None
+        and nationality is None
+        and family is None
+        and morning is not None
+    ):
+        queryset = Student.objects.filter(is_morning_student=morning)
         filename = "Reporte_de_estudiantes."
-    elif name is None and surname is None and nationality is None and family is not None and morning is None:
-        queryset =  Student.objects.filter(family__name__icontains=family)
+    elif (
+        name is None
+        and surname is None
+        and nationality is None
+        and family is not None
+        and morning is None
+    ):
+        queryset = Student.objects.filter(family__name__icontains=family)
         filename = "Reporte_de_estudiantes."
-    elif name is None and surname is None and nationality is None and family is not None and morning is not None:
-        queryset =  Student.objects.filter(family__name__icontains=family, is_morning_student=morning)
+    elif (
+        name is None
+        and surname is None
+        and nationality is None
+        and family is not None
+        and morning is not None
+    ):
+        queryset = Student.objects.filter(
+            family__name__icontains=family, is_morning_student=morning
+        )
         filename = "Reporte_de_estudiantes."
-    elif name is None and surname is None and nationality is not None and family is None and morning is None:
-        queryset =  Student.objects.filter(nationality__icontains=nationality)
+    elif (
+        name is None
+        and surname is None
+        and nationality is not None
+        and family is None
+        and morning is None
+    ):
+        queryset = Student.objects.filter(nationality__icontains=nationality)
         filename = "Reporte_de_estudiantes."
-    elif name is None and surname is None and nationality is not None and family is None and morning is not None:
-        queryset =  Student.objects.filter(nationality__icontains=nationality, is_morning_student=morning)
+    elif (
+        name is None
+        and surname is None
+        and nationality is not None
+        and family is None
+        and morning is not None
+    ):
+        queryset = Student.objects.filter(
+            nationality__icontains=nationality, is_morning_student=morning
+        )
         filename = "Reporte_de_estudiantes."
-    elif name is None and surname is None and nationality is not None and family is not None and morning is None:
-        queryset =  Student.objects.filter(nationality__icontains=nationality,family__name__icontains=family)
+    elif (
+        name is None
+        and surname is None
+        and nationality is not None
+        and family is not None
+        and morning is None
+    ):
+        queryset = Student.objects.filter(
+            nationality__icontains=nationality, family__name__icontains=family
+        )
         filename = "Reporte_de_estudiantes."
-    elif name is None and surname is None and nationality is not None and family is not None and morning is not None:
-        queryset =  Student.objects.filter(nationality__icontains=nationality, family__name__icontains=family,is_morning_student=morning)
+    elif (
+        name is None
+        and surname is None
+        and nationality is not None
+        and family is not None
+        and morning is not None
+    ):
+        queryset = Student.objects.filter(
+            nationality__icontains=nationality,
+            family__name__icontains=family,
+            is_morning_student=morning,
+        )
         filename = "Reporte_de_estudiantes."
-    elif name is None and surname is not None and nationality is None and family is None and morning is None:
-        queryset =  Student.objects.filter(surname__icontains=surname)
+    elif (
+        name is None
+        and surname is not None
+        and nationality is None
+        and family is None
+        and morning is None
+    ):
+        queryset = Student.objects.filter(surname__icontains=surname)
         filename = "Reporte_de_estudiantes."
-    elif name is None and surname is not None and nationality is None and family is None and morning is not None:
-        queryset =  Student.objects.filter(surname__icontains=surname, is_morning_student=morning)
+    elif (
+        name is None
+        and surname is not None
+        and nationality is None
+        and family is None
+        and morning is not None
+    ):
+        queryset = Student.objects.filter(
+            surname__icontains=surname, is_morning_student=morning
+        )
         filename = "Reporte_de_estudiantes."
-    elif name is None and surname is not None and nationality is None and family is not None and morning is None:
-        queryset =  Student.objects.filter(surname__icontains=surname, family__name__icontains=family)
+    elif (
+        name is None
+        and surname is not None
+        and nationality is None
+        and family is not None
+        and morning is None
+    ):
+        queryset = Student.objects.filter(
+            surname__icontains=surname, family__name__icontains=family
+        )
         filename = "Reporte_de_estudiantes."
-    elif name is None and surname is not None and nationality is None and family is not None and morning is not None:
-        queryset =  Student.objects.filter(surname__icontains=surname, family__name__icontains=family, is_morning_student=morning)
+    elif (
+        name is None
+        and surname is not None
+        and nationality is None
+        and family is not None
+        and morning is not None
+    ):
+        queryset = Student.objects.filter(
+            surname__icontains=surname,
+            family__name__icontains=family,
+            is_morning_student=morning,
+        )
         filename = "Reporte_de_estudiantes."
-    elif name is None and surname is not None and nationality is not None and family is None and morning is None:
-        queryset =  Student.objects.filter(surname__icontains=surname,nationality__icontains=nationality)
+    elif (
+        name is None
+        and surname is not None
+        and nationality is not None
+        and family is None
+        and morning is None
+    ):
+        queryset = Student.objects.filter(
+            surname__icontains=surname, nationality__icontains=nationality
+        )
         filename = "Reporte_de_estudiantes."
-    elif name is None and surname is not None and nationality is not None and family is None and morning is not None:
-        queryset =  Student.objects.filter(surname__icontains=surname,nationality__icontains=nationality, is_morning_student=morning)
+    elif (
+        name is None
+        and surname is not None
+        and nationality is not None
+        and family is None
+        and morning is not None
+    ):
+        queryset = Student.objects.filter(
+            surname__icontains=surname,
+            nationality__icontains=nationality,
+            is_morning_student=morning,
+        )
         filename = "Reporte_de_estudiantes."
-    elif name is None and surname is not None and nationality is not None and family is not None and morning is None:
-        queryset =  Student.objects.filter(surname__icontains=surname,nationality__icontains=nationality, family__name__icontains=family)
+    elif (
+        name is None
+        and surname is not None
+        and nationality is not None
+        and family is not None
+        and morning is None
+    ):
+        queryset = Student.objects.filter(
+            surname__icontains=surname,
+            nationality__icontains=nationality,
+            family__name__icontains=family,
+        )
         filename = "Reporte_de_estudiantes."
-    elif name is None and surname is not None and nationality is not None and family is not None and morning is not None:
-        queryset =  Student.objects.filter(surname__icontains=surname,nationality__icontains=nationality, family__name__icontains=family, is_morning_student=morning)
+    elif (
+        name is None
+        and surname is not None
+        and nationality is not None
+        and family is not None
+        and morning is not None
+    ):
+        queryset = Student.objects.filter(
+            surname__icontains=surname,
+            nationality__icontains=nationality,
+            family__name__icontains=family,
+            is_morning_student=morning,
+        )
         filename = "Reporte_de_estudiantes."
 
-    elif name is not None and surname is None and nationality is None and family is None and morning is None:
-        queryset =  Student.objects.filter(name__icontains=name)
+    elif (
+        name is not None
+        and surname is None
+        and nationality is None
+        and family is None
+        and morning is None
+    ):
+        queryset = Student.objects.filter(name__icontains=name)
         filename = "Reporte_de_estudiantes."
-    elif name is not None and surname is None and nationality is None and family is None and morning is not None:
-        queryset =  Student.objects.filter(name__icontains=name,is_morning_student=morning)
+    elif (
+        name is not None
+        and surname is None
+        and nationality is None
+        and family is None
+        and morning is not None
+    ):
+        queryset = Student.objects.filter(
+            name__icontains=name, is_morning_student=morning
+        )
         filename = "Reporte_de_estudiantes."
-    elif name is not None and surname is None and nationality is None and family is not None and morning is None:
-        queryset =  Student.objects.filter(name__icontains=name,family__name__icontains=family)
+    elif (
+        name is not None
+        and surname is None
+        and nationality is None
+        and family is not None
+        and morning is None
+    ):
+        queryset = Student.objects.filter(
+            name__icontains=name, family__name__icontains=family
+        )
         filename = "Reporte_de_estudiantes."
-    elif name is not None and surname is None and nationality is None and family is not None and morning is not None:
-        queryset =  Student.objects.filter(name__icontains=name,family__name__icontains=family, is_morning_student=morning)
+    elif (
+        name is not None
+        and surname is None
+        and nationality is None
+        and family is not None
+        and morning is not None
+    ):
+        queryset = Student.objects.filter(
+            name__icontains=name,
+            family__name__icontains=family,
+            is_morning_student=morning,
+        )
         filename = "Reporte_de_estudiantes."
-    elif name is not None and surname is None and nationality is not None and family is None and morning is None:
-        queryset =  Student.objects.filter(name__icontains=name,nationality__icontains=nationality)
+    elif (
+        name is not None
+        and surname is None
+        and nationality is not None
+        and family is None
+        and morning is None
+    ):
+        queryset = Student.objects.filter(
+            name__icontains=name, nationality__icontains=nationality
+        )
         filename = "Reporte_de_estudiantes."
-    elif name is not None and surname is None and nationality is not None and family is None and morning is not None:
-        queryset =  Student.objects.filter(name__icontains=name,nationality__icontains=nationality, is_morning_student=morning)
+    elif (
+        name is not None
+        and surname is None
+        and nationality is not None
+        and family is None
+        and morning is not None
+    ):
+        queryset = Student.objects.filter(
+            name__icontains=name,
+            nationality__icontains=nationality,
+            is_morning_student=morning,
+        )
         filename = "Reporte_de_estudiantes."
-    elif name is not None and surname is None and nationality is not None and family is not None and morning is None:
-        queryset =  Student.objects.filter(name__icontains=name,nationality__icontains=nationality, family__name__icontains=family)
+    elif (
+        name is not None
+        and surname is None
+        and nationality is not None
+        and family is not None
+        and morning is None
+    ):
+        queryset = Student.objects.filter(
+            name__icontains=name,
+            nationality__icontains=nationality,
+            family__name__icontains=family,
+        )
         filename = "Reporte_de_estudiantes."
-    elif name is not None and surname is None and nationality is not None and family is not None and morning is not None:
-        queryset =  Student.objects.filter(name__icontains=name,nationality__icontains=nationality, family__name__icontains=family, is_morning_student=morning)
+    elif (
+        name is not None
+        and surname is None
+        and nationality is not None
+        and family is not None
+        and morning is not None
+    ):
+        queryset = Student.objects.filter(
+            name__icontains=name,
+            nationality__icontains=nationality,
+            family__name__icontains=family,
+            is_morning_student=morning,
+        )
         filename = "Reporte_de_estudiantes."
-    elif name is not None and surname is not None and nationality is None and family is None and morning is None:
-        queryset =  Student.objects.filter(name__icontains=name, surname__icontains=surname)
+    elif (
+        name is not None
+        and surname is not None
+        and nationality is None
+        and family is None
+        and morning is None
+    ):
+        queryset = Student.objects.filter(
+            name__icontains=name, surname__icontains=surname
+        )
         filename = "Reporte_de_estudiantes."
-    elif name is not None and surname is not None and nationality is None and family is None and morning is not None:
-        queryset =  Student.objects.filter(name__icontains=name, surname__icontains=surname, is_morning_student=morning)
+    elif (
+        name is not None
+        and surname is not None
+        and nationality is None
+        and family is None
+        and morning is not None
+    ):
+        queryset = Student.objects.filter(
+            name__icontains=name, surname__icontains=surname, is_morning_student=morning
+        )
         filename = "Reporte_de_estudiantes."
-    elif name is not None and surname is not None and nationality is None and family is not None and morning is None:
-        queryset =  Student.objects.filter(name__icontains=name, surname__icontains=surname, family__name__icontains=family)
+    elif (
+        name is not None
+        and surname is not None
+        and nationality is None
+        and family is not None
+        and morning is None
+    ):
+        queryset = Student.objects.filter(
+            name__icontains=name,
+            surname__icontains=surname,
+            family__name__icontains=family,
+        )
         filename = "Reporte_de_estudiantes."
-    elif name is not None and surname is not None and nationality is None and family is not None and morning is not None:
-        queryset =  Student.objects.filter(name__icontains=name, surname__icontains=surname, family__name__icontains=family, is_morning_student=morning)
+    elif (
+        name is not None
+        and surname is not None
+        and nationality is None
+        and family is not None
+        and morning is not None
+    ):
+        queryset = Student.objects.filter(
+            name__icontains=name,
+            surname__icontains=surname,
+            family__name__icontains=family,
+            is_morning_student=morning,
+        )
         filename = "Reporte_de_estudiantes."
-    elif name is not None and surname is not None and nationality is not None and family is None and morning is None:
-        queryset =  Student.objects.filter(name__icontains=name, surname__icontains=surname, nationality__icontains=nationality)
+    elif (
+        name is not None
+        and surname is not None
+        and nationality is not None
+        and family is None
+        and morning is None
+    ):
+        queryset = Student.objects.filter(
+            name__icontains=name,
+            surname__icontains=surname,
+            nationality__icontains=nationality,
+        )
         filename = "Reporte_de_estudiantes."
-    elif name is not None and surname is not None and nationality is not None and family is None and morning is not None:
-        queryset =  Student.objects.filter(name__icontains=name, surname__icontains=surname, nationality__icontains=nationality, is_morning_student=morning)
+    elif (
+        name is not None
+        and surname is not None
+        and nationality is not None
+        and family is None
+        and morning is not None
+    ):
+        queryset = Student.objects.filter(
+            name__icontains=name,
+            surname__icontains=surname,
+            nationality__icontains=nationality,
+            is_morning_student=morning,
+        )
         filename = "Reporte_de_estudiantes."
-    elif name is not None and surname is not None and nationality is not None and family is not None and morning is None:
-        queryset =  Student.objects.filter(name__icontains=name, surname__icontains=surname, nationality__icontains=nationality, family__name__icontains=family)
+    elif (
+        name is not None
+        and surname is not None
+        and nationality is not None
+        and family is not None
+        and morning is None
+    ):
+        queryset = Student.objects.filter(
+            name__icontains=name,
+            surname__icontains=surname,
+            nationality__icontains=nationality,
+            family__name__icontains=family,
+        )
         filename = "Reporte_de_estudiantes."
     else:
-        queryset =  Student.objects.filter(name__icontains=name, surname__icontains=surname, nationality__icontains=nationality, family__name__icontains=family, is_morning_student=morning)
+        queryset = Student.objects.filter(
+            name__icontains=name,
+            surname__icontains=surname,
+            nationality__icontains=nationality,
+            family__name__icontains=family,
+            is_morning_student=morning,
+        )
         filename = "Reporte de estudiantes."
-    
+
     return (
         queryset,
         filename,
@@ -340,11 +615,10 @@ def StudentsExportToPdf(request):
     Story.append(table)
     doc.build(Story)
 
-    return response 
+    return response
 
 
 def StudentsExportToExcel(request):
-
     data = obtainDataFromRequest(request)
 
     # Unpack values
