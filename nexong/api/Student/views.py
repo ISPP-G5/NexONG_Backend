@@ -48,7 +48,8 @@ class QuarterMarksApiViewSet(ModelViewSet):
         instance = self.get_object()
         self.perform_destroy(instance)
         return Response(status=status.HTTP_204_NO_CONTENT)
-    
+
+
 def StudentsExportToCsv(request):
     response = HttpResponse(content_type="text/csv")
     response["Content-Disposition"] = 'attachment; filename="Datos_Estudiantes.csv"'
@@ -60,34 +61,38 @@ def StudentsExportToCsv(request):
     writer = csv.writer(response, csv.excel)
 
     # Write the header row
-    writer.writerow([
-        smart_str(u"Nombre"),
-        smart_str(u"Apellido"),
-        smart_str(u"Curso Actual"),
-        smart_str(u"Nacionalidad"),
-        smart_str(u"Fecha de Nacimiento"),
-        smart_str(u"Estudiante de Mañana"),
-        smart_str(u"Estado"),
-        smart_str(u"Centro Educativo"),
-        smart_str(u"Familia")
-    ])
+    writer.writerow(
+        [
+            smart_str("Nombre"),
+            smart_str("Apellido"),
+            smart_str("Curso Actual"),
+            smart_str("Nacionalidad"),
+            smart_str("Fecha de Nacimiento"),
+            smart_str("Estudiante de Mañana"),
+            smart_str("Estado"),
+            smart_str("Centro Educativo"),
+            smart_str("Familia"),
+        ]
+    )
 
     # Retrieve data from your model
     queryset = Student.objects.all()
 
     # Write data rows
     for student in queryset:
-        writer.writerow([
-            smart_str(student.name),
-            smart_str(student.surname),
-            smart_str(student.current_education_year),
-            smart_str(student.nationality),
-            smart_str(student.birthdate),
-            smart_str(student.is_morning_student),
-            smart_str(student.status),
-            smart_str(student.education_center),
-            smart_str(student.family)
-        ])
+        writer.writerow(
+            [
+                smart_str(student.name),
+                smart_str(student.surname),
+                smart_str(student.current_education_year),
+                smart_str(student.nationality),
+                smart_str(student.birthdate),
+                smart_str(student.is_morning_student),
+                smart_str(student.status),
+                smart_str(student.education_center),
+                smart_str(student.family),
+            ]
+        )
 
     return response
 
@@ -264,25 +269,55 @@ def StudentsExportToPdf(request):
     Story.extend(cover_elements)
     # Separation for the table
     Story.append(Spacer(1, 10))
-    table_data = [["Nombre", "Apellido", "Curso Actual", "Nacionalidad", "Nacimiento", "De Mañana", "Estado","Centro Educativo", "Familia"]]
+    table_data = [
+        [
+            "Nombre",
+            "Apellido",
+            "Curso Actual",
+            "Nacionalidad",
+            "Nacimiento",
+            "De Mañana",
+            "Estado",
+            "Centro Educativo",
+            "Familia",
+        ]
+    ]
 
     for student in queryset:
         # Truncate long strings
         table_row = [
-            student.name[:15] if isinstance(student.name, str) and len(student.name) > 15 else student.name,
-            student.surname[:15] if isinstance(student.surname, str) and len(student.surname) > 15 else student.surname,
-            student.current_education_year[:15] if isinstance(student.current_education_year, str) and len(student.current_education_year) > 15 else student.current_education_year,
-            student.nationality[:15] if isinstance(student.nationality, str) and len(student.nationality) > 15 else student.nationality,
-            str(student.birthdate)[:15] if isinstance(student.birthdate, str) and len(str(student.birthdate)) > 15 else student.birthdate,
+            student.name[:15]
+            if isinstance(student.name, str) and len(student.name) > 15
+            else student.name,
+            student.surname[:15]
+            if isinstance(student.surname, str) and len(student.surname) > 15
+            else student.surname,
+            student.current_education_year[:15]
+            if isinstance(student.current_education_year, str)
+            and len(student.current_education_year) > 15
+            else student.current_education_year,
+            student.nationality[:15]
+            if isinstance(student.nationality, str) and len(student.nationality) > 15
+            else student.nationality,
+            str(student.birthdate)[:15]
+            if isinstance(student.birthdate, str) and len(str(student.birthdate)) > 15
+            else student.birthdate,
             student.is_morning_student,
             student.status,
-            student.education_center.name[:20] if isinstance(student.education_center, str) and len(student.education_center) > 20 else student.education_center.name,
-            student.family[:20] if isinstance(student.family, str) and len(student.family) > 20 else student.family
+            student.education_center.name[:20]
+            if isinstance(student.education_center, str)
+            and len(student.education_center) > 20
+            else student.education_center.name,
+            student.family[:20]
+            if isinstance(student.family, str) and len(student.family) > 20
+            else student.family,
         ]
         table_data.append(table_row)
 
     # Create a table
-    table = Table(table_data, colWidths=[40, 60, 90, 50, 45, 45, 60, 133, 80])  # Adjust the column width as needed
+    table = Table(
+        table_data, colWidths=[40, 60, 90, 50, 45, 45, 60, 133, 80]
+    )  # Adjust the column width as needed
 
     # Table style
     table.setStyle(
@@ -328,7 +363,15 @@ def StudentsExportToExcel(request):
     sheet = workbook.active
 
     header_row = [
-        "Nombre", "Apellido", "Curso Actual", "Nacionalidad", "Nacimiento", "De Mañana", "Estado","Centro Educativo", "Familia"
+        "Nombre",
+        "Apellido",
+        "Curso Actual",
+        "Nacionalidad",
+        "Nacimiento",
+        "De Mañana",
+        "Estado",
+        "Centro Educativo",
+        "Familia",
     ]
     sheet.append(header_row)
 
@@ -342,7 +385,7 @@ def StudentsExportToExcel(request):
             student.is_morning_student,
             student.status,
             student.education_center.name,
-            student.family.name
+            student.family.name,
         ]
         sheet.append(data_row)
 
