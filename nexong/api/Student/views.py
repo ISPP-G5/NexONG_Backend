@@ -129,15 +129,9 @@ def obtainDataFromRequest(request):
     else:
         morning = morning
     if not status:
-<<<<<<< HEAD
         status=None
     else: 
         if status not in dict(STATUS).keys():
-=======
-        status = None
-    else:
-        if status not in dict(STATUS).values():
->>>>>>> 4cd9c49f03d900fc2991061a3f984c712cfc74e2
             status = None
         else:
             status = status
