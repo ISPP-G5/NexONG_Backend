@@ -545,6 +545,8 @@
         "model": "nexong.user",
         "pk": 1,
         "fields": {
+            "first_name": "Palomino",
+            "last_name": "Vergara",
             "username": "Palomino Vergara",
             "id_number" : "57935784A",
             "phone" : 605234354,
@@ -563,6 +565,8 @@
         "model": "nexong.user",
         "pk": 2,
         "fields": {
+            "first_name": "Estrella",
+            "last_name": "Bonafila",
             "username": "Estrella Bonafila",
             "id_number" : "69899998D",
             "phone" : 644228657,
@@ -581,6 +585,8 @@
         "model": "nexong.user",
         "pk": 3,
         "fields": {
+            "first_name": "Marco",
+            "last_name": "Castilla",
             "username": "Marco Castilla",
             "id_number" : "57925784A",
             "phone" : 605233333,
@@ -598,6 +604,8 @@
         "model": "nexong.user",
         "pk": 4,
         "fields": {
+            "first_name": "Julen",
+            "last_name": "Muñiz",
             "username": "Julen Muñiz",
             "id_number" : "58673211F",
             "phone" : 654938475,
@@ -616,6 +624,8 @@
         "model": "nexong.user",
         "pk": 5,
         "fields": {
+            "first_name": "Javier",
+            "last_name": "Sevilla",
             "username": "Javier Sevilla",
             "id_number" : "84756982W",
             "phone" : 699448732,
@@ -634,6 +644,8 @@
         "model": "nexong.user",
         "pk": 6,
         "fields": {
+            "first_name": "Mateo",
+            "last_name": "Morcillo",
             "username": "Mateo Morcillo",
             "id_number" : "11660496S",
             "phone" : 699229933,
@@ -652,6 +664,8 @@
         "model": "nexong.user",
         "pk": 7,
         "fields": {
+            "first_name": "Maria",
+            "last_name": "Lorente",
             "username": "Maria Lorente",
             "id_number" : "22339846Y",
             "phone" : 600223958,
@@ -670,6 +684,8 @@
         "model": "nexong.user",
         "pk": 8,
         "fields": {
+            "first_name": "Justo",
+            "last_name": "Mellado",
             "username": "Justo Mellado",
             "id_number" : "99334485R",
             "phone" : 666992343,
@@ -688,6 +704,8 @@
         "model": "nexong.user",
         "pk": 9,
         "fields": {
+            "first_name": "Milagros",
+            "last_name": "Garcia",
             "username": "Milagros Garcia",
             "id_number" : "48576821J",
             "phone" : 622922922,
@@ -706,6 +724,8 @@
         "model": "nexong.user",
         "pk": 10,
         "fields": {
+            "first_name": "Esteban",
+            "last_name": "Rodriguez",
             "username": "Esteban Rodriguez",
             "id_number" : "57123784T",
             "phone" : 604893860,
@@ -724,6 +744,8 @@
         "model": "nexong.user",
         "pk": 11,
         "fields": {
+            "first_name": "Mario",
+            "last_name": "Gomez",
             "username": "Mario Gomez",
             "id_number" : "29584723P",
             "phone" : 603867312,
@@ -742,6 +764,8 @@
         "model": "nexong.user",
         "pk": 12,
         "fields": {
+            "first_name": "Marcos",
+            "last_name": "Ortiz",
             "username": "Marcos Ortiz",
             "id_number" : "98399384L",
             "phone" : 63212452,
@@ -760,6 +784,8 @@
         "model": "nexong.user",
         "pk": 13,
         "fields": {
+            "first_name": "Stefania",
+            "last_name": "Angelina",
             "username": "Stefania Angelina",
             "id_number" : "94838877S",
             "phone" : 690847362,
@@ -778,6 +804,8 @@
         "model": "nexong.user",
         "pk": 14,
         "fields": {
+            "first_name": "Anna",
+            "last_name": "Enriquez",
             "username": "Anna Enriquez",
             "id_number" : "85933958G",
             "phone" : 596748302,
@@ -796,6 +824,8 @@
         "model": "nexong.user",
         "pk": 15,
         "fields": {
+            "first_name": "Luciano",
+            "last_name": "Gomez",
             "username": "Luciano Gomez",
             "id_number" : "19993875L",
             "phone" : 99332763,
@@ -814,6 +844,8 @@
         "model": "nexong.user",
         "pk": 16,
         "fields": {
+            "first_name": "Cecilio",
+            "last_name": "Fernandez",
             "username": "Cecilio Fernandez",
             "id_number" : "43434325B",
             "phone" : 667695958,
@@ -832,6 +864,8 @@
         "model": "nexong.user",
         "pk": 17,
         "fields": {
+            "first_name": "Pedro",
+            "last_name": "Moreno",
             "username": "Pedro Moreno",
             "id_number" : "85922339G",
             "phone" : 688899953,
@@ -850,6 +884,8 @@
         "model": "nexong.user",
         "pk": 18,
         "fields": {
+            "first_name": "Centro Educativo",
+            "last_name": "Doctrina",
             "username": "Centro Educativo Doctrina",
             "id_number" : "94862395P",
             "phone" : 699256707,
@@ -868,6 +904,8 @@
         "model": "nexong.user",
         "pk": 19,
         "fields": {
+            "first_name": "Centro Educativo",
+            "last_name": "Claret",
             "username": "Centro Educativo Claret",
             "id_number" : "21214509L",
             "phone" : 633933955,
@@ -886,6 +924,8 @@
         "model": "nexong.user",
         "pk": 20,
         "fields": {
+            "first_name": "admin",
+            "last_name": "admin",
             "username": "Admin",
             "id_number": "85738237V",
             "phone": 638576655,
