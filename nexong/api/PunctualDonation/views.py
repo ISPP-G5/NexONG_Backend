@@ -10,6 +10,7 @@ import stripe
 from django.views.decorators.csrf import csrf_exempt
 import json
 
+
 class PunctualDonationApiViewSet(ModelViewSet):
     queryset = PunctualDonation.objects.all()
     http_method_names = ["get", "post", "delete"]
@@ -20,18 +21,16 @@ class PunctualDonationApiViewSet(ModelViewSet):
         instance = self.get_object()
         self.perform_destroy(instance)
         return Response(status=status.HTTP_204_NO_CONTENT)
-    
+
+
 @csrf_exempt
 def process_payment(request):
     stripe.api_key = settings.STRIPE_PRIVATE_KEY
-    if request.method == 'POST':
-        amount = json.loads(request.body)['amount']  # Monto en centavos
+    if request.method == "POST":
+        amount = json.loads(request.body)["amount"]  # Monto en centavos
         intent = stripe.PaymentIntent.create(
             amount=amount,
-            currency='usd',
-            payment_method_types=['card'],
+            currency="usd",
+            payment_method_types=["card"],
         )
-        return JsonResponse({
-            'client_secret': intent.client_secret,
-            'amount': amount
-        })
+        return JsonResponse({"client_secret": intent.client_secret, "amount": amount})
