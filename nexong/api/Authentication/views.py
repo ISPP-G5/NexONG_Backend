@@ -1,6 +1,6 @@
 import requests
 from django.views import View
-from django.http import JsonResponse
+from django.http import HttpResponse, JsonResponse
 from rest_framework.views import APIView
 from rest_framework.viewsets import ModelViewSet
 from rest_framework.response import Response
@@ -129,15 +129,16 @@ class ActivateUserView(APIView):
         else:
             return Response(status=response.status_code)
         
-class EmailApiView(APIView):
-    def post(self, request):
-        try:
-            to_email = "nanomotors33@gmail.com"
-            subject = "Mensaje de prueba"
-            message = request.data.get('message')
-            send_mail(subject, message, None, [to_email])
-            #Para verificar primero por postman
-            return Response({'message': 'Correo enviado con exito'}, status=status.HTTP_200_OK)
-        except Exception as e:
-            error_message = str(e)
-            return Response({'message': error_message},status=status.HTTP_400_BAD_REQUEST)
+
+def EmailApiView(request):
+    try:
+        to_email = request.GET.get("email")
+        subject = "Mensaje de prueba"
+        message = "Registro correctamente el usuario"
+        send_mail(subject, message, None, [to_email])
+        #Para verificar primero por postman
+        return HttpResponse({'Correo enviado con exito'})
+    except Exception as e:
+        error_message = str(e)
+        return HttpResponse({error_message})
+        #Falta que te mande a la pagina de inicio(redirect home)
