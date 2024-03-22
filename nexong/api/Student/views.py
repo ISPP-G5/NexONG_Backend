@@ -129,8 +129,8 @@ def obtainDataFromRequest(request):
     else:
         morning = morning
     if not status:
-        status=None
-    else: 
+        status = None
+    else:
         if status not in dict(STATUS).keys():
             status = None
         else:
