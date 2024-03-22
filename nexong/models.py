@@ -9,6 +9,7 @@ from django.core.validators import (
 from nexong.api.helpers.fileValidations import (
     rename_upload_to,
     validate_file_extension,
+    validate_image_extension,
 )
 
 ADMIN = "ADMIN"
@@ -141,6 +142,7 @@ class Student(models.Model):
         upload_to=lambda instance, filename: rename_upload_to(
             instance, filename, "student_avatar"
         ),
+        validators=[validate_image_extension],
         null=True,
         blank=True,
     )
@@ -198,6 +200,7 @@ class Donation(models.Model):
         upload_to=lambda instance, filename: rename_upload_to(
             instance, filename, "partner_quota"
         ),
+        validators=[validate_file_extension],
         null=True,
         blank=True,
     )
@@ -247,12 +250,14 @@ class Volunteer(models.Model):
     registry_sheet = models.FileField(
         upload_to=lambda instance, filename: rename_upload_to(
             instance, filename, "volunteer_registry"
-        )
+        ),
+        validators=[validate_file_extension],
     )
     sexual_offenses_document = models.FileField(
         upload_to=lambda instance, filename: rename_upload_to(
             instance, filename, "volunteer_offenses"
         ),
+        validators=[validate_file_extension],
     )
     scanned_id = models.FileField(
         upload_to=lambda instance, filename: rename_upload_to(
@@ -263,7 +268,8 @@ class Volunteer(models.Model):
     minor_authorization = models.FileField(
         upload_to=lambda instance, filename: rename_upload_to(
             instance, filename, "volunteer_minor"
-        )
+        ),
+        validators=[validate_file_extension],
     )
     scanned_authorizer_id = models.FileField(
         upload_to=lambda instance, filename: rename_upload_to(
@@ -328,7 +334,8 @@ class User(AbstractUser):
     avatar = models.FileField(
         upload_to=lambda instance, filename: rename_upload_to(
             instance, filename, "user_avatar"
-        )
+        ),
+        validators=[validate_image_extension],
     )
     family = models.OneToOneField(
         Family, on_delete=models.CASCADE, blank=True, null=True
