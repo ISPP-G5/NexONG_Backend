@@ -211,3 +211,12 @@ SOCIAL_AUTH_GOOGLE_OAUTH2_EXTRA_DATA = ["first_name", "last_name"]
 
 MEDIA_URL = "NexONG_Backend/files/"
 MEDIA_ROOT = "files"
+
+#Configuracion de email
+DEFAULT_FROM_EMAIL= 'info.nexong@gmail.com'
+EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+EMAIL_HOST = 'smtp.gmail.com'  
+EMAIL_PORT = 587
+EMAIL_USE_TLS = True
+EMAIL_HOST_USER = DEFAULT_FROM_EMAIL
+EMAIL_HOST_PASSWORD = 'hrge nkbr uapt oyxk'

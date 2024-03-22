@@ -4,6 +4,8 @@ from drf_yasg.views import get_schema_view
 from drf_yasg import openapi
 from nexong.api.urls import urlpatterns as api_urls
 from nexong import views
+from nexong.api.Authentication.views import EmailApiView
+
 
 schema_view = get_schema_view(
     openapi.Info(
@@ -24,4 +26,5 @@ urlpatterns = [
     re_path(
         r"^NexONG_Backend/files/(?P<path>.*)$", views.serve_file, name="serve_file"
     ),
+    path("send_email/", EmailApiView.as_view(), name='send-email')
 ]

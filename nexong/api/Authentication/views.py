@@ -8,6 +8,9 @@ from rest_framework import status
 from ...models import *
 from .authSerializer import *
 from rest_framework_simplejwt.tokens import RefreshToken
+from django.core.mail import send_mail
+
+
 
 
 def process_instance(serializer_class, instance, data):
@@ -125,3 +128,16 @@ class ActivateUserView(APIView):
                 return Response(e.args, status=status.HTTP_400_BAD_REQUEST)
         else:
             return Response(status=response.status_code)
+        
+class EmailApiView(APIView):
+    def post(self, request):
+        try:
+            to_email = "nanomotors33@gmail.com"
+            subject = "Mensaje de prueba"
+            message = request.data.get('message')
+            send_mail(subject, message, None, [to_email])
+            #Para verificar primero por postman
+            return Response({'message': 'Correo enviado con exito'}, status=status.HTTP_200_OK)
+        except Exception as e:
+            error_message = str(e)
+            return Response({'message': error_message},status=status.HTTP_400_BAD_REQUEST)
