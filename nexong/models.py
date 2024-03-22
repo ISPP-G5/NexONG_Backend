@@ -7,7 +7,20 @@ from django.core.validators import (
     URLValidator,
 )
 from nexong.api.helpers.fileValidations import (
-    rename_upload_to,
+    upload_to_authorization,
+    upload_to_avatar,
+    upload_to_education_center_tutor,
+    upload_to_enrollment_document,
+    upload_to_minor_authorization,
+    upload_to_partner,
+    upload_to_punctual_donation,
+    upload_to_quota_extension_document,
+    upload_to_quartermarks,
+    upload_to_registry_sheet,
+    upload_to_scanned_authorizer_id,
+    upload_to_scanned_id,
+    upload_to_scanned_sanitary_card,
+    upload_to_sexual_offenses,
     validate_file_extension,
     validate_image_extension,
 )
@@ -118,17 +131,13 @@ class Student(models.Model):
     )
     education_center_tutor = models.CharField(max_length=255)
     enrollment_document = models.FileField(
-        upload_to=lambda instance, filename: rename_upload_to(
-            instance, filename, "student_enrollment"
-        ),
+        upload_to=upload_to_education_center_tutor,
         null=True,
         blank=True,
         validators=[validate_file_extension],
     )
     scanned_sanitary_card = models.FileField(
-        upload_to=lambda instance, filename: rename_upload_to(
-            instance, filename, "student_sanitary"
-        ),
+        upload_to=upload_to_scanned_sanitary_card,
         null=True,
         blank=True,
         validators=[validate_file_extension],
@@ -139,9 +148,7 @@ class Student(models.Model):
     status = models.CharField(max_length=10, choices=STATUS, default=PENDING, null=True)
     activities_during_exit = models.CharField(max_length=1000, null=True, blank=True)
     avatar = models.FileField(
-        upload_to=lambda instance, filename: rename_upload_to(
-            instance, filename, "student_avatar"
-        ),
+        upload_to=upload_to_avatar,
         validators=[validate_image_extension],
         null=True,
         blank=True,
@@ -161,9 +168,7 @@ class Student(models.Model):
 class QuarterMarks(models.Model):
     date = models.DateField()
     marks = models.FileField(
-        upload_to=lambda instance, filename: rename_upload_to(
-            instance, filename, "quarter_marks"
-        ),
+        upload_to=upload_to_quartermarks,
         null=True,
         blank=True,
         validators=[validate_file_extension],
@@ -176,9 +181,7 @@ class QuarterMarks(models.Model):
 class Partner(models.Model):
     address = models.CharField(max_length=255, null=True, blank=True)
     enrollment_document = models.FileField(
-        upload_to=lambda instance, filename: rename_upload_to(
-            instance, filename, "partner_enrollment"
-        ),
+        upload_to=upload_to_partner,
         null=True,
         blank=True,
         validators=[validate_file_extension],
@@ -197,9 +200,7 @@ class Donation(models.Model):
     frequency = models.CharField(max_length=11, choices=FREQUENCY, default=MONTHLY)
     holder = models.CharField(max_length=255)
     quota_extension_document = models.FileField(
-        upload_to=lambda instance, filename: rename_upload_to(
-            instance, filename, "partner_quota"
-        ),
+        upload_to=upload_to_quota_extension_document,
         validators=[validate_file_extension],
         null=True,
         blank=True,
@@ -215,9 +216,7 @@ class PunctualDonation(models.Model):
     surname = models.CharField(max_length=255)
     email = models.EmailField()
     proof_of_payment_document = models.FileField(
-        upload_to=lambda instance, filename: rename_upload_to(
-            instance, filename, "proof_of_payment"
-        ),
+        upload_to=upload_to_punctual_donation,
         validators=[validate_file_extension],
     )
     date = models.DateField()
@@ -226,9 +225,7 @@ class PunctualDonation(models.Model):
 class HomeDocument(models.Model):
     title = models.CharField(max_length=255)
     document = models.FileField(
-        upload_to=lambda instance, filename: rename_upload_to(
-            instance, filename, "home_document"
-        ),
+        upload_to="home_document",
         null=True,
         blank=True,
     )
@@ -242,39 +239,27 @@ class Volunteer(models.Model):
     address = models.CharField(max_length=255)
     postal_code = models.CharField(max_length=255)
     enrollment_document = models.FileField(
-        upload_to=lambda instance, filename: rename_upload_to(
-            instance, filename, "volunteer_enrollment"
-        ),
+        upload_to=upload_to_enrollment_document,
         validators=[validate_file_extension],
     )
     registry_sheet = models.FileField(
-        upload_to=lambda instance, filename: rename_upload_to(
-            instance, filename, "volunteer_registry"
-        ),
+        upload_to=upload_to_registry_sheet,
         validators=[validate_file_extension],
     )
     sexual_offenses_document = models.FileField(
-        upload_to=lambda instance, filename: rename_upload_to(
-            instance, filename, "volunteer_offenses"
-        ),
+        upload_to=upload_to_sexual_offenses,
         validators=[validate_file_extension],
     )
     scanned_id = models.FileField(
-        upload_to=lambda instance, filename: rename_upload_to(
-            instance, filename, "volunteer_id"
-        ),
+        upload_to=upload_to_scanned_id,
         validators=[validate_file_extension],
     )
     minor_authorization = models.FileField(
-        upload_to=lambda instance, filename: rename_upload_to(
-            instance, filename, "volunteer_minor"
-        ),
+        upload_to=upload_to_minor_authorization,
         validators=[validate_file_extension],
     )
     scanned_authorizer_id = models.FileField(
-        upload_to=lambda instance, filename: rename_upload_to(
-            instance, filename, "volunteer_authorizer_id"
-        ),
+        upload_to=upload_to_scanned_authorizer_id,
         validators=[validate_file_extension],
     )
     birthdate = models.DateField()
@@ -332,9 +317,7 @@ class User(AbstractUser):
         default=FAMILY,
     )
     avatar = models.FileField(
-        upload_to=lambda instance, filename: rename_upload_to(
-            instance, filename, "user_avatar"
-        ),
+        upload_to=upload_to_avatar,
         validators=[validate_image_extension],
     )
     family = models.OneToOneField(
@@ -463,9 +446,7 @@ class Event(models.Model):
 
 class CenterExitAuthorization(models.Model):
     authorization = models.FileField(
-        upload_to=lambda instance, filename: rename_upload_to(
-            instance, filename, "centerexit_auth"
-        ),
+        upload_to=upload_to_authorization,
         validators=[validate_file_extension],
     )
     student = models.ForeignKey(
