@@ -1,3 +1,4 @@
+from django.utils.http import urlsafe_base64_decode
 import requests
 from django.views import View
 from django.http import HttpResponse, JsonResponse
@@ -8,7 +9,7 @@ from rest_framework import status
 from ...models import *
 from .authSerializer import *
 from rest_framework_simplejwt.tokens import RefreshToken
-
+from django.contrib.auth.tokens import default_token_generator
 
 
 def process_instance(serializer_class, instance, data):
@@ -109,7 +110,7 @@ class LogoutAndBlacklistRefreshTokenForUserView(APIView):
 class ActivateUserView(APIView):
     authentication_classes = ()
 
-    def post(self, request):
+    def post(self, request,uid,token):
         access_token = request.headers.get("Authorization")
         url = "http://localhost:8000/api/auth/users/me"  # Actualiza con la URL de tu aplicación
         headers = {"Authorization": access_token}
@@ -118,10 +119,18 @@ class ActivateUserView(APIView):
             try:
                 email = response.json()["email"]
                 user = User.objects.get(email=email)
+                #Verificar si el user coincide con el IUD decodificado
+                uid = urlsafe_base64_decode(uid).decode()
+                if str(user.id) != uid:
+                    return Response("Invalid user", status=status.HTTP_400_BAD_REQUEST)
+                
                 if not user.is_enabled and not user.id_number:
-                    user.is_enabled = True
-                    user.save()
-                return Response(status=status.HTTP_200_OK)
+                    if default_token_generator.check_token(user, token):
+                        user.is_enabled = True
+                        user.save()
+                    return Response(status=status.HTTP_200_OK)
+                else:
+                   return Response("Invalid token", status=status.HTTP_400_BAD_REQUEST) 
             except Exception as e:
                 return Response(e.args, status=status.HTTP_400_BAD_REQUEST)
         else:
