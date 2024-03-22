@@ -6,6 +6,7 @@ from .Authentication.views import (
     LogoutAndBlacklistRefreshTokenForUserView,
     ActivateUserView,
 )
+from .PunctualDonation.views import *
 
 urlpatterns = [
     path("", include(router_api.urls)),
@@ -26,4 +27,6 @@ urlpatterns = [
         name="blacklist",
     ),
     path("redirect-social/", RedirectSocial.as_view()),
+    path('process-payment', process_payment, name='process_payment'),
+
 ]
