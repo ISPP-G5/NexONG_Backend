@@ -132,7 +132,7 @@ def obtainDataFromRequest(request):
     if not status:
         status=None
     else: 
-        if status not in dict(STATUS).values():
+        if status not in dict(STATUS).keys():
             status = None
         else: 
             status = status
