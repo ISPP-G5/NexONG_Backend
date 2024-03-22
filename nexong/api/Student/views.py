@@ -26,7 +26,6 @@ from reportlab.lib.styles import getSampleStyleSheet
 from reportlab.lib import colors
 
 
-
 class StudentApiViewSet(ModelViewSet):
     queryset = Student.objects.all()
     http_method_names = ["get", "post", "put", "delete", "patch"]
@@ -130,26 +129,24 @@ def obtainDataFromRequest(request):
     else:
         morning = morning
     if not status:
-        status=None
-    else: 
+        status = None
+    else:
         if status not in dict(STATUS).values():
             status = None
-        else: 
+        else:
             status = status
     if not education_year:
-        education_year=None
-    else: 
+        education_year = None
+    else:
         if education_year not in dict(CURRENT_EDUCATION_YEAR).keys():
             education_year = None
-        else: 
+        else:
             education_year = education_year
     # Filter donations
     if (
         status is None
-        and 
-        education_year is None
-        and
-        name is None
+        and education_year is None
+        and name is None
         and surname is None
         and nationality is None
         and family is None
@@ -159,10 +156,8 @@ def obtainDataFromRequest(request):
         filename = "Reporte de estudiantes global."
     elif (
         status is None
-        and 
-        education_year is None
-        and
-        name is None
+        and education_year is None
+        and name is None
         and surname is None
         and nationality is None
         and family is None
@@ -172,10 +167,8 @@ def obtainDataFromRequest(request):
         filename = f"Reporte de estudiantes de por la mañana {morning}"
     elif (
         status is None
-        and 
-        education_year is None
-        and
-        name is None
+        and education_year is None
+        and name is None
         and surname is None
         and nationality is None
         and family is not None
@@ -185,10 +178,8 @@ def obtainDataFromRequest(request):
         filename = f"Reporte de estudiantes de familia {family}"
     elif (
         status is None
-        and 
-        education_year is None
-        and
-        name is None
+        and education_year is None
+        and name is None
         and surname is None
         and nationality is None
         and family is not None
@@ -200,10 +191,8 @@ def obtainDataFromRequest(request):
         filename = f"Reporte de studiantes por la mañana {morning} y familia {family}"
     elif (
         status is None
-        and 
-        education_year is None
-        and
-        name is None
+        and education_year is None
+        and name is None
         and surname is None
         and nationality is not None
         and family is None
@@ -213,10 +202,8 @@ def obtainDataFromRequest(request):
         filename = f"Reporte de estudiantes de nacionalidad {nationality}"
     elif (
         status is None
-        and 
-        education_year is None
-        and
-        name is None
+        and education_year is None
+        and name is None
         and surname is None
         and nationality is not None
         and family is None
@@ -228,10 +215,8 @@ def obtainDataFromRequest(request):
         filename = f"Reporte de estudiantes de nacionalidad {nationality} y por la mañana {morning}"
     elif (
         status is None
-        and 
-        education_year is None
-        and
-        name is None
+        and education_year is None
+        and name is None
         and surname is None
         and nationality is not None
         and family is not None
@@ -240,13 +225,13 @@ def obtainDataFromRequest(request):
         queryset = Student.objects.filter(
             nationality__icontains=nationality, family__name__icontains=family
         )
-        filename = f"Reporte de estudiantes de nacionalidad {nationality} y familia {family}"
+        filename = (
+            f"Reporte de estudiantes de nacionalidad {nationality} y familia {family}"
+        )
     elif (
         status is None
-        and 
-        education_year is None
-        and
-        name is None
+        and education_year is None
+        and name is None
         and surname is None
         and nationality is not None
         and family is not None
@@ -260,10 +245,8 @@ def obtainDataFromRequest(request):
         filename = f"Reporte de estudiantes de nacionalidad {nationality}, por la mañana {morning} y familia {family}"
     elif (
         status is None
-        and 
-        education_year is None
-        and
-        name is None
+        and education_year is None
+        and name is None
         and surname is not None
         and nationality is None
         and family is None
@@ -273,10 +256,8 @@ def obtainDataFromRequest(request):
         filename = f"Reporte_de_estudiantes apellido {surname}"
     elif (
         status is None
-        and 
-        education_year is None
-        and
-        name is None
+        and education_year is None
+        and name is None
         and surname is not None
         and nationality is None
         and family is None
@@ -285,13 +266,13 @@ def obtainDataFromRequest(request):
         queryset = Student.objects.filter(
             surname__icontains=surname, is_morning_student=morning
         )
-        filename = f"Reporte_de_estudiantes apellido {surname} y por la mañana {morning}"
+        filename = (
+            f"Reporte_de_estudiantes apellido {surname} y por la mañana {morning}"
+        )
     elif (
         status is None
-        and 
-        education_year is None
-        and
-        name is None
+        and education_year is None
+        and name is None
         and surname is not None
         and nationality is None
         and family is not None
@@ -303,10 +284,8 @@ def obtainDataFromRequest(request):
         filename = f"Reporte_de_estudiantes apellido {surname} y familia {family}"
     elif (
         status is None
-        and 
-        education_year is None
-        and
-        name is None
+        and education_year is None
+        and name is None
         and surname is not None
         and nationality is None
         and family is not None
@@ -320,10 +299,8 @@ def obtainDataFromRequest(request):
         filename = f"Reporte_de_estudiantes apellido {surname}, por la mañana {morning} y familia {family}"
     elif (
         status is None
-        and 
-        education_year is None
-        and
-        name is None
+        and education_year is None
+        and name is None
         and surname is not None
         and nationality is not None
         and family is None
@@ -332,13 +309,13 @@ def obtainDataFromRequest(request):
         queryset = Student.objects.filter(
             surname__icontains=surname, nationality__icontains=nationality
         )
-        filename = f"Reporte_de_estudiantes apellido {surname} y nacionalidad {nationality}"
+        filename = (
+            f"Reporte_de_estudiantes apellido {surname} y nacionalidad {nationality}"
+        )
     elif (
         status is None
-        and 
-        education_year is None
-        and
-        name is None
+        and education_year is None
+        and name is None
         and surname is not None
         and nationality is not None
         and family is None
@@ -352,10 +329,8 @@ def obtainDataFromRequest(request):
         filename = f"Reporte_de_estudiantes apellido {surname}, por la mañana {morning} y nacionalidad {nationality}"
     elif (
         status is None
-        and 
-        education_year is None
-        and
-        name is None
+        and education_year is None
+        and name is None
         and surname is not None
         and nationality is not None
         and family is not None
@@ -369,10 +344,8 @@ def obtainDataFromRequest(request):
         filename = f"Reporte_de_estudiantes apellido {surname}, familia {family} y nacionalidad {nationality}"
     elif (
         status is None
-        and 
-        education_year is None
-        and
-        name is None
+        and education_year is None
+        and name is None
         and surname is not None
         and nationality is not None
         and family is not None
@@ -388,10 +361,8 @@ def obtainDataFromRequest(request):
 
     elif (
         status is None
-        and 
-        education_year is None
-        and
-        name is not None
+        and education_year is None
+        and name is not None
         and surname is None
         and nationality is None
         and family is None
@@ -401,10 +372,8 @@ def obtainDataFromRequest(request):
         filename = f"Reporte_de_estudiantes nombre {name}"
     elif (
         status is None
-        and 
-        education_year is None
-        and
-        name is not None
+        and education_year is None
+        and name is not None
         and surname is None
         and nationality is None
         and family is None
@@ -413,13 +382,11 @@ def obtainDataFromRequest(request):
         queryset = Student.objects.filter(
             name__icontains=name, is_morning_student=morning
         )
-        filename =  f"Reporte_de_estudiantes nombre {name} y por la mañana {morning}"
+        filename = f"Reporte_de_estudiantes nombre {name} y por la mañana {morning}"
     elif (
         status is None
-        and 
-        education_year is None
-        and
-        name is not None
+        and education_year is None
+        and name is not None
         and surname is None
         and nationality is None
         and family is not None
@@ -428,13 +395,11 @@ def obtainDataFromRequest(request):
         queryset = Student.objects.filter(
             name__icontains=name, family__name__icontains=family
         )
-        filename =  f"Reporte_de_estudiantes nombre {name} y familia {family}"
+        filename = f"Reporte_de_estudiantes nombre {name} y familia {family}"
     elif (
         status is None
-        and 
-        education_year is None
-        and
-        name is not None
+        and education_year is None
+        and name is not None
         and surname is None
         and nationality is None
         and family is not None
@@ -445,13 +410,11 @@ def obtainDataFromRequest(request):
             family__name__icontains=family,
             is_morning_student=morning,
         )
-        filename =  f"Reporte_de_estudiantes nombre {name}, por la mañana {morning} y familia {family}"
+        filename = f"Reporte_de_estudiantes nombre {name}, por la mañana {morning} y familia {family}"
     elif (
         status is None
-        and 
-        education_year is None
-        and
-        name is not None
+        and education_year is None
+        and name is not None
         and surname is None
         and nationality is not None
         and family is None
@@ -460,13 +423,11 @@ def obtainDataFromRequest(request):
         queryset = Student.objects.filter(
             name__icontains=name, nationality__icontains=nationality
         )
-        filename =  f"Reporte_de_estudiantes nombre {name} y nacionalidad {nationality}"
+        filename = f"Reporte_de_estudiantes nombre {name} y nacionalidad {nationality}"
     elif (
         status is None
-        and 
-        education_year is None
-        and
-        name is not None
+        and education_year is None
+        and name is not None
         and surname is None
         and nationality is not None
         and family is None
@@ -477,13 +438,11 @@ def obtainDataFromRequest(request):
             nationality__icontains=nationality,
             is_morning_student=morning,
         )
-        filename =  f"Reporte_de_estudiantes nombre {name}, por la mañana {morning} y nacionalidad {nationality}"
+        filename = f"Reporte_de_estudiantes nombre {name}, por la mañana {morning} y nacionalidad {nationality}"
     elif (
         status is None
-        and 
-        education_year is None
-        and
-        name is not None
+        and education_year is None
+        and name is not None
         and surname is None
         and nationality is not None
         and family is not None
@@ -494,13 +453,11 @@ def obtainDataFromRequest(request):
             nationality__icontains=nationality,
             family__name__icontains=family,
         )
-        filename =  f"Reporte_de_estudiantes nombre {name}, nacionalidad {nationality} y familia {family}"
+        filename = f"Reporte_de_estudiantes nombre {name}, nacionalidad {nationality} y familia {family}"
     elif (
         status is None
-        and 
-        education_year is None
-        and
-        name is not None
+        and education_year is None
+        and name is not None
         and surname is None
         and nationality is not None
         and family is not None
@@ -512,13 +469,11 @@ def obtainDataFromRequest(request):
             family__name__icontains=family,
             is_morning_student=morning,
         )
-        filename =  f"Reporte_de_estudiantes nombre {name}, nacionalidad {nationality}, familia {family} y por la mañana {morning}"
+        filename = f"Reporte_de_estudiantes nombre {name}, nacionalidad {nationality}, familia {family} y por la mañana {morning}"
     elif (
         status is None
-        and 
-        education_year is None
-        and
-        name is not None
+        and education_year is None
+        and name is not None
         and surname is not None
         and nationality is None
         and family is None
@@ -527,13 +482,11 @@ def obtainDataFromRequest(request):
         queryset = Student.objects.filter(
             name__icontains=name, surname__icontains=surname
         )
-        filename =  f"Reporte_de_estudiantes nombre {name} y apellido {surname}"
+        filename = f"Reporte_de_estudiantes nombre {name} y apellido {surname}"
     elif (
         status is None
-        and 
-        education_year is None
-        and
-        name is not None
+        and education_year is None
+        and name is not None
         and surname is not None
         and nationality is None
         and family is None
@@ -542,13 +495,11 @@ def obtainDataFromRequest(request):
         queryset = Student.objects.filter(
             name__icontains=name, surname__icontains=surname, is_morning_student=morning
         )
-        filename =  f"Reporte_de_estudiantes nombre {name}, apellido {surname} y por la mañana {morning}"
+        filename = f"Reporte_de_estudiantes nombre {name}, apellido {surname} y por la mañana {morning}"
     elif (
         status is None
-        and 
-        education_year is None
-        and
-        name is not None
+        and education_year is None
+        and name is not None
         and surname is not None
         and nationality is None
         and family is not None
@@ -559,13 +510,11 @@ def obtainDataFromRequest(request):
             surname__icontains=surname,
             family__name__icontains=family,
         )
-        filename =  f"Reporte_de_estudiantes nombre {name}, apellido {surname} y familia {family}"
+        filename = f"Reporte_de_estudiantes nombre {name}, apellido {surname} y familia {family}"
     elif (
         status is None
-        and 
-        education_year is None
-        and
-        name is not None
+        and education_year is None
+        and name is not None
         and surname is not None
         and nationality is None
         and family is not None
@@ -577,13 +526,11 @@ def obtainDataFromRequest(request):
             family__name__icontains=family,
             is_morning_student=morning,
         )
-        filename =  f"Reporte_de_estudiantes nombre {name}, apellido {surname}, familia {family} y por la mañana {morning}"
+        filename = f"Reporte_de_estudiantes nombre {name}, apellido {surname}, familia {family} y por la mañana {morning}"
     elif (
         status is None
-        and 
-        education_year is None
-        and
-        name is not None
+        and education_year is None
+        and name is not None
         and surname is not None
         and nationality is not None
         and family is None
@@ -594,13 +541,11 @@ def obtainDataFromRequest(request):
             surname__icontains=surname,
             nationality__icontains=nationality,
         )
-        filename =  f"Reporte_de_estudiantes nombre {name}, apellido {surname} y nacionalidad {nationality}"
+        filename = f"Reporte_de_estudiantes nombre {name}, apellido {surname} y nacionalidad {nationality}"
     elif (
         status is None
-        and 
-        education_year is None
-        and
-        name is not None
+        and education_year is None
+        and name is not None
         and surname is not None
         and nationality is not None
         and family is None
@@ -612,13 +557,11 @@ def obtainDataFromRequest(request):
             nationality__icontains=nationality,
             is_morning_student=morning,
         )
-        filename =  f"Reporte_de_estudiantes nombre {name}, apellido {surname}, nacionalidad {nationality} y por la mañana {morning}"
+        filename = f"Reporte_de_estudiantes nombre {name}, apellido {surname}, nacionalidad {nationality} y por la mañana {morning}"
     elif (
         status is None
-        and 
-        education_year is None
-        and
-        name is not None
+        and education_year is None
+        and name is not None
         and surname is not None
         and nationality is not None
         and family is not None
@@ -630,14 +573,12 @@ def obtainDataFromRequest(request):
             nationality__icontains=nationality,
             family__name__icontains=family,
         )
-        filename =  f"Reporte_de_estudiantes nombre {name}, apellido {surname}, nacionalidad {nationality} y familia {family}"
-    
+        filename = f"Reporte_de_estudiantes nombre {name}, apellido {surname}, nacionalidad {nationality} y familia {family}"
+
     elif (
         status is None
-        and 
-        education_year is None
-        and
-        name is not None
+        and education_year is None
+        and name is not None
         and surname is not None
         and nationality is not None
         and family is not None
@@ -650,1972 +591,1607 @@ def obtainDataFromRequest(request):
             family__name__icontains=family,
             is_morning_student=morning,
         )
-        filename =  f"Reporte_de_estudiantes nombre {name}, apellido{surname}, nacionalidad {nationality}, familia {family}, por la mañana {morning}"
-
+        filename = f"Reporte_de_estudiantes nombre {name}, apellido{surname}, nacionalidad {nationality}, familia {family}, por la mañana {morning}"
 
     elif (
         status is None
-        and 
-        education_year is not None
-        and
-        name is None
+        and education_year is not None
+        and name is None
         and surname is None
         and nationality is None
         and family is None
         and morning is None
     ):
-        queryset = Student.objects.filter(
-            current_education_year = education_year
-        )
-        filename =  f"Reporte_de_estudiantes año {education_year}"
+        queryset = Student.objects.filter(current_education_year=education_year)
+        filename = f"Reporte_de_estudiantes año {education_year}"
     elif (
         status is None
-        and 
-        education_year is not None
-        and
-        name is None
+        and education_year is not None
+        and name is None
         and surname is None
         and nationality is None
         and family is None
         and morning is not None
     ):
         queryset = Student.objects.filter(
-            current_education_year = education_year, is_morning_student=morning
+            current_education_year=education_year, is_morning_student=morning
         )
-        filename =  f"Reporte_de_estudiantes año {education_year} y por la mañana {morning}"
+        filename = (
+            f"Reporte_de_estudiantes año {education_year} y por la mañana {morning}"
+        )
     elif (
         status is None
-        and 
-        education_year is not None
-        and
-        name is None
+        and education_year is not None
+        and name is None
         and surname is None
         and nationality is None
         and family is not None
         and morning is None
     ):
         queryset = Student.objects.filter(
-            current_education_year = education_year, family__name__icontains=family
+            current_education_year=education_year, family__name__icontains=family
         )
-        filename =  f"Reporte_de_estudiantes año {education_year} y familia {family}"
-    
+        filename = f"Reporte_de_estudiantes año {education_year} y familia {family}"
+
     elif (
         status is None
-        and 
-        education_year is not None
-        and
-        name is None
+        and education_year is not None
+        and name is None
         and surname is None
         and nationality is None
         and family is not None
         and morning is not None
     ):
         queryset = Student.objects.filter(
-            current_education_year = education_year, family__name__icontains=family, is_morning_student=morning
+            current_education_year=education_year,
+            family__name__icontains=family,
+            is_morning_student=morning,
         )
-        filename =  f"Reporte_de_estudiantes año{education_year}, familia {family} y por la mañana {morning}"
+        filename = f"Reporte_de_estudiantes año{education_year}, familia {family} y por la mañana {morning}"
 
     elif (
         status is None
-        and 
-        education_year is not None
-        and
-        name is None
+        and education_year is not None
+        and name is None
         and surname is None
         and nationality is not None
         and family is None
         and morning is None
     ):
         queryset = Student.objects.filter(
-            current_education_year = education_year,nationality__icontains=nationality
+            current_education_year=education_year, nationality__icontains=nationality
         )
-        filename =  f"Reporte_de_estudiantes año {education_year} y nacionalidad {nationality}"
+        filename = (
+            f"Reporte_de_estudiantes año {education_year} y nacionalidad {nationality}"
+        )
 
     elif (
         status is None
-        and 
-        education_year is not None
-        and
-        name is None
+        and education_year is not None
+        and name is None
         and surname is None
         and nationality is not None
         and family is None
         and morning is not None
     ):
         queryset = Student.objects.filter(
-            current_education_year = education_year,
+            current_education_year=education_year,
             nationality__icontains=nationality,
             is_morning_student=morning,
         )
-        filename =  f"Reporte_de_estudiantes año{education_year}, nacionalidad {nationality} y por la mañana {morning}"
-    
+        filename = f"Reporte_de_estudiantes año{education_year}, nacionalidad {nationality} y por la mañana {morning}"
+
     elif (
         status is None
-        and 
-        education_year is not None
-        and
-        name is None
+        and education_year is not None
+        and name is None
         and surname is None
         and nationality is not None
         and family is not None
         and morning is None
     ):
         queryset = Student.objects.filter(
-            current_education_year = education_year,
-            nationality__icontains=nationality,
-            family__name__icontains=family
-        )
-        filename =  f"Reporte_de_estudiantes año {education_year}, nacionalidad {nationality} y familia {family}"
-    
-    elif (
-        status is None
-        and 
-        education_year is not None
-        and
-        name is None
-        and surname is None
-        and nationality is not None
-        and family is not None
-        and morning is not None
-    ):
-        queryset = Student.objects.filter(
-            current_education_year = education_year,
+            current_education_year=education_year,
             nationality__icontains=nationality,
             family__name__icontains=family,
-            is_morning_student=morning
         )
-        filename =  f"Reporte_de_estudiantes año {education_year},nacionalidad {nationality}, familia {family} y por la mañana {morning}"
+        filename = f"Reporte_de_estudiantes año {education_year}, nacionalidad {nationality} y familia {family}"
 
     elif (
         status is None
-        and 
-        education_year is not None
-        and
-        name is not None
+        and education_year is not None
+        and name is None
+        and surname is None
+        and nationality is not None
+        and family is not None
+        and morning is not None
+    ):
+        queryset = Student.objects.filter(
+            current_education_year=education_year,
+            nationality__icontains=nationality,
+            family__name__icontains=family,
+            is_morning_student=morning,
+        )
+        filename = f"Reporte_de_estudiantes año {education_year},nacionalidad {nationality}, familia {family} y por la mañana {morning}"
+
+    elif (
+        status is None
+        and education_year is not None
+        and name is not None
         and surname is not None
         and nationality is None
         and family is None
         and morning is None
     ):
         queryset = Student.objects.filter(
-            current_education_year = education_year,
+            current_education_year=education_year,
             surname__icontains=surname,
         )
-        filename =  f"Reporte_de_estudiantes año {education_year}y apellido{surname}"
-    
+        filename = f"Reporte_de_estudiantes año {education_year}y apellido{surname}"
+
     elif (
         status is None
-        and 
-        education_year is not None
-        and
-        name is None
+        and education_year is not None
+        and name is None
         and surname is not None
         and nationality is None
         and family is None
         and morning is not None
     ):
         queryset = Student.objects.filter(
-            current_education_year = education_year,
+            current_education_year=education_year,
             surname__icontains=surname,
-            is_morning_student=morning
+            is_morning_student=morning,
         )
-        filename =  f"Reporte_de_estudiantes año {education_year}, apellido {surname} y por la mañana {morning}"
+        filename = f"Reporte_de_estudiantes año {education_year}, apellido {surname} y por la mañana {morning}"
 
     elif (
         status is None
-        and 
-        education_year is not None
-        and
-        name is None
+        and education_year is not None
+        and name is None
         and surname is not None
         and nationality is None
         and family is not None
         and morning is None
     ):
         queryset = Student.objects.filter(
-            current_education_year = education_year,
+            current_education_year=education_year,
             surname__icontains=surname,
             family__name__icontains=family,
         )
-        filename =  f"Reporte_de_estudiantes año {education_year}, apellido {surname} y familia {family}"
+        filename = f"Reporte_de_estudiantes año {education_year}, apellido {surname} y familia {family}"
 
     elif (
         status is None
-        and 
-        education_year is not None
-        and
-        name is None
+        and education_year is not None
+        and name is None
         and surname is not None
         and nationality is None
         and family is not None
         and morning is not None
     ):
         queryset = Student.objects.filter(
-            current_education_year = education_year,
+            current_education_year=education_year,
             surname__icontains=surname,
             family__name__icontains=family,
-            is_morning_student=morning
+            is_morning_student=morning,
         )
-        filename =  f"Reporte_de_estudiantes año {education_year}, apellido {surname}, familia {family} y por la mañana {morning}"
+        filename = f"Reporte_de_estudiantes año {education_year}, apellido {surname}, familia {family} y por la mañana {morning}"
 
     elif (
         status is None
-        and 
-        education_year is not None
-        and
-        name is None
+        and education_year is not None
+        and name is None
         and surname is not None
         and nationality is not None
         and family is None
         and morning is None
     ):
         queryset = Student.objects.filter(
-            current_education_year = education_year,
+            current_education_year=education_year,
             surname__icontains=surname,
-            nationality__icontains=nationality
+            nationality__icontains=nationality,
         )
-        filename =  f"Reporte_de_estudiantes año {education_year}, apellido {surname} y nacionalidad {nationality}"
+        filename = f"Reporte_de_estudiantes año {education_year}, apellido {surname} y nacionalidad {nationality}"
 
     elif (
         status is None
-        and 
-        education_year is not None
-        and
-        name is None
+        and education_year is not None
+        and name is None
         and surname is not None
         and nationality is not None
         and family is None
         and morning is not None
     ):
         queryset = Student.objects.filter(
-            current_education_year = education_year,
+            current_education_year=education_year,
             surname__icontains=surname,
             nationality__icontains=nationality,
-            is_morning_student=morning
+            is_morning_student=morning,
         )
-        filename =  f"Reporte_de_estudiantes año {education_year}, apellido {surname}, nacionalidad {nationality} y por la mañana {morning}"
+        filename = f"Reporte_de_estudiantes año {education_year}, apellido {surname}, nacionalidad {nationality} y por la mañana {morning}"
 
     elif (
         status is None
-        and 
-        education_year is not None
-        and
-        name is None
+        and education_year is not None
+        and name is None
         and surname is not None
         and nationality is not None
         and family is None
         and morning is not None
     ):
         queryset = Student.objects.filter(
-            current_education_year = education_year,
+            current_education_year=education_year,
             surname__icontains=surname,
             nationality__icontains=nationality,
-            is_morning_student=morning
+            is_morning_student=morning,
         )
-        filename =  f"Reporte_de_estudiantes año {education_year}, apellido {surname}, nacionalidad {nationality} y por la mañana {morning}"
+        filename = f"Reporte_de_estudiantes año {education_year}, apellido {surname}, nacionalidad {nationality} y por la mañana {morning}"
 
     elif (
         status is None
-        and 
-        education_year is not None
-        and
-        name is None
+        and education_year is not None
+        and name is None
         and surname is not None
         and nationality is not None
         and family is not None
         and morning is None
     ):
         queryset = Student.objects.filter(
-            current_education_year = education_year,
-            surname__icontains=surname,
-            nationality__icontains=nationality,
-            family__name__icontains=family
-           
-        )
-        filename =  f"Reporte_de_estudiantes año {education_year}, apellido {surname}, nacionalidad {nationality} y familia {family}"
-
-    elif (
-        status is None
-        and 
-        education_year is not None
-        and
-        name is None
-        and surname is not None
-        and nationality is not None
-        and family is not None
-        and morning is not None
-    ):
-        queryset = Student.objects.filter(
-            current_education_year = education_year,
+            current_education_year=education_year,
             surname__icontains=surname,
             nationality__icontains=nationality,
             family__name__icontains=family,
-            is_morning_student=morning
-
-           
         )
-        filename =  f"Reporte_de_estudiantes año {education_year}, apellido {surname}, nacionalidad {nationality}, familia {family} y por la mañana {morning}"
+        filename = f"Reporte_de_estudiantes año {education_year}, apellido {surname}, nacionalidad {nationality} y familia {family}"
 
     elif (
         status is None
-        and 
-        education_year is not None
-        and
-        name is not None
-        and surname is None
-        and nationality is None
-        and family is None
-        and morning is None
-    ):
-        queryset = Student.objects.filter(
-            current_education_year = education_year,
-            name__icontains=name 
-        )
-        filename =  f"Reporte_de_estudiantes año {education_year} y nombre {name}"
-
-    elif (
-        status is None
-        and 
-        education_year is not None
-        and
-        name is not None
-        and surname is None
-        and nationality is None
-        and family is None
-        and morning is not None
-    ):
-        queryset = Student.objects.filter(
-            current_education_year = education_year,
-            name__icontains=name,
-            is_morning_student=morning
-        )
-        filename =  f"Reporte_de_estudiantes año {education_year}, nombre {name} y por la mañana {morning}"
-
-    elif (
-        status is None
-        and 
-        education_year is not None
-        and
-        name is not None
-        and surname is None
-        and nationality is None
-        and family is not None
-        and morning is None
-    ):
-        queryset = Student.objects.filter(
-            current_education_year = education_year,
-            name__icontains=name,
-            family__name__icontains=family
-            
-        )
-        filename =  f"Reporte_de_estudiantes año {education_year}, nombre {name} y familia {family}"
-
-    elif (
-        status is None
-        and 
-        education_year is not None
-        and
-        name is not None
-        and surname is None
-        and nationality is None
-        and family is not None
-        and morning is not None
-    ):
-        queryset = Student.objects.filter(
-            current_education_year = education_year,
-            name__icontains=name,
-            family__name__icontains=family,
-            is_morning_student=morning
-            
-        )
-        filename =  f"Reporte_de_estudiantes año {education_year}, nombre {name}, familia {family} y por la mañana {morning}"
-
-    elif (
-        status is None
-        and 
-        education_year is not None
-        and
-        name is not None
-        and surname is None
-        and nationality is not None
-        and family is None
-        and morning is None
-    ):
-        queryset = Student.objects.filter(
-            current_education_year = education_year,
-            name__icontains=name,
-            nationality__icontains=nationality
-            
-            
-        )
-        filename =  f"Reporte_de_estudiantes año {education_year}, nombre {name} y nacionalidad {nationality}"
-
-    elif (
-        status is None
-        and 
-        education_year is not None
-        and
-        name is not None
-        and surname is None
-        and nationality is not None
-        and family is None
-        and morning is not None
-    ):
-        queryset = Student.objects.filter(
-            current_education_year = education_year,
-            name__icontains=name,
-            nationality__icontains=nationality,
-            is_morning_student=morning
-            
-            
-        )
-        filename =  f"Reporte_de_estudiantes año {education_year}, nombre {name}, nacionalidad {nationality} y por la mañana {morning}"
-
-    elif (
-        status is None
-        and 
-        education_year is not None
-        and
-        name is not None
-        and surname is None
-        and nationality is not None
-        and family is not None
-        and morning is None
-    ):
-        queryset = Student.objects.filter(
-            current_education_year = education_year,
-            name__icontains=name,
-            nationality__icontains=nationality,
-            family__name__icontains=family
-            
-            
-        )
-        filename =  f"Reporte_de_estudiantes año {education_year}, nombre {name}, nacionalidad {nationality} y familia {family}"
-
-    elif (
-        status is None
-        and 
-        education_year is not None
-        and
-        name is not None
-        and surname is None
-        and nationality is not None
-        and family is not None
-        and morning is not None
-    ):
-        queryset = Student.objects.filter(
-            current_education_year = education_year,
-            name__icontains=name,
-            nationality__icontains=nationality,
-            family__name__icontains=family,
-            is_morning_student=morning
-        )
-        filename =  f"Reporte_de_estudiantes año {education_year}, nombre {name}, nacionalidad {nationality}, familia {family} y por la mañana {morning}"
-
-    elif (
-        status is None
-        and 
-        education_year is not None
-        and 
-        name is not None
-        and surname is not None
-        and nationality is None
-        and family is None
-        and morning is None
-    ):
-        queryset = Student.objects.filter(
-            current_education_year = education_year,
-            name__icontains=name,
-            surname__icontains = surname
-        )
-        filename =  f"Reporte_de_estudiantes año {education_year}, nombre {name} y surname{surname}"
-
-    elif (
-        status is None
-        and 
-        education_year is not None
-        and 
-        name is not None
-        and surname is not None
-        and nationality is None
-        and family is None
-        and morning is not None
-    ):
-        queryset = Student.objects.filter(
-            current_education_year = education_year,
-            name__icontains=name,
-            surname__icontains = surname,
-            is_morning_student=morning
-
-        )
-        filename =  f"Reporte_de_estudiantes año {education_year}, nombre {name}, surname{surname} y por la mañana {morning}"
-
-    elif (
-        status is None
-        and 
-        education_year is not None
-        and 
-        name is not None
-        and surname is not None
-        and nationality is None
-        and family is not None
-        and morning is None
-    ):
-        queryset = Student.objects.filter(
-            current_education_year = education_year,
-            name__icontains=name,
-            surname__icontains = surname,
-            family__name__icontains=family,
-
-        )
-        filename =  f"Reporte_de_estudiantes año {education_year}, nombre {name}, surname{surname} y familia {family}"
-
-    elif (
-        status is None
-        and 
-        education_year is not None
-        and 
-        name is not None
-        and surname is not None
-        and nationality is None
-        and family is not None
-        and morning is not None
-    ):
-        queryset = Student.objects.filter(
-            current_education_year = education_year,
-            name__icontains=name,
-            surname__icontains = surname,
-            family__name__icontains=family,
-            is_morning_student=morning
-            
-
-        )
-        filename =  f"Reporte_de_estudiantes año {education_year}, nombre {name}, surname{surname},familia {family} y por la mañana {morning}"
-
-    elif (
-        status is None
-        and 
-        education_year is not None
-        and 
-        name is not None
-        and surname is not None
-        and nationality is not None
-        and family is None
-        and morning is None
-    ):
-        queryset = Student.objects.filter(
-            current_education_year = education_year,
-            name__icontains=name,
-            surname__icontains = surname,
-            nationality__icontains=nationality,
-            
-            
-
-        )
-        filename =  f"Reporte_de_estudiantes año {education_year}, nombre {name}, surname{surname}, nacionalidad {nationality}"
-
-    elif (
-        status is None
-        and 
-        education_year is not None
-        and 
-        name is not None
-        and surname is not None
-        and nationality is not None
-        and family is None
-        and morning is not None
-    ):
-        queryset = Student.objects.filter(
-            current_education_year = education_year,
-            name__icontains=name,
-            surname__icontains = surname,
-            nationality__icontains=nationality,
-            is_morning_student=morning
-            
-            
-
-        )
-        filename =  f"Reporte_de_estudiantes año {education_year}, nombre {name}, surname{surname}, nacionalidad {nationality} y por la mañana {morning}"
-
-
-    elif (
-        status is None
-        and 
-        education_year is not None
-        and 
-        name is not None
+        and education_year is not None
+        and name is None
         and surname is not None
         and nationality is not None
         and family is not None
         and morning is not None
     ):
         queryset = Student.objects.filter(
-            current_education_year = education_year,
-            name__icontains=name,
-            surname__icontains = surname,
-            nationality__icontains=nationality,
-            family__name__icontains=family
-            
-            
-
-        )
-        filename =  f"Reporte_de_estudiantes año {education_year}, nombre {name}, surname{surname}, nacionalidad {nationality} y familia {family}"
-
-    elif (
-        status is None
-        and 
-        education_year is not None
-        and 
-        name is not None
-        and surname is not None
-        and nationality is not None
-        and family is not None
-        and morning is None
-    ):
-        queryset = Student.objects.filter(
-            current_education_year = education_year,
-            name__icontains=name,
-            surname__icontains = surname,
-            nationality__icontains=nationality,
-            family__name__icontains=family,
-            is_morning_student=morning
-            
-            
-
-        )
-        filename =  f"Reporte_de_estudiantes año {education_year}, nombre {name}, surname{surname}, nacionalidad {nationality}, familia {family} y por la mañana {morning} "
-    
-
-    elif (
-        status is not None
-        and 
-        education_year is None
-        and 
-        name is None
-        and surname is None
-        and nationality is None
-        and family is None
-        and morning is None
-    ):
-        queryset = Student.objects.filter(
-            status = status,
-        )
-        filename =  f"Reporte_de_estudiantes estado {status}"
-    
-    elif (
-        status is not None
-        and 
-        education_year is None
-        and 
-        name is None
-        and surname is None
-        and nationality is None
-        and family is None
-        and morning is not None
-    ):
-        queryset = Student.objects.filter(
-            status = status,
-            is_morning_student=morning
-        )
-        filename =  f"Reporte_de_estudiantes estado {status} y por la mañana {morning}"
-
-    elif (
-        status is not None
-        and 
-        education_year is None
-        and 
-        name is None
-        and surname is None
-        and nationality is None
-        and family is not None
-        and morning is None
-    ):
-        queryset = Student.objects.filter(
-            status = status,
-            family__name__icontains=family
-        )
-        filename =  f"Reporte_de_estudiantes estado {status} y familia {family}"
-
-    elif (
-        status is not None
-        and 
-        education_year is None
-        and 
-        name is None
-        and surname is None
-        and nationality is None
-        and family is not None
-        and morning is not None
-    ):
-        queryset = Student.objects.filter(
-            status = status,
-            family__name__icontains=family,
-            is_morning_student=morning
-        )
-        filename =  f"Reporte_de_estudiantes estado {status}, familia {family} y por la mañana {morning}"
-
-    elif (
-        status is not None
-        and 
-        education_year is None
-        and 
-        name is None
-        and surname is None
-        and nationality is not None
-        and family is None
-        and morning is None
-    ):
-        queryset = Student.objects.filter(
-            status = status,
-            nationality__icontains=nationality
-            
-        )
-        filename =  f"Reporte_de_estudiantes estado {status} y nacionalidad {nationality}"
-
-    elif (
-        status is not None
-        and 
-        education_year is None
-        and 
-        name is None
-        and surname is None
-        and nationality is not None
-        and family is None
-        and morning is not None
-    ):
-        queryset = Student.objects.filter(
-            status = status,
-            nationality__icontains=nationality,
-            is_morning_student=morning
-
-            
-        )
-        filename =  f"Reporte_de_estudiantes estado {status}, nacionalidad {nationality} y por la mañana {morning}"
-
-    elif (
-        status is not None
-        and 
-        education_year is None
-        and 
-        name is None
-        and surname is None
-        and nationality is not None
-        and family is not None
-        and morning is None
-    ):
-        queryset = Student.objects.filter(
-            status = status,
-            nationality__icontains=nationality,
-            family__name__icontains=family,
-
-            
-        )
-        filename =  f"Reporte_de_estudiantes estado {status}, nacionalidad {nationality} y familia {family}"
-
-    elif (
-        status is not None
-        and 
-        education_year is None
-        and 
-        name is None
-        and surname is None
-        and nationality is not None
-        and family is not None
-        and morning is not None
-    ):
-        queryset = Student.objects.filter(
-            status = status,
-            nationality__icontains=nationality,
-            family__name__icontains=family,
-            is_morning_student=morning
-
-            
-        )
-        filename =  f"Reporte_de_estudiantes estado {status}, nacionalidad {nationality}, familia {family} y por la mañana {morning}"
-
-    elif (
-        status is not None
-        and 
-        education_year is None
-        and 
-        name is None
-        and surname is not None
-        and nationality is None
-        and family is None
-        and morning is None
-    ):
-        queryset = Student.objects.filter(
-            status = status,
-            surname__icontains=surname,
-            
-
-            
-        )
-        filename =  f"Reporte_de_estudiantes estado {status} y apellido {surname}"
-
-    elif (
-        status is not None
-        and 
-        education_year is None
-        and 
-        name is None
-        and surname is not None
-        and nationality is None
-        and family is None
-        and morning is not None
-    ):
-        queryset = Student.objects.filter(
-            status = status,
-            surname__icontains=surname,
-            is_morning_student=morning
-            
-
-            
-        )
-        filename =  f"Reporte_de_estudiantes estado {status}, apellido {surname} y por la mañana {morning}"
-
-    elif (
-        status is not None
-        and 
-        education_year is None
-        and 
-        name is None
-        and surname is not None
-        and nationality is None
-        and family is not None
-        and morning is None
-    ):
-        queryset = Student.objects.filter(
-            status = status,
-            surname__icontains=surname,
-            family__name__icontains=family
-            
-
-            
-        )
-        filename =  f"Reporte_de_estudiantes estado {status}, apellido {surname} y familia {family}"
-
-    elif (
-        status is not None
-        and 
-        education_year is None
-        and 
-        name is None
-        and surname is not None
-        and nationality is None
-        and family is not None
-        and morning is not None
-    ):
-        queryset = Student.objects.filter(
-            status = status,
-            surname__icontains=surname,
-            family__name__icontains=family,
-            is_morning_student=morning
-            
-
-            
-        )
-        filename =  f"Reporte_de_estudiantes estado {status}, apellido {surname}, familia {family} y por la mañana {morning}"
-
-    elif (
-        status is not None
-        and 
-        education_year is None
-        and 
-        name is None
-        and surname is not None
-        and nationality is not None
-        and family is None
-        and morning is None
-    ):
-        queryset = Student.objects.filter(
-            status = status,
-            surname__icontains=surname,
-            nationality__icontains=nationality
- 
-        )
-        filename =  f"Reporte_de_estudiantes estado {status}, apellido {surname} y nacionalidad {nationality}"
-
-    elif (
-        status is not None
-        and 
-        education_year is None
-        and 
-        name is None
-        and surname is not None
-        and nationality is not None
-        and family is None
-        and morning is not None
-    ):
-        queryset = Student.objects.filter(
-            status = status,
-            surname__icontains=surname,
-            nationality__icontains=nationality,
-            is_morning_student=morning
- 
-        )
-        filename =  f"Reporte_de_estudiantes estado {status}, apellido {surname}, nacionalidad {nationality} y por la mañana {morning}"
-    
-    elif (
-        status is not None
-        and 
-        education_year is None
-        and 
-        name is None
-        and surname is not None
-        and nationality is not None
-        and family is not None
-        and morning is None
-    ):
-        queryset = Student.objects.filter(
-            status = status,
-            surname__icontains=surname,
-            nationality__icontains=nationality,
-            family__name__icontains=family
- 
-        )
-        filename =  f"Reporte_de_estudiantes estado {status}, apellido {surname}, nacionalidad {nationality} y familia {family}"
-
-    elif (
-        status is not None
-        and 
-        education_year is None
-        and 
-        name is None
-        and surname is not None
-        and nationality is not None
-        and family is not None
-        and morning is not None
-    ):
-        queryset = Student.objects.filter(
-            status = status,
+            current_education_year=education_year,
             surname__icontains=surname,
             nationality__icontains=nationality,
             family__name__icontains=family,
-            is_morning_student=morning
- 
+            is_morning_student=morning,
         )
-        filename =  f"Reporte_de_estudiantes estado {status}, apellido {surname}, nacionalidad {nationality}, familia {family} y por la mañana {morning}"
+        filename = f"Reporte_de_estudiantes año {education_year}, apellido {surname}, nacionalidad {nationality}, familia {family} y por la mañana {morning}"
 
     elif (
-        status is not None
-        and 
-        education_year is None
-        and 
-        name is not None
+        status is None
+        and education_year is not None
+        and name is not None
         and surname is None
         and nationality is None
         and family is None
         and morning is None
     ):
         queryset = Student.objects.filter(
-            status = status,
-            name__icontains=name
- 
+            current_education_year=education_year, name__icontains=name
         )
-        filename =  f"Reporte_de_estudiantes estado {status} y nombre {name}"
+        filename = f"Reporte_de_estudiantes año {education_year} y nombre {name}"
 
     elif (
-        status is not None
-        and 
-        education_year is None
-        and 
-        name is not None
+        status is None
+        and education_year is not None
+        and name is not None
         and surname is None
         and nationality is None
         and family is None
         and morning is not None
     ):
         queryset = Student.objects.filter(
-            status = status,
+            current_education_year=education_year,
             name__icontains=name,
-            is_morning_student=morning
- 
+            is_morning_student=morning,
         )
-        filename =  f"Reporte_de_estudiantes estado {status}, nombre {name} y por la mañana {morning}"
+        filename = f"Reporte_de_estudiantes año {education_year}, nombre {name} y por la mañana {morning}"
 
     elif (
-        status is not None
-        and 
-        education_year is None
-        and 
-        name is not None
+        status is None
+        and education_year is not None
+        and name is not None
         and surname is None
         and nationality is None
         and family is not None
         and morning is None
     ):
         queryset = Student.objects.filter(
-            status = status,
-            name__icontains=name,
-            family__name__icontains=family
-            
- 
-        )
-        filename =  f"Reporte_de_estudiantes estado {status}, nombre {name} y familia {family}"
-
-    elif (
-        status is not None
-        and 
-        education_year is None
-        and 
-        name is not None
-        and surname is None
-        and nationality is None
-        and family is not None
-        and morning is not None
-    ):
-        queryset = Student.objects.filter(
-            status = status,
+            current_education_year=education_year,
             name__icontains=name,
             family__name__icontains=family,
-            is_morning_student=morning
- 
         )
-        filename =  f"Reporte_de_estudiantes estado {status}, nombre {name} y familia {family} y por la mañana{morning}"
+        filename = f"Reporte_de_estudiantes año {education_year}, nombre {name} y familia {family}"
 
     elif (
-        status is not None
-        and 
-        education_year is None
-        and 
-        name is not None
+        status is None
+        and education_year is not None
+        and name is not None
+        and surname is None
+        and nationality is None
+        and family is not None
+        and morning is not None
+    ):
+        queryset = Student.objects.filter(
+            current_education_year=education_year,
+            name__icontains=name,
+            family__name__icontains=family,
+            is_morning_student=morning,
+        )
+        filename = f"Reporte_de_estudiantes año {education_year}, nombre {name}, familia {family} y por la mañana {morning}"
+
+    elif (
+        status is None
+        and education_year is not None
+        and name is not None
         and surname is None
         and nationality is not None
         and family is None
         and morning is None
     ):
         queryset = Student.objects.filter(
-            status = status,
+            current_education_year=education_year,
             name__icontains=name,
-            nationality__icontains=nationality
-    
-            
- 
+            nationality__icontains=nationality,
         )
-        filename =  f"Reporte_de_estudiantes estado {status}, nombre {name} y nacionalidad {nationality}"
+        filename = f"Reporte_de_estudiantes año {education_year}, nombre {name} y nacionalidad {nationality}"
 
     elif (
-        status is not None
-        and 
-        education_year is None
-        and 
-        name is not None
+        status is None
+        and education_year is not None
+        and name is not None
         and surname is None
         and nationality is not None
         and family is None
         and morning is not None
     ):
         queryset = Student.objects.filter(
-            status = status,
+            current_education_year=education_year,
             name__icontains=name,
             nationality__icontains=nationality,
-            is_morning_student=morning
-            
- 
+            is_morning_student=morning,
         )
-        filename =  f"Reporte_de_estudiantes estado {status}, nombre {name}, nacionalidad {nationality} y por la mañana {morning}"
+        filename = f"Reporte_de_estudiantes año {education_year}, nombre {name}, nacionalidad {nationality} y por la mañana {morning}"
 
     elif (
-        status is not None
-        and 
-        education_year is None
-        and 
-        name is not None
+        status is None
+        and education_year is not None
+        and name is not None
         and surname is None
         and nationality is not None
         and family is not None
         and morning is None
     ):
         queryset = Student.objects.filter(
-            status = status,
-            name__icontains=name,
-            nationality__icontains=nationality,
-            family__name__icontains=family
-            
- 
-        )
-        filename =  f"Reporte_de_estudiantes estado {status}, nombre {name}, nacionalidad {nationality} y familia {family}"
-
-    elif (
-        status is not None
-        and 
-        education_year is None
-        and 
-        name is not None
-        and surname is None
-        and nationality is not None
-        and family is not None
-        and morning is not None
-    ):
-        queryset = Student.objects.filter(
-            status = status,
+            current_education_year=education_year,
             name__icontains=name,
             nationality__icontains=nationality,
             family__name__icontains=family,
-            is_morning_student=morning
-            
- 
         )
-        filename =  f"Reporte_de_estudiantes estado {status}, nombre {name}, nacionalidad {nationality}, familia {family} y por la mañana {morning}"
+        filename = f"Reporte_de_estudiantes año {education_year}, nombre {name}, nacionalidad {nationality} y familia {family}"
 
     elif (
-        status is not None
-        and 
-        education_year is None
-        and 
-        name is not None
-        and surname is not None
-        and nationality is None
-        and family is None
-        and morning is None
+        status is None
+        and education_year is not None
+        and name is not None
+        and surname is None
+        and nationality is not None
+        and family is not None
+        and morning is not None
     ):
         queryset = Student.objects.filter(
-            status = status,
+            current_education_year=education_year,
             name__icontains=name,
-            surname__icontains = surname
-            
- 
+            nationality__icontains=nationality,
+            family__name__icontains=family,
+            is_morning_student=morning,
         )
-        filename =  f"Reporte_de_estudiantes estado {status}, nombre {name} y apellido {surname}"
+        filename = f"Reporte_de_estudiantes año {education_year}, nombre {name}, nacionalidad {nationality}, familia {family} y por la mañana {morning}"
 
     elif (
-        status is not None
-        and 
-        education_year is None
-        and 
-        name is not None
+        status is None
+        and education_year is not None
+        and name is not None
         and surname is not None
         and nationality is None
         and family is None
-        and morning is not None
+        and morning is None
     ):
         queryset = Student.objects.filter(
-            status = status,
+            current_education_year=education_year,
             name__icontains=name,
-            surname__icontains = surname,
-            is_morning_student=morning
-            
- 
+            surname__icontains=surname,
         )
-        filename =  f"Reporte_de_estudiantes estado {status}, nombre {name}, apellido {surname} y por la mañana {morning}"
+        filename = f"Reporte_de_estudiantes año {education_year}, nombre {name} y surname{surname}"
 
     elif (
-        status is not None
-        and 
-        education_year is None
-        and 
-        name is not None
+        status is None
+        and education_year is not None
+        and name is not None
         and surname is not None
         and nationality is None
-        and family is not None
-        and morning is None
+        and family is None
+        and morning is not None
     ):
         queryset = Student.objects.filter(
-            status = status,
+            current_education_year=education_year,
             name__icontains=name,
-            surname__icontains = surname,
-            family__name__icontains=family
-            
- 
+            surname__icontains=surname,
+            is_morning_student=morning,
         )
-        filename =  f"Reporte_de_estudiantes estado {status}, nombre {name}, apellido {surname} y familia {family}"
-
+        filename = f"Reporte_de_estudiantes año {education_year}, nombre {name}, surname{surname} y por la mañana {morning}"
 
     elif (
-        status is not None
-        and 
-        education_year is None
-        and 
-        name is not None
+        status is None
+        and education_year is not None
+        and name is not None
         and surname is not None
         and nationality is None
         and family is not None
-        and morning is not None
+        and morning is None
     ):
         queryset = Student.objects.filter(
-            status = status,
+            current_education_year=education_year,
             name__icontains=name,
-            surname__icontains = surname,
+            surname__icontains=surname,
             family__name__icontains=family,
-            is_morning_student=morning
-            
- 
         )
-        filename =  f"Reporte_de_estudiantes estado {status}, nombre {name}, apellido {surname}, familia {family} y por la mañana {morning}"
+        filename = f"Reporte_de_estudiantes año {education_year}, nombre {name}, surname{surname} y familia {family}"
 
     elif (
-        status is not None
-        and 
-        education_year is None
-        and 
-        name is not None
+        status is None
+        and education_year is not None
+        and name is not None
         and surname is not None
-        and nationality is not None
-        and family is None
-        and morning is None
+        and nationality is None
+        and family is not None
+        and morning is not None
     ):
         queryset = Student.objects.filter(
-            status = status,
+            current_education_year=education_year,
             name__icontains=name,
-            surname__icontains = surname,
-            nationality__icontains=nationality,
-            
-
-            
-            
- 
+            surname__icontains=surname,
+            family__name__icontains=family,
+            is_morning_student=morning,
         )
-        filename =  f"Reporte_de_estudiantes estado {status}, nombre {name}, apellido {surname} y nacionalidad {nationality}"
+        filename = f"Reporte_de_estudiantes año {education_year}, nombre {name}, surname{surname},familia {family} y por la mañana {morning}"
 
     elif (
-        status is not None
-        and 
-        education_year is None
-        and 
-        name is not None
+        status is None
+        and education_year is not None
+        and name is not None
         and surname is not None
         and nationality is not None
         and family is None
-        and morning is not None
+        and morning is None
     ):
         queryset = Student.objects.filter(
-            status = status,
+            current_education_year=education_year,
             name__icontains=name,
-            surname__icontains = surname,
+            surname__icontains=surname,
             nationality__icontains=nationality,
-            is_morning_student=morning
-
-            
-            
- 
         )
-        filename =  f"Reporte_de_estudiantes estado {status}, nombre {name}, apellido {surname}, nacionalidad {nationality} y por la mañana {morning}"
+        filename = f"Reporte_de_estudiantes año {education_year}, nombre {name}, surname{surname}, nacionalidad {nationality}"
 
     elif (
-        status is not None
-        and 
-        education_year is None
-        and 
-        name is not None
+        status is None
+        and education_year is not None
+        and name is not None
         and surname is not None
         and nationality is not None
-        and family is not None
-        and morning is None
+        and family is None
+        and morning is not None
     ):
         queryset = Student.objects.filter(
-            status = status,
+            current_education_year=education_year,
             name__icontains=name,
-            surname__icontains = surname,
+            surname__icontains=surname,
             nationality__icontains=nationality,
-            family__name__icontains=family
- 
+            is_morning_student=morning,
         )
-        filename =  f"Reporte_de_estudiantes estado {status}, nombre {name}, apellido {surname}, nacionalidad {nationality} y familia {family}"
+        filename = f"Reporte_de_estudiantes año {education_year}, nombre {name}, surname{surname}, nacionalidad {nationality} y por la mañana {morning}"
 
     elif (
-        status is not None
-        and 
-        education_year is None
-        and 
-        name is not None
+        status is None
+        and education_year is not None
+        and name is not None
         and surname is not None
         and nationality is not None
         and family is not None
         and morning is not None
     ):
         queryset = Student.objects.filter(
-            status = status,
+            current_education_year=education_year,
             name__icontains=name,
-            surname__icontains = surname,
+            surname__icontains=surname,
             nationality__icontains=nationality,
             family__name__icontains=family,
-            is_morning_student=morning
- 
         )
-        filename =  f"Reporte_de_estudiantes estado {status}, nombre {name}, apellido {surname}, nacionalidad {nationality}, familia {family} y por la mañana{morning}"
+        filename = f"Reporte_de_estudiantes año {education_year}, nombre {name}, surname{surname}, nacionalidad {nationality} y familia {family}"
 
     elif (
-        status is not None
-        and 
-        education_year is not None
-        and 
-        name is None
-        and surname is None
-        and nationality is None
-        and family is None
-        and morning is None
-    ):
-        queryset = Student.objects.filter(
-            current_education_year = education_year,
-            status = status,
-            
- 
-        )
-        filename =  f"Reporte_de_estudiantes estado {status} y año {education_year}"
-
-    elif (
-        status is not None
-        and 
-        education_year is not None
-        and 
-        name is None
-        and surname is None
-        and nationality is None
-        and family is None
-        and morning is not None
-    ):
-        queryset = Student.objects.filter(
-            current_education_year = education_year,
-            status = status,
-            is_morning_student=morning
-            
- 
-        )
-        filename =  f"Reporte_de_estudiantes estado {status}, año {education_year} y por la mañana {morning}"
-
-    elif (
-        status is not None
-        and 
-        education_year is not None
-        and 
-        name is None
-        and surname is None
-        and nationality is None
-        and family is not None
-        and morning is None
-    ):
-        queryset = Student.objects.filter(
-            current_education_year = education_year,
-            status = status,
-            family__name__icontains=family
-            
-            
- 
-        )
-        filename =  f"Reporte_de_estudiantes estado {status}, año {education_year} y familia {family}"
-
-    elif (
-        status is not None
-        and 
-        education_year is not None
-        and 
-        name is None
-        and surname is None
-        and nationality is None
-        and family is not None
-        and morning is not None
-    ):
-        queryset = Student.objects.filter(
-            current_education_year = education_year,
-            status = status,
-            family__name__icontains=family,
-            is_morning_student=morning
-            
-            
- 
-        )
-        filename =  f"Reporte_de_estudiantes estado {status}, año {education_year}, familia {family} y por la mañana {morning}"
-
-    elif (
-        status is not None
-        and 
-        education_year is not None
-        and 
-        name is None
-        and surname is None
-        and nationality is not None
-        and family is None
-        and morning is None
-    ):
-        queryset = Student.objects.filter(
-            current_education_year = education_year,
-            status = status,
-            nationality__icontains=nationality,
-            
-            
- 
-        )
-        filename =  f"Reporte_de_estudiantes estado {status}, año {education_year} y nacionalidad {nationality}"
-
-    elif (
-        status is not None
-        and 
-        education_year is not None
-        and 
-        name is None
-        and surname is None
-        and nationality is not None
-        and family is None
-        and morning is not None
-    ):
-        queryset = Student.objects.filter(
-            current_education_year = education_year,
-            status = status,
-            nationality__icontains=nationality,
-            is_morning_student=morning
-            
-            
- 
-        )
-        filename =  f"Reporte_de_estudiantes estado {status}, año {education_year}, nacionalidad {nationality} y por la mañana {morning}"
-    
-    elif (
-        status is not None
-        and 
-        education_year is not None
-        and 
-        name is None
-        and surname is None
+        status is None
+        and education_year is not None
+        and name is not None
+        and surname is not None
         and nationality is not None
         and family is not None
         and morning is None
     ):
         queryset = Student.objects.filter(
-            current_education_year = education_year,
-            status = status,
+            current_education_year=education_year,
+            name__icontains=name,
+            surname__icontains=surname,
             nationality__icontains=nationality,
             family__name__icontains=family,
-            
-            
-            
- 
+            is_morning_student=morning,
         )
-        filename =  f"Reporte_de_estudiantes estado {status}, año {education_year}, nacionalidad {nationality} y familia {family}"
+        filename = f"Reporte_de_estudiantes año {education_year}, nombre {name}, surname{surname}, nacionalidad {nationality}, familia {family} y por la mañana {morning} "
 
     elif (
         status is not None
-        and 
-        education_year is not None
-        and 
-        name is None
+        and education_year is None
+        and name is None
         and surname is None
-        and nationality is not None
+        and nationality is None
+        and family is None
+        and morning is None
+    ):
+        queryset = Student.objects.filter(
+            status=status,
+        )
+        filename = f"Reporte_de_estudiantes estado {status}"
+
+    elif (
+        status is not None
+        and education_year is None
+        and name is None
+        and surname is None
+        and nationality is None
+        and family is None
+        and morning is not None
+    ):
+        queryset = Student.objects.filter(status=status, is_morning_student=morning)
+        filename = f"Reporte_de_estudiantes estado {status} y por la mañana {morning}"
+
+    elif (
+        status is not None
+        and education_year is None
+        and name is None
+        and surname is None
+        and nationality is None
+        and family is not None
+        and morning is None
+    ):
+        queryset = Student.objects.filter(status=status, family__name__icontains=family)
+        filename = f"Reporte_de_estudiantes estado {status} y familia {family}"
+
+    elif (
+        status is not None
+        and education_year is None
+        and name is None
+        and surname is None
+        and nationality is None
         and family is not None
         and morning is not None
     ):
         queryset = Student.objects.filter(
-            current_education_year = education_year,
-            status = status,
+            status=status, family__name__icontains=family, is_morning_student=morning
+        )
+        filename = f"Reporte_de_estudiantes estado {status}, familia {family} y por la mañana {morning}"
+
+    elif (
+        status is not None
+        and education_year is None
+        and name is None
+        and surname is None
+        and nationality is not None
+        and family is None
+        and morning is None
+    ):
+        queryset = Student.objects.filter(
+            status=status, nationality__icontains=nationality
+        )
+        filename = (
+            f"Reporte_de_estudiantes estado {status} y nacionalidad {nationality}"
+        )
+
+    elif (
+        status is not None
+        and education_year is None
+        and name is None
+        and surname is None
+        and nationality is not None
+        and family is None
+        and morning is not None
+    ):
+        queryset = Student.objects.filter(
+            status=status,
+            nationality__icontains=nationality,
+            is_morning_student=morning,
+        )
+        filename = f"Reporte_de_estudiantes estado {status}, nacionalidad {nationality} y por la mañana {morning}"
+
+    elif (
+        status is not None
+        and education_year is None
+        and name is None
+        and surname is None
+        and nationality is not None
+        and family is not None
+        and morning is None
+    ):
+        queryset = Student.objects.filter(
+            status=status,
             nationality__icontains=nationality,
             family__name__icontains=family,
-            is_morning_student=morning
-            
-            
- 
         )
-        filename =  f"Reporte_de_estudiantes estado {status}, año {education_year}, nacionalidad {nationality}, familia {family} y por la mañana {morning}"
+        filename = f"Reporte_de_estudiantes estado {status}, nacionalidad {nationality} y familia {family}"
 
     elif (
         status is not None
-        and 
-        education_year is not None
-        and 
-        name is None
-        and surname is not None
-        and nationality is None
-        and family is None
-        and morning is None
-    ):
-        queryset = Student.objects.filter(
-            current_education_year = education_year,
-            status = status,
-            surname__icontains = surname,
-        )
-        filename =  f"Reporte_de_estudiantes estado {status}, año {education_year} y apellido {surname}"
-
-    elif (
-        status is not None
-        and 
-        education_year is not None
-        and 
-        name is None
-        and surname is not None
-        and nationality is None
-        and family is None
-        and morning is not None
-    ):
-        queryset = Student.objects.filter(
-            current_education_year = education_year,
-            status = status,
-            surname__icontains = surname,
-            is_morning_student=morning
-        )
-        filename =  f"Reporte_de_estudiantes estado {status}, año {education_year}, apellido {surname} y por la mañana {morning}"
-
-    elif (
-        status is not None
-        and 
-        education_year is not None
-        and 
-        name is None
-        and surname is not None
-        and nationality is None
-        and family is not None
-        and morning is None
-    ):
-        queryset = Student.objects.filter(
-            current_education_year = education_year,
-            status = status,
-            surname__icontains = surname,
-            family__name__icontains=family
-        )
-        filename =  f"Reporte_de_estudiantes estado {status}, año {education_year}, apellido {surname} y familia {family}"
-
-    elif (
-        status is not None
-        and 
-        education_year is not None
-        and 
-        name is None
-        and surname is not None
-        and nationality is None
-        and family is not None
-        and morning is not None
-    ):
-        queryset = Student.objects.filter(
-            current_education_year = education_year,
-            status = status,
-            surname__icontains = surname,
-            family__name__icontains=family,
-            is_morning_student=morning
-        )
-        filename =  f"Reporte_de_estudiantes estado {status}, año {education_year}, apellido {surname}, familia {family} y por la mañana {morning}"
-
-    elif (
-        status is not None
-        and 
-        education_year is not None
-        and 
-        name is None
-        and surname is not None
-        and nationality is not None
-        and family is None
-        and morning is None
-    ):
-        queryset = Student.objects.filter(
-            current_education_year = education_year,
-            status = status,
-            surname__icontains = surname,
-            nationality__icontains=nationality
-            
-        )
-        filename =  f"Reporte_de_estudiantes estado {status}, año {education_year}, apellido {surname} y nacionalidad {nationality}"
-
-    elif (
-        status is not None
-        and 
-        education_year is not None
-        and 
-        name is None
-        and surname is not None
-        and nationality is not None
-        and family is None
-        and morning is not None
-    ):
-        queryset = Student.objects.filter(
-            current_education_year = education_year,
-            status = status,
-            surname__icontains = surname,
-            nationality__icontains=nationality,
-            is_morning_student=morning
-            
-        )
-        filename =  f"Reporte_de_estudiantes estado {status}, año {education_year}, apellido {surname}, nacionalidad {nationality} y por la mañana {morning}"
-
-    elif (
-        status is not None
-        and 
-        education_year is not None
-        and 
-        name is None
-        and surname is not None
-        and nationality is not None
-        and family is not None
-        and morning is None
-    ):
-        queryset = Student.objects.filter(
-            current_education_year = education_year,
-            status = status,
-            surname__icontains = surname,
-            nationality__icontains=nationality,
-            family__name__icontains=family
-            
-            
-        )
-        filename =  f"Reporte_de_estudiantes estado {status}, año {education_year}, apellido {surname}, nacionalidad {nationality} y familia {family}"
-
-    elif (
-        status is not None
-        and 
-        education_year is not None
-        and 
-        name is None
-        and surname is not None
+        and education_year is None
+        and name is None
+        and surname is None
         and nationality is not None
         and family is not None
         and morning is not None
     ):
         queryset = Student.objects.filter(
-            current_education_year = education_year,
-            status = status,
-            surname__icontains = surname,
+            status=status,
             nationality__icontains=nationality,
             family__name__icontains=family,
-            is_morning_student=morning
-            
-            
+            is_morning_student=morning,
         )
-        filename =  f"Reporte_de_estudiantes estado {status}, año {education_year}, apellido {surname}, nacionalidad {nationality}, familia {family} y por la mañana{morning}"
+        filename = f"Reporte_de_estudiantes estado {status}, nacionalidad {nationality}, familia {family} y por la mañana {morning}"
 
     elif (
         status is not None
-        and 
-        education_year is not None
-        and 
-        name is not None
-        and surname is None
+        and education_year is None
+        and name is None
+        and surname is not None
         and nationality is None
         and family is None
         and morning is None
     ):
         queryset = Student.objects.filter(
-            current_education_year = education_year,
-            status = status,
-            name__icontains = name
-            
-            
-            
+            status=status,
+            surname__icontains=surname,
         )
-        filename =  f"Reporte_de_estudiantes estado {status}, año {education_year} y nombre {name}"
+        filename = f"Reporte_de_estudiantes estado {status} y apellido {surname}"
 
     elif (
         status is not None
-        and 
-        education_year is not None
-        and 
-        name is not None
-        and surname is None
+        and education_year is None
+        and name is None
+        and surname is not None
         and nationality is None
         and family is None
         and morning is not None
     ):
         queryset = Student.objects.filter(
-            current_education_year = education_year,
-            status = status,
-            name__icontains = name,
-            is_morning_student=morning
-            
-            
+            status=status, surname__icontains=surname, is_morning_student=morning
         )
-        filename =  f"Reporte_de_estudiantes estado {status}, año {education_year}, nombre {name} y por la mañana {morning}"
+        filename = f"Reporte_de_estudiantes estado {status}, apellido {surname} y por la mañana {morning}"
 
     elif (
         status is not None
-        and 
-        education_year is not None
-        and 
-        name is not None
-        and surname is None
+        and education_year is None
+        and name is None
+        and surname is not None
         and nationality is None
         and family is not None
         and morning is None
     ):
         queryset = Student.objects.filter(
-            current_education_year = education_year,
-            status = status,
-            name__icontains = name,
-            family__name__icontains=family
-            
-            
-            
+            status=status, surname__icontains=surname, family__name__icontains=family
         )
-        filename =  f"Reporte_de_estudiantes estado {status}, año {education_year}, nombre {name} y familia {family}"
-
+        filename = f"Reporte_de_estudiantes estado {status}, apellido {surname} y familia {family}"
 
     elif (
         status is not None
-        and 
-        education_year is not None
-        and 
-        name is not None
-        and surname is None
+        and education_year is None
+        and name is None
+        and surname is not None
         and nationality is None
         and family is not None
         and morning is not None
     ):
         queryset = Student.objects.filter(
-            current_education_year = education_year,
-            status = status,
-            name__icontains = name,
+            status=status,
+            surname__icontains=surname,
             family__name__icontains=family,
-            is_morning_student=morning
-            
-            
-            
+            is_morning_student=morning,
         )
-        filename =  f"Reporte_de_estudiantes estado {status}, año {education_year}, nombre {name}, familia {family} y por la mañana{morning}"
+        filename = f"Reporte_de_estudiantes estado {status}, apellido {surname}, familia {family} y por la mañana {morning}"
 
     elif (
         status is not None
-        and 
-        education_year is not None
-        and 
-        name is not None
-        and surname is None
+        and education_year is None
+        and name is None
+        and surname is not None
         and nationality is not None
         and family is None
         and morning is None
     ):
         queryset = Student.objects.filter(
-            current_education_year = education_year,
-            status = status,
-            name__icontains = name,
-            nationality__icontains=nationality
-            
-            
-            
-            
-            
+            status=status,
+            surname__icontains=surname,
+            nationality__icontains=nationality,
         )
-        filename =  f"Reporte_de_estudiantes estado {status}, año {education_year}, nombre {name} y nacionalidad {nationality}"
+        filename = f"Reporte_de_estudiantes estado {status}, apellido {surname} y nacionalidad {nationality}"
 
     elif (
         status is not None
-        and 
-        education_year is not None
-        and 
-        name is not None
-        and surname is None
+        and education_year is None
+        and name is None
+        and surname is not None
         and nationality is not None
         and family is None
         and morning is not None
     ):
         queryset = Student.objects.filter(
-            current_education_year = education_year,
-            status = status,
-            name__icontains = name,
+            status=status,
+            surname__icontains=surname,
             nationality__icontains=nationality,
-            is_morning_student=morning
-            
-            
-            
-            
+            is_morning_student=morning,
         )
-        filename =  f"Reporte_de_estudiantes estado {status}, año {education_year}, nombre {name}, nacionalidad {nationality} y por la mañana {morning}"
+        filename = f"Reporte_de_estudiantes estado {status}, apellido {surname}, nacionalidad {nationality} y por la mañana {morning}"
 
     elif (
         status is not None
-        and 
-        education_year is not None
-        and 
-        name is not None
-        and surname is None
+        and education_year is None
+        and name is None
+        and surname is not None
         and nationality is not None
         and family is not None
         and morning is None
     ):
         queryset = Student.objects.filter(
-            current_education_year = education_year,
-            status = status,
-            name__icontains = name,
-            nationality__icontains=nationality,
-            family__name__icontains=family
-            
-            
-            
-            
-        )
-        filename =  f"Reporte_de_estudiantes estado {status}, año {education_year}, nombre {name}, nacionalidad {nationality} y familia{family}"
-
-    elif (
-        status is not None
-        and 
-        education_year is not None
-        and 
-        name is not None
-        and surname is None
-        and nationality is not None
-        and family is not None
-        and morning is not None
-    ):
-        queryset = Student.objects.filter(
-            current_education_year = education_year,
-            status = status,
-            name__icontains = name,
+            status=status,
+            surname__icontains=surname,
             nationality__icontains=nationality,
             family__name__icontains=family,
-            is_morning_student=morning
- 
         )
-        filename =  f"Reporte_de_estudiantes estado {status}, año {education_year}, nombre {name}, nacionalidad {nationality}, familia{family} y por la mañana {morning}"
+        filename = f"Reporte_de_estudiantes estado {status}, apellido {surname}, nacionalidad {nationality} y familia {family}"
 
     elif (
         status is not None
-        and 
-        education_year is not None
-        and 
-        name is not None
+        and education_year is None
+        and name is None
         and surname is not None
-        and nationality is None
-        and family is None
-        and morning is None
-    ):
-        queryset = Student.objects.filter(
-            current_education_year = education_year,
-            status = status,
-            name__icontains = name,
-            surname__icontains = surname
- 
-        )
-        filename =  f"Reporte_de_estudiantes estado {status}, año {education_year}, nombre {name} y apellido {surname}"
-
-    elif (
-        status is not None
-        and 
-        education_year is not None
-        and 
-        name is not None
-        and surname is not None
-        and nationality is None
-        and family is None
-        and morning is not None
-    ):
-        queryset = Student.objects.filter(
-            current_education_year = education_year,
-            status = status,
-            name__icontains = name,
-            surname__icontains = surname,
-            is_morning_student=morning
-            
-
- 
-        )
-        filename =  f"Reporte_de_estudiantes estado {status}, año {education_year}, nombre {name}, apellido {surname} y por la mañana {morning}"
-
-    elif (
-        status is not None
-        and 
-        education_year is not None
-        and 
-        name is not None
-        and surname is not None
-        and nationality is None
-        and family is not None
-        and morning is None
-    ):
-        queryset = Student.objects.filter(
-            current_education_year = education_year,
-            status = status,
-            name__icontains = name,
-            surname__icontains = surname,
-            family__name__icontains=family
-
-        )
-        filename =  f"Reporte_de_estudiantes estado {status}, año {education_year}, nombre {name}, apellido {surname} y familia {family}"
-
-    elif (
-        status is not None
-        and 
-        education_year is not None
-        and 
-        name is not None
-        and surname is not None
-        and nationality is None
+        and nationality is not None
         and family is not None
         and morning is not None
     ):
         queryset = Student.objects.filter(
-            current_education_year = education_year,
-            status = status,
-            name__icontains = name,
-            surname__icontains = surname,
+            status=status,
+            surname__icontains=surname,
+            nationality__icontains=nationality,
             family__name__icontains=family,
-            is_morning_student=morning
-
+            is_morning_student=morning,
         )
-        filename =  f"Reporte_de_estudiantes estado {status}, año {education_year}, nombre {name}, apellido {surname}, familia {family} y por la mañana {morning}"
+        filename = f"Reporte_de_estudiantes estado {status}, apellido {surname}, nacionalidad {nationality}, familia {family} y por la mañana {morning}"
 
     elif (
         status is not None
-        and 
-        education_year is not None
-        and 
-        name is not None
+        and education_year is None
+        and name is not None
+        and surname is None
+        and nationality is None
+        and family is None
+        and morning is None
+    ):
+        queryset = Student.objects.filter(status=status, name__icontains=name)
+        filename = f"Reporte_de_estudiantes estado {status} y nombre {name}"
+
+    elif (
+        status is not None
+        and education_year is None
+        and name is not None
+        and surname is None
+        and nationality is None
+        and family is None
+        and morning is not None
+    ):
+        queryset = Student.objects.filter(
+            status=status, name__icontains=name, is_morning_student=morning
+        )
+        filename = f"Reporte_de_estudiantes estado {status}, nombre {name} y por la mañana {morning}"
+
+    elif (
+        status is not None
+        and education_year is None
+        and name is not None
+        and surname is None
+        and nationality is None
+        and family is not None
+        and morning is None
+    ):
+        queryset = Student.objects.filter(
+            status=status, name__icontains=name, family__name__icontains=family
+        )
+        filename = (
+            f"Reporte_de_estudiantes estado {status}, nombre {name} y familia {family}"
+        )
+
+    elif (
+        status is not None
+        and education_year is None
+        and name is not None
+        and surname is None
+        and nationality is None
+        and family is not None
+        and morning is not None
+    ):
+        queryset = Student.objects.filter(
+            status=status,
+            name__icontains=name,
+            family__name__icontains=family,
+            is_morning_student=morning,
+        )
+        filename = f"Reporte_de_estudiantes estado {status}, nombre {name} y familia {family} y por la mañana{morning}"
+
+    elif (
+        status is not None
+        and education_year is None
+        and name is not None
+        and surname is None
+        and nationality is not None
+        and family is None
+        and morning is None
+    ):
+        queryset = Student.objects.filter(
+            status=status, name__icontains=name, nationality__icontains=nationality
+        )
+        filename = f"Reporte_de_estudiantes estado {status}, nombre {name} y nacionalidad {nationality}"
+
+    elif (
+        status is not None
+        and education_year is None
+        and name is not None
+        and surname is None
+        and nationality is not None
+        and family is None
+        and morning is not None
+    ):
+        queryset = Student.objects.filter(
+            status=status,
+            name__icontains=name,
+            nationality__icontains=nationality,
+            is_morning_student=morning,
+        )
+        filename = f"Reporte_de_estudiantes estado {status}, nombre {name}, nacionalidad {nationality} y por la mañana {morning}"
+
+    elif (
+        status is not None
+        and education_year is None
+        and name is not None
+        and surname is None
+        and nationality is not None
+        and family is not None
+        and morning is None
+    ):
+        queryset = Student.objects.filter(
+            status=status,
+            name__icontains=name,
+            nationality__icontains=nationality,
+            family__name__icontains=family,
+        )
+        filename = f"Reporte_de_estudiantes estado {status}, nombre {name}, nacionalidad {nationality} y familia {family}"
+
+    elif (
+        status is not None
+        and education_year is None
+        and name is not None
+        and surname is None
+        and nationality is not None
+        and family is not None
+        and morning is not None
+    ):
+        queryset = Student.objects.filter(
+            status=status,
+            name__icontains=name,
+            nationality__icontains=nationality,
+            family__name__icontains=family,
+            is_morning_student=morning,
+        )
+        filename = f"Reporte_de_estudiantes estado {status}, nombre {name}, nacionalidad {nationality}, familia {family} y por la mañana {morning}"
+
+    elif (
+        status is not None
+        and education_year is None
+        and name is not None
+        and surname is not None
+        and nationality is None
+        and family is None
+        and morning is None
+    ):
+        queryset = Student.objects.filter(
+            status=status, name__icontains=name, surname__icontains=surname
+        )
+        filename = f"Reporte_de_estudiantes estado {status}, nombre {name} y apellido {surname}"
+
+    elif (
+        status is not None
+        and education_year is None
+        and name is not None
+        and surname is not None
+        and nationality is None
+        and family is None
+        and morning is not None
+    ):
+        queryset = Student.objects.filter(
+            status=status,
+            name__icontains=name,
+            surname__icontains=surname,
+            is_morning_student=morning,
+        )
+        filename = f"Reporte_de_estudiantes estado {status}, nombre {name}, apellido {surname} y por la mañana {morning}"
+
+    elif (
+        status is not None
+        and education_year is None
+        and name is not None
+        and surname is not None
+        and nationality is None
+        and family is not None
+        and morning is None
+    ):
+        queryset = Student.objects.filter(
+            status=status,
+            name__icontains=name,
+            surname__icontains=surname,
+            family__name__icontains=family,
+        )
+        filename = f"Reporte_de_estudiantes estado {status}, nombre {name}, apellido {surname} y familia {family}"
+
+    elif (
+        status is not None
+        and education_year is None
+        and name is not None
+        and surname is not None
+        and nationality is None
+        and family is not None
+        and morning is not None
+    ):
+        queryset = Student.objects.filter(
+            status=status,
+            name__icontains=name,
+            surname__icontains=surname,
+            family__name__icontains=family,
+            is_morning_student=morning,
+        )
+        filename = f"Reporte_de_estudiantes estado {status}, nombre {name}, apellido {surname}, familia {family} y por la mañana {morning}"
+
+    elif (
+        status is not None
+        and education_year is None
+        and name is not None
         and surname is not None
         and nationality is not None
         and family is None
         and morning is None
     ):
         queryset = Student.objects.filter(
-            current_education_year = education_year,
-            status = status,
-            name__icontains = name,
-            surname__icontains = surname,
-            nationality__icontains=nationality
-
+            status=status,
+            name__icontains=name,
+            surname__icontains=surname,
+            nationality__icontains=nationality,
         )
-        filename =  f"Reporte_de_estudiantes estado {status}, año {education_year}, nombre {name}, apellido {surname} y nacionalidad {nationality}"
+        filename = f"Reporte_de_estudiantes estado {status}, nombre {name}, apellido {surname} y nacionalidad {nationality}"
 
     elif (
         status is not None
-        and 
-        education_year is not None
-        and 
-        name is not None
+        and education_year is None
+        and name is not None
         and surname is not None
         and nationality is not None
         and family is None
         and morning is not None
     ):
         queryset = Student.objects.filter(
-            current_education_year = education_year,
-            status = status,
-            name__icontains = name,
-            surname__icontains = surname,
+            status=status,
+            name__icontains=name,
+            surname__icontains=surname,
             nationality__icontains=nationality,
-            is_morning_student=morning
-
+            is_morning_student=morning,
         )
-        filename =  f"Reporte_de_estudiantes estado {status}, año {education_year}, nombre {name}, apellido {surname}, nacionalidad {nationality} y por la mañana {morning}"
+        filename = f"Reporte_de_estudiantes estado {status}, nombre {name}, apellido {surname}, nacionalidad {nationality} y por la mañana {morning}"
 
     elif (
         status is not None
-        and 
-        education_year is not None
-        and 
-        name is not None
+        and education_year is None
+        and name is not None
         and surname is not None
         and nationality is not None
         and family is not None
         and morning is None
     ):
         queryset = Student.objects.filter(
-            current_education_year = education_year,
-            status = status,
-            name__icontains = name,
-            surname__icontains = surname,
+            status=status,
+            name__icontains=name,
+            surname__icontains=surname,
             nationality__icontains=nationality,
-            family__name__icontains=family
-        
-
+            family__name__icontains=family,
         )
-        filename =  f"Reporte_de_estudiantes estado {status}, año {education_year}, nombre {name}, apellido {surname}, nacionalidad {nationality} y familia {family}"
+        filename = f"Reporte_de_estudiantes estado {status}, nombre {name}, apellido {surname}, nacionalidad {nationality} y familia {family}"
+
+    elif (
+        status is not None
+        and education_year is None
+        and name is not None
+        and surname is not None
+        and nationality is not None
+        and family is not None
+        and morning is not None
+    ):
+        queryset = Student.objects.filter(
+            status=status,
+            name__icontains=name,
+            surname__icontains=surname,
+            nationality__icontains=nationality,
+            family__name__icontains=family,
+            is_morning_student=morning,
+        )
+        filename = f"Reporte_de_estudiantes estado {status}, nombre {name}, apellido {surname}, nacionalidad {nationality}, familia {family} y por la mañana{morning}"
+
+    elif (
+        status is not None
+        and education_year is not None
+        and name is None
+        and surname is None
+        and nationality is None
+        and family is None
+        and morning is None
+    ):
+        queryset = Student.objects.filter(
+            current_education_year=education_year,
+            status=status,
+        )
+        filename = f"Reporte_de_estudiantes estado {status} y año {education_year}"
+
+    elif (
+        status is not None
+        and education_year is not None
+        and name is None
+        and surname is None
+        and nationality is None
+        and family is None
+        and morning is not None
+    ):
+        queryset = Student.objects.filter(
+            current_education_year=education_year,
+            status=status,
+            is_morning_student=morning,
+        )
+        filename = f"Reporte_de_estudiantes estado {status}, año {education_year} y por la mañana {morning}"
+
+    elif (
+        status is not None
+        and education_year is not None
+        and name is None
+        and surname is None
+        and nationality is None
+        and family is not None
+        and morning is None
+    ):
+        queryset = Student.objects.filter(
+            current_education_year=education_year,
+            status=status,
+            family__name__icontains=family,
+        )
+        filename = f"Reporte_de_estudiantes estado {status}, año {education_year} y familia {family}"
+
+    elif (
+        status is not None
+        and education_year is not None
+        and name is None
+        and surname is None
+        and nationality is None
+        and family is not None
+        and morning is not None
+    ):
+        queryset = Student.objects.filter(
+            current_education_year=education_year,
+            status=status,
+            family__name__icontains=family,
+            is_morning_student=morning,
+        )
+        filename = f"Reporte_de_estudiantes estado {status}, año {education_year}, familia {family} y por la mañana {morning}"
+
+    elif (
+        status is not None
+        and education_year is not None
+        and name is None
+        and surname is None
+        and nationality is not None
+        and family is None
+        and morning is None
+    ):
+        queryset = Student.objects.filter(
+            current_education_year=education_year,
+            status=status,
+            nationality__icontains=nationality,
+        )
+        filename = f"Reporte_de_estudiantes estado {status}, año {education_year} y nacionalidad {nationality}"
+
+    elif (
+        status is not None
+        and education_year is not None
+        and name is None
+        and surname is None
+        and nationality is not None
+        and family is None
+        and morning is not None
+    ):
+        queryset = Student.objects.filter(
+            current_education_year=education_year,
+            status=status,
+            nationality__icontains=nationality,
+            is_morning_student=morning,
+        )
+        filename = f"Reporte_de_estudiantes estado {status}, año {education_year}, nacionalidad {nationality} y por la mañana {morning}"
+
+    elif (
+        status is not None
+        and education_year is not None
+        and name is None
+        and surname is None
+        and nationality is not None
+        and family is not None
+        and morning is None
+    ):
+        queryset = Student.objects.filter(
+            current_education_year=education_year,
+            status=status,
+            nationality__icontains=nationality,
+            family__name__icontains=family,
+        )
+        filename = f"Reporte_de_estudiantes estado {status}, año {education_year}, nacionalidad {nationality} y familia {family}"
+
+    elif (
+        status is not None
+        and education_year is not None
+        and name is None
+        and surname is None
+        and nationality is not None
+        and family is not None
+        and morning is not None
+    ):
+        queryset = Student.objects.filter(
+            current_education_year=education_year,
+            status=status,
+            nationality__icontains=nationality,
+            family__name__icontains=family,
+            is_morning_student=morning,
+        )
+        filename = f"Reporte_de_estudiantes estado {status}, año {education_year}, nacionalidad {nationality}, familia {family} y por la mañana {morning}"
+
+    elif (
+        status is not None
+        and education_year is not None
+        and name is None
+        and surname is not None
+        and nationality is None
+        and family is None
+        and morning is None
+    ):
+        queryset = Student.objects.filter(
+            current_education_year=education_year,
+            status=status,
+            surname__icontains=surname,
+        )
+        filename = f"Reporte_de_estudiantes estado {status}, año {education_year} y apellido {surname}"
+
+    elif (
+        status is not None
+        and education_year is not None
+        and name is None
+        and surname is not None
+        and nationality is None
+        and family is None
+        and morning is not None
+    ):
+        queryset = Student.objects.filter(
+            current_education_year=education_year,
+            status=status,
+            surname__icontains=surname,
+            is_morning_student=morning,
+        )
+        filename = f"Reporte_de_estudiantes estado {status}, año {education_year}, apellido {surname} y por la mañana {morning}"
+
+    elif (
+        status is not None
+        and education_year is not None
+        and name is None
+        and surname is not None
+        and nationality is None
+        and family is not None
+        and morning is None
+    ):
+        queryset = Student.objects.filter(
+            current_education_year=education_year,
+            status=status,
+            surname__icontains=surname,
+            family__name__icontains=family,
+        )
+        filename = f"Reporte_de_estudiantes estado {status}, año {education_year}, apellido {surname} y familia {family}"
+
+    elif (
+        status is not None
+        and education_year is not None
+        and name is None
+        and surname is not None
+        and nationality is None
+        and family is not None
+        and morning is not None
+    ):
+        queryset = Student.objects.filter(
+            current_education_year=education_year,
+            status=status,
+            surname__icontains=surname,
+            family__name__icontains=family,
+            is_morning_student=morning,
+        )
+        filename = f"Reporte_de_estudiantes estado {status}, año {education_year}, apellido {surname}, familia {family} y por la mañana {morning}"
+
+    elif (
+        status is not None
+        and education_year is not None
+        and name is None
+        and surname is not None
+        and nationality is not None
+        and family is None
+        and morning is None
+    ):
+        queryset = Student.objects.filter(
+            current_education_year=education_year,
+            status=status,
+            surname__icontains=surname,
+            nationality__icontains=nationality,
+        )
+        filename = f"Reporte_de_estudiantes estado {status}, año {education_year}, apellido {surname} y nacionalidad {nationality}"
+
+    elif (
+        status is not None
+        and education_year is not None
+        and name is None
+        and surname is not None
+        and nationality is not None
+        and family is None
+        and morning is not None
+    ):
+        queryset = Student.objects.filter(
+            current_education_year=education_year,
+            status=status,
+            surname__icontains=surname,
+            nationality__icontains=nationality,
+            is_morning_student=morning,
+        )
+        filename = f"Reporte_de_estudiantes estado {status}, año {education_year}, apellido {surname}, nacionalidad {nationality} y por la mañana {morning}"
+
+    elif (
+        status is not None
+        and education_year is not None
+        and name is None
+        and surname is not None
+        and nationality is not None
+        and family is not None
+        and morning is None
+    ):
+        queryset = Student.objects.filter(
+            current_education_year=education_year,
+            status=status,
+            surname__icontains=surname,
+            nationality__icontains=nationality,
+            family__name__icontains=family,
+        )
+        filename = f"Reporte_de_estudiantes estado {status}, año {education_year}, apellido {surname}, nacionalidad {nationality} y familia {family}"
+
+    elif (
+        status is not None
+        and education_year is not None
+        and name is None
+        and surname is not None
+        and nationality is not None
+        and family is not None
+        and morning is not None
+    ):
+        queryset = Student.objects.filter(
+            current_education_year=education_year,
+            status=status,
+            surname__icontains=surname,
+            nationality__icontains=nationality,
+            family__name__icontains=family,
+            is_morning_student=morning,
+        )
+        filename = f"Reporte_de_estudiantes estado {status}, año {education_year}, apellido {surname}, nacionalidad {nationality}, familia {family} y por la mañana{morning}"
+
+    elif (
+        status is not None
+        and education_year is not None
+        and name is not None
+        and surname is None
+        and nationality is None
+        and family is None
+        and morning is None
+    ):
+        queryset = Student.objects.filter(
+            current_education_year=education_year, status=status, name__icontains=name
+        )
+        filename = f"Reporte_de_estudiantes estado {status}, año {education_year} y nombre {name}"
+
+    elif (
+        status is not None
+        and education_year is not None
+        and name is not None
+        and surname is None
+        and nationality is None
+        and family is None
+        and morning is not None
+    ):
+        queryset = Student.objects.filter(
+            current_education_year=education_year,
+            status=status,
+            name__icontains=name,
+            is_morning_student=morning,
+        )
+        filename = f"Reporte_de_estudiantes estado {status}, año {education_year}, nombre {name} y por la mañana {morning}"
+
+    elif (
+        status is not None
+        and education_year is not None
+        and name is not None
+        and surname is None
+        and nationality is None
+        and family is not None
+        and morning is None
+    ):
+        queryset = Student.objects.filter(
+            current_education_year=education_year,
+            status=status,
+            name__icontains=name,
+            family__name__icontains=family,
+        )
+        filename = f"Reporte_de_estudiantes estado {status}, año {education_year}, nombre {name} y familia {family}"
+
+    elif (
+        status is not None
+        and education_year is not None
+        and name is not None
+        and surname is None
+        and nationality is None
+        and family is not None
+        and morning is not None
+    ):
+        queryset = Student.objects.filter(
+            current_education_year=education_year,
+            status=status,
+            name__icontains=name,
+            family__name__icontains=family,
+            is_morning_student=morning,
+        )
+        filename = f"Reporte_de_estudiantes estado {status}, año {education_year}, nombre {name}, familia {family} y por la mañana{morning}"
+
+    elif (
+        status is not None
+        and education_year is not None
+        and name is not None
+        and surname is None
+        and nationality is not None
+        and family is None
+        and morning is None
+    ):
+        queryset = Student.objects.filter(
+            current_education_year=education_year,
+            status=status,
+            name__icontains=name,
+            nationality__icontains=nationality,
+        )
+        filename = f"Reporte_de_estudiantes estado {status}, año {education_year}, nombre {name} y nacionalidad {nationality}"
+
+    elif (
+        status is not None
+        and education_year is not None
+        and name is not None
+        and surname is None
+        and nationality is not None
+        and family is None
+        and morning is not None
+    ):
+        queryset = Student.objects.filter(
+            current_education_year=education_year,
+            status=status,
+            name__icontains=name,
+            nationality__icontains=nationality,
+            is_morning_student=morning,
+        )
+        filename = f"Reporte_de_estudiantes estado {status}, año {education_year}, nombre {name}, nacionalidad {nationality} y por la mañana {morning}"
+
+    elif (
+        status is not None
+        and education_year is not None
+        and name is not None
+        and surname is None
+        and nationality is not None
+        and family is not None
+        and morning is None
+    ):
+        queryset = Student.objects.filter(
+            current_education_year=education_year,
+            status=status,
+            name__icontains=name,
+            nationality__icontains=nationality,
+            family__name__icontains=family,
+        )
+        filename = f"Reporte_de_estudiantes estado {status}, año {education_year}, nombre {name}, nacionalidad {nationality} y familia{family}"
+
+    elif (
+        status is not None
+        and education_year is not None
+        and name is not None
+        and surname is None
+        and nationality is not None
+        and family is not None
+        and morning is not None
+    ):
+        queryset = Student.objects.filter(
+            current_education_year=education_year,
+            status=status,
+            name__icontains=name,
+            nationality__icontains=nationality,
+            family__name__icontains=family,
+            is_morning_student=morning,
+        )
+        filename = f"Reporte_de_estudiantes estado {status}, año {education_year}, nombre {name}, nacionalidad {nationality}, familia{family} y por la mañana {morning}"
+
+    elif (
+        status is not None
+        and education_year is not None
+        and name is not None
+        and surname is not None
+        and nationality is None
+        and family is None
+        and morning is None
+    ):
+        queryset = Student.objects.filter(
+            current_education_year=education_year,
+            status=status,
+            name__icontains=name,
+            surname__icontains=surname,
+        )
+        filename = f"Reporte_de_estudiantes estado {status}, año {education_year}, nombre {name} y apellido {surname}"
+
+    elif (
+        status is not None
+        and education_year is not None
+        and name is not None
+        and surname is not None
+        and nationality is None
+        and family is None
+        and morning is not None
+    ):
+        queryset = Student.objects.filter(
+            current_education_year=education_year,
+            status=status,
+            name__icontains=name,
+            surname__icontains=surname,
+            is_morning_student=morning,
+        )
+        filename = f"Reporte_de_estudiantes estado {status}, año {education_year}, nombre {name}, apellido {surname} y por la mañana {morning}"
+
+    elif (
+        status is not None
+        and education_year is not None
+        and name is not None
+        and surname is not None
+        and nationality is None
+        and family is not None
+        and morning is None
+    ):
+        queryset = Student.objects.filter(
+            current_education_year=education_year,
+            status=status,
+            name__icontains=name,
+            surname__icontains=surname,
+            family__name__icontains=family,
+        )
+        filename = f"Reporte_de_estudiantes estado {status}, año {education_year}, nombre {name}, apellido {surname} y familia {family}"
+
+    elif (
+        status is not None
+        and education_year is not None
+        and name is not None
+        and surname is not None
+        and nationality is None
+        and family is not None
+        and morning is not None
+    ):
+        queryset = Student.objects.filter(
+            current_education_year=education_year,
+            status=status,
+            name__icontains=name,
+            surname__icontains=surname,
+            family__name__icontains=family,
+            is_morning_student=morning,
+        )
+        filename = f"Reporte_de_estudiantes estado {status}, año {education_year}, nombre {name}, apellido {surname}, familia {family} y por la mañana {morning}"
+
+    elif (
+        status is not None
+        and education_year is not None
+        and name is not None
+        and surname is not None
+        and nationality is not None
+        and family is None
+        and morning is None
+    ):
+        queryset = Student.objects.filter(
+            current_education_year=education_year,
+            status=status,
+            name__icontains=name,
+            surname__icontains=surname,
+            nationality__icontains=nationality,
+        )
+        filename = f"Reporte_de_estudiantes estado {status}, año {education_year}, nombre {name}, apellido {surname} y nacionalidad {nationality}"
+
+    elif (
+        status is not None
+        and education_year is not None
+        and name is not None
+        and surname is not None
+        and nationality is not None
+        and family is None
+        and morning is not None
+    ):
+        queryset = Student.objects.filter(
+            current_education_year=education_year,
+            status=status,
+            name__icontains=name,
+            surname__icontains=surname,
+            nationality__icontains=nationality,
+            is_morning_student=morning,
+        )
+        filename = f"Reporte_de_estudiantes estado {status}, año {education_year}, nombre {name}, apellido {surname}, nacionalidad {nationality} y por la mañana {morning}"
+
+    elif (
+        status is not None
+        and education_year is not None
+        and name is not None
+        and surname is not None
+        and nationality is not None
+        and family is not None
+        and morning is None
+    ):
+        queryset = Student.objects.filter(
+            current_education_year=education_year,
+            status=status,
+            name__icontains=name,
+            surname__icontains=surname,
+            nationality__icontains=nationality,
+            family__name__icontains=family,
+        )
+        filename = f"Reporte_de_estudiantes estado {status}, año {education_year}, nombre {name}, apellido {surname}, nacionalidad {nationality} y familia {family}"
 
     else:
         queryset = Student.objects.filter(
-            current_education_year = education_year,
-            status = status,
-            name__icontains = name,
-            surname__icontains = surname,
+            current_education_year=education_year,
+            status=status,
+            name__icontains=name,
+            surname__icontains=surname,
             nationality__icontains=nationality,
             family__name__icontains=family,
-            is_morning_student=morning
-        
-
+            is_morning_student=morning,
         )
-        filename =  f"Reporte_de_estudiantes estado {status}, año {education_year}, nombre {name}, apellido {surname}, nacionalidad {nationality}, familia {family} y por la mañana {morning}"
-        
+        filename = f"Reporte_de_estudiantes estado {status}, año {education_year}, nombre {name}, apellido {surname}, nacionalidad {nationality}, familia {family} y por la mañana {morning}"
+
     return (
         queryset,
         filename,
