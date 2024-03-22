@@ -27,6 +27,5 @@ urlpatterns = [
         name="blacklist",
     ),
     path("redirect-social/", RedirectSocial.as_view()),
-    path('process-payment', process_payment, name='process_payment'),
-
+    path("process-payment", process_payment, name="process_payment"),
 ]
