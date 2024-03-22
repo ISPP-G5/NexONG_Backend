@@ -2,7 +2,6 @@ from django.urls import path, include
 from .routers import router_api
 from .Donation.views import *
 from .Authentication.views import (
-    EmailApiView,
     RedirectSocial,
     LogoutAndBlacklistRefreshTokenForUserView,
     ActivateUserView,
@@ -18,6 +17,7 @@ urlpatterns = [
         name="export_excel_all_donations",
     ),
     path("auth/", include("djoser.urls")),
+    path("activate/<str:uid>/<str:token>", ActivateUserView.as_view(), name="activate-user"),
     path("auth/", include("djoser.urls.jwt")),
     path("auth/", include("djoser.social.urls")),
     path("auth/activate/", ActivateUserView.as_view(), name="activate-user"),
@@ -27,5 +27,4 @@ urlpatterns = [
         name="blacklist",
     ),
     path("redirect-social/", RedirectSocial.as_view()),
-    path("send_email/", EmailApiView),
 ]

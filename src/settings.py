@@ -38,6 +38,7 @@ INSTALLED_APPS = [
     "djoser",
     "social_django",
     "rest_framework_simplejwt.token_blacklist",
+    "rest_framework.authtoken",
     "drf_yasg",
 ]
 
@@ -141,6 +142,7 @@ REST_FRAMEWORK = {
     # ),
     "DEFAULT_AUTHENTICATION_CLASSES": (
         "rest_framework_simplejwt.authentication.JWTAuthentication",  # Do not delete this comma, it breaks things somehow....
+        "rest_framework.authentication.TokenAuthentication",
     ),
     "DEFAULT_THROTTLE_CLASSES": (
         "rest_framework.throttling.AnonRateThrottle",
@@ -186,8 +188,8 @@ DJOSER = {
     "SET_PASSWORD_RETYPE": True,
     "PASSWORD_RESET_CONFIRM_RETYPE": True,
     "USERNAME_RESET_CONFIRM_URL": "username/reset/confirm/{uid}/{token}",
-    # "ACTIVATION_URL": "activate/{uid}/{token}",
-    # "SEND_ACTIVATION_EMAIL": True,
+    "ACTIVATION_URL": "activate/{uid}/{token}",
+    "SEND_ACTIVATION_EMAIL": True,
     "SERIALIZERS": {
         "user_create": "nexong.api.Authentication.authSerializer.CreateUserSerializer",
         "user": "nexong.api.Authentication.authSerializer.CreateUserSerializer",

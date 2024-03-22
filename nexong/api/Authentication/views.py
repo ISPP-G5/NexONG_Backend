@@ -8,8 +8,6 @@ from rest_framework import status
 from ...models import *
 from .authSerializer import *
 from rest_framework_simplejwt.tokens import RefreshToken
-from django.core.mail import send_mail
-
 
 
 
@@ -129,16 +127,3 @@ class ActivateUserView(APIView):
         else:
             return Response(status=response.status_code)
         
-
-def EmailApiView(request):
-    try:
-        to_email = request.GET.get("email")
-        subject = "Mensaje de prueba"
-        message = "Registro correctamente el usuario"
-        send_mail(subject, message, None, [to_email])
-        #Para verificar primero por postman
-        return HttpResponse({'Correo enviado con exito'})
-    except Exception as e:
-        error_message = str(e)
-        return HttpResponse({error_message})
-        #Falta que te mande a la pagina de inicio(redirect home)
