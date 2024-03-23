@@ -4,14 +4,13 @@ from rest_framework import status
 from ...models import *
 from .evaluationSerializer import EvaluationTypeSerializer, StudentEvaluationSerializer
 from ..permissions import *
-from rest_framework.permissions import AllowAny
 
 
 class StudentEvaluationApiViewSet(ModelViewSet):
     queryset = StudentEvaluation.objects.all()
     http_method_names = ["get", "post", "put", "delete"]
     serializer_class = StudentEvaluationSerializer
-    permission_classes = [isEducatorPutAndGet | isFamilyGet]
+    permission_classes = [isEducator | isFamilyGet]
 
     def destroy(self, request, *args, **kwargs):
         instance = self.get_object()
@@ -24,7 +23,7 @@ class EvaluationTypeApiViewSet(ModelViewSet):
     queryset = EvaluationType.objects.all()
     http_method_names = ["get", "post", "put", "delete"]
     serializer_class = EvaluationTypeSerializer
-    permission_classes = [AllowAny]
+    permission_classes = [isAuthenticated]
 
     def destroy(self, request, *args, **kwargs):
         instance = self.get_object()

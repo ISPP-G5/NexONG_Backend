@@ -3,14 +3,14 @@ from rest_framework.response import Response
 from rest_framework import status
 from ...models import *
 from .meetingSerializer import *
-from rest_framework.permissions import AllowAny
+from ..permissions import *
 
 
 class MeetingApiViewSet(ModelViewSet):
     queryset = Meeting.objects.all()
     http_method_names = ["get", "post", "put", "delete"]
     serializer_class = MeetingSerializer
-    permission_classes = [AllowAny]
+    permission_classes = [isPartnerGet]
 
     def update(self, request, *args, **kwargs):
         instance = self.get_object()

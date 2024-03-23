@@ -7,13 +7,13 @@ from rest_framework.response import Response
 from rest_framework import status
 from rest_framework.permissions import AllowAny
 from nexong.models import Student, QuarterMarks
-
+from ..permissions import *
 
 class StudentApiViewSet(ModelViewSet):
     queryset = Student.objects.all()
     http_method_names = ["get", "post", "put", "delete", "patch"]
     serializer_class = StudentSerializer
-    permission_classes = [AllowAny]
+    permission_classes = [isFamily]
 
     def destroy(self, request, *args, **kwargs):
         instance = self.get_object()
@@ -25,7 +25,7 @@ class QuarterMarksApiViewSet(ModelViewSet):
     queryset = QuarterMarks.objects.all()
     http_method_names = ["get", "post", "put", "delete"]
     serializer_class = QuarterMarksSerializer
-    permission_classes = [AllowAny]
+    permission_classes = [isFamilyGet | isEducator]
 
     def destroy(self, request, *args, **kwargs):
         instance = self.get_object()

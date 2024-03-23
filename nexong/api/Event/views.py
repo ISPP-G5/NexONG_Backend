@@ -4,7 +4,6 @@ from rest_framework import status
 from ...models import *
 from ..permissions import *
 from .eventSerializer import EventSerializer, LessonEventSerializer
-from rest_framework.permissions import AllowAny
 
 
 class EventApiViewSet(ModelViewSet):

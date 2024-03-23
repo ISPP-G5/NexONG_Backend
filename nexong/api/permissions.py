@@ -1,6 +1,14 @@
 from rest_framework.permissions import BasePermission, DjangoModelPermissions
 from ..models import Lesson, LessonAttendance
 
+class isAuthenticated(BasePermission):
+    def has_permission(self, request, view):
+        if request.user.is_authenticated:
+                return True
+        else:
+            return False
+
+
 class isAdminOrReadOnly(BasePermission):
     def has_permission(self, request, view):
         if request.user.is_authenticated:
@@ -39,7 +47,15 @@ class isEducatorPutAndGet(BasePermission):
                     return False
             else:
                 return False    
-            
+
+         
+class isEducator(BasePermission):
+    def has_permission(self, request, view):
+        if request.user.is_authenticated:
+            return request.user.role == "EDUCADOR"
+        else:
+            return False
+           
 
 class isFamily(BasePermission):
     def has_permission(self, request, view):

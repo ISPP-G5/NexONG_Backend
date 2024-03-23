@@ -19,13 +19,13 @@ from reportlab.platypus import (
 from reportlab.lib.styles import getSampleStyleSheet
 from reportlab.lib import colors
 from datetime import datetime
-
+from ..permissions import *
 
 class DonationApiViewSet(ModelViewSet):
     queryset = Donation.objects.all()
     http_method_names = ["get", "post", "put", "delete", "patch"]
     serializer_class = DonationSerializer
-    permission_classes = [AllowAny]
+    permission_classes = [isPartnerPostAndGet]
 
     def destroy(self, request, *args, **kwargs):
         instance = self.get_object()
