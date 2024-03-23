@@ -70,15 +70,18 @@ class LessonEventApiViewSet(ModelViewSet):
 
         atendees_mod = (
             "attendees" in serializer.validated_data
-            and serializer.validated_data["attendees"] != list(old_lessonEvent.attendees.all())
+            and serializer.validated_data["attendees"]
+            != list(old_lessonEvent.attendees.all())
         )
         voluntees_mod = (
             "volunteers" in serializer.validated_data
-            and serializer.validated_data["volunteers"] != list(old_lessonEvent.volunteers.all())
+            and serializer.validated_data["volunteers"]
+            != list(old_lessonEvent.volunteers.all())
         )
         educators_mod = (
             "educators" in serializer.validated_data
-            and serializer.validated_data["educators"] != list(old_lessonEvent.educators.all())
+            and serializer.validated_data["educators"]
+            != list(old_lessonEvent.educators.all())
         )
 
         if (
