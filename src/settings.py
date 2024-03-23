@@ -1,24 +1,39 @@
 import os
 from pathlib import Path
 from datetime import timedelta
-from decouple import config
+from urllib.parse import urlparse
+import environ
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
+
+env = environ.Env(DEBUG=(bool, False))
+env_file = os.path.join(BASE_DIR, ".env")
+env.read_env(env_file)
 
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/5.0/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = "django-insecure-908#c4*6a*!(2ncjv!#$kh6c%%)q^rn0n2c4o*w(i6ry5$jjy+"
+SECRET_KEY = env("SECRET_KEY")
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = env("DEBUG", default=False, cast=bool)
 
 # SECURITY WARNING: don't run with debug turned on in production!
-ALLOWED_HOSTS = []
-CSRF_TRUSTED_ORIGINS = ["moz-extension://d8e9b363-83a5-44fc-9519-03eadf6efffb"]
+APPENGINE_URL = env("APPENGINE_URL", default=None)
+if APPENGINE_URL:
+    # ensure a scheme is present in the URL before it's processed.
+    if not urlparse(APPENGINE_URL).scheme:
+        APPENGINE_URL = f"https://{APPENGINE_URL}"
+
+    ALLOWED_HOSTS = [urlparse(APPENGINE_URL).netloc]
+    CSRF_TRUSTED_ORIGINS = [APPENGINE_URL]
+    SECURE_SSL_REDIRECT = True
+else:
+    ALLOWED_HOSTS = ["*"]
+# Once deployed, add the domain to the front end here
 CORS_ALLOWED_ORIGINS = ["http://localhost:3000", "http://127.0.0.1:3000"]
 APPEND_SLASH = True
 
@@ -79,16 +94,19 @@ WSGI_APPLICATION = "src.wsgi.application"
 # Database
 # https://docs.djangoproject.com/en/5.0/ref/settings/#databases
 
-DATABASES = {
-    "default": {
-        "ENGINE": "django.db.backends.postgresql",
-        "NAME": "nexongdb",
-        "USER": "nexong",
-        "PASSWORD": "nexong",
-        "HOST": "localhost",
-        "PORT": "5432",
+if DEBUG == 1:
+    DATABASES = {
+        "default": {
+            "ENGINE": "django.db.backends.postgresql",
+            "NAME": "nexongdb",
+            "USER": "nexong",
+            "PASSWORD": "nexong",
+            "HOST": "localhost",
+            "PORT": "5432",
+        }
     }
-}
+else:
+    DATABASES = {"default": env.db()}
 
 
 # Password validation
@@ -148,8 +166,8 @@ REST_FRAMEWORK = {
     ),
     # The request per minute must be studied
     "DEFAULT_THROTTLE_RATES": {
-        "anon": "10/minute",  # 10 requests per minute for anonymous
-        "user": "30/minute",  # 30 requests per minute for users
+        "anon": "100/minute",  # 100 requests per minute for anonymous
+        "user": "300/minute",  # 300 requests per minute for users
     },
 }
 
@@ -198,8 +216,8 @@ DJOSER = {
     "SOCIAL_AUTH_ALLOWED_REDIRECT_URIS": white_list,
 }
 
-SOCIAL_AUTH_GOOGLE_OAUTH2_KEY = config("GOOGLE_OAUTH2_KEY")
-SOCIAL_AUTH_GOOGLE_OAUTH2_SECRET = config("GOOGLE_OAUTH2_SECRET")
+SOCIAL_AUTH_GOOGLE_OAUTH2_KEY = env("GOOGLE_OAUTH2_KEY")
+SOCIAL_AUTH_GOOGLE_OAUTH2_SECRET = env("GOOGLE_OAUTH2_SECRET")
 
 SOCIAL_AUTH_GOOGLE_OAUTH2_SCOPE = [
     "https://www.googleapis.com/auth/userinfo.email",
