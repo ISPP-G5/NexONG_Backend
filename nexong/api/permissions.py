@@ -55,7 +55,14 @@ class isEducator(BasePermission):
             return request.user.role == "EDUCADOR"
         else:
             return False
-           
+         
+class isEducatorGet(BasePermission):
+    def has_permission(self, request, view):
+        if request.user.is_authenticated:
+            if request.method in ("GET"):
+                return request.user.role == "EDUCADOR"
+        else:
+            return False          
 
 class isFamily(BasePermission):
     def has_permission(self, request, view):
@@ -66,8 +73,7 @@ class isFamily(BasePermission):
         
     def has_object_permission(self, request, view, obj):
             if request.user.is_authenticated:
-                if request.method in ("PUT", "GET"):
-                    return request.user.role == "FAMILIA" and obj.family == request.user.family
+                return request.user.role == "FAMILIA" and obj.family == request.user.family
             else:
                 return False    
               

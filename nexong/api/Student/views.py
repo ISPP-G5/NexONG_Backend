@@ -13,7 +13,7 @@ class StudentApiViewSet(ModelViewSet):
     queryset = Student.objects.all()
     http_method_names = ["get", "post", "put", "delete", "patch"]
     serializer_class = StudentSerializer
-    permission_classes = [isFamily]
+    permission_classes = [isFamily | isEducatorGet]
 
     def destroy(self, request, *args, **kwargs):
         instance = self.get_object()
