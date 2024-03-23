@@ -219,7 +219,7 @@ class PunctualDonation(models.Model):
         upload_to=upload_to_punctual_donation,
         validators=[validate_file_extension],
     )
-    date = models.DateField()
+    date = models.DateField(auto_now_add=True, blank=True)
 
 
 class HomeDocument(models.Model):
