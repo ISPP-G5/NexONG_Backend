@@ -5,6 +5,7 @@ from ..permissions import *
 from ...models import *
 from .lessonSerializer import *
 
+
 class LessonApiViewSet(ModelViewSet):
     queryset = Lesson.objects.all()
     http_method_names = ["get", "post", "put", "delete"]
@@ -16,11 +17,13 @@ class LessonApiViewSet(ModelViewSet):
         old = Lesson.objects.get(pk=pk)
         serializer = self.get_serializer(instance, data=request.data, partial=True)
         serializer.is_valid(raise_exception=True)
-        if str(old.educator.pk) != request.data["educator"] and request.user.role != "ADMIN":
+        if (
+            str(old.educator.pk) != request.data["educator"]
+            and request.user.role != "ADMIN"
+        ):
             return Response(status=status.HTTP_401_UNAUTHORIZED)
         serializer.save()
         return Response(serializer.data)
-            
 
     def destroy(self, request, *args, **kwargs):
         instance = self.get_object()

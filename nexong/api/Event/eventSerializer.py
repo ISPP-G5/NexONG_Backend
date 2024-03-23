@@ -39,9 +39,9 @@ class LessonEventSerializer(ModelSerializer):
         validation_error = {}
 
         volunteers_emails = attrs.get("volunteers")
-        
+
         max_volunteers = attrs.get("max_volunteers")
-        
+
         if volunteers_emails is not None:
             num_volunteers = len(volunteers_emails)
             if max_volunteers < num_volunteers:

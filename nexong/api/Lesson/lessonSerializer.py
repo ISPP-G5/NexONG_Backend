@@ -54,7 +54,7 @@ class LessonSerializer(ModelSerializer):
                     validation_error[
                         "students"
                     ] = "There is a student with incorrect schedule (is a morning student or not)."
-            
+
         if validation_error:
             raise serializers.ValidationError(validation_error)
 
