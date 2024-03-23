@@ -23,7 +23,7 @@ class StudentApiViewSet(ModelViewSet):
 
 class QuarterMarksApiViewSet(ModelViewSet):
     queryset = QuarterMarks.objects.all()
-    http_method_names = ["get", "post", "put", "delete"]
+    http_method_names = ["get", "post", "put", "delete", "patch"]
     serializer_class = QuarterMarksSerializer
     permission_classes = [isFamilyGet | isEducator]
 
