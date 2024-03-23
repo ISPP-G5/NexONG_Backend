@@ -3,13 +3,33 @@ from pathlib import Path
 from datetime import timedelta
 from urllib.parse import urlparse
 import environ
+import io
+from google.cloud import secretmanager
+from google.oauth2 import service_account
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
 env = environ.Env(DEBUG=(bool, False))
 env_file = os.path.join(BASE_DIR, ".env")
-env.read_env(env_file)
+
+
+if os.path.isfile(env_file):
+    # read a local .env file
+    env.read_env(env_file)
+elif os.environ.get('GOOGLE_CLOUD_PROJECT', None):
+    # pull .env file from Secret Manager
+    project_id = os.environ.get('GOOGLE_CLOUD_PROJECT')
+
+    client = secretmanager.SecretManagerServiceClient()
+    settings_name = os.environ.get('SETTINGS_NAME', 'django_settings')
+    name = f'projects/{project_id}/secrets/{settings_name}/versions/latest'
+    payload = client.access_secret_version(name=name).payload.data.decode('UTF-8')
+
+    env.read_env(io.StringIO(payload))
+else:
+    raise Exception('No local .env or GOOGLE_CLOUD_PROJECT detected. No secrets found.')
+
 
 
 # Quick-start development settings - unsuitable for production
@@ -142,8 +162,16 @@ USE_TZ = True
 
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/5.0/howto/static-files/
+GS_CREDENTIALS = service_account.Credentials.from_service_account_file(
+    os.path.join(BASE_DIR, 'gcpCredentials.json')
+)
+
+DEFAULT_FILE_STORAGE = 'storages.backends.gcloud.GoogleCloudStorage'
+STATICFILES_STORAGE = 'storages.backends.gcloud.GoogleCloudStorage'
+GS_BUCKET_NAME = env('GS_BUCKET_NAME')
 
 STATIC_URL = "static/"
+STATIC_ROOT = BASE_DIR / 'staticfiles'
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/5.0/ref/settings/#default-auto-field
