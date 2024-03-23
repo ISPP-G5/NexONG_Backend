@@ -14,11 +14,11 @@ class LessonApiViewSet(ModelViewSet):
 
     def update(self, request, pk, *args, **kwargs):
         instance = self.get_object()
-        old = Lesson.objects.get(pk=pk)
+        old_lesson = Lesson.objects.get(pk=pk)
         serializer = self.get_serializer(instance, data=request.data, partial=True)
         serializer.is_valid(raise_exception=True)
         if (
-            str(old.educator.pk) != request.data["educator"]
+            str(old_lesson.educator.pk) != request.data["educator"]
             and request.user.role != "ADMIN"
         ):
             return Response(status=status.HTTP_401_UNAUTHORIZED)

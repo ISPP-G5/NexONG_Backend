@@ -14,14 +14,14 @@ class EventApiViewSet(ModelViewSet):
 
     def update(self, request, pk, *args, **kwargs):
         instance = self.get_object()
-        old = Event.objects.get(pk=pk)
+        old_event = Event.objects.get(pk=pk)
         serializer = self.get_serializer(instance, data=request.data, partial=True)
         serializer.is_valid(raise_exception=True)
         modified = False
         for field, new_value in serializer.validated_data.items():
             if (
                 field not in ("attendees", "volunteers", "url")
-                and getattr(old, field) != new_value
+                and getattr(old_event, field) != new_value
             ):
                 modified = True
         if request.user.role != "ADMIN" and modified:
@@ -29,11 +29,11 @@ class EventApiViewSet(ModelViewSet):
         elif request.user.role in (
             "VOLUNTARIO",
             "VOLUNTARIO_SOCIO",
-        ) and serializer.validated_data["attendees"] != list(old.attendees.all()):
+        ) and serializer.validated_data["attendees"] != list(old_event.attendees.all()):
             return Response(status=status.HTTP_401_UNAUTHORIZED)
         elif request.user.role == "FAMILIA" and serializer.validated_data[
             "volunteers"
-        ] != list(old.volunteers.all()):
+        ] != list(old_event.volunteers.all()):
             return Response(status=status.HTTP_401_UNAUTHORIZED)
         serializer.save()
         return Response(serializer.data)
@@ -54,15 +54,15 @@ class LessonEventApiViewSet(ModelViewSet):
 
     def update(self, request, pk, *args, **kwargs):
         instance = self.get_object()
-        old = LessonEvent.objects.get(pk=pk)
+        old_lessonEvent = LessonEvent.objects.get(pk=pk)
         serializer = self.get_serializer(instance, data=request.data, partial=True)
         serializer.is_valid(raise_exception=True)
         modified = False
 
-        for field, new_value in serializer.validated_data.items():
+        for field, new_data in serializer.validated_data.items():
             if (
                 field not in ("educators", "attendees", "volunteers", "url")
-                and getattr(old, field) != new_value
+                and getattr(old_lessonEvent, field) != new_data
             ):
                 modified = True
         if request.user.role != "ADMIN" and modified:
@@ -70,15 +70,15 @@ class LessonEventApiViewSet(ModelViewSet):
 
         atendees_mod = (
             "attendees" in serializer.validated_data
-            and serializer.validated_data["attendees"] != list(old.attendees.all())
+            and serializer.validated_data["attendees"] != list(old_lessonEvent.attendees.all())
         )
         voluntees_mod = (
             "volunteers" in serializer.validated_data
-            and serializer.validated_data["volunteers"] != list(old.volunteers.all())
+            and serializer.validated_data["volunteers"] != list(old_lessonEvent.volunteers.all())
         )
         educators_mod = (
             "educators" in serializer.validated_data
-            and serializer.validated_data["educators"] != list(old.educators.all())
+            and serializer.validated_data["educators"] != list(old_lessonEvent.educators.all())
         )
 
         if (
