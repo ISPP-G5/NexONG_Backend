@@ -174,7 +174,7 @@ class PunctualDonation(models.Model):
     surname = models.CharField(max_length=255)
     email = models.EmailField()
     proof_of_payment_document = models.FileField(upload_to="proof_of_payment")
-    date = models.DateField()
+    date = models.DateField(auto_now_add=True, blank=True)
 
 
 class HomeDocument(models.Model):
