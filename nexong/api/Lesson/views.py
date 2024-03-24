@@ -10,20 +10,7 @@ class LessonApiViewSet(ModelViewSet):
     queryset = Lesson.objects.all()
     http_method_names = ["get", "post", "put", "delete"]
     serializer_class = LessonSerializer
-    permission_classes = [isEducatorPutAndGet | isFamilyGet]
-
-    def update(self, request, pk, *args, **kwargs):
-        instance = self.get_object()
-        old_lesson = Lesson.objects.get(pk=pk)
-        serializer = self.get_serializer(instance, data=request.data, partial=True)
-        serializer.is_valid(raise_exception=True)
-        if (
-            str(old_lesson.educator.pk) != request.data["educator"]
-            and request.user.role != "ADMIN"
-        ):
-            return Response(status=status.HTTP_401_UNAUTHORIZED)
-        serializer.save()
-        return Response(serializer.data)
+    permission_classes = [isEducatorGet | isFamilyGet |isVolunteerGet]
 
     def destroy(self, request, *args, **kwargs):
         instance = self.get_object()
@@ -35,7 +22,7 @@ class LessonAttendanceApiViewSet(ModelViewSet):
     queryset = LessonAttendance.objects.all()
     http_method_names = ["get", "post", "put", "delete"]
     serializer_class = LessonAttendanceSerializer
-    permission_classes = [isEducatorPutAndGet | isVolunteerPutAndGet]
+    permission_classes = [isEducatorGet | isVolunteerPostPutAndGet]
 
     def destroy(self, request, *args, **kwargs):
         instance = self.get_object()

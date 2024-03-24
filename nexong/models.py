@@ -100,9 +100,11 @@ GRADESYSTEM = [
 ]
 DAILY = "DIARIO"
 ANNUAL = "ANUAL"
+QUARTERLY = "TRIMESTRAL"
 EVALUATION_TYPE = [
     (DAILY, "Diario"),
     (ANNUAL, "Anual"),
+    (QUARTERLY, "Trimestral"),
 ]
 WEEKDAYS = [
     ("LUNES", "Lunes"),

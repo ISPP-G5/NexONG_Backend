@@ -49,7 +49,7 @@ class LessonEventApiViewSet(ModelViewSet):
     http_method_names = ["get", "post", "put", "delete"]
     serializer_class = LessonEventSerializer
     permission_classes = [
-        isVolunteerPutAndGet | isPartnerGet | isFamilyPutAndGet | isEducatorPutAndGet
+        isVolunteerPutAndGet | isPartnerGet | isFamilyGet | isEducatorPutAndGet
     ]
 
     def update(self, request, pk, *args, **kwargs):
@@ -83,16 +83,13 @@ class LessonEventApiViewSet(ModelViewSet):
             and serializer.validated_data["educators"]
             != list(old_lessonEvent.educators.all())
         )
-
         if (
             request.user.role in ("VOLUNTARIO", "VOLUNTARIO_SOCIO")
             and atendees_mod
             and educators_mod
         ):
             return Response(status=status.HTTP_401_UNAUTHORIZED)
-        elif request.user.role == "FAMILIA" and educators_mod and voluntees_mod:
-            return Response(status=status.HTTP_401_UNAUTHORIZED)
-        elif request.user.role == "EDUCADOR" and atendees_mod and voluntees_mod:
+        elif request.user.role == "EDUCADOR" and voluntees_mod:
             return Response(status=status.HTTP_401_UNAUTHORIZED)
 
         serializer.save()
