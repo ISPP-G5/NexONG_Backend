@@ -115,11 +115,11 @@ WEEKDAYS = [
 ]
 
 DOCTYPES = [
-    ("DOCS_INSTITUCIONALES" , "Documentos institucionales"),
-    ("MEMORIAS_ANUALES" , "Memorias anuales"),
-    ("MEMORIAS_ECONOMICAS" , "Memorias económicas"),
-    ("BALANCE_CUENTAS" , "Balance de cuentas"),
-    ("OTROS_DOCS" , "Otros documentos")
+    ("DOCS_INSTITUCIONALES", "Documentos institucionales"),
+    ("MEMORIAS_ANUALES", "Memorias anuales"),
+    ("MEMORIAS_ECONOMICAS", "Memorias económicas"),
+    ("BALANCE_CUENTAS", "Balance de cuentas"),
+    ("OTROS_DOCS", "Otros documentos"),
 ]
 
 
@@ -233,9 +233,7 @@ class PunctualDonation(models.Model):
 class HomeDocument(models.Model):
     title = models.CharField(max_length=255)
     docType = models.CharField(max_length=20, choices=DOCTYPES, default="OTROS_DOCS")
-    document = models.FileField(
-        upload_to="home_document"
-    )
+    document = models.FileField(upload_to="home_document")
     date = models.DateField()
 
 
