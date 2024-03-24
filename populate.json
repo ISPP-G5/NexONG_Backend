@@ -382,7 +382,8 @@
         "model": "nexong.homeDocument",
         "pk": 1,
         "fields": {
-            "title": "documentodecasa",
+            "title": "documentoDeCasa",
+            "docType": "BALANCE_CUENTAS",
             "document" : "home_document/home_document.txt",
             "date": "2023-8-24"
             }
