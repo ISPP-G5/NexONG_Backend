@@ -382,7 +382,7 @@
         "model": "nexong.homeDocument",
         "pk": 1,
         "fields": {
-            "title": "documentoDeCasa",
+            "title": "balance_cuentas_2023",
             "docType": "BALANCE_CUENTAS",
             "document" : "home_document/home_document.txt",
             "date": "2023-8-24"
