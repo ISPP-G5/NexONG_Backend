@@ -44,7 +44,7 @@ class isEducator(BasePermission):
             return request.user.role == "EDUCADOR"
         else:
             return False
-        
+
     def has_object_permission(self, request, view, obj):
         if request.user.is_authenticated:
             if request.method in ("PUT", "GET") and isinstance(obj, EvaluationType):
@@ -53,7 +53,7 @@ class isEducator(BasePermission):
                     and obj.lesson.educator == request.user.educator
                 )
             else:
-                return request.user.role == "EDUCADOR" 
+                return request.user.role == "EDUCADOR"
         else:
             return False
 
@@ -104,17 +104,19 @@ class isVolunteerPutAndGet(BasePermission):
         else:
             return False
 
+
 class isVolunteerPostPutAndGet(BasePermission):
     def has_permission(self, request, view):
         if request.user.is_authenticated:
-            if request.method in ("PUT", "GET","POST"):
+            if request.method in ("PUT", "GET", "POST"):
                 return (
                     request.user.role == "VOLUNTARIO"
                     or request.user.role == "VOLUNTARIO_SOCIO"
                 )
         else:
             return False
-        
+
+
 class isVolunteerGet(BasePermission):
     def has_permission(self, request, view):
         if request.user.is_authenticated:
@@ -137,7 +139,8 @@ class isPartnerPostAndGet(BasePermission):
                 )
         else:
             return False
-        
+
+
 class isPartnerPutAndGet(BasePermission):
     def has_permission(self, request, view):
         if request.user.is_authenticated:

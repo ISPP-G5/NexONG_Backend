@@ -11,7 +11,7 @@ class StudentEvaluationApiViewSet(ModelViewSet):
     http_method_names = ["get", "post", "put", "delete"]
     serializer_class = StudentEvaluationSerializer
     permission_classes = [isEducator | isFamilyGet]
-    
+
     def destroy(self, request, *args, **kwargs):
         instance = self.get_object()
         self.perform_destroy(instance)
@@ -27,7 +27,7 @@ class EvaluationTypeApiViewSet(ModelViewSet):
     def create(self, request, *args, **kwargs):
         serializer = self.get_serializer(data=request.data)
         serializer.is_valid(raise_exception=True)
-        eval_lesson= serializer.validated_data["lesson"]
+        eval_lesson = serializer.validated_data["lesson"]
         if (
             eval_lesson.educator != request.user.educator
             and request.user.role != "ADMIN"

@@ -19,13 +19,13 @@ class StudentApiViewSet(ModelViewSet):
         serializer = self.get_serializer(data=request.data)
         serializer.is_valid(raise_exception=True)
         if (
-            serializer.validated_data["family"]!= request.user.family
+            serializer.validated_data["family"] != request.user.family
             and request.user.role != "ADMIN"
         ):
             return Response(status=status.HTTP_401_UNAUTHORIZED)
         serializer.save()
         return Response(serializer.data, status=status.HTTP_201_CREATED)
-    
+
     def update(self, request, pk, *args, **kwargs):
         instance = self.get_object()
         serializer = self.get_serializer(instance, data=request.data, partial=True)
