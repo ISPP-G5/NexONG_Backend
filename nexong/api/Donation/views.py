@@ -3,7 +3,6 @@ from rest_framework.response import Response
 from rest_framework import status
 from ...models import *
 from .donationSerializer import DonationSerializer
-from rest_framework.permissions import AllowAny
 import csv
 from django.http import HttpResponse
 from openpyxl import Workbook

@@ -4,7 +4,7 @@ from rest_framework import status
 from ...models import *
 from ..permissions import *
 from .eventSerializer import EventSerializer, LessonEventSerializer
-
+from nexong.api.helpers.permissionValidators import *
 
 class EventApiViewSet(ModelViewSet):
     queryset = Event.objects.all()
@@ -17,24 +17,12 @@ class EventApiViewSet(ModelViewSet):
         old_event = Event.objects.get(pk=pk)
         serializer = self.get_serializer(instance, data=request.data, partial=True)
         serializer.is_valid(raise_exception=True)
-        modified = False
-        for field, new_value in serializer.validated_data.items():
-            if (
-                field not in ("attendees", "volunteers", "url")
-                and getattr(old_event, field) != new_value
-            ):
-                modified = True
-        if request.user.role != "ADMIN" and modified:
+        
+        if (validate_except_fields(request.user.role, serializer.validated_data.items(), old_event, ("attendees", "volunteers", "url")) 
+            or modified_not_allowed_for_roles(request.user.role, ("VOLUNTARIO","VOLUNTARIO_SOCIO"), serializer.validated_data["attendees"] != list(old_event.attendees.all())) 
+            or modified_not_allowed_for_roles(request.user.role, ("FAMILIA"), serializer.validated_data["volunteers"] != list(old_event.volunteers.all()))):
             return Response(status=status.HTTP_401_UNAUTHORIZED)
-        elif request.user.role in (
-            "VOLUNTARIO",
-            "VOLUNTARIO_SOCIO",
-        ) and serializer.validated_data["attendees"] != list(old_event.attendees.all()):
-            return Response(status=status.HTTP_401_UNAUTHORIZED)
-        elif request.user.role == "FAMILIA" and serializer.validated_data[
-            "volunteers"
-        ] != list(old_event.volunteers.all()):
-            return Response(status=status.HTTP_401_UNAUTHORIZED)
+        
         serializer.save()
         return Response(serializer.data)
 
@@ -57,17 +45,7 @@ class LessonEventApiViewSet(ModelViewSet):
         old_lessonEvent = LessonEvent.objects.get(pk=pk)
         serializer = self.get_serializer(instance, data=request.data, partial=True)
         serializer.is_valid(raise_exception=True)
-        modified = False
-
-        for field, new_data in serializer.validated_data.items():
-            if (
-                field not in ("educators", "attendees", "volunteers", "url")
-                and getattr(old_lessonEvent, field) != new_data
-            ):
-                modified = True
-        if request.user.role != "ADMIN" and modified:
-            return Response(status=status.HTTP_401_UNAUTHORIZED)
-
+        
         atendees_mod = (
             "attendees" in serializer.validated_data
             and serializer.validated_data["attendees"]
@@ -83,13 +61,11 @@ class LessonEventApiViewSet(ModelViewSet):
             and serializer.validated_data["educators"]
             != list(old_lessonEvent.educators.all())
         )
-        if (
-            request.user.role in ("VOLUNTARIO", "VOLUNTARIO_SOCIO")
-            and atendees_mod
-            and educators_mod
-        ):
-            return Response(status=status.HTTP_401_UNAUTHORIZED)
-        elif request.user.role == "EDUCADOR" and voluntees_mod:
+        if (validate_except_fields(request.user.role, serializer.validated_data.items(), old_lessonEvent, ("educators", "attendees", "volunteers", "url"))
+            or modified_not_allowed_for_roles(request.user.role, ("VOLUNTARIO","VOLUNTARIO_SOCIO"), atendees_mod and educators_mod) 
+            or modified_not_allowed_for_roles(request.user.role, voluntees_mod)
+            
+            ):
             return Response(status=status.HTTP_401_UNAUTHORIZED)
 
         serializer.save()
