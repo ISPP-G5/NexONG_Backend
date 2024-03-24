@@ -54,7 +54,8 @@ if APPENGINE_URL:
 else:
     ALLOWED_HOSTS = ["*"]
 # Once deployed, add the domain to the front end here
-CORS_ALLOWED_ORIGINS = ["http://localhost:3000", "http://127.0.0.1:3000"]
+
+CORS_ALLOWED_ORIGINS = [env("FRONTEND_URL")]
 APPEND_SLASH = True
 
 
