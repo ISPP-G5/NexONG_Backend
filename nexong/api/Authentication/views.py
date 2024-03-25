@@ -133,15 +133,16 @@ class ActivateUserView(APIView):
                     return Response(e.args, status=status.HTTP_400_BAD_REQUEST)
             else:
                 return Response(status=status.HTTP_400_BAD_REQUEST)
+
         else:
             return Response(status=response.status_code)
-        
+
+
 class CustomActivateView(APIView):
     def post(self, request, *args, **kwargs):
-        uid = kwargs.get('uid')
-        token = kwargs.get('token')
+        uid = kwargs.get("uid")
+        token = kwargs.get("token")
         try:
-            
             uid = urlsafe_base64_decode(uid).decode()
             user = User.objects.get(pk=uid)
             if not user.is_enabled:
