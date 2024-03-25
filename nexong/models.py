@@ -354,7 +354,7 @@ class Meeting(models.Model):
     name = models.CharField(max_length=100)
     description = models.CharField(max_length=1000)
     date = models.DateField(blank=True)
-    time = models.DateTimeField(blank=True)
+    time = models.TimeField(blank=True)
     attendees = models.ManyToManyField(Partner, related_name="meetings_attending")
 
 
@@ -367,8 +367,8 @@ class Lesson(models.Model):
         Educator, on_delete=models.CASCADE, related_name="lessons"
     )
     students = models.ManyToManyField(Student, related_name="lessons", blank=True)
-    start_date = models.DateTimeField()
-    end_date = models.DateTimeField()
+    start_date = models.DateField()
+    end_date = models.DateField()
 
 
 class Schedule(models.Model):

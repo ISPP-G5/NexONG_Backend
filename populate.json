@@ -968,7 +968,7 @@
             "name": "Reunión IA",
             "description": "Se tiene que discutir como se van a usar las inteligencias artificiales. Solo deben venir los que aportan cada año o seis meses.",
             "date": "2024-02-16",
-            "time": "2024-02-16 17:50-00:00"
+            "time": "17:50-00:00"
         }
     },
     {
@@ -978,7 +978,7 @@
             "name": "Reunión general",
             "description": "Todos los socios deben venir. Se discutirá el uso de los ingresos de las donaciones puntuales.",
             "date": "2024-06-23",
-            "time": "2024-06-23 03:34-00:00"
+            "time": "03:34-00:00"
         }
     },
     {
@@ -1038,8 +1038,8 @@
             "capacity": 4,
             "is_morning_lesson": true,
             "educator": 2,
-            "start_date": "2024-01-28 00:00-00:00",
-            "end_date": "2024-05-28 00:00-00:00"
+            "start_date": "2024-01-28",
+            "end_date": "2024-05-28"
         }
     },
     {
@@ -1051,8 +1051,8 @@
             "capacity": 40,
             "is_morning_lesson": false,
             "educator": 1,
-            "start_date": "2024-01-25 00:00-00:00",
-            "end_date": "2024-05-25 00:00-00:00"
+            "start_date": "2024-01-25",
+            "end_date": "2024-05-25"
         }
     },
     {
@@ -1064,8 +1064,8 @@
             "capacity": 10,
             "is_morning_lesson": true,
             "educator": 1,
-            "start_date": "2024-01-13 00:00-00:00",
-            "end_date": "2024-06-2 00:00-00:00"
+            "start_date": "2024-01-13",
+            "end_date": "2024-06-2"
         }
     },
     {
@@ -1077,8 +1077,8 @@
             "capacity": 50,
             "is_morning_lesson": true,
             "educator": 2,
-            "start_date": "2024-01-02 00:00-00:00",
-            "end_date": "2024-08-23 00:00-00:00"
+            "start_date": "2024-01-02",
+            "end_date": "2024-08-23"
         }
     },
     {
