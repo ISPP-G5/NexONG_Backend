@@ -110,7 +110,7 @@ class LogoutAndBlacklistRefreshTokenForUserView(APIView):
 class ActivateUserView(APIView):
     authentication_classes = ()
 
-    def post(self, request,uid,token):
+    def post(self, request):
         access_token = request.headers.get("Authorization")
         url = "http://localhost:8000/api/auth/users/me"  # Actualiza con la URL de tu aplicación
         headers = {"Authorization": access_token}
@@ -119,20 +119,28 @@ class ActivateUserView(APIView):
             try:
                 email = response.json()["email"]
                 user = User.objects.get(email=email)
-                #Verificar si el user coincide con el IUD decodificado
-                uid = urlsafe_base64_decode(uid).decode()
-                if str(user.id) != uid:
-                    return Response("Invalid user", status=status.HTTP_400_BAD_REQUEST)
-                
                 if not user.is_enabled and not user.id_number:
-                    if default_token_generator.check_token(user, token):
                         user.is_enabled = True
                         user.save()
-                    return Response(status=status.HTTP_200_OK)
-                else:
-                   return Response("Invalid token", status=status.HTTP_400_BAD_REQUEST) 
+                return Response(status=status.HTTP_200_OK) 
             except Exception as e:
                 return Response(e.args, status=status.HTTP_400_BAD_REQUEST)
         else:
             return Response(status=response.status_code)
         
+class CustomActivateView(APIView):
+    def post(self, request, *args, **kwargs):
+        uid = kwargs.get('uid')
+        token = kwargs.get('token')
+        try:
+            
+            uid = urlsafe_base64_decode(uid).decode()
+            user = User.objects.get(pk=uid)
+            print(user)
+            if not user.is_enabled:
+                    if default_token_generator.check_token(user, token):
+                        user.is_enabled = True
+                        user.save()
+                    return Response(status=status.HTTP_200_OK)
+        except (TypeError, ValueError, OverflowError, User.DoesNotExist):
+            return Response({'detail': 'malo'}, status=status.HTTP_400_BAD_REQUEST)
