@@ -4,11 +4,6 @@ from rest_framework import status
 from ...models import *
 from .punctualDonationSerializer import PunctualDonationSerializer
 from rest_framework.permissions import AllowAny
-from django.conf import settings
-from django.http import JsonResponse
-import stripe
-from django.views.decorators.csrf import csrf_exempt
-import json
 
 
 class PunctualDonationApiViewSet(ModelViewSet):

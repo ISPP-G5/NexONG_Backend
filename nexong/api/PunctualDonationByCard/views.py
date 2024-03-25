@@ -10,7 +10,6 @@ import stripe
 from django.views.decorators.csrf import csrf_exempt
 import json
 import requests
-from django.urls import reverse
 
 
 class PunctualDonationByCardApiViewSet(ModelViewSet):
@@ -39,19 +38,19 @@ def process_payment(request):
         # Confirmar la intención de pago
         try:
             intent.confirm()
-        except stripe.error.CardError as e:
+        except stripe.error.CardError:
             # El pago ha fallado debido a un error en la tarjeta
             return JsonResponse({"error": "El pago ha fallado debido a un error en la tarjeta", "status": "failed"})
-        except stripe.error.InvalidRequestError as e:
+        except stripe.error.InvalidRequestError:
             # La intención de pago no es válida
             return JsonResponse({"error": "La intención de pago no es válida", "status": "failed"})
-        except stripe.error.AuthenticationError as e:
+        except stripe.error.AuthenticationError:
             # Fallo de autenticación con Stripe
             return JsonResponse({"error": "Fallo de autenticación con Stripe", "status": "failed"})
-        except stripe.error.APIConnectionError as e:
+        except stripe.error.APIConnectionError:
             # Error de conexión con la API de Stripe
             return JsonResponse({"error": "Error de conexión con la API de Stripe", "status": "failed"})
-        except stripe.error.StripeError as e:
+        except stripe.error.StripeError:
             # Otro tipo de error de Stripe
             return JsonResponse({"error": "Error al procesar el pago con Stripe", "status": "failed"})
         
@@ -61,7 +60,7 @@ def process_payment(request):
             email = json.loads(request.body)["email"]
             date = json.loads(request.body)["date"]
             payload = {"amount": amount, "name": name, "surname": surname, "email": email, "date": date}
-            response = requests.post("http://localhost:8000/api/punctual-donation-by-card/", json=payload)
+            response = requests.post("http://localhost:8000/api/punctual-donation-by-card/", json=payload, timeout=15)
             if response.status_code == 200 or response.status_code == 201:
                 return JsonResponse({"client_secret": intent.client_secret, "amount": amount, "status": "succeeded"})
             else:
