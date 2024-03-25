@@ -18,7 +18,6 @@ class EventApiViewSet(ModelViewSet):
         old_event = Event.objects.get(pk=pk)
         serializer = self.get_serializer(instance, data=request.data, partial=True)
         serializer.is_valid(raise_exception=True)
-
         if (
             validate_except_fields(
                 request.user.role,

@@ -3,7 +3,7 @@ from nexong.api.CenterExit.centerexitSerializer import CenterExitSerializer
 from nexong.models import CenterExitAuthorization
 from rest_framework.response import Response
 from rest_framework import status
-from ..permissions import *
+from ..permissions import isEducatorGet
 
 
 class CenterExitApiViewSet(ModelViewSet):

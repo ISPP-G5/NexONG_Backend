@@ -25,7 +25,7 @@ class EvaluationTypeApiViewSet(ModelViewSet):
     serializer_class = EvaluationTypeSerializer
     permission_classes = [isEducator]
 
-    def create(self, request, *args, **kwargs):
+    def create_or_update(self, request, *args, **kwargs):
         serializer = self.get_serializer(data=request.data)
         serializer.is_valid(raise_exception=True)
         eval_lesson = serializer.validated_data["lesson"]

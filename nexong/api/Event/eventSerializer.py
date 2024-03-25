@@ -2,7 +2,7 @@ from rest_framework import serializers
 from nexong.models import Event, LessonEvent, Student
 from rest_framework.serializers import ModelSerializer
 from datetime import datetime, timezone
-
+from nexong.api.helpers.serializerValidators import date_validations
 
 class LessonEventSerializer(ModelSerializer):
     # attendees are optional at creation
@@ -61,16 +61,10 @@ class LessonEventSerializer(ModelSerializer):
                             "attendees"
                         ] = "The attendees must be students of the lesson selected."
 
+        validation_error.update(date_validations(attrs))
+
         start_date = attrs.get("start_date")
-        if start_date <= datetime.now(timezone.utc):
-            validation_error["start_date"] = "The start date must be in the future."
-
         end_date = attrs.get("end_date")
-        if end_date <= datetime.now(timezone.utc):
-            validation_error["end_date"] = "The end date must be in the future."
-        if end_date <= start_date:
-            validation_error["end_date"] = "The end date must be after the start date."
-
         for lessonEvent in LessonEvent.objects.filter(lesson=lesson):
             if (
                 (
