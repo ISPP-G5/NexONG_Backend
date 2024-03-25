@@ -6,6 +6,7 @@ from .evaluationSerializer import EvaluationTypeSerializer, StudentEvaluationSer
 from ..permissions import *
 from nexong.api.helpers.permissionValidators import *
 
+
 class StudentEvaluationApiViewSet(ModelViewSet):
     queryset = StudentEvaluation.objects.all()
     http_method_names = ["get", "post", "put", "delete"]
@@ -28,7 +29,9 @@ class EvaluationTypeApiViewSet(ModelViewSet):
         serializer = self.get_serializer(data=request.data)
         serializer.is_valid(raise_exception=True)
         eval_lesson = serializer.validated_data["lesson"]
-        if only_modified_if_same_role(request.user.educator, eval_lesson.educator, request.user.role):
+        if only_modified_if_same_role(
+            request.user.educator, eval_lesson.educator, request.user.role
+        ):
             return Response(status=status.HTTP_401_UNAUTHORIZED)
         serializer.save()
         return Response(serializer.data, status=status.HTTP_201_CREATED)

@@ -6,6 +6,7 @@ from .meetingSerializer import *
 from ..permissions import *
 from nexong.api.helpers.permissionValidators import *
 
+
 class MeetingApiViewSet(ModelViewSet):
     queryset = Meeting.objects.all()
     http_method_names = ["get", "post", "put", "delete"]
@@ -16,7 +17,12 @@ class MeetingApiViewSet(ModelViewSet):
         instance = self.get_object()
         serializer = self.get_serializer(instance, data=request.data, partial=True)
         serializer.is_valid(raise_exception=True)
-        if validate_except_fields(request.user.role, serializer.validated_data.items(), Meeting.objects.get(pk=pk), ("attendees", "url")):
+        if validate_except_fields(
+            request.user.role,
+            serializer.validated_data.items(),
+            Meeting.objects.get(pk=pk),
+            ("attendees", "url"),
+        ):
             return Response(status=status.HTTP_401_UNAUTHORIZED)
         serializer.save()
         return Response(serializer.data)

@@ -9,6 +9,7 @@ from nexong.models import Student, QuarterMarks
 from ..permissions import *
 from nexong.api.helpers.permissionValidators import *
 
+
 class StudentApiViewSet(ModelViewSet):
     queryset = Student.objects.all()
     http_method_names = ["get", "post", "put", "delete", "patch"]
@@ -18,7 +19,9 @@ class StudentApiViewSet(ModelViewSet):
     def create(self, request, *args, **kwargs):
         serializer = self.get_serializer(data=request.data)
         serializer.is_valid(raise_exception=True)
-        if only_modified_if_same_role(request.user.family, serializer.validated_data["family"], request.user.role):
+        if only_modified_if_same_role(
+            request.user.family, serializer.validated_data["family"], request.user.role
+        ):
             return Response(status=status.HTTP_401_UNAUTHORIZED)
         serializer.save()
         return Response(serializer.data, status=status.HTTP_201_CREATED)
@@ -27,7 +30,9 @@ class StudentApiViewSet(ModelViewSet):
         instance = self.get_object()
         serializer = self.get_serializer(instance, data=request.data, partial=True)
         serializer.is_valid(raise_exception=True)
-        if only_modified_if_same_role(request.user.family, serializer.validated_data["family"], request.user.role):
+        if only_modified_if_same_role(
+            request.user.family, serializer.validated_data["family"], request.user.role
+        ):
             return Response(status=status.HTTP_401_UNAUTHORIZED)
         serializer.save()
         return Response(serializer.data)

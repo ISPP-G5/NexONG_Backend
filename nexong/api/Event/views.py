@@ -90,7 +90,9 @@ class LessonEventApiViewSet(ModelViewSet):
                 ("VOLUNTARIO", "VOLUNTARIO_SOCIO"),
                 atendees_mod and educators_mod,
             )
-            or modified_not_allowed_for_roles(request.user.role, ("EDUCADOR"), voluntees_mod)
+            or modified_not_allowed_for_roles(
+                request.user.role, ("EDUCADOR"), voluntees_mod
+            )
         ):
             return Response(status=status.HTTP_401_UNAUTHORIZED)
         serializer.save()
