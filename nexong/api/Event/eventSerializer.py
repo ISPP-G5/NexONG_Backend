@@ -4,6 +4,7 @@ from rest_framework.serializers import ModelSerializer
 from datetime import datetime, timezone
 from nexong.api.helpers.serializerValidators import date_validations
 
+
 class LessonEventSerializer(ModelSerializer):
     # attendees are optional at creation
     attendees = serializers.PrimaryKeyRelatedField(

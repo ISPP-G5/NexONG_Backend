@@ -4,6 +4,7 @@ from rest_framework.serializers import ModelSerializer
 from datetime import datetime, timezone, date
 from nexong.api.helpers.serializerValidators import date_validations
 
+
 class LessonSerializer(ModelSerializer):
     students = serializers.PrimaryKeyRelatedField(
         many=True, required=True, queryset=Student.objects.all()
@@ -38,9 +39,9 @@ class LessonSerializer(ModelSerializer):
             validation_error[
                 "capacity"
             ] = "capacity must be higher or equal to the number of attendees selected."
-        
+
         validation_error.update(date_validations(attrs))
-        
+
         if attendees is not None:
             for student in attendees:
                 if student.is_morning_student != attrs.get("is_morning_lesson"):

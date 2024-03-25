@@ -13,12 +13,11 @@ class MeetingApiViewSet(ModelViewSet):
     serializer_class = MeetingSerializer
     permission_classes = [isPartnerPutAndGet]
 
-    
     def destroy(self, request, *args, **kwargs):
         instance = self.get_object()
         self.perform_destroy(instance)
         return Response(status=status.HTTP_204_NO_CONTENT)
-    
+
     def update(self, request, pk, *args, **kwargs):
         instance = self.get_object()
         serializer = self.get_serializer(instance, data=request.data, partial=True)
@@ -32,4 +31,3 @@ class MeetingApiViewSet(ModelViewSet):
             return Response(status=status.HTTP_401_UNAUTHORIZED)
         serializer.save()
         return Response(serializer.data)
-
