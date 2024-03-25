@@ -120,27 +120,27 @@ class ActivateUserView(APIView):
                 email = response.json()["email"]
                 user = User.objects.get(email=email)
                 if not user.is_enabled and not user.id_number:
-                        user.is_enabled = True
-                        user.save()
-                return Response(status=status.HTTP_200_OK) 
+                    user.is_enabled = True
+                    user.save()
+                return Response(status=status.HTTP_200_OK)
             except Exception as e:
                 return Response(e.args, status=status.HTTP_400_BAD_REQUEST)
         else:
             return Response(status=response.status_code)
-        
+
+
 class CustomActivateView(APIView):
     def post(self, request, *args, **kwargs):
-        uid = kwargs.get('uid')
-        token = kwargs.get('token')
+        uid = kwargs.get("uid")
+        token = kwargs.get("token")
         try:
-            
             uid = urlsafe_base64_decode(uid).decode()
             user = User.objects.get(pk=uid)
             print(user)
             if not user.is_enabled:
-                    if default_token_generator.check_token(user, token):
-                        user.is_enabled = True
-                        user.save()
-                    return Response(status=status.HTTP_200_OK)
+                if default_token_generator.check_token(user, token):
+                    user.is_enabled = True
+                    user.save()
+                return Response(status=status.HTTP_200_OK)
         except (TypeError, ValueError, OverflowError, User.DoesNotExist):
-            return Response({'detail': 'malo'}, status=status.HTTP_400_BAD_REQUEST)
+            return Response({"detail": "malo"}, status=status.HTTP_400_BAD_REQUEST)
