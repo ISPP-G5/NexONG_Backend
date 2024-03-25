@@ -146,10 +146,12 @@ class CustomActivateView(APIView):
             uid = urlsafe_base64_decode(uid).decode()
             user = User.objects.get(pk=uid)
             if not user.is_enabled:
-                    if default_token_generator.check_token(user, token):
-                        user.is_enabled = True
-                        user.is_active = True
-                        user.save()
-                    return Response(status=status.HTTP_200_OK)
+                if default_token_generator.check_token(user, token):
+                    user.is_enabled = True
+                    user.is_active = True
+                    user.save()
+                return Response(status=status.HTTP_200_OK)
         except (TypeError, ValueError, OverflowError, User.DoesNotExist):
-            return Response({'detail': 'Token not valid'}, status=status.HTTP_400_BAD_REQUEST)
+            return Response(
+                {"detail": "Token not valid"}, status=status.HTTP_400_BAD_REQUEST
+            )
