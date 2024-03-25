@@ -176,6 +176,13 @@ class PunctualDonation(models.Model):
     proof_of_payment_document = models.FileField(upload_to="proof_of_payment")
     date = models.DateField()
 
+class PunctualDonationByCard(models.Model):
+    name = models.CharField(max_length=255)
+    surname = models.CharField(max_length=255)
+    email = models.EmailField()
+    amount = models.IntegerField()
+    date = models.DateField()
+
 
 class HomeDocument(models.Model):
     title = models.CharField(max_length=255)

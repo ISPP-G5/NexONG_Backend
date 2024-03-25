@@ -6,7 +6,7 @@ from .Authentication.views import (
     LogoutAndBlacklistRefreshTokenForUserView,
     ActivateUserView,
 )
-from .PunctualDonation.views import *
+from .PunctualDonationByCard.views import *
 
 urlpatterns = [
     path("", include(router_api.urls)),
