@@ -4,7 +4,7 @@ from rest_framework import status
 from ...models import *
 from .meetingSerializer import *
 from ..permissions import *
-
+from nexong.api.helpers.permissionValidators import *
 
 class MeetingApiViewSet(ModelViewSet):
     queryset = Meeting.objects.all()
@@ -16,16 +16,7 @@ class MeetingApiViewSet(ModelViewSet):
         instance = self.get_object()
         serializer = self.get_serializer(instance, data=request.data, partial=True)
         serializer.is_valid(raise_exception=True)
-        old_meeting = Meeting.objects.get(pk=pk)
-        modified = False
-
-        for field, new_data in serializer.validated_data.items():
-            if (
-                field not in ("attendees", "url")
-                and getattr(old_meeting, field) != new_data
-            ):
-                modified = True
-        if request.user.role != "ADMIN" and modified:
+        if validate_except_fields(request.user.role, serializer.validated_data.items(), Meeting.objects.get(pk=pk), ("attendees", "url")):
             return Response(status=status.HTTP_401_UNAUTHORIZED)
         serializer.save()
         return Response(serializer.data)

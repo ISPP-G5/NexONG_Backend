@@ -1,10 +1,10 @@
 from rest_framework.viewsets import ModelViewSet
 from rest_framework.response import Response
 from rest_framework import status
-from ...models import *
+from ...models import StudentEvaluation
 from .evaluationSerializer import EvaluationTypeSerializer, StudentEvaluationSerializer
 from ..permissions import *
-
+from nexong.api.helpers.permissionValidators import *
 
 class StudentEvaluationApiViewSet(ModelViewSet):
     queryset = StudentEvaluation.objects.all()
@@ -28,10 +28,7 @@ class EvaluationTypeApiViewSet(ModelViewSet):
         serializer = self.get_serializer(data=request.data)
         serializer.is_valid(raise_exception=True)
         eval_lesson = serializer.validated_data["lesson"]
-        if (
-            eval_lesson.educator != request.user.educator
-            and request.user.role != "ADMIN"
-        ):
+        if only_modified_if_same_role(request.user.educator, eval_lesson.educator, request.user.role):
             return Response(status=status.HTTP_401_UNAUTHORIZED)
         serializer.save()
         return Response(serializer.data, status=status.HTTP_201_CREATED)
