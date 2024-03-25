@@ -13,6 +13,17 @@ class LogoutAndBlacklistSerializer(Serializer):
     class Meta:
         fields = ["refresh_token"]
 
+class ActivateSerializer(ModelSerializer):
+     class Meta:
+        model = User
+        fields = ["id_number"]
+     def validate_id_number(self, data):
+        if not data:
+            raise serializers.ValidationError("This field may not be blank.")
+        pattern = r"^\d{8}[A-Z]$"
+        if not re.match(pattern, data):   
+            raise serializers.ValidationError("The id_number does not match the expected pattern.")
+        return data
 
 class CreateUserSerializer(UserCreateSerializer):
     class Meta(UserCreateSerializer.Meta):
