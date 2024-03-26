@@ -9,6 +9,7 @@ from rest_framework.permissions import AllowAny
 from nexong.models import Student, QuarterMarks
 from ..permissions import *
 
+
 class StudentApiViewSet(ModelViewSet):
     queryset = Student.objects.all()
     http_method_names = ["get", "post", "put", "delete", "patch"]

@@ -18,7 +18,7 @@ class isAdmin(BasePermission):
             return request.user.role == "ADMIN"
         else:
             return False
-        
+
 
 class isAdminGetAndDelete(BasePermission):
     def has_permission(self, request, view):

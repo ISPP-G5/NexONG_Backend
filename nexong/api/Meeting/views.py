@@ -6,6 +6,7 @@ from .meetingSerializer import *
 from rest_framework.permissions import AllowAny
 from ..permissions import *
 
+
 class MeetingApiViewSet(ModelViewSet):
     queryset = Meeting.objects.all()
     http_method_names = ["get", "post", "put", "delete"]
