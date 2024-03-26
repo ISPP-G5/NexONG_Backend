@@ -1,5 +1,5 @@
 from rest_framework.permissions import BasePermission, DjangoModelPermissions
-from ..models import EvaluationType
+from ..models import *
 
 
 class isAuthenticated(BasePermission):
@@ -47,10 +47,15 @@ class isEducator(BasePermission):
 
     def has_object_permission(self, request, view, obj):
         if request.user.is_authenticated:
-            if request.method in ("PUT", "GET") and isinstance(obj, EvaluationType):
+            if request.method in ("PUT", "DELETE") and isinstance(obj, EvaluationType):
                 return (
                     request.user.role == "EDUCADOR"
                     and obj.lesson.educator == request.user.educator
+                )
+            if request.method in ("PUT", "DELETE") and isinstance(obj, StudentEvaluation):
+                return (
+                    request.user.role == "EDUCADOR"
+                    and obj.evaluation_type.lesson.educator == request.user.educator
                 )
             else:
                 return request.user.role == "EDUCADOR"
@@ -73,7 +78,23 @@ class isFamily(BasePermission):
             return request.user.role == "FAMILIA"
         else:
             return False
-
+        
+    def has_object_permission(self, request, view, obj):
+        if request.user.is_authenticated:
+            if isinstance(obj, CenterExitAuthorization):
+                return (
+                    request.user.role == "FAMILIA"
+                    and obj.student.family == request.user.family
+                )
+            elif isinstance(obj, Student):
+                return (
+                    request.user.role == "FAMILIA"
+                    and obj.family == request.user.family
+                )  
+            else:
+                return request.user.role == "FAMILIA"
+        else:
+            return False
 
 class isFamilyPutAndGet(BasePermission):
     def has_permission(self, request, view):
@@ -92,26 +113,65 @@ class isFamilyGet(BasePermission):
         else:
             return False
 
+class isEducationCenter(BasePermission):
+    def has_permission(self, request, view):
+        if request.user.is_authenticated:
+            return request.user.role == "CENTRO EDUCATIVO"
+        else:
+            return False
+        
+    def has_object_permission(self, request, view, obj):
+        if request.user.is_authenticated:
+            if isinstance(obj, CenterExitAuthorization):
+                return (
+                    request.user.role == "CENTRO EDUCATIVO"
+                    and obj.student.education_center == request.user.education_center
+                )
+            elif isinstance(obj, Student):
+                return (
+                    request.user.role == "CENTRO EDUCATIVO"
+                    and obj.education_center == request.user.education_center
+                )
+            else:
+                return request.user.role == "CENTRO EDUCATIVO"
+        else:
+            return False
+     
+class isEducationCenterPutAndGet(BasePermission):
+    def has_permission(self, request, view):
+        if request.user.is_authenticated:
+            if request.method in ("PUT", "GET"):
+                return request.user.role == "CENTRO EDUCATIVO"
+        else:
+            return False
+
+class isEducationCenterGet(BasePermission):
+    def has_permission(self, request, view):
+        if request.user.is_authenticated:
+            if request.method in ("GET"):
+                return request.user.role == "CENTRO EDUCATIVO"
+        else:
+            return False
+
 
 class isVolunteerPutAndGet(BasePermission):
     def has_permission(self, request, view):
         if request.user.is_authenticated:
             if request.method in ("PUT", "GET"):
                 return (
-                    request.user.role == "VOLUNTARIO"
-                    or request.user.role == "VOLUNTARIO_SOCIO"
+                    (request.user.role == "VOLUNTARIO"
+                    or request.user.role == "VOLUNTARIO_SOCIO") and request.user.volunteer.status=="ACEPTADO"
                 )
         else:
             return False
-
 
 class isVolunteerPostPutAndGet(BasePermission):
     def has_permission(self, request, view):
         if request.user.is_authenticated:
             if request.method in ("PUT", "GET", "POST"):
                 return (
-                    request.user.role == "VOLUNTARIO"
-                    or request.user.role == "VOLUNTARIO_SOCIO"
+                    (request.user.role == "VOLUNTARIO"
+                    or request.user.role == "VOLUNTARIO_SOCIO") and request.user.volunteer.status=="ACEPTADO"
                 )
         else:
             return False
