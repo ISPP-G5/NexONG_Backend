@@ -1,12 +1,10 @@
 from rest_framework.permissions import BasePermission, DjangoModelPermissions
 
 
-class isAdminOrReadOnly(BasePermission):
+class isAdminGet(BasePermission):
     def has_permission(self, request, view):
         if request.user.is_authenticated:
             if request.method in ("GET"):
-                return True
-            else:
                 return request.user.role == "ADMIN"
         else:
             return False
