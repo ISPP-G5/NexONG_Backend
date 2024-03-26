@@ -169,9 +169,3 @@ nexong/migrations
 
 # Server files
 files/
-
-# Cloud files
-.gcloudignore
-
-# Gcp credentials
-gcpCredentials.json
