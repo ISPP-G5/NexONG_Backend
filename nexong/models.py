@@ -257,10 +257,14 @@ class Volunteer(models.Model):
     minor_authorization = models.FileField(
         upload_to=upload_to_minor_authorization,
         validators=[validate_file_extension],
+        blank=True,
+        null=True,
     )
     scanned_authorizer_id = models.FileField(
         upload_to=upload_to_scanned_authorizer_id,
         validators=[validate_file_extension],
+        blank=True,
+        null=True,
     )
     birthdate = models.DateField()
     start_date = models.DateField(null=True, blank=True)
@@ -319,6 +323,8 @@ class User(AbstractUser):
     avatar = models.FileField(
         upload_to=upload_to_avatar,
         validators=[validate_image_extension],
+        blank=True,
+        null=True,
     )
     family = models.OneToOneField(
         Family, on_delete=models.CASCADE, blank=True, null=True
