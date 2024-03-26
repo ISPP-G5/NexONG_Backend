@@ -1,7 +1,7 @@
 from rest_framework.viewsets import ModelViewSet
 from rest_framework.response import Response
 from rest_framework import status
-from ..permissions import isAdminOrReadOnly
+from ..permissions import *
 from ...models import *
 from .lessonSerializer import *
 
@@ -10,7 +10,7 @@ class LessonApiViewSet(ModelViewSet):
     queryset = Lesson.objects.all()
     http_method_names = ["get", "post", "put", "delete"]
     serializer_class = LessonSerializer
-    permission_classes = [isAdminOrReadOnly]
+    permission_classes = [isAdmin]
 
     def update(self, request, *args, **kwargs):
         instance = self.get_object()
@@ -29,7 +29,7 @@ class LessonAttendanceApiViewSet(ModelViewSet):
     queryset = LessonAttendance.objects.all()
     http_method_names = ["get", "post", "put", "delete"]
     serializer_class = LessonAttendanceSerializer
-    permission_classes = [isAdminOrReadOnly]
+    permission_classes = [isAdmin]
 
     def destroy(self, request, *args, **kwargs):
         instance = self.get_object()

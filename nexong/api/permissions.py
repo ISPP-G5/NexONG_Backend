@@ -4,7 +4,7 @@ from rest_framework.permissions import BasePermission, DjangoModelPermissions
 class isAdminOrReadOnly(BasePermission):
     def has_permission(self, request, view):
         if request.user.is_authenticated:
-            if request.method in ("GET", "HEAD", "OPTIONS"):
+            if request.method in ("GET"):
                 return True
             else:
                 return request.user.role == "ADMIN"
@@ -12,9 +12,23 @@ class isAdminOrReadOnly(BasePermission):
             return False
 
 
-class isAdminOnly(BasePermission):
+class isAdmin(BasePermission):
     def has_permission(self, request, view):
-        return bool(request.user and request.user.role == "ADMIN")
+        if request.user.is_authenticated:
+            return request.user.role == "ADMIN"
+        else:
+            return False
+        
+
+class isAdminGetAndDelete(BasePermission):
+    def has_permission(self, request, view):
+        if request.user.is_authenticated:
+            if request.method in ("GET", "DELETE"):
+                return True
+            else:
+                return request.user.role == "ADMIN"
+        else:
+            return False
 
 
 class FullDjangoModelPermissions(DjangoModelPermissions):
