@@ -21,7 +21,7 @@ def process_instance(serializer_class, instance, data):
 
 
 class UserApiViewSet(ModelViewSet):
-    http_method_names = ["get", "put", "delete"]
+    http_method_names = ["get", "post", "put", "delete", "patch"]
     serializer_class = UserSerializer
     queryset = User.objects.all()
 
