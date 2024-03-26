@@ -17,16 +17,6 @@ urlpatterns = [
         DonationsExportToExcel,
         name="export_excel_all_donations",
     ),
-    path(
-        "export/pdf/punctualdonations",
-        PunctualDonationsExportToPdf,
-        name="export_pdf_all_punctualdonations",
-    ),
-    path(
-        "export/excel/punctualdonations",
-        PunctualDonationsExportToExcel,
-        name="export_excel_all_punctualdonations",
-    ),
     path("auth/", include("djoser.urls")),
     path("auth/", include("djoser.urls.jwt")),
     path("auth/", include("djoser.social.urls")),
