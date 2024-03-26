@@ -126,9 +126,15 @@ DOCTYPES = [
 class Family(models.Model):
     name = models.CharField(max_length=255)
 
+    def __str__(self):
+        return self.name
+
 
 class EducationCenter(models.Model):
     name = models.CharField(max_length=255)
+
+    def __str__(self):
+        return self.name
 
 
 class Student(models.Model):
