@@ -1,7 +1,7 @@
 from rest_framework import serializers
 from nexong.models import Lesson, Student, LessonAttendance
 from rest_framework.serializers import ModelSerializer
-from datetime import datetime, timezone, date
+from datetime import date
 from nexong.api.helpers.serializerValidators import date_validations
 
 

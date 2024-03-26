@@ -5,24 +5,6 @@ from nexong.api.Student.studentSerializer import (
 )
 from rest_framework.response import Response
 from rest_framework import status
-from nexong.models import Student, QuarterMarks, STATUS, CURRENT_EDUCATION_YEAR
-import csv
-import codecs
-from django.http import HttpResponse
-from django.utils.encoding import smart_str
-from datetime import datetime
-from openpyxl import Workbook
-from reportlab.lib.pagesizes import letter
-from reportlab.platypus import (
-    SimpleDocTemplate,
-    Paragraph,
-    Spacer,
-    Table,
-    TableStyle,
-    Image,
-)
-from reportlab.lib.styles import getSampleStyleSheet
-from reportlab.lib import colors
 from nexong.models import Student, QuarterMarks
 from ..permissions import *
 from nexong.api.helpers.permissionValidators import *
