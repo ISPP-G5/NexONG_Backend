@@ -11,6 +11,7 @@ from .Donation.views import *
 from .Evaluation.views import *
 from .PunctualDonation.views import *
 from .HomeDocument.views import *
+from .PunctualDonationByCard.views import *
 
 router_api = DefaultRouter()
 router_api.register(prefix="user", viewset=UserApiViewSet, basename="user")
@@ -50,6 +51,11 @@ router_api.register(
     prefix="punctual-donation",
     viewset=PunctualDonationApiViewSet,
     basename="punctualdonation",
+)
+router_api.register(
+    prefix="punctual-donation-by-card",
+    viewset=PunctualDonationByCardApiViewSet,
+    basename="punctualdonationbycard-list",
 )
 router_api.register(
     prefix="home-document", viewset=HomeDocumentApiViewSet, basename="homedocument"
