@@ -26,7 +26,6 @@ from reportlab.lib import colors
 from nexong.models import Student, QuarterMarks
 from ..permissions import *
 from nexong.api.helpers.permissionValidators import *
-from rest_framework.permissions import AllowAny
 from nexong.models import Student, QuarterMarks
 
 
