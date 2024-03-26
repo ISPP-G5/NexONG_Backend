@@ -10,7 +10,9 @@ class LessonApiViewSet(ModelViewSet):
     queryset = Lesson.objects.all()
     http_method_names = ["get", "post", "put", "delete"]
     serializer_class = LessonSerializer
-    permission_classes = [isEducatorGet | isFamilyGet | isVolunteerGet | isEducationCenterGet]
+    permission_classes = [
+        isEducatorGet | isFamilyGet | isVolunteerGet | isEducationCenterGet
+    ]
 
     def destroy(self, request, *args, **kwargs):
         instance = self.get_object()

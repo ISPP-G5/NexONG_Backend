@@ -11,7 +11,12 @@ class EventApiViewSet(ModelViewSet):
     queryset = Event.objects.all()
     http_method_names = ["get", "post", "put", "delete"]
     serializer_class = EventSerializer
-    permission_classes = [isVolunteerPutAndGet | isPartnerGet | isFamilyPutAndGet | isEducationCenterPutAndGet]
+    permission_classes = [
+        isVolunteerPutAndGet
+        | isPartnerGet
+        | isFamilyPutAndGet
+        | isEducationCenterPutAndGet
+    ]
 
     def update(self, request, pk, *args, **kwargs):
         instance = self.get_object()
@@ -53,7 +58,11 @@ class LessonEventApiViewSet(ModelViewSet):
     http_method_names = ["get", "post", "put", "delete"]
     serializer_class = LessonEventSerializer
     permission_classes = [
-        isVolunteerPutAndGet | isPartnerGet | isFamilyGet | isEducatorPutAndGet | isEducationCenterGet
+        isVolunteerPutAndGet
+        | isPartnerGet
+        | isFamilyGet
+        | isEducatorPutAndGet
+        | isEducationCenterGet
     ]
 
     def update(self, request, pk, *args, **kwargs):
