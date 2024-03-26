@@ -336,7 +336,7 @@ class User(AbstractUser):
         Educator, on_delete=models.CASCADE, blank=True, null=True
     )
 
-    is_enabled = models.BooleanField(default=True)
+    is_enabled = models.BooleanField(default=False)
 
     USERNAME_FIELD = "email"
     REQUIRED_FIELDS = []
