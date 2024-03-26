@@ -10,6 +10,7 @@ from .authSerializer import *
 from rest_framework_simplejwt.tokens import RefreshToken
 from ..permissions import *
 
+
 def process_instance(serializer_class, instance, data):
     serializer = serializer_class(instance, data=data)
     if serializer.is_valid():
@@ -22,15 +23,14 @@ class UserApiViewSet(ModelViewSet):
     http_method_names = ["get", "put", "delete"]
     serializer_class = UserSerializer
     queryset = User.objects.all()
-    permission_classes =  [isAdminGetAndDelete]
+    permission_classes = [isAdminGetAndDelete]
 
 
 class EducatorApiViewSet(ModelViewSet):
     queryset = Educator.objects.all()
     http_method_names = ["get", "post", "put", "delete"]
     serializer_class = EducatorSerializer
-    permission_classes =  [isAdminGetAndDelete]
-
+    permission_classes = [isAdminGetAndDelete]
 
     def destroy(self, request, *args, **kwargs):
         instance = self.get_object()
@@ -42,7 +42,7 @@ class PartnerApiViewSet(ModelViewSet):
     queryset = Partner.objects.all()
     http_method_names = ["get", "post", "put", "delete", "patch"]
     serializer_class = PartnerSerializer
-    permission_classes =  [isAdminGetAndDelete]
+    permission_classes = [isAdminGetAndDelete]
 
     def destroy(self, request, *args, **kwargs):
         instance = self.get_object()
@@ -54,7 +54,7 @@ class VolunteerApiViewSet(ModelViewSet):
     queryset = Volunteer.objects.all()
     http_method_names = ["get", "post", "put", "delete", "patch"]
     serializer_class = VolunteerSerializer
-    permission_classes =  [isAdminGetAndDelete]
+    permission_classes = [isAdminGetAndDelete]
 
     def destroy(self, request, *args, **kwargs):
         instance = self.get_object()
@@ -66,7 +66,7 @@ class FamilyApiViewSet(ModelViewSet):
     queryset = Family.objects.all()
     http_method_names = ["get", "post", "put", "delete"]
     serializer_class = FamilySerializer
-    permission_classes =  [isAdminGetAndDelete]
+    permission_classes = [isAdminGetAndDelete]
 
     def destroy(self, request, *args, **kwargs):
         instance = self.get_object()
@@ -78,7 +78,7 @@ class EducationCenterApiViewSet(ModelViewSet):
     queryset = EducationCenter.objects.all()
     http_method_names = ["get", "post", "put", "delete"]
     serializer_class = EducationCenterSerializer
-    permission_classes =  [isAdminGetAndDelete]
+    permission_classes = [isAdminGetAndDelete]
 
     def destroy(self, request, *args, **kwargs):
         instance = self.get_object()
