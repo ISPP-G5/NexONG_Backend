@@ -2,7 +2,7 @@ from rest_framework.viewsets import ModelViewSet
 from nexong.api.Suggestion.suggestionSerializer import SuggestionSerializer
 from rest_framework.response import Response
 from rest_framework import status
-from rest_framework.permissions import AllowAny
+from ..permissions import *
 from nexong.models import Suggestion
 
 
@@ -10,7 +10,7 @@ class SuggestionApiViewSet(ModelViewSet):
     queryset = Suggestion.objects.all()
     http_method_names = ["get", "post", "delete"]
     serializer_class = SuggestionSerializer
-    permission_classes = [AllowAny]
+    permission_classes = [isAdminGetAndDelete]
 
     def create(self, request, *args, **kwargs):
         serializer = self.get_serializer(data=request.data)

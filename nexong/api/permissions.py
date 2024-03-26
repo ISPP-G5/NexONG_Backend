@@ -1,16 +1,32 @@
 from rest_framework.permissions import BasePermission, DjangoModelPermissions
 
 
-class isAdminOrReadOnly(BasePermission):
+class isAdminGet(BasePermission):
     def has_permission(self, request, view):
-        if request.method in ("GET", "HEAD", "OPTIONS"):
-            return True
-        return bool(request.user and request.user.is_staff)
+        if request.user.is_authenticated:
+            if request.method in ("GET"):
+                return request.user.role == "ADMIN"
+        else:
+            return False
 
 
 class isAdmin(BasePermission):
     def has_permission(self, request, view):
-        return bool(request.user and request.user.is_staff)
+        if request.user.is_authenticated:
+            return request.user.role == "ADMIN"
+        else:
+            return False
+
+
+class isAdminGetAndDelete(BasePermission):
+    def has_permission(self, request, view):
+        if request.user.is_authenticated:
+            if request.method in ("GET", "DELETE"):
+                return True
+            else:
+                return request.user.role == "ADMIN"
+        else:
+            return False
 
 
 class FullDjangoModelPermissions(DjangoModelPermissions):

@@ -3,7 +3,7 @@ from rest_framework.response import Response
 from rest_framework import status
 from ...models import *
 from .donationSerializer import DonationSerializer
-from rest_framework.permissions import AllowAny
+from ..permissions import *
 import csv
 from django.http import HttpResponse
 from openpyxl import Workbook
@@ -25,7 +25,7 @@ class DonationApiViewSet(ModelViewSet):
     queryset = Donation.objects.all()
     http_method_names = ["get", "post", "put", "delete", "patch"]
     serializer_class = DonationSerializer
-    permission_classes = [AllowAny]
+    permission_classes = [isAdmin]
 
     def destroy(self, request, *args, **kwargs):
         instance = self.get_object()
