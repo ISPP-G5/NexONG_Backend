@@ -1,7 +1,6 @@
 from django.urls import path, include
 from .routers import router_api
 from .Donation.views import *
-from .Student.views import *
 from .Authentication.views import (
     RedirectSocial,
     LogoutAndBlacklistRefreshTokenForUserView,
@@ -37,9 +36,4 @@ urlpatterns = [
         name="blacklist",
     ),
     path("redirect-social/", RedirectSocial.as_view()),
-    path("export/csv/students", StudentsExportToCsv, name="export_csv_all_students"),
-    path("export/pdf/students", StudentsExportToPdf, name="export_pdf_all_students"),
-    path(
-        "export/excel/students", StudentsExportToExcel, name="export_excel_all_students"
-    ),
 ]

@@ -126,15 +126,9 @@ DOCTYPES = [
 class Family(models.Model):
     name = models.CharField(max_length=255)
 
-    def __str__(self):
-        return self.name
-
 
 class EducationCenter(models.Model):
     name = models.CharField(max_length=255)
-
-    def __str__(self):
-        return self.name
 
 
 class Student(models.Model):
@@ -347,7 +341,7 @@ class User(AbstractUser):
         Educator, on_delete=models.CASCADE, blank=True, null=True
     )
 
-    is_enabled = models.BooleanField(default=True)
+    is_enabled = models.BooleanField(default=False)
 
     USERNAME_FIELD = "email"
     REQUIRED_FIELDS = []
