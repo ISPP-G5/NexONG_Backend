@@ -47,12 +47,12 @@ class isEducator(BasePermission):
 
     def has_object_permission(self, request, view, obj):
         if request.user.is_authenticated:
-            if request.method in ("PUT", "DELETE") and isinstance(obj, EvaluationType):
+            if isinstance(obj, EvaluationType):
                 return (
                     request.user.role == "EDUCADOR"
                     and obj.lesson.educator == request.user.educator
                 )
-            if request.method in ("PUT", "DELETE") and isinstance(
+            if isinstance(
                 obj, StudentEvaluation
             ):
                 return (
