@@ -116,6 +116,14 @@ WEEKDAYS = [
     ("DOMINGO", "Domingo"),
 ]
 
+DOCTYPES = [
+    ("DOCS_INSTITUCIONALES", "Documentos institucionales"),
+    ("MEMORIAS_ANUALES", "Memorias anuales"),
+    ("MEMORIAS_ECONOMICAS", "Memorias económicas"),
+    ("BALANCE_CUENTAS", "Balance de cuentas"),
+    ("OTROS_DOCS", "Otros documentos"),
+]
+
 
 class Family(models.Model):
     name = models.CharField(max_length=255)
@@ -226,11 +234,8 @@ class PunctualDonation(models.Model):
 
 class HomeDocument(models.Model):
     title = models.CharField(max_length=255)
-    document = models.FileField(
-        upload_to="home_document",
-        null=True,
-        blank=True,
-    )
+    docType = models.CharField(max_length=20, choices=DOCTYPES, default="OTROS_DOCS")
+    document = models.FileField(upload_to="home_document")
     date = models.DateField()
 
 
@@ -338,7 +343,7 @@ class User(AbstractUser):
         Educator, on_delete=models.CASCADE, blank=True, null=True
     )
 
-    is_enabled = models.BooleanField(default=True)
+    is_enabled = models.BooleanField(default=False)
 
     USERNAME_FIELD = "email"
     REQUIRED_FIELDS = []
@@ -351,7 +356,7 @@ class Meeting(models.Model):
     name = models.CharField(max_length=100)
     description = models.CharField(max_length=1000)
     date = models.DateField(blank=True)
-    time = models.DateTimeField(blank=True)
+    time = models.TimeField(blank=True)
     attendees = models.ManyToManyField(Partner, related_name="meetings_attending")
 
 
@@ -364,8 +369,8 @@ class Lesson(models.Model):
         Educator, on_delete=models.CASCADE, related_name="lessons"
     )
     students = models.ManyToManyField(Student, related_name="lessons", blank=True)
-    start_date = models.DateTimeField()
-    end_date = models.DateTimeField()
+    start_date = models.DateField()
+    end_date = models.DateField()
 
 
 class Schedule(models.Model):
