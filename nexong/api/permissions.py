@@ -52,9 +52,7 @@ class isEducator(BasePermission):
                     request.user.role == "EDUCADOR"
                     and obj.lesson.educator == request.user.educator
                 )
-            if isinstance(
-                obj, StudentEvaluation
-            ):
+            if isinstance(obj, StudentEvaluation):
                 return (
                     request.user.role == "EDUCADOR"
                     and obj.evaluation_type.lesson.educator == request.user.educator

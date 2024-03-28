@@ -58,10 +58,7 @@ class LessonEventApiViewSet(ModelViewSet):
     http_method_names = ["get", "post", "put", "delete"]
     serializer_class = LessonEventSerializer
     permission_classes = [
-        isVolunteerPutAndGet
-        | isFamilyGet
-        | isEducatorPutAndGet
-        | isEducationCenterGet
+        isVolunteerPutAndGet | isFamilyGet | isEducatorPutAndGet | isEducationCenterGet
     ]
 
     def update(self, request, pk, *args, **kwargs):
