@@ -1,23 +1,18 @@
 from rest_framework.viewsets import ModelViewSet
 from rest_framework.response import Response
 from rest_framework import status
+from ..permissions import *
 from ...models import *
 from .lessonSerializer import *
-from rest_framework.permissions import AllowAny
 
 
 class LessonApiViewSet(ModelViewSet):
     queryset = Lesson.objects.all()
     http_method_names = ["get", "post", "put", "delete"]
     serializer_class = LessonSerializer
-    permission_classes = [AllowAny]
-
-    def update(self, request, *args, **kwargs):
-        instance = self.get_object()
-        serializer = self.get_serializer(instance, data=request.data, partial=True)
-        serializer.is_valid(raise_exception=True)
-        serializer.save()
-        return Response(serializer.data)
+    permission_classes = [
+        isEducatorGet | isFamilyGet | isVolunteerGet | isEducationCenterGet
+    ]
 
     def destroy(self, request, *args, **kwargs):
         instance = self.get_object()
@@ -29,7 +24,7 @@ class LessonAttendanceApiViewSet(ModelViewSet):
     queryset = LessonAttendance.objects.all()
     http_method_names = ["get", "post", "put", "delete"]
     serializer_class = LessonAttendanceSerializer
-    permission_classes = [AllowAny]
+    permission_classes = [isEducatorGet | isVolunteerPostPutAndGet]
 
     def destroy(self, request, *args, **kwargs):
         instance = self.get_object()
