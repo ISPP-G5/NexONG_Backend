@@ -1,7 +1,6 @@
 from django.urls import path, include
 from .routers import router_api
 from .Donation.views import *
-from .Student.views import *
 from .Authentication.views import (
     RedirectSocial,
     LogoutAndBlacklistRefreshTokenForUserView,
