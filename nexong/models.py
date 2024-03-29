@@ -169,8 +169,6 @@ class QuarterMarks(models.Model):
     date = models.DateField()
     marks = models.FileField(
         upload_to=upload_to_quartermarks,
-        null=True,
-        blank=True,
         validators=[validate_file_extension],
     )
     student = models.ForeignKey(
@@ -226,8 +224,6 @@ class HomeDocument(models.Model):
     title = models.CharField(max_length=255)
     document = models.FileField(
         upload_to="home_document",
-        null=True,
-        blank=True,
     )
     date = models.DateField()
 
