@@ -2,8 +2,10 @@ from django.contrib import admin
 from django.urls import path, include, re_path
 from drf_yasg.views import get_schema_view
 from drf_yasg import openapi
+from nexong.api.Authentication.views import CustomActivateView
 from nexong.api.urls import urlpatterns as api_urls
 from nexong import views
+
 
 schema_view = get_schema_view(
     openapi.Info(
@@ -24,4 +26,5 @@ urlpatterns = [
     re_path(
         r"^NexONG_Backend/files/(?P<path>.*)$", views.serve_file, name="serve_file"
     ),
+    path("activate/<uid>/<token>", CustomActivateView.as_view()),
 ]

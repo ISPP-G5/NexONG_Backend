@@ -4,6 +4,7 @@ from rest_framework.response import Response
 from rest_framework import status
 from ..permissions import *
 from nexong.models import Suggestion
+from ..permissions import *
 
 
 class SuggestionApiViewSet(ModelViewSet):

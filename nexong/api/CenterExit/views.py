@@ -1,5 +1,4 @@
 from rest_framework.viewsets import ModelViewSet
-from nexong.api import permissions
 from nexong.api.CenterExit.centerexitSerializer import CenterExitSerializer
 from nexong.models import CenterExitAuthorization
 from rest_framework.response import Response
@@ -11,7 +10,7 @@ class CenterExitApiViewSet(ModelViewSet):
     queryset = CenterExitAuthorization.objects.all()
     http_method_names = ["get", "post", "put", "delete", "patch"]
     serializer_class = CenterExitSerializer
-    permission_classes = [isAdmin]
+    permission_classes = [isEducatorGet | isFamily | isEducationCenter | isAdmin]
 
     def destroy(self, request, *args, **kwargs):
         instance = self.get_object()

@@ -1,6 +1,7 @@
+from django.utils.http import urlsafe_base64_decode
 import requests
 from django.views import View
-from django.http import JsonResponse
+from django.http import HttpResponse, JsonResponse
 from rest_framework.views import APIView
 from rest_framework.viewsets import ModelViewSet
 from rest_framework.response import Response
@@ -8,6 +9,7 @@ from rest_framework import status
 from ...models import *
 from .authSerializer import *
 from rest_framework_simplejwt.tokens import RefreshToken
+from django.contrib.auth.tokens import default_token_generator
 from ..permissions import *
 
 
@@ -113,6 +115,7 @@ class LogoutAndBlacklistRefreshTokenForUserView(APIView):
 
 class ActivateUserView(APIView):
     authentication_classes = ()
+    serializer_class = ActivateSerializer
 
     def post(self, request):
         access_token = request.headers.get("Authorization")
@@ -120,14 +123,41 @@ class ActivateUserView(APIView):
         headers = {"Authorization": access_token}
         response = requests.get(url, headers=headers, timeout=10)
         if response.status_code == 200:
-            try:
-                email = response.json()["email"]
-                user = User.objects.get(email=email)
-                if not user.is_enabled and not user.id_number:
-                    user.is_enabled = True
-                    user.save()
-                return Response(status=status.HTTP_200_OK)
-            except Exception as e:
-                return Response(e.args, status=status.HTTP_400_BAD_REQUEST)
+            serializer = self.serializer_class(data=request.data)
+            if serializer.is_valid():
+                try:
+                    id_number = serializer.validated_data["id_number"]
+                    email = response.json()["email"]
+                    user = User.objects.get(email=email)
+                    if not user.is_enabled and not user.id_number:
+                        user.id_number = id_number
+                        user.is_enabled = True
+                        user.save()
+                        return Response(status=status.HTTP_200_OK)
+                    return Response(status=status.HTTP_400_BAD_REQUEST)
+                except Exception as e:
+                    return Response(e.args, status=status.HTTP_400_BAD_REQUEST)
+            else:
+                return Response(status=status.HTTP_400_BAD_REQUEST)
+
         else:
             return Response(status=response.status_code)
+
+
+class CustomActivateView(APIView):
+    def post(self, request, *args, **kwargs):
+        uid = kwargs.get("uid")
+        token = kwargs.get("token")
+        try:
+            uid = urlsafe_base64_decode(uid).decode()
+            user = User.objects.get(pk=uid)
+            if not user.is_enabled:
+                if default_token_generator.check_token(user, token):
+                    user.is_enabled = True
+                    user.is_active = True
+                    user.save()
+                return Response(status=status.HTTP_200_OK)
+        except (TypeError, ValueError, OverflowError, User.DoesNotExist):
+            return Response(
+                {"detail": "Token not valid"}, status=status.HTTP_400_BAD_REQUEST
+            )

@@ -10,14 +10,9 @@ class LessonApiViewSet(ModelViewSet):
     queryset = Lesson.objects.all()
     http_method_names = ["get", "post", "put", "delete"]
     serializer_class = LessonSerializer
-    permission_classes = [isAdmin]
-
-    def update(self, request, *args, **kwargs):
-        instance = self.get_object()
-        serializer = self.get_serializer(instance, data=request.data, partial=True)
-        serializer.is_valid(raise_exception=True)
-        serializer.save()
-        return Response(serializer.data)
+    permission_classes = [
+        isEducatorGet | isFamilyGet | isVolunteerGet | isEducationCenterGet |isAdmin
+    ]
 
     def destroy(self, request, *args, **kwargs):
         instance = self.get_object()
@@ -29,7 +24,7 @@ class LessonAttendanceApiViewSet(ModelViewSet):
     queryset = LessonAttendance.objects.all()
     http_method_names = ["get", "post", "put", "delete"]
     serializer_class = LessonAttendanceSerializer
-    permission_classes = [isAdmin]
+    permission_classes = [isEducatorGet | isVolunteerPostPutAndGet |isAdmin]
 
     def destroy(self, request, *args, **kwargs):
         instance = self.get_object()
