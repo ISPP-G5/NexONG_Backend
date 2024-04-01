@@ -100,9 +100,11 @@ GRADESYSTEM = [
 ]
 DAILY = "DIARIO"
 ANNUAL = "ANUAL"
+QUARTERLY = "TRIMESTRAL"
 EVALUATION_TYPE = [
     (DAILY, "Diario"),
     (ANNUAL, "Anual"),
+    (QUARTERLY, "Trimestral"),
 ]
 WEEKDAYS = [
     ("LUNES", "Lunes"),
@@ -397,7 +399,7 @@ class EvaluationType(models.Model):
         max_length=20, choices=GRADESYSTEM, default=ZERO_TO_TEN
     )
     lesson = models.ForeignKey(
-        Lesson, on_delete=models.CASCADE, related_name="student_evaluations"
+        Lesson, on_delete=models.CASCADE, related_name="evaluation_type"
     )
 
 
