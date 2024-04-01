@@ -16,7 +16,7 @@ class StudentApiViewSet(ModelViewSet):
     queryset = Student.objects.all()
     http_method_names = ["get", "post", "put", "delete", "patch"]
     serializer_class = StudentSerializer
-    permission_classes = [isFamily | isEducatorGet | isEducationCenter |isAdmin]
+    permission_classes = [isFamily | isEducatorGet | isEducationCenter | isAdmin]
 
     def destroy(self, request, *args, **kwargs):
         instance = self.get_object()
@@ -28,7 +28,7 @@ class QuarterMarksApiViewSet(ModelViewSet):
     queryset = QuarterMarks.objects.all()
     http_method_names = ["get", "post", "put", "delete", "patch"]
     serializer_class = QuarterMarksSerializer
-    permission_classes = [isFamily | isEducatorGet | isEducationCenter |isAdmin]
+    permission_classes = [isFamily | isEducatorGet | isEducationCenter | isAdmin]
 
     def destroy(self, request, *args, **kwargs):
         instance = self.get_object()

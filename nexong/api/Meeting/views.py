@@ -11,7 +11,7 @@ class MeetingApiViewSet(ModelViewSet):
     queryset = Meeting.objects.all()
     http_method_names = ["get", "post", "put", "delete"]
     serializer_class = MeetingSerializer
-    permission_classes = [isPartnerPutAndGet |isAdmin]
+    permission_classes = [isPartnerPutAndGet | isAdmin]
 
     def destroy(self, request, *args, **kwargs):
         instance = self.get_object()
