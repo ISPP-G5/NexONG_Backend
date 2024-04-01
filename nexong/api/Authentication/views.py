@@ -89,7 +89,6 @@ class RedirectSocial(View):
 
 
 class LogoutAndBlacklistRefreshTokenForUserView(APIView):
-    # permission_classes = (permissions.AllowAny,)
     authentication_classes = ()
     serializer_class = LogoutAndBlacklistSerializer
 
