@@ -1,19 +1,37 @@
 from decimal import Decimal
 from django.db import models
-from django.contrib.auth.models import AbstractBaseUser
+from django.contrib.auth.models import AbstractUser, UserManager
 from django.core.validators import (
     MaxValueValidator,
     MinValueValidator,
     URLValidator,
 )
-
+from nexong.api.helpers.fileValidations import (
+    upload_to_authorization,
+    upload_to_avatar,
+    upload_to_education_center_tutor,
+    upload_to_enrollment_document,
+    upload_to_minor_authorization,
+    upload_to_partner,
+    upload_to_punctual_donation,
+    upload_to_quota_extension_document,
+    upload_to_quartermarks,
+    upload_to_registry_sheet,
+    upload_to_scanned_authorizer_id,
+    upload_to_scanned_id,
+    upload_to_scanned_sanitary_card,
+    upload_to_sexual_offenses,
+    validate_file_extension,
+    validate_image_extension,
+)
 
 ADMIN = "ADMIN"
-EDUCATOR = "EDUCATOR"
-VOLUNTEER = "VOLUNTEER"
-FAMILY = "FAMILY"
-PARTNER = "PARTNER"
-VOLUNTEER_PARTNER = "VOLUNTEER_PARTNER"
+EDUCATOR = "EDUCADOR"
+VOLUNTEER = "VOLUNTARIO"
+FAMILY = "FAMILIA"
+PARTNER = "SOCIO"
+VOLUNTEER_PARTNER = "VOLUNTARIO_SOCIO"
+EDUCATION_CENTER = "CENTRO EDUCATIVO"
 ROLE = [
     (ADMIN, "Administrador"),
     (VOLUNTEER, "Voluntario"),
@@ -21,40 +39,41 @@ ROLE = [
     (FAMILY, "Familia"),
     (PARTNER, "Socio"),
     (VOLUNTEER_PARTNER, "Voluntario y socio"),
+    (EDUCATION_CENTER, "Centro educativo"),
 ]
-PENDING = "PENDING"
-ACCEPTED = "ACCEPTED"
-REJECTED = "REJECTED"
-EXPIRED = "EXPIRED"
+PENDING = "PENDIENTE"
+ACCEPTED = "ACEPTADO"
+REJECTED = "RECHAZADO"
+EXPIRED = "CADUCADO"
 STATUS = [
     (PENDING, "Pendiente"),
     (ACCEPTED, "Aceptado"),
     (REJECTED, "Rechazado"),
     (EXPIRED, "Caducado"),
 ]
-ANNUAL = "ANNUAL"
-MONTHLY = "MONTHLY"
-QUARTERLY = "QUARTERLY"
-SIXMONTHLY = "SIX-MONTHLY"
+ANNUAL = "ANUAL"
+MONTHLY = "MENSUAL"
+QUARTERLY = "TRIMESTRAL"
+SIXMONTHLY = "SEMESTRAL"
 FREQUENCY = [
     (ANNUAL, "Anual"),
     (MONTHLY, "Mensual"),
     (QUARTERLY, "Trimestral"),
     (SIXMONTHLY, "Seis Meses"),
 ]
-THREE_YEARS = "THREE_YEARS"
-FOUR_YEARS = "FOUR_YEARS"
-FIVE_YEARS = "FIVE_YEARS"
-FIRST_PRIMARY = "FIRST_PRIMARY"
-SECOND_PRIMARY = "SECOND_PRIMARY"
-THIRD_PRIMARY = "THIRD_PRIMARY"
-FOURTH_PRIMARY = "FOURTH_PRIMARY"
-FIFTH_PRIMARY = "FIFTH_PRIMARY"
-SIXTH_PRIMARY = "SIXTH_PRIMARY"
-FIRST_SECONDARY = "FIRST_SECONDARY"
-SECOND_SECONDARY = "SECOND_SECONDARY"
-THIRD_SECONDARY = "THIRD_SECONDARY"
-FOURTH_SECONDARY = "FOURTH_SECONDARY"
+THREE_YEARS = "TRES AÑOS"
+FOUR_YEARS = "CUATRO AÑOS"
+FIVE_YEARS = "CINCO AÑOS"
+FIRST_PRIMARY = "PRIMERO PRIMARIA"
+SECOND_PRIMARY = "SEGUNDO PRIMARIA"
+THIRD_PRIMARY = "TERCERO PRIMARIA"
+FOURTH_PRIMARY = "CUARTO PRIMARIA"
+FIFTH_PRIMARY = "QUINTO PRIMARIA"
+SIXTH_PRIMARY = "SEXTO PRIMARIA"
+FIRST_SECONDARY = "PRIMERO SECUNDARIA"
+SECOND_SECONDARY = "SEGUNDO SECUNDARIA"
+THIRD_SECONDARY = "TERCERO SECUNDARIA"
+FOURTH_SECONDARY = "CUARTO SECUNDARIA"
 CURRENT_EDUCATION_YEAR = [
     (THREE_YEARS, "Tres años"),
     (FOUR_YEARS, "Cuatro años"),
@@ -71,28 +90,38 @@ CURRENT_EDUCATION_YEAR = [
     (FOURTH_SECONDARY, "Cuarto de secundaria"),
 ]
 
-ZERO_TO_ONE = "ZERO_TO_ONE"
-ONE_TO_FIVE = "ONE_TO_FIVE"
-ZERO_TO_TEN = "ZERO_TO_TEN"
+ZERO_TO_ONE = "CERO A UNO"
+ONE_TO_FIVE = "UNO A CINCO"
+ZERO_TO_TEN = "CERO A DIEZ"
 GRADESYSTEM = [
     (ZERO_TO_ONE, "0-1"),
     (ONE_TO_FIVE, "1-5"),
     (ZERO_TO_TEN, "0-10"),
 ]
-DAILY = "DAILY"
-ANNUAL = "ANNUAL"
+DAILY = "DIARIO"
+ANNUAL = "ANUAL"
+QUARTERLY = "TRIMESTRAL"
 EVALUATION_TYPE = [
     (DAILY, "Diario"),
     (ANNUAL, "Anual"),
+    (QUARTERLY, "Trimestral"),
 ]
 WEEKDAYS = [
-    ("MONDAY", "Lunes"),
-    ("TUESDAY", "Martes"),
-    ("WEDNESDAY", "Miércoles"),
-    ("THURSDAY", "Jueves"),
-    ("FRIDAY", "Viernes"),
-    ("SATURDAY", "Sábado"),
-    ("SUNDAY", "Domingo"),
+    ("LUNES", "Lunes"),
+    ("MARTES", "Martes"),
+    ("MIERCOLES", "Miércoles"),
+    ("JUEVES", "Jueves"),
+    ("VIERNES", "Viernes"),
+    ("SABADO", "Sábado"),
+    ("DOMINGO", "Domingo"),
+]
+
+DOCTYPES = [
+    ("DOCS_INSTITUCIONALES", "Documentos institucionales"),
+    ("MEMORIAS_ANUALES", "Memorias anuales"),
+    ("MEMORIAS_ECONOMICAS", "Memorias económicas"),
+    ("BALANCE_CUENTAS", "Balance de cuentas"),
+    ("OTROS_DOCS", "Otros documentos"),
 ]
 
 
@@ -112,16 +141,28 @@ class Student(models.Model):
     )
     education_center_tutor = models.CharField(max_length=255)
     enrollment_document = models.FileField(
-        upload_to="files/student_enrollment", null=True, blank=True
+        upload_to=upload_to_education_center_tutor,
+        null=True,
+        blank=True,
+        validators=[validate_file_extension],
     )
     scanned_sanitary_card = models.FileField(
-        upload_to="files/student_sanitary", null=True, blank=True
+        upload_to=upload_to_scanned_sanitary_card,
+        null=True,
+        blank=True,
+        validators=[validate_file_extension],
     )
     nationality = models.CharField(max_length=255)
     birthdate = models.DateField()
     is_morning_student = models.BooleanField(default=False)
     status = models.CharField(max_length=10, choices=STATUS, default=PENDING, null=True)
     activities_during_exit = models.CharField(max_length=1000, null=True, blank=True)
+    avatar = models.FileField(
+        upload_to=upload_to_avatar,
+        validators=[validate_image_extension],
+        null=True,
+        blank=True,
+    )
     education_center = models.ForeignKey(
         EducationCenter,
         on_delete=models.CASCADE,
@@ -136,7 +177,10 @@ class Student(models.Model):
 
 class QuarterMarks(models.Model):
     date = models.DateField()
-    marks = models.FileField(upload_to="files/quarter_marks")
+    marks = models.FileField(
+        upload_to=upload_to_quartermarks,
+        validators=[validate_file_extension],
+    )
     student = models.ForeignKey(
         Student, on_delete=models.CASCADE, related_name="quarter_marks"
     )
@@ -144,7 +188,12 @@ class QuarterMarks(models.Model):
 
 class Partner(models.Model):
     address = models.CharField(max_length=255, null=True, blank=True)
-    enrollment_document = models.FileField(upload_to="files/partner_enrollment")
+    enrollment_document = models.FileField(
+        upload_to=upload_to_partner,
+        null=True,
+        blank=True,
+        validators=[validate_file_extension],
+    )
     birthdate = models.DateField(null=True)
 
 
@@ -159,7 +208,10 @@ class Donation(models.Model):
     frequency = models.CharField(max_length=11, choices=FREQUENCY, default=MONTHLY)
     holder = models.CharField(max_length=255)
     quota_extension_document = models.FileField(
-        null=True, blank=True, upload_to="files/partner_quota"
+        upload_to=upload_to_quota_extension_document,
+        validators=[validate_file_extension],
+        null=True,
+        blank=True,
     )
     date = models.DateField()
     partner = models.ForeignKey(
@@ -167,26 +219,63 @@ class Donation(models.Model):
     )
 
 
+class PunctualDonation(models.Model):
+    name = models.CharField(max_length=255)
+    surname = models.CharField(max_length=255)
+    email = models.EmailField()
+    proof_of_payment_document = models.FileField(
+        upload_to=upload_to_punctual_donation,
+        validators=[validate_file_extension],
+    )
+    date = models.DateField(auto_now_add=True, blank=True)
+
+
+class HomeDocument(models.Model):
+    title = models.CharField(max_length=255)
+    document = models.FileField(
+        upload_to="home_document",
+    )
+    docType = models.CharField(max_length=20, choices=DOCTYPES, default="OTROS_DOCS")
+
+    date = models.DateField()
+
+
 class Volunteer(models.Model):
     academic_formation = models.CharField(max_length=1000)
     motivation = models.CharField(max_length=1000)
     status = models.CharField(max_length=10, choices=STATUS, default=PENDING)
     address = models.CharField(max_length=255)
-    postal_code = models.IntegerField(
-        validators=[MinValueValidator(00000), MaxValueValidator(90000)], default=10000
+    postal_code = models.CharField(max_length=255)
+    enrollment_document = models.FileField(
+        upload_to=upload_to_enrollment_document,
+        validators=[validate_file_extension],
     )
-    enrollment_document = models.FileField(upload_to="files/volunteer_enrollment")
-    registry_sheet = models.FileField(upload_to="files/volunteer_registry")
-    sexual_offenses_document = models.FileField(upload_to="files/volunteer_offenses")
-    scanned_id = models.FileField(upload_to="files/volunteer_id")
+    registry_sheet = models.FileField(
+        upload_to=upload_to_registry_sheet,
+        validators=[validate_file_extension],
+    )
+    sexual_offenses_document = models.FileField(
+        upload_to=upload_to_sexual_offenses,
+        validators=[validate_file_extension],
+    )
+    scanned_id = models.FileField(
+        upload_to=upload_to_scanned_id,
+        validators=[validate_file_extension],
+    )
     minor_authorization = models.FileField(
-        null=True, blank=True, upload_to="files/volunteer_minor"
+        upload_to=upload_to_minor_authorization,
+        validators=[validate_file_extension],
+        blank=True,
+        null=True,
     )
     scanned_authorizer_id = models.FileField(
-        null=True, blank=True, upload_to="files/volunteer_authorizer_id"
+        upload_to=upload_to_scanned_authorizer_id,
+        validators=[validate_file_extension],
+        blank=True,
+        null=True,
     )
     birthdate = models.DateField()
-    start_date = models.DateField()
+    start_date = models.DateField(null=True, blank=True)
     end_date = models.DateField(null=True, blank=True)
 
 
@@ -194,10 +283,37 @@ class Educator(models.Model):
     birthdate = models.DateField(null=True)
 
 
-class User(AbstractBaseUser):
-    name = models.CharField(max_length=50)
-    surname = models.CharField(max_length=100)
-    id_number = models.CharField(max_length=9, unique=True)
+class CustomUserManager(UserManager):
+    def create_user(self, email, username="None", password=None, **extra_fields):
+        if not email:
+            raise ValueError("The given email must be set")
+        if "id_number" not in extra_fields:
+            extra_fields.setdefault("is_enabled", False)
+
+        user = super().create_user(
+            username=username, email=email, password=password, **extra_fields
+        )
+        user.username = None
+
+        user.save(using=self._db)
+        return user
+
+    def create_superuser(self, email, username="None", password=None, **extra_fields):
+        if not email:
+            raise ValueError("The given email must be set")
+        user = super().create_superuser(
+            username=username, email=email, password=password, **extra_fields
+        )
+        user.username = None
+        user.save(using=self._db)
+        return user
+
+
+class User(AbstractUser):
+    objects = CustomUserManager()
+
+    username = models.CharField(max_length=100, null=True, blank=True)
+    id_number = models.CharField(max_length=9, null=True)
     phone = models.IntegerField(
         validators=[MaxValueValidator(999999999), MinValueValidator(600000000)],
         blank=True,
@@ -212,7 +328,12 @@ class User(AbstractBaseUser):
         choices=ROLE,
         default=FAMILY,
     )
-    avatar = models.URLField(blank=True, null=True, validators=[URLValidator()])
+    avatar = models.FileField(
+        upload_to=upload_to_avatar,
+        validators=[validate_image_extension],
+        blank=True,
+        null=True,
+    )
     family = models.OneToOneField(
         Family, on_delete=models.CASCADE, blank=True, null=True
     )
@@ -229,14 +350,20 @@ class User(AbstractBaseUser):
         Educator, on_delete=models.CASCADE, blank=True, null=True
     )
 
+    is_enabled = models.BooleanField(default=False)
+
     USERNAME_FIELD = "email"
+    REQUIRED_FIELDS = []
+
+    def __str__(self):
+        return self.email
 
 
 class Meeting(models.Model):
     name = models.CharField(max_length=100)
     description = models.CharField(max_length=1000)
     date = models.DateField(blank=True)
-    time = models.DateTimeField(blank=True)
+    time = models.TimeField(blank=True)
     attendees = models.ManyToManyField(Partner, related_name="meetings_attending")
 
 
@@ -248,11 +375,9 @@ class Lesson(models.Model):
     educator = models.ForeignKey(
         Educator, on_delete=models.CASCADE, related_name="lessons"
     )
-    students = models.ManyToManyField(
-        Student, related_name="lessons", blank=True, null=True
-    )
-    start_date = models.DateTimeField()
-    end_date = models.DateTimeField()
+    students = models.ManyToManyField(Student, related_name="lessons", blank=True)
+    start_date = models.DateField()
+    end_date = models.DateField()
 
 
 class Schedule(models.Model):
@@ -274,7 +399,7 @@ class EvaluationType(models.Model):
         max_length=20, choices=GRADESYSTEM, default=ZERO_TO_TEN
     )
     lesson = models.ForeignKey(
-        Lesson, on_delete=models.CASCADE, related_name="student_evaluations"
+        Lesson, on_delete=models.CASCADE, related_name="evaluation_type"
     )
 
 
@@ -310,13 +435,13 @@ class LessonEvent(models.Model):
     start_date = models.DateTimeField()
     end_date = models.DateTimeField()
     lesson = models.ForeignKey(Lesson, on_delete=models.CASCADE)
-    price = models.IntegerField(validators=[MinValueValidator(0)], default=0)
+    price = models.FloatField(validators=[MinValueValidator(0.0)], default=0.0)
     educators = models.ManyToManyField(Educator, related_name="lesson_events")
     attendees = models.ManyToManyField(
-        Student, related_name="lesson_events", null=True, blank=True
+        Student, related_name="lesson_events", blank=True
     )
     volunteers = models.ManyToManyField(
-        Volunteer, related_name="lesson_events", null=True, blank=True
+        Volunteer, related_name="lesson_events", blank=True
     )
 
 
@@ -328,15 +453,16 @@ class Event(models.Model):
     max_attendees = models.IntegerField(validators=[MinValueValidator(0)])
     start_date = models.DateTimeField()
     end_date = models.DateTimeField()
-    price = models.IntegerField(validators=[MinValueValidator(0)], default=0)
-    attendees = models.ManyToManyField(
-        Student, related_name="events", null=True, blank=True
-    )
-    volunteers = models.ManyToManyField(Volunteer, related_name="events")
+    price = models.FloatField(validators=[MinValueValidator(0.0)], default=0.0)
+    attendees = models.ManyToManyField(Student, related_name="events", blank=True)
+    volunteers = models.ManyToManyField(Volunteer, related_name="events", blank=True)
 
 
 class CenterExitAuthorization(models.Model):
-    authorization = models.FileField(upload_to="files/centerexit_auth")
+    authorization = models.FileField(
+        upload_to=upload_to_authorization,
+        validators=[validate_file_extension],
+    )
     student = models.ForeignKey(
         Student, on_delete=models.CASCADE, related_name="center_exits"
     )
@@ -344,3 +470,10 @@ class CenterExitAuthorization(models.Model):
     lesson_event = models.ForeignKey(
         LessonEvent, on_delete=models.CASCADE, related_name="center_exit_authorizations"
     )
+
+
+class Suggestion(models.Model):
+    subject = models.CharField(max_length=100)
+    description = models.TextField()
+    email = models.EmailField(null=True, blank=True)
+    date = models.DateField(auto_now_add=True)

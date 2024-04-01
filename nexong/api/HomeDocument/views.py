@@ -1,16 +1,16 @@
 from rest_framework.viewsets import ModelViewSet
-from nexong.api.CenterExit.centerexitSerializer import CenterExitSerializer
-from nexong.models import CenterExitAuthorization
 from rest_framework.response import Response
 from rest_framework import status
+from ...models import *
+from .homeDocumentSerializer import HomeDocumentSerializer
 from ..permissions import *
 
 
-class CenterExitApiViewSet(ModelViewSet):
-    queryset = CenterExitAuthorization.objects.all()
+class HomeDocumentApiViewSet(ModelViewSet):
+    queryset = HomeDocument.objects.all()
     http_method_names = ["get", "post", "put", "delete", "patch"]
-    serializer_class = CenterExitSerializer
-    permission_classes = [isEducatorGet | isFamily | isEducationCenter]
+    serializer_class = HomeDocumentSerializer
+    permission_classes = [isAuthenticated]
 
     def destroy(self, request, *args, **kwargs):
         instance = self.get_object()
