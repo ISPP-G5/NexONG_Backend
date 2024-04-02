@@ -26,7 +26,7 @@ class DonationApiViewSet(ModelViewSet):
     queryset = Donation.objects.all()
     http_method_names = ["get", "post", "put", "delete", "patch"]
     serializer_class = DonationSerializer
-    permission_classes = [isPartnerPostAndGet | isAdmin]
+    permission_classes = [isPartnerPostAndGet | isAdminGetAndDelete]
 
     def destroy(self, request, *args, **kwargs):
         instance = self.get_object()
