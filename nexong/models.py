@@ -6,6 +6,24 @@ from django.core.validators import (
     MinValueValidator,
     URLValidator,
 )
+from nexong.api.helpers.fileValidations import (
+    upload_to_authorization,
+    upload_to_avatar,
+    upload_to_education_center_tutor,
+    upload_to_enrollment_document,
+    upload_to_minor_authorization,
+    upload_to_partner,
+    upload_to_punctual_donation,
+    upload_to_quota_extension_document,
+    upload_to_quartermarks,
+    upload_to_registry_sheet,
+    upload_to_scanned_authorizer_id,
+    upload_to_scanned_id,
+    upload_to_scanned_sanitary_card,
+    upload_to_sexual_offenses,
+    validate_file_extension,
+    validate_image_extension,
+)
 
 ADMIN = "ADMIN"
 EDUCATOR = "EDUCADOR"
