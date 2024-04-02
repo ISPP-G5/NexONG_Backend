@@ -3,7 +3,6 @@ from rest_framework.response import Response
 from rest_framework import status
 from ...models import *
 from .donationSerializer import DonationSerializer
-from rest_framework.permissions import AllowAny
 import csv
 from django.http import HttpResponse
 from openpyxl import Workbook
@@ -19,13 +18,14 @@ from reportlab.platypus import (
 from reportlab.lib.styles import getSampleStyleSheet
 from reportlab.lib import colors
 from datetime import datetime
+from ..permissions import *
 
 
 class DonationApiViewSet(ModelViewSet):
     queryset = Donation.objects.all()
     http_method_names = ["get", "post", "put", "delete", "patch"]
     serializer_class = DonationSerializer
-    permission_classes = [AllowAny]
+    permission_classes = [isPartnerPostAndGet]
 
     def destroy(self, request, *args, **kwargs):
         instance = self.get_object()

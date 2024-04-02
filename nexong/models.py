@@ -82,9 +82,11 @@ GRADESYSTEM = [
 ]
 DAILY = "DIARIO"
 ANNUAL = "ANUAL"
+QUARTERLY = "TRIMESTRAL"
 EVALUATION_TYPE = [
     (DAILY, "Diario"),
     (ANNUAL, "Anual"),
+    (QUARTERLY, "Trimestral"),
 ]
 WEEKDAYS = [
     ("LUNES", "Lunes"),
@@ -96,19 +98,21 @@ WEEKDAYS = [
     ("DOMINGO", "Domingo"),
 ]
 
+DOCTYPES = [
+    ("DOCS_INSTITUCIONALES", "Documentos institucionales"),
+    ("MEMORIAS_ANUALES", "Memorias anuales"),
+    ("MEMORIAS_ECONOMICAS", "Memorias económicas"),
+    ("BALANCE_CUENTAS", "Balance de cuentas"),
+    ("OTROS_DOCS", "Otros documentos"),
+]
+
 
 class Family(models.Model):
     name = models.CharField(max_length=255)
 
-    def __str__(self):
-        return self.name
-
 
 class EducationCenter(models.Model):
     name = models.CharField(max_length=255)
-
-    def __str__(self):
-        return self.name
 
 
 class Student(models.Model):
@@ -144,7 +148,10 @@ class Student(models.Model):
 
 class QuarterMarks(models.Model):
     date = models.DateField()
-    marks = models.FileField(upload_to="quarter_marks")
+    marks = models.FileField(
+        upload_to=upload_to_quartermarks,
+        validators=[validate_file_extension],
+    )
     student = models.ForeignKey(
         Student, on_delete=models.CASCADE, related_name="quarter_marks"
     )
@@ -185,7 +192,11 @@ class PunctualDonation(models.Model):
 
 class HomeDocument(models.Model):
     title = models.CharField(max_length=255)
-    document = models.FileField(upload_to="home_document")
+    document = models.FileField(
+        upload_to="home_document",
+    )
+    docType = models.CharField(max_length=20, choices=DOCTYPES, default="OTROS_DOCS")
+
     date = models.DateField()
 
 
@@ -200,10 +211,16 @@ class Volunteer(models.Model):
     sexual_offenses_document = models.FileField(upload_to="volunteer_offenses")
     scanned_id = models.FileField(upload_to="volunteer_id")
     minor_authorization = models.FileField(
-        null=True, blank=True, upload_to="volunteer_minor"
+        upload_to=upload_to_minor_authorization,
+        validators=[validate_file_extension],
+        blank=True,
+        null=True,
     )
     scanned_authorizer_id = models.FileField(
-        null=True, blank=True, upload_to="volunteer_authorizer_id"
+        upload_to=upload_to_scanned_authorizer_id,
+        validators=[validate_file_extension],
+        blank=True,
+        null=True,
     )
     birthdate = models.DateField()
     start_date = models.DateField(null=True, blank=True)
@@ -259,7 +276,12 @@ class User(AbstractUser):
         choices=ROLE,
         default=FAMILY,
     )
-    avatar = models.FileField(upload_to="files/user_avatar", null=True, blank=True)
+    avatar = models.FileField(
+        upload_to=upload_to_avatar,
+        validators=[validate_image_extension],
+        blank=True,
+        null=True,
+    )
     family = models.OneToOneField(
         Family, on_delete=models.CASCADE, blank=True, null=True
     )
@@ -276,7 +298,7 @@ class User(AbstractUser):
         Educator, on_delete=models.CASCADE, blank=True, null=True
     )
 
-    is_enabled = models.BooleanField(default=True)
+    is_enabled = models.BooleanField(default=False)
 
     USERNAME_FIELD = "email"
     REQUIRED_FIELDS = []
@@ -289,7 +311,7 @@ class Meeting(models.Model):
     name = models.CharField(max_length=100)
     description = models.CharField(max_length=1000)
     date = models.DateField(blank=True)
-    time = models.DateTimeField(blank=True)
+    time = models.TimeField(blank=True)
     attendees = models.ManyToManyField(Partner, related_name="meetings_attending")
 
 
@@ -302,8 +324,8 @@ class Lesson(models.Model):
         Educator, on_delete=models.CASCADE, related_name="lessons"
     )
     students = models.ManyToManyField(Student, related_name="lessons", blank=True)
-    start_date = models.DateTimeField()
-    end_date = models.DateTimeField()
+    start_date = models.DateField()
+    end_date = models.DateField()
 
 
 class Schedule(models.Model):
@@ -325,7 +347,7 @@ class EvaluationType(models.Model):
         max_length=20, choices=GRADESYSTEM, default=ZERO_TO_TEN
     )
     lesson = models.ForeignKey(
-        Lesson, on_delete=models.CASCADE, related_name="student_evaluations"
+        Lesson, on_delete=models.CASCADE, related_name="evaluation_type"
     )
 
 
