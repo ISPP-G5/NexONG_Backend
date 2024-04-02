@@ -58,7 +58,7 @@ class isAdminGetAndDelete(BasePermission):
 class isAdminGetPutAndDelete(BasePermission):
     def has_permission(self, request, view):
         if request.user.is_authenticated:
-            if request.method in ("GET", "PUT", "DELETE"):
+            if request.method in ("GET", "PUT", "PATCH", "DELETE"):
                 return request.user.role == "ADMIN"
             else:
                 return False
@@ -69,7 +69,7 @@ class isAdminGetPutAndDelete(BasePermission):
 class isEducatorPutAndGet(BasePermission):
     def has_permission(self, request, view):
         if request.user.is_authenticated:
-            if request.method in ("PUT", "GET"):
+            if request.method in ("PUT", "GET", "PATCH"):
                 return request.user.role == "EDUCADOR"
         else:
             return False
