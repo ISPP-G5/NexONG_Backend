@@ -25,7 +25,7 @@ class isAdmin(BasePermission):
             return request.user.role == "ADMIN"
         else:
             return False
-        
+
     def has_object_permission(self, request, view, obj):
         if request.user.is_authenticated:
             if isinstance(obj, EvaluationType):
@@ -53,11 +53,12 @@ class isAdminGetAndDelete(BasePermission):
                 return False
         else:
             return False
-        
+
+
 class isAdminGetPutAndDelete(BasePermission):
     def has_permission(self, request, view):
         if request.user.is_authenticated:
-            if request.method in ("GET","PUT","DELETE"):
+            if request.method in ("GET", "PUT", "DELETE"):
                 return request.user.role == "ADMIN"
             else:
                 return False

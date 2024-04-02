@@ -30,8 +30,8 @@ class UserApiViewSet(ModelViewSet):
     def create(self, request):
         serializer = self.serializer_class(data=request.data)
         serializer.is_valid(raise_exception=True)
-        if serializer.validated_data["role"]!="EDUCADOR":
-            return Response(status=status.HTTP_403_FORBIDDEN)   
+        if serializer.validated_data["role"] != "EDUCADOR":
+            return Response(status=status.HTTP_403_FORBIDDEN)
         serializer.save()
         return Response(serializer.data)
 
