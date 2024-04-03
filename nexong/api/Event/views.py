@@ -1,6 +1,7 @@
 from rest_framework.viewsets import ModelViewSet
 from rest_framework.response import Response
 from rest_framework import status
+from ..permissions import *
 from ...models import *
 from ..permissions import *
 from .eventSerializer import EventSerializer, LessonEventSerializer
@@ -16,6 +17,7 @@ class EventApiViewSet(ModelViewSet):
         | isPartnerGet
         | isFamilyPutAndGet
         | isEducationCenterPutAndGet
+        | isAdmin
     ]
 
     def update(self, request, pk, *args, **kwargs):
@@ -58,7 +60,11 @@ class LessonEventApiViewSet(ModelViewSet):
     http_method_names = ["get", "post", "put", "delete"]
     serializer_class = LessonEventSerializer
     permission_classes = [
-        isVolunteerPutAndGet | isFamilyGet | isEducatorPutAndGet | isEducationCenterGet
+        isVolunteerPutAndGet
+        | isFamilyGet
+        | isEducatorPutAndGet
+        | isEducationCenterGet
+        | isAdmin
     ]
 
     def update(self, request, pk, *args, **kwargs):
