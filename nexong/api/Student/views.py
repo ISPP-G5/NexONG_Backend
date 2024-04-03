@@ -5,10 +5,8 @@ from nexong.api.Student.studentSerializer import (
 )
 from rest_framework.response import Response
 from rest_framework import status
-from nexong.models import Student, QuarterMarks
 from ..permissions import *
 from nexong.api.helpers.permissionValidators import *
-from nexong.models import Student, QuarterMarks
 from nexong.models import Student, QuarterMarks, STATUS, CURRENT_EDUCATION_YEAR
 import csv
 import codecs
@@ -91,8 +89,8 @@ def StudentsExportToCsv(request):
                 smart_str(student.birthdate),
                 smart_str(student.is_morning_student),
                 smart_str(student.status),
-                smart_str(student.education_center),
-                smart_str(student.family),
+                smart_str(student.education_center.name),
+                smart_str(student.family.name),
             ]
         )
 
@@ -2274,12 +2272,12 @@ def StudentsExportToPdf(request):
             student.is_morning_student,
             student.status,
             student.education_center.name[:20]
-            if isinstance(student.education_center, str)
-            and len(student.education_center) > 20
+            if isinstance(student.education_center.name, str)
+            and len(student.education_center.name) > 20
             else student.education_center.name,
-            student.family[:20]
-            if isinstance(student.family, str) and len(student.family) > 20
-            else student.family,
+            student.family.name[:20]
+            if isinstance(student.family.name, str) and len(student.family.name) > 20
+            else student.family.name,
         ]
         table_data.append(table_row)
 
