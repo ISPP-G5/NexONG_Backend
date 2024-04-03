@@ -33,7 +33,20 @@ class ActivateSerializer(ModelSerializer):
 class CreateUserSerializer(UserCreateSerializer):
     class Meta(UserCreateSerializer.Meta):
         model = User
-        fields = ["email", "first_name", "last_name", "id_number", "phone", "password"]
+        fields = [
+            "email",
+            "first_name",
+            "last_name",
+            "id_number",
+            "phone",
+            "password",
+            "role",
+            "family",
+            "partner",
+            "volunteer",
+            "education_center",
+            "educator",
+        ]
 
     def validate_first_name(self, data):
         if not data:
@@ -48,6 +61,12 @@ class CreateUserSerializer(UserCreateSerializer):
     def validate_id_number(self, data):
         if not data:
             raise serializers.ValidationError("This field may not be blank.")
+        else:
+            pattern = r"^\d{8}[A-Z]$"
+            if not re.match(pattern, data):
+                raise serializers.ValidationError(
+                    "The id_number does not match the expected pattern."
+                )
         return data
 
 
@@ -64,7 +83,7 @@ class UserSerializer(ModelSerializer):
         model = User
         fields = "__all__"
 
-    def validate(self, data):
+    def validate_role(self, data):
         validation_error = {}
         if data["role"] == "EDUCADOR" and data["educator"] is None:
             validation_error["educator"] = 'Given role "EDUCADOR", this cannot be null.'
