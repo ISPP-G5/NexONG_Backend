@@ -19,8 +19,8 @@ class FamilyApiViewSetTestCase(TestCase):
         self.assertEqual(family.name, "Familia Lopez")
 
     def test_obtain_family(self):
-        partner = Family.objects.create(name ='Familia Lopez')
-        response = self.client.get(f'/api/family/{partner.id}/')
+        family = Family.objects.create(name ='Familia Lopez')
+        response = self.client.get(f'/api/family/{family.id}/')
         self.assertEqual(response.status_code, 200)
         self.assertEqual(response.data['name'], 'Familia Lopez')
 
