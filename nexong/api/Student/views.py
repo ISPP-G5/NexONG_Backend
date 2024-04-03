@@ -7,7 +7,7 @@ from rest_framework.response import Response
 from rest_framework import status
 from ..permissions import *
 from nexong.api.helpers.permissionValidators import *
-from nexong.models import Student, QuarterMarks, STATUS, CURRENT_EDUCATION_YEAR
+from nexong.models import QuarterMarks, STATUS, CURRENT_EDUCATION_YEAR
 import csv
 import codecs
 from django.http import HttpResponse
@@ -145,7 +145,7 @@ def obtainDataFromRequest(request):
             education_year = None
         else:
             education_year = education_year
-    # Filter donations
+   
     if (
         status is None
         and education_year is None
