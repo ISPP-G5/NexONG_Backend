@@ -49,7 +49,8 @@ class QuarterMarksApiViewSet(ModelViewSet):
         instance = self.get_object()
         self.perform_destroy(instance)
         return Response(status=status.HTTP_204_NO_CONTENT)
-    
+
+
 def StudentsExportToCsv(request):
     response = HttpResponse(content_type="text/csv")
     response["Content-Disposition"] = 'attachment; filename="Datos_Estudiantes.csv"'
