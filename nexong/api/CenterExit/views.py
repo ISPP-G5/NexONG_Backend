@@ -10,7 +10,7 @@ class CenterExitApiViewSet(ModelViewSet):
     queryset = CenterExitAuthorization.objects.all()
     http_method_names = ["get", "post", "put", "delete", "patch"]
     serializer_class = CenterExitSerializer
-    permission_classes = [isEducatorGet | isFamily | isEducationCenter]
+    permission_classes = [isEducatorGet | isFamily | isEducationCenter | isAdmin]
 
     def destroy(self, request, *args, **kwargs):
         instance = self.get_object()
