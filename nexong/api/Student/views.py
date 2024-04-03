@@ -6,8 +6,6 @@ from nexong.api.Student.studentSerializer import (
 from rest_framework.response import Response
 from rest_framework import status
 from ..permissions import *
-from nexong.api.helpers.permissionValidators import *
-from nexong.models import QuarterMarks, STATUS, CURRENT_EDUCATION_YEAR
 import csv
 import codecs
 from django.http import HttpResponse
