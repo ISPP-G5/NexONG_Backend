@@ -83,7 +83,7 @@ class UserSerializer(ModelSerializer):
         model = User
         fields = "__all__"
 
-    def validate_role(self, data):
+    def validate(self, data):
         validation_error = {}
         if data["role"] == "EDUCADOR" and data["educator"] is None:
             validation_error["educator"] = 'Given role "EDUCADOR", this cannot be null.'
