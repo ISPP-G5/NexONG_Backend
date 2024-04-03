@@ -26,24 +26,6 @@ class isAdmin(BasePermission):
         else:
             return False
 
-    def has_object_permission(self, request, view, obj):
-        if request.user.is_authenticated:
-            if isinstance(obj, EvaluationType):
-                return (
-                    request.user.role == "EDUCADOR"
-                    and obj.lesson.educator == request.user.educator
-                )
-            if isinstance(obj, StudentEvaluation):
-                return (
-                    request.user.role == "EDUCADOR"
-                    and obj.evaluation_type.lesson.educator == request.user.educator
-                )
-            else:
-                return request.user.role == "EDUCADOR"
-        else:
-            return False
-
-
 class isAdminGetAndDelete(BasePermission):
     def has_permission(self, request, view):
         if request.user.is_authenticated:
