@@ -26,6 +26,7 @@ class isAdmin(BasePermission):
         else:
             return False
 
+
 class isAdminGetAndDelete(BasePermission):
     def has_permission(self, request, view):
         if request.user.is_authenticated:
