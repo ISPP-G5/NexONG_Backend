@@ -145,7 +145,7 @@ def obtainDataFromRequest(request):
             education_year = None
         else:
             education_year = education_year
-   
+
     if (
         status is None
         and education_year is None
