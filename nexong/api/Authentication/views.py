@@ -10,6 +10,18 @@ from ...models import *
 from .authSerializer import *
 from rest_framework_simplejwt.tokens import RefreshToken
 from django.contrib.auth.tokens import default_token_generator
+import csv
+from django.http import HttpResponse
+from openpyxl import Workbook
+from reportlab.lib.pagesizes import letter
+from reportlab.platypus import (
+    SimpleDocTemplate,
+    Paragraph,
+    Spacer,
+    Table,
+    TableStyle,
+    Image,
+)
 
 
 def process_instance(serializer_class, instance, data):
@@ -57,6 +69,36 @@ class VolunteerApiViewSet(ModelViewSet):
         instance = self.get_object()
         self.perform_destroy(instance)
         return Response(status=status.HTTP_204_NO_CONTENT)
+    
+    def VolunteerExportToCsv(request):
+        response = HttpResponse(content_type="text/csv")
+        response["Content-Disposition"] = 'attachment; filename="Datos_Voluntarios.csv"'
+        # Retrieve data from your model
+        queryset = Volunteer.objects.all()
+
+        # Create a CSV writer object
+        writer = csv.writer(response)
+
+        writer.writerow(
+            ["status", "start_date", "end_date", "academic_formation", "motivation", "address", "postal_code", "birthdate"]
+        )
+        # Write data rows
+        for volunteer in queryset:
+            writer.writerow(
+                [
+                    volunteer.status,
+                    volunteer.start_date,
+                    volunteer.end_date,
+                    volunteer.academic_formation,
+                    volunteer.motivation,
+                    volunteer.address,
+                    volunteer.postal_code,
+                    volunteer.birthdate
+                   
+                ]
+            )
+
+        return response
 
 
 class FamilyApiViewSet(ModelViewSet):
