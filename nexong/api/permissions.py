@@ -9,12 +9,14 @@ class isAuthenticated(BasePermission):
         else:
             return False
 
+
 class allowAnyGet(BasePermission):
     def has_permission(self, request, view):
         if request.method in ("GET"):
             return True
         else:
             return False
+
 
 class isAdminGet(BasePermission):
     def has_permission(self, request, view):
@@ -182,16 +184,18 @@ class isEducationCenterGet(BasePermission):
         else:
             return False
 
+
 class isVolunteer(BasePermission):
     def has_permission(self, request, view):
         if request.user.is_authenticated:
             return (
-                    request.user.role == "VOLUNTARIO"
-                    or request.user.role == "VOLUNTARIO_SOCIO"
-                )
+                request.user.role == "VOLUNTARIO"
+                or request.user.role == "VOLUNTARIO_SOCIO"
+            )
         else:
             return False
-        
+
+
 class isVolunteerPutAndGet(BasePermission):
     def has_permission(self, request, view):
         if request.user.is_authenticated:
@@ -227,12 +231,14 @@ class isVolunteerGet(BasePermission):
         else:
             return False
 
+
 class isPartner(BasePermission):
     def has_permission(self, request, view):
         if request.user.is_authenticated:
             return request.user.role in ("SOCIO", "VOLUNTARIO_SOCIO")
         else:
             return False
+
 
 class isPartnerPostAndGet(BasePermission):
     def has_permission(self, request, view):
