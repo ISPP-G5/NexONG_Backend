@@ -45,3 +45,22 @@ class FamilyApiViewSetTestCase(TestCase):
         self.assertEqual(response.status_code, 204)
         self.assertEqual(Family.objects.count(), initial_count - 1)
 
+    def test_obtain_family_permissions_error(self):
+        family = Family.objects.create(name ='Familia Lopez')
+        response = self.client.get(f'/api/family/{family.id}/',HTTP_AUTHORIZATION=f'Token {self.token1.key}')
+        self.assertEqual(response.status_code, 403)
+
+    def test_update_family_permissions_error(self):
+        family = Family.objects.create(name ='Familia Lopez')
+        response = self.client.put(f'/api/family/{family.id}/',data={"id": family.id, 'name': 'Familia Ruz'},
+           content_type='application/json',HTTP_AUTHORIZATION=f'Token {self.token1.key}'
+        )
+        self.assertEqual(response.status_code, 403)
+
+    def test_delete_family_permissions_error(self):
+        family = Family.objects.create(name ='Familia Lopez')
+        initial_count = Family.objects.count()
+        response = self.client.delete(f'/api/family/{family.id}/', HTTP_AUTHORIZATION=f'Token {self.token1.key}')
+        self.assertEqual(response.status_code, 403)
+        
+
