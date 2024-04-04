@@ -38,6 +38,7 @@ class StudentApiViewSetTestCase(TestCase):
         self.user3 = User.objects.create(username = 'testuser3', email = "example3@gmail.com", role = EDUCATION_CENTER, education_center = education)
         self.user4 = User.objects.create(username = 'testuser4', email = "example4@gmail.com", role = FAMILY, family = familia)
         self.user5 = User.objects.create(username='testuser5', email = "example5@gmail.com", role = VOLUNTEER, volunteer = voluntario)
+        self.user6 = User.objects.create(username='testuser6', email = "example6@gmail.com", role = ADMIN)
 
         
         # Crear un token de autenticación para el usuario
@@ -46,6 +47,7 @@ class StudentApiViewSetTestCase(TestCase):
         self.token3 = Token.objects.create(user = self.user3)
         self.token4 = Token.objects.create(user = self.user4)
         self.token5 = Token.objects.create(user = self.user5)
+        self.token6 = Token.objects.create(user = self.user6)
 
         self.student_data = {
             "name": "José",
@@ -278,7 +280,7 @@ class StudentApiViewSetTestCase(TestCase):
             "birthdate": "2017-04-21",
             "family": family.id,
 
-            }, content_type='application/json',HTTP_AUTHORIZATION=f'Token {self.token2.key}'
+            }, content_type='application/json',HTTP_AUTHORIZATION=f'Token {self.token6.key}'
             
         )
         # Verify that the request was successful (status code 200)
