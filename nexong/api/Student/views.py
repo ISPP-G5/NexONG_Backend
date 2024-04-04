@@ -10,13 +10,14 @@ from nexong.models import Student, QuarterMarks
 from ..permissions import *
 from nexong.api.helpers.permissionValidators import *
 from nexong.models import Student, QuarterMarks
+from ..permissions import *
 
 
 class StudentApiViewSet(ModelViewSet):
     queryset = Student.objects.all()
     http_method_names = ["get", "post", "put", "delete", "patch"]
     serializer_class = StudentSerializer
-    permission_classes = [isFamily | isEducatorGet | isEducationCenter]
+    permission_classes = [isFamily | isEducatorGet | isEducationCenter | isAdmin]
 
     def destroy(self, request, *args, **kwargs):
         instance = self.get_object()
@@ -28,7 +29,9 @@ class QuarterMarksApiViewSet(ModelViewSet):
     queryset = QuarterMarks.objects.all()
     http_method_names = ["get", "post", "put", "delete", "patch"]
     serializer_class = QuarterMarksSerializer
-    permission_classes = [isFamily | isEducatorGet | isEducationCenter]
+    permission_classes = [
+        isFamily | isEducatorGet | isEducationCenter | isAdminGetPutAndDelete
+    ]
 
     def destroy(self, request, *args, **kwargs):
         instance = self.get_object()

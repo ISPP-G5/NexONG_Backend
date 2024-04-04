@@ -3,14 +3,14 @@ from rest_framework.response import Response
 from rest_framework import status
 from ...models import *
 from .punctualDonationSerializer import PunctualDonationSerializer
-from rest_framework.permissions import AllowAny
+from ..permissions import *
 
 
 class PunctualDonationApiViewSet(ModelViewSet):
     queryset = PunctualDonation.objects.all()
     http_method_names = ["get", "post", "delete"]
     serializer_class = PunctualDonationSerializer
-    permission_classes = [AllowAny]
+    permission_classes = [isAdmin]
 
     def destroy(self, request, *args, **kwargs):
         instance = self.get_object()
