@@ -5,15 +5,23 @@ from rest_framework.authtoken.models import Token
 from rest_framework.test import APIRequestFactory
 
 
-
 class FamilyApiViewSetTestCase(TestCase):
     def setUp(self):
         self.factory = APIRequestFactory()
-        self.user = User.objects.create(username="testuser", email="example@gmail.com", role=ADMIN)
+        self.user = User.objects.create(
+            username="testuser", email="example@gmail.com", role=ADMIN
+        )
         education = EducationCenter.objects.create(name="San Francisco Solano")
-        self.user1 = User.objects.create(username="testuser1",email="example1@gmail.com",role=EDUCATION_CENTER,education_center=education)
+        self.user1 = User.objects.create(
+            username="testuser1",
+            email="example1@gmail.com",
+            role=EDUCATION_CENTER,
+            education_center=education,
+        )
         family = Family.objects.create(name="Familia López")
-        self.user2 = User.objects.create(username="testuser2", email="example2@gmail.com", role=FAMILY, family=family)
+        self.user2 = User.objects.create(
+            username="testuser2", email="example2@gmail.com", role=FAMILY, family=family
+        )
         self.token = Token.objects.create(user=self.user)
         self.token1 = Token.objects.create(user=self.user1)
         self.token2 = Token.objects.create(user=self.user2)
@@ -77,6 +85,8 @@ class FamilyApiViewSetTestCase(TestCase):
         self.assertEqual(response.status_code, 403)
 
     def test_delete_family_permissions_error(self):
-        family = Family.objects.create(name ='Familia Lopez')
-        response = self.client.delete(f'/api/family/{family.id}/', HTTP_AUTHORIZATION=f'Token {self.token1.key}')
+        family = Family.objects.create(name="Familia Lopez")
+        response = self.client.delete(
+            f"/api/family/{family.id}/", HTTP_AUTHORIZATION=f"Token {self.token1.key}"
+        )
         self.assertEqual(response.status_code, 403)

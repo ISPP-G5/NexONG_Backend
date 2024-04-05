@@ -123,7 +123,6 @@ class StudentApiViewSetTestCase(TestCase):
         self.assertEqual(student.surname, "Algaba")
 
     def test_create_student_name_error(self):
-
         # Crear una familia y un centro educativo
         family = Family.objects.create(name="Familia López")
         education_center = EducationCenter.objects.create(name="San Francisco Solano")
@@ -151,7 +150,6 @@ class StudentApiViewSetTestCase(TestCase):
         self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
 
     def test_create_student_surname_error(self):
-
         # Crear una familia y un centro educativo
         family = Family.objects.create(name="Familia López")
         education_center = EducationCenter.objects.create(name="San Francisco Solano")
@@ -179,7 +177,6 @@ class StudentApiViewSetTestCase(TestCase):
         self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
 
     def test_create_student_birthday_error(self):
-        
         # Crear una familia y un centro educativo
         family = Family.objects.create(name="Familia López")
         education_center = EducationCenter.objects.create(name="San Francisco Solano")
