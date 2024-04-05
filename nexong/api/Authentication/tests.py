@@ -11,17 +11,22 @@ class FamilyApiViewSetTestCase(TestCase):
     def setUp(self):
         self.factory = APIRequestFactory()
         self.user = User.objects.create(username='testuser', email = "example@gmail.com", role = ADMIN)
-        self.user1 = User.objects.create(username='testuser1', email = "example1@gmail.com")
+        education = EducationCenter.objects.create(name = 'San Francisco Solano')
+        self.user1 = User.objects.create(username='testuser1', email = "example1@gmail.com", role = EDUCATION_CENTER, education_center = education)
+        family = EducationCenter.objects.create(name = 'Familia López')
+        self.user2 = User.objects.create(username='testuser1', email = "example1@gmail.com", role = FAMILY, family = family)
         self.token = Token.objects.create(user=self.user)
         self.token1 = Token.objects.create(user=self.user1)
+        self.token2 = Token.objects.create(user=self.user2)
 
-    def test_create_family(self):
+    def test_create_family_admin(self):
         familias_creadas = Family.objects.count()
-        response = self.client.post('/api/family/', {'name': 'Familia Lopez'},HTTP_AUTHORIZATION=f'Token {self.token1.key}')
+        response = self.client.post('/api/family/', {'name': 'Familia Lopez'},HTTP_AUTHORIZATION=f'Token {self.token.key}')
         self.assertEqual(response.status_code, 201)
         self.assertEqual(Family.objects.count(), familias_creadas + 1)
         family = Family.objects.first()
         self.assertEqual(family.name, "Familia Lopez")
+
 
     def test_obtain_family(self):
         family = Family.objects.create(name ='Familia Lopez')
