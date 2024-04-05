@@ -1,9 +1,8 @@
-from tokenize import Token
 from django.urls import reverse
 from django.utils.http import urlsafe_base64_decode
 import requests
 from django.views import View
-from django.http import Http404, HttpResponse, JsonResponse
+from django.http import Http404, JsonResponse
 from rest_framework.views import APIView
 from rest_framework.viewsets import ModelViewSet
 from rest_framework.response import Response
@@ -150,11 +149,7 @@ class CustomActivateView(APIView):
     def get(self, request, *args, **kwargs):
         uid = kwargs.get("uid")
         token = kwargs.get("token")
-        payload = {'uid': uid, 'token': token}
-        url = reverse('custom-activate', kwargs={'uid': uid, 'token': token})
-        absolute_url = request.build_absolute_uri(url)
         try:
-            response = requests.post(absolute_url, data=payload)
             uid = urlsafe_base64_decode(uid).decode()
             user = User.objects.get(pk=uid)
             if not user.is_enabled:

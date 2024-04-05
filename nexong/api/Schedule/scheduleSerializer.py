@@ -1,10 +1,9 @@
 from nexong.models import Schedule
-from rest_framework.serializers import ModelSerializer
 from rest_framework import serializers
 from rest_framework.serializers import ModelSerializer
 from datetime import *
 from nexong.api.helpers.serializerValidators import timezone
-from django.core.exceptions import ValidationError
+
 
 
 
