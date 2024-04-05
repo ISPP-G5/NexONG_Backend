@@ -68,6 +68,4 @@ router_api.register(
 router_api.register(
     prefix="suggestion", viewset=SuggestionApiViewSet, basename="suggestion"
 )
-router_api.register(
-    prefix="schedule", viewset=ScheduleApiViewSet, basename="schedule"
-)
+router_api.register(prefix="schedule", viewset=ScheduleApiViewSet, basename="schedule")

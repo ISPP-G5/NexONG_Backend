@@ -150,8 +150,8 @@ class CustomActivateView(APIView):
     def get(self, request, *args, **kwargs):
         uid = kwargs.get("uid")
         token = kwargs.get("token")
-        payload = {'uid': uid, 'token': token}
-        url = reverse('custom-activate', kwargs={'uid': uid, 'token': token})
+        payload = {"uid": uid, "token": token}
+        url = reverse("custom-activate", kwargs={"uid": uid, "token": token})
         absolute_url = request.build_absolute_uri(url)
         try:
             response = requests.post(absolute_url, data=payload)
@@ -162,13 +162,24 @@ class CustomActivateView(APIView):
                     user.is_enabled = True
                     user.is_active = True
                     user.save()
-                    return Response({'detail': 'User activated successfully'},status=status.HTTP_200_OK)
+                    return Response(
+                        {"detail": "User activated successfully"},
+                        status=status.HTTP_200_OK,
+                    )
                 else:
-                    return Response({"detail": "Token not valid"}, status=status.HTTP_400_BAD_REQUEST)
+                    return Response(
+                        {"detail": "Token not valid"},
+                        status=status.HTTP_400_BAD_REQUEST,
+                    )
             else:
-                return Response({'detail': 'User already activated'}, status=status.HTTP_200_OK)
+                return Response(
+                    {"detail": "User already activated"}, status=status.HTTP_200_OK
+                )
         except User.DoesNotExist:
             raise Http404("User does not exist")
         except requests.exceptions.RequestException as e:
             print("Error making request:", e)
-            return Response({'detail': 'Error making request'}, status=status.HTTP_500_INTERNAL_SERVER_ERROR) 
+            return Response(
+                {"detail": "Error making request"},
+                status=status.HTTP_500_INTERNAL_SERVER_ERROR,
+            )
