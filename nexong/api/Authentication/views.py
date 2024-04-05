@@ -168,7 +168,7 @@ class CustomActivateView(APIView):
             else:
                 return Response({'detail': 'User already activated'}, status=status.HTTP_200_OK)
         except User.DoesNotExist:
-            raise Http404("User does not exist")  # Maneja el caso en el que no se encuentra el usuario
+            raise Http404("User does not exist")
         except requests.exceptions.RequestException as e:
             print("Error making request:", e)
             return Response({'detail': 'Error making request'}, status=status.HTTP_500_INTERNAL_SERVER_ERROR) 
