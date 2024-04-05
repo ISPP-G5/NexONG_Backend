@@ -351,6 +351,7 @@ class User(AbstractUser):
     )
 
     is_enabled = models.BooleanField(default=False)
+    is_agreed = models.BooleanField(default=False)
 
     USERNAME_FIELD = "email"
     REQUIRED_FIELDS = []
