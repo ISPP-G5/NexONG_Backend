@@ -236,24 +236,6 @@ class StudentApiViewSetTestCase(TestCase):
         self.assertEqual(response.data["surname"], "Algaba")
 
     def test_obtain_student_error_id(self):
-        # Crear una familia y un centro educativo
-        family = Family.objects.create(name="Familia López")
-        education_center = EducationCenter.objects.create(name="San Francisco Solano")
-        # Crear un estudiante
-        student = Student.objects.create(
-            name="José",
-            surname="Algaba",
-            education_center=education_center,
-            is_morning_student=True,
-            activities_during_exit="",
-            status="ACEPTADO",
-            current_education_year="TRES AÑOS",
-            education_center_tutor="Don Carlos Perez",
-            nationality="España",
-            birthdate="2017-04-21",
-            family=family,
-        )
-
         # Autenticar la solicitud GET con el token de autenticación
         response = self.client.get(
             f"/api/student/20/", HTTP_AUTHORIZATION=f"Token {self.token2.key}"
