@@ -2,7 +2,6 @@ from django.urls import path, include
 from .routers import router_api
 from .Donation.views import *
 from .Authentication.views import (
-    RedirectSocial,
     LogoutAndBlacklistRefreshTokenForUserView,
     ActivateUserView,
 )
@@ -35,5 +34,4 @@ urlpatterns = [
         LogoutAndBlacklistRefreshTokenForUserView.as_view(),
         name="blacklist",
     ),
-    path("redirect-social/", RedirectSocial.as_view()),
 ]
