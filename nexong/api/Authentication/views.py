@@ -1,7 +1,9 @@
+from tokenize import Token
+from django.urls import reverse
 from django.utils.http import urlsafe_base64_decode
 import requests
 from django.views import View
-from django.http import HttpResponse, JsonResponse
+from django.http import Http404, HttpResponse, JsonResponse
 from rest_framework.views import APIView
 from rest_framework.viewsets import ModelViewSet
 from rest_framework.response import Response
@@ -145,10 +147,14 @@ class ActivateUserView(APIView):
 
 
 class CustomActivateView(APIView):
-    def post(self, request, *args, **kwargs):
+    def get(self, request, *args, **kwargs):
         uid = kwargs.get("uid")
         token = kwargs.get("token")
+        payload = {'uid': uid, 'token': token}
+        url = reverse('custom-activate', kwargs={'uid': uid, 'token': token})
+        absolute_url = request.build_absolute_uri(url)
         try:
+            response = requests.post(absolute_url, data=payload)
             uid = urlsafe_base64_decode(uid).decode()
             user = User.objects.get(pk=uid)
             if not user.is_enabled:
@@ -156,8 +162,13 @@ class CustomActivateView(APIView):
                     user.is_enabled = True
                     user.is_active = True
                     user.save()
-                return Response(status=status.HTTP_200_OK)
-        except (TypeError, ValueError, OverflowError, User.DoesNotExist):
-            return Response(
-                {"detail": "Token not valid"}, status=status.HTTP_400_BAD_REQUEST
-            )
+                    return Response({'detail': 'User activated successfully'},status=status.HTTP_200_OK)
+                else:
+                    return Response({"detail": "Token not valid"}, status=status.HTTP_400_BAD_REQUEST)
+            else:
+                return Response({'detail': 'User already activated'}, status=status.HTTP_200_OK)
+        except User.DoesNotExist:
+            raise Http404("User does not exist")  # Maneja el caso en el que no se encuentra el usuario
+        except requests.exceptions.RequestException as e:
+            print("Error making request:", e)
+            return Response({'detail': 'Error making request'}, status=status.HTTP_500_INTERNAL_SERVER_ERROR) 

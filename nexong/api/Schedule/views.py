@@ -10,6 +10,7 @@ class ScheduleApiViewSet(ModelViewSet):
     queryset = Schedule.objects.all()
     http_method_names = ["get", "post", "put", "delete"]
     serializer_class = ScheduleSerializer
+    permission_classes = [allowAnyGet | isAdmin]
 
     def destroy(self, request, *args, **kwargs):
         instance = self.get_object()

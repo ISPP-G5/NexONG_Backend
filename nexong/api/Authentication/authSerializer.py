@@ -71,7 +71,7 @@ class CreateUserSerializer(UserCreateSerializer):
         return data
     
     def validate_is_agreed(self, data):
-        is_agreed = data.get(is_agreed)
+        is_agreed = data
         if is_agreed == False:
             raise serializers.ValidationError("User must accept terms and conditions.")
         return data
