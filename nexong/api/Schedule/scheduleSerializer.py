@@ -5,7 +5,6 @@ from datetime import *
 from nexong.api.helpers.serializerValidators import timezone
 
 
-
 class ScheduleSerializer(ModelSerializer):
     class Meta:
         model = Schedule
