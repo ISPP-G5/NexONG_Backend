@@ -1,7 +1,8 @@
 from rest_framework import serializers
 from nexong.models import Lesson, Student, LessonAttendance
 from rest_framework.serializers import ModelSerializer
-from datetime import datetime, timezone, date
+from datetime import date
+from nexong.api.helpers.serializerValidators import date_validations
 
 
 class LessonSerializer(ModelSerializer):
@@ -38,21 +39,15 @@ class LessonSerializer(ModelSerializer):
             validation_error[
                 "capacity"
             ] = "capacity must be higher or equal to the number of attendees selected."
-        start_date = attrs.get("start_date")
-        if start_date <= datetime.now(timezone.utc):
-            validation_error["start_date"] = "The start date must be in the future."
 
-        end_date = attrs.get("end_date")
-        if end_date <= datetime.now(timezone.utc):
-            validation_error["end_date"] = "The end date must be in the future."
-        if end_date <= start_date:
-            validation_error["end_date"] = "The end date must be after the start date."
+        validation_error.update(date_validations(attrs))
 
-        for student in attendees:
-            if student.is_morning_student != attrs["is_morning_lesson"]:
-                validation_error[
-                    "students"
-                ] = "There is a student with incorrect schedule (is a morning student or not)."
+        if attendees is not None:
+            for student in attendees:
+                if student.is_morning_student != attrs.get("is_morning_lesson"):
+                    validation_error[
+                        "students"
+                    ] = "There is a student with incorrect schedule (is a morning student or not)."
 
         if validation_error:
             raise serializers.ValidationError(validation_error)

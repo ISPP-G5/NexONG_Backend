@@ -100,9 +100,11 @@ GRADESYSTEM = [
 ]
 DAILY = "DIARIO"
 ANNUAL = "ANUAL"
+QUARTERLY = "TRIMESTRAL"
 EVALUATION_TYPE = [
     (DAILY, "Diario"),
     (ANNUAL, "Anual"),
+    (QUARTERLY, "Trimestral"),
 ]
 WEEKDAYS = [
     ("LUNES", "Lunes"),
@@ -177,8 +179,6 @@ class QuarterMarks(models.Model):
     date = models.DateField()
     marks = models.FileField(
         upload_to=upload_to_quartermarks,
-        null=True,
-        blank=True,
         validators=[validate_file_extension],
     )
     student = models.ForeignKey(
@@ -240,8 +240,11 @@ class PunctualDonationByCard(models.Model):
 
 class HomeDocument(models.Model):
     title = models.CharField(max_length=255)
+    document = models.FileField(
+        upload_to="home_document",
+    )
     docType = models.CharField(max_length=20, choices=DOCTYPES, default="OTROS_DOCS")
-    document = models.FileField(upload_to="home_document")
+
     date = models.DateField()
 
 
@@ -270,10 +273,14 @@ class Volunteer(models.Model):
     minor_authorization = models.FileField(
         upload_to=upload_to_minor_authorization,
         validators=[validate_file_extension],
+        blank=True,
+        null=True,
     )
     scanned_authorizer_id = models.FileField(
         upload_to=upload_to_scanned_authorizer_id,
         validators=[validate_file_extension],
+        blank=True,
+        null=True,
     )
     birthdate = models.DateField()
     start_date = models.DateField(null=True, blank=True)
@@ -332,6 +339,8 @@ class User(AbstractUser):
     avatar = models.FileField(
         upload_to=upload_to_avatar,
         validators=[validate_image_extension],
+        blank=True,
+        null=True,
     )
     family = models.OneToOneField(
         Family, on_delete=models.CASCADE, blank=True, null=True
@@ -398,7 +407,7 @@ class EvaluationType(models.Model):
         max_length=20, choices=GRADESYSTEM, default=ZERO_TO_TEN
     )
     lesson = models.ForeignKey(
-        Lesson, on_delete=models.CASCADE, related_name="student_evaluations"
+        Lesson, on_delete=models.CASCADE, related_name="evaluation_type"
     )
 
 

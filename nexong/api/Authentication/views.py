@@ -10,6 +10,7 @@ from ...models import *
 from .authSerializer import *
 from rest_framework_simplejwt.tokens import RefreshToken
 from django.contrib.auth.tokens import default_token_generator
+from ..permissions import *
 
 
 def process_instance(serializer_class, instance, data):
@@ -24,12 +25,14 @@ class UserApiViewSet(ModelViewSet):
     http_method_names = ["get", "put", "delete"]
     serializer_class = UserSerializer
     queryset = User.objects.all()
+    permission_classes = [isAdmin]
 
 
 class EducatorApiViewSet(ModelViewSet):
     queryset = Educator.objects.all()
     http_method_names = ["get", "post", "put", "delete"]
     serializer_class = EducatorSerializer
+    permission_classes = [isAdmin | isEducator]
 
     def destroy(self, request, *args, **kwargs):
         instance = self.get_object()
@@ -41,6 +44,7 @@ class PartnerApiViewSet(ModelViewSet):
     queryset = Partner.objects.all()
     http_method_names = ["get", "post", "put", "delete", "patch"]
     serializer_class = PartnerSerializer
+    permission_classes = [isAdmin | isPartner]
 
     def destroy(self, request, *args, **kwargs):
         instance = self.get_object()
@@ -52,6 +56,7 @@ class VolunteerApiViewSet(ModelViewSet):
     queryset = Volunteer.objects.all()
     http_method_names = ["get", "post", "put", "delete", "patch"]
     serializer_class = VolunteerSerializer
+    permission_classes = [isAdmin | isVolunteer]
 
     def destroy(self, request, *args, **kwargs):
         instance = self.get_object()
@@ -63,6 +68,7 @@ class FamilyApiViewSet(ModelViewSet):
     queryset = Family.objects.all()
     http_method_names = ["get", "post", "put", "delete"]
     serializer_class = FamilySerializer
+    permission_classes = [isAdmin | isFamily]
 
     def destroy(self, request, *args, **kwargs):
         instance = self.get_object()
@@ -74,6 +80,7 @@ class EducationCenterApiViewSet(ModelViewSet):
     queryset = EducationCenter.objects.all()
     http_method_names = ["get", "post", "put", "delete"]
     serializer_class = EducationCenterSerializer
+    permission_classes = [isAdmin | isEducationCenter]
 
     def destroy(self, request, *args, **kwargs):
         instance = self.get_object()
@@ -89,7 +96,6 @@ class RedirectSocial(View):
 
 
 class LogoutAndBlacklistRefreshTokenForUserView(APIView):
-    # permission_classes = (permissions.AllowAny,)
     authentication_classes = ()
     serializer_class = LogoutAndBlacklistSerializer
 
