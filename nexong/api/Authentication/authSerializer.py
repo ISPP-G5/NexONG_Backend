@@ -46,7 +46,7 @@ class CreateUserSerializer(UserCreateSerializer):
             "volunteer",
             "education_center",
             "educator",
-            "is_agreed"
+            "is_agreed",
         ]
 
     def validate_first_name(self, data):
@@ -69,13 +69,12 @@ class CreateUserSerializer(UserCreateSerializer):
                     "The id_number does not match the expected pattern."
                 )
         return data
-    
+
     def validate_is_agreed(self, data):
         is_agreed = data
         if is_agreed == False:
             raise serializers.ValidationError("User must accept terms and conditions.")
         return data
-        
 
 
 class UserLoginSerializer(Serializer):
