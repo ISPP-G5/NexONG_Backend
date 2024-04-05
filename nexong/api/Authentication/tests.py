@@ -3,8 +3,7 @@ from nexong.api.Authentication.views import *
 from nexong.models import *
 from rest_framework.authtoken.models import Token
 from rest_framework.test import APIRequestFactory
-from rest_framework import status
-from rest_framework.test import force_authenticate
+
 
 class FamilyApiViewSetTestCase(TestCase):
 
@@ -64,7 +63,6 @@ class FamilyApiViewSetTestCase(TestCase):
 
     def test_delete_family_permissions_error(self):
         family = Family.objects.create(name ='Familia Lopez')
-        initial_count = Family.objects.count()
         response = self.client.delete(f'/api/family/{family.id}/', HTTP_AUTHORIZATION=f'Token {self.token1.key}')
         self.assertEqual(response.status_code, 403)
         

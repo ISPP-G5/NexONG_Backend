@@ -2,9 +2,7 @@ from django.test import TestCase
 from nexong.api.Student.views import *
 from nexong.models import *
 from rest_framework.authtoken.models import Token
-from rest_framework.test import APIRequestFactory
 from rest_framework import status
-from rest_framework.test import force_authenticate
 from django.core.files.uploadedfile import SimpleUploadedFile
 
 
@@ -105,8 +103,6 @@ class StudentApiViewSetTestCase(TestCase):
         self.assertEqual(student.surname, "Algaba")
 
     def test_create_student_name_error(self):
-        # Contar el número de estudiantes antes de la creación
-        numero_estudiantes = Student.objects.count()
 
         # Crear una familia y un centro educativo
         family = Family.objects.create(name='Familia López')
@@ -135,8 +131,6 @@ class StudentApiViewSetTestCase(TestCase):
         self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
 
     def test_create_student_surname_error(self):
-        # Contar el número de estudiantes antes de la creación
-        numero_estudiantes = Student.objects.count()
 
         # Crear una familia y un centro educativo
         family = Family.objects.create(name='Familia López')
@@ -165,9 +159,7 @@ class StudentApiViewSetTestCase(TestCase):
         self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
 
     def test_create_student_birthday_error(self):
-        # Contar el número de estudiantes antes de la creación
-        numero_estudiantes = Student.objects.count()
-
+        
         # Crear una familia y un centro educativo
         family = Family.objects.create(name='Familia López')
         education_center = EducationCenter.objects.create(name='San Francisco Solano')

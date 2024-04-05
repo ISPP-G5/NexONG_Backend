@@ -1,5 +1,4 @@
 from rest_framework.viewsets import ModelViewSet
-from rest_framework.parsers import MultiPartParser, FormParser
 from nexong.api.Student.studentSerializer import (
     StudentSerializer,
     QuarterMarksSerializer,
