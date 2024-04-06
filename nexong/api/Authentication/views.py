@@ -19,13 +19,10 @@ from reportlab.platypus import (
     SimpleDocTemplate,
     Paragraph,
     Spacer,
-    Table,
-    TableStyle,
     Image,
 )
 import zipfile
 from reportlab.lib.styles import getSampleStyleSheet
-from reportlab.lib import colors
 from ..permissions import *
 
 
