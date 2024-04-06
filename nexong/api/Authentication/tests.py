@@ -47,12 +47,12 @@ class FamilyApiViewSetTestCase(TestCase):
         self.assertEqual(response.data["name"], "Familia Lopez")
 
     def test_update_family(self):
-        family = Family.objects.create(name="Familia Lopez")
+        family = Family.objects.create(name="Familia López")
         response = self.client.put(
             f"/api/family/{family.id}/",
             data={"id": family.id, "name": "Familia Ruz"},
             content_type="application/json",
-            HTTP_AUTHORIZATION=f"Token {self.token.key}",
+            HTTP_AUTHORIZATION=f"Token {self.token2.key}",
         )
         self.assertEqual(response.status_code, 200)
         family.refresh_from_db()
