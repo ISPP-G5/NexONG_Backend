@@ -141,7 +141,6 @@ class StudentApiViewSetTestCase(TestCase):
         self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
 
     def test_create_student_surname_error(self):
-
         # Hacer una solicitud POST para crear un estudiante
         response = self.client.post(
             "/api/student/",
@@ -165,7 +164,6 @@ class StudentApiViewSetTestCase(TestCase):
         self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
 
     def test_create_student_birthday_error(self):
-
         # Hacer una solicitud POST para crear un estudiante
         response = self.client.post(
             "/api/student/",
@@ -286,6 +284,7 @@ class StudentApiViewSetTestCase(TestCase):
         )
         # Verify that the request was successful (status code 200)
         self.assertEqual(response.status_code, status.HTTP_200_OK)
+
     def test_update_student(self):
         student = Student.objects.create(
             name="Alicia",
@@ -322,7 +321,7 @@ class StudentApiViewSetTestCase(TestCase):
         )
         # Verify that the request was successful (status code 200)
         self.assertEqual(response.status_code, status.HTTP_200_OK)
-    
+
     def test_update_student_name_error(self):
         student = Student.objects.create(
             name="Jaime",
