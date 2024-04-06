@@ -8,13 +8,17 @@ from rest_framework.test import APIRequestFactory
 class Student_Evaluation_ApiViewSetTestCase(TestCase):
     def setUp(self):
         self.factory = APIRequestFactory()
-        
-        
+
         self.family = Family.objects.create(name="Familia Ruz")
-        self.education_center = EducationCenter.objects.create(name="San Francisco Solano")
+        self.education_center = EducationCenter.objects.create(
+            name="San Francisco Solano"
+        )
         self.educator = Educator.objects.create(birthdate="2000-04-21")
         self.user = User.objects.create(
-            username="testuser", email="example@gmail.com", role=FAMILY, family=self.family
+            username="testuser",
+            email="example@gmail.com",
+            role=FAMILY,
+            family=self.family,
         )
         self.token = Token.objects.create(user=self.user)
 
@@ -32,46 +36,46 @@ class Student_Evaluation_ApiViewSetTestCase(TestCase):
             family=self.family,
         )
         self.lesson = Lesson.objects.create(
-            name= "PRIMER CICLO 1",
-            description= "Módulo I, segunda planta",
-            capacity= 4,
-            is_morning_lesson= True,
-            educator= self.educator,
-            start_date= "2024-01-28",
-            end_date= "2024-05-28"
+            name="PRIMER CICLO 1",
+            description="Módulo I, segunda planta",
+            capacity=4,
+            is_morning_lesson=True,
+            educator=self.educator,
+            start_date="2024-01-28",
+            end_date="2024-05-28",
         )
         self.evaluation_type = EvaluationType.objects.create(
             name="Asistencia diaria",
             description="Campo Prueba",
-            evaluation_type= "DIARIO",
-            grade_system = "CERO A UNO",
-            lesson = self.lesson
+            evaluation_type="DIARIO",
+            grade_system="CERO A UNO",
+            lesson=self.lesson,
         )
-
 
     def test_obtain_student_evaluation_by_family(self):
         student_evaluation = StudentEvaluation.objects.create(
-            grade=8, 
-            date = "2024-02-17",
-            comment = "Muy bien",
-            evaluation_type= self.evaluation_type,
-            student= self.student)
+            grade=8,
+            date="2024-02-17",
+            comment="Muy bien",
+            evaluation_type=self.evaluation_type,
+            student=self.student,
+        )
         response = self.client.get(
-            f"/api/student-evaluation/{student_evaluation.id}/", HTTP_AUTHORIZATION=f"Token {self.token.key}"
+            f"/api/student-evaluation/{student_evaluation.id}/",
+            HTTP_AUTHORIZATION=f"Token {self.token.key}",
         )
         self.assertEqual(response.status_code, 200)
 
     def test_obtain_student_evaluation_by_family_error(self):
         response = self.client.post(
-            f"/api/student-evaluation/",data={
-            "grade":8, 
-            "date" : "2024-02-17",
-            "comment" : "Muy bien",
-            "evaluation_type" : self.evaluation_type.id,
-            "student" : self.student.id
-
-            }, HTTP_AUTHORIZATION=f"Token {self.token.key}"
+            f"/api/student-evaluation/",
+            data={
+                "grade": 8,
+                "date": "2024-02-17",
+                "comment": "Muy bien",
+                "evaluation_type": self.evaluation_type.id,
+                "student": self.student.id,
+            },
+            HTTP_AUTHORIZATION=f"Token {self.token.key}",
         )
         self.assertEqual(response.status_code, status.HTTP_403_FORBIDDEN)
-
-    
