@@ -187,6 +187,7 @@ class QuarterMarks(models.Model):
 
 
 class Partner(models.Model):
+    description = models.CharField(max_length=500, null=True)
     address = models.CharField(max_length=255, null=True, blank=True)
     enrollment_document = models.FileField(
         upload_to=upload_to_partner,
