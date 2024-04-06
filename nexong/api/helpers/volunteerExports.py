@@ -14,6 +14,7 @@ from django.http import HttpResponse
 import io
 from ...models import User
 
+
 def obtainDataFromRequest(request, returnOnlyUserList=False):
     # Filter ignores caps in name and surname but status being a enum should be exact
     name = request.GET.get("name", None)
