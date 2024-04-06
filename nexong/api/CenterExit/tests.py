@@ -67,13 +67,13 @@ class CenterExitApiViewSetTestCase(TestCase):
             name="Pablo",
             surname="Portillo",
             education_center=self.education_center,
-            is_morning_student=True,
+            is_morning_student=False,
             activities_during_exit="",
             status="ACEPTADO",
             current_education_year="TRES AÑOS",
             education_center_tutor="Don Carlos Perez",
             nationality="Alemania",
-            birthdate="2015-04-21",
+            birthdate="2015-06-21",
             family=self.family,
         )
         self.lesson = Lesson.objects.create(

@@ -23,15 +23,15 @@ class Student_Evaluation_ApiViewSetTestCase(TestCase):
         self.token = Token.objects.create(user=self.user)
 
         self.student = Student.objects.create(
-            name="Amadeo",
-            surname="Portillo",
+            name="Alvaro",
+            surname="Mejias",
             education_center=self.education_center,
             is_morning_student=True,
             activities_during_exit="",
             status="ACEPTADO",
             current_education_year="TRES AÑOS",
-            education_center_tutor="Don Carlos Perez",
-            nationality="Alemania",
+            education_center_tutor="Don Sebastian Perez",
+            nationality="España",
             birthdate="2015-04-21",
             family=self.family,
         )
