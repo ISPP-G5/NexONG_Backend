@@ -277,29 +277,35 @@ def Download_files(request):
     # Iterate over queryset
     for user in queryset:
         user_folder = user.last_name + " " + user.first_name  # file for each volunteer
-        zip_file.writestr(
-            user_folder + "/" + "Documento de inscripción.pdf",
-            user.volunteer.enrollment_document.read(),
+        if user.volunteer.enrollment_document:
+            zip_file.writestr(
+                user_folder + "/" + "Documento de inscripción.pdf",
+                user.volunteer.enrollment_document.read(),
+            )
+        if user.volunteer.registry_sheet:
+            zip_file.writestr(
+                user_folder + "/" + "Hoja de registro.pdf",
+                user.volunteer.registry_sheet.read(),
         )
-        zip_file.writestr(
-            user_folder + "/" + "Hoja de registro.pdf",
-            user.volunteer.registry_sheet.read(),
+        if user.volunteer.sexual_offenses_document:
+            zip_file.writestr(
+                user_folder + "/" + "Documentos de delitos sexuales.pdf",
+                user.volunteer.sexual_offenses_document.read(),
         )
-        zip_file.writestr(
-            user_folder + "/" + "Documentos de delitos sexuales.pdf",
-            user.volunteer.sexual_offenses_document.read(),
+        if user.volunteer.scanned_id:
+            zip_file.writestr(
+                user_folder + "/" + "DNI escaneado.pdf", user.volunteer.scanned_id.read()
         )
-        zip_file.writestr(
-            user_folder + "/" + "DNI escaneado.pdf", user.volunteer.scanned_id.read()
+        if user.volunteer.minor_authorization:
+            zip_file.writestr(
+                user_folder + "/" + "Autorización de menores.pdf",
+                user.volunteer.minor_authorization.read(),
         )
-        zip_file.writestr(
-            user_folder + "/" + "Autorización de menores.pdf",
-            user.volunteer.minor_authorization.read(),
-        )
-        zip_file.writestr(
-            user_folder + "/" + "Identificación autorizada escaneada.pdf",
-            user.volunteer.scanned_authorizer_id.read(),
-        )
+        if user.volunteer.scanned_authorizer_id:
+            zip_file.writestr(
+                user_folder + "/" + "Identificación autorizada escaneada.pdf",
+                user.volunteer.scanned_authorizer_id.read(),
+            )
 
     zip_file.close()
 
