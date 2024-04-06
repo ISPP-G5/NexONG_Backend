@@ -15,8 +15,8 @@ class Event_ApiViewSetTestCase(TestCase):
         )
         self.educator = Educator.objects.create(birthdate="2000-04-21")
         self.user = User.objects.create(
-            username="testuser2",
-            email="example2@gmail.com",
+            username="usuariotest",
+            email="usuariotets@gmail.com",
             role=FAMILY,
             family=self.family,
         )
@@ -136,8 +136,8 @@ class LessonEvent_ApiViewSetTestCase(TestCase):
         self.educator = Educator.objects.create(birthdate="2000-04-21")
         self.educator2 = Educator.objects.create(birthdate="2001-04-21")
         self.user = User.objects.create(
-            username="testuser2",
-            email="example2@gmail.com",
+            username="testlessonevent",
+            email="lessonevent2@gmail.com",
             role=FAMILY,
             family=self.family,
         )

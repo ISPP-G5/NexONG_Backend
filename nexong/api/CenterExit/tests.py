@@ -31,21 +31,21 @@ class CenterExitApiViewSetTestCase(TestCase):
             name="San Francisco Solano"
         )
         self.voluntario = Volunteer.objects.create(
-            academic_formation="Test formation",
-            motivation="Test motivation",
+            academic_formation="Prueba Voluntario",
+            motivation="Test voluntario",
             status="ACEPTADO",
-            address="Test address",
-            postal_code=12345,
+            address="Test voluntario address",
+            postal_code=12359,
             birthdate="1956-07-05",
-            start_date="1956-07-05",
+            start_date="1955-07-05",
             end_date="1956-07-05",
         )
         self.voluntario2 = Volunteer.objects.create(
-            academic_formation="Test formation2",
-            motivation="Test motivation2",
+            academic_formation="Test vol2",
+            motivation="Test vol",
             status="ACEPTADO",
-            address="Test address",
-            postal_code=12345,
+            address="Test advol",
+            postal_code=12356,
             birthdate="1956-07-05",
             start_date="1956-07-05",
             end_date="1956-07-05",
@@ -77,9 +77,9 @@ class CenterExitApiViewSetTestCase(TestCase):
             family=self.family,
         )
         self.lesson = Lesson.objects.create(
-            name="PRIMER CICLO 1",
-            description="Módulo I, segunda planta",
-            capacity=4,
+            name="PRIMER Materia",
+            description="Módulo C, segunda planta",
+            capacity=50,
             is_morning_lesson=True,
             educator=self.educator,
             start_date="2024-01-28",
