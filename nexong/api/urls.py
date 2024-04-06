@@ -38,9 +38,4 @@ urlpatterns = [
     ),
     path("redirect-social/", RedirectSocial.as_view()),
     path("process-payment", process_payment, name="process_payment"),
-    path("export/csv/students", StudentsExportToCsv, name="export_csv_all_students"),
-    path("export/pdf/students", StudentsExportToPdf, name="export_pdf_all_students"),
-    path(
-        "export/excel/students", StudentsExportToExcel, name="export_excel_all_students"
-    ),
 ]
