@@ -52,14 +52,14 @@ class QuarterMarksApiViewSet(ModelViewSet):
 
 
 def StudentsExportToCsv(request):
-    response = HttpResponse(content_type="text/csv")
-    response["Content-Disposition"] = 'attachment; filename="Datos_Estudiantes.csv"'
+    response_csv = HttpResponse(content_type="text/csv")
+    response_csv["Content-Disposition"] = 'attachment; filename="Datos_Estudiantes.csv"'
 
     # Open the CSV file with UTF-8 encoding
-    response.write(codecs.BOM_UTF8)
+    response_csv.write(codecs.BOM_UTF8)
 
     # Create a CSV writer object
-    writer = csv.writer(response, csv.excel)
+    writer = csv.writer(response_csv, csv.excel)
 
     # Write the header row
     writer.writerow(
@@ -95,7 +95,7 @@ def StudentsExportToCsv(request):
             ]
         )
 
-    return response
+    return response_csv
 
 
 def obtainDataFromRequest(request):
@@ -2209,24 +2209,24 @@ def StudentsExportToPdf(request):
         filename,
     ) = data[:2]
     # Response Object
-    response = HttpResponse(content_type="application/pdf")
-    response["Content-Disposition"] = f"attachment; filename={filename}.pdf"
+    response_pdf = HttpResponse(content_type="application/pdf")
+    response_pdf["Content-Disposition"] = f"attachment; filename={filename}.pdf"
     styles = getSampleStyleSheet()
 
     # This is the PDF document
-    doc = SimpleDocTemplate(response, pagesize=letter)
+    doc = SimpleDocTemplate(response_pdf, pagesize=letter)
 
     # Create a Story list to hold elements
     Story = []
 
     # Add cover page elements
-    logoPath = "static/images/logo.png"
-    logo = Image(logoPath, width=200, height=100)
+    logoPath_pdf = "static/images/logo.png"
+    logo_pdf = Image(logoPath_pdf, width=200, height=100)
     title = "Estudiantes"
     actualDateText = f"Fecha actual: {actualDate}"
 
     cover_elements = [
-        logo,
+        logo_pdf,
         Spacer(1, 12),
         Paragraph(title, styles["Title"]),
         Spacer(1, 12),
@@ -2308,7 +2308,7 @@ def StudentsExportToPdf(request):
     Story.append(table)
     doc.build(Story)
 
-    return response
+    return response_pdf
 
 
 def StudentsExportToExcel(request):
@@ -2320,10 +2320,10 @@ def StudentsExportToExcel(request):
         filename,
     ) = data[:2]
 
-    response = HttpResponse(
+    response_excel = HttpResponse(
         content_type="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
     )
-    response["Content-Disposition"] = f"attachment; filename={filename}.xlsx"
+    response_excel["Content-Disposition"] = f"attachment; filename={filename}.xlsx"
 
     # Create a new Excel workbook
     workbook = Workbook()
@@ -2357,6 +2357,6 @@ def StudentsExportToExcel(request):
         sheet.append(data_row)
 
     # Save the workbook to the response
-    workbook.save(response)
+    workbook.save(response_excel)
 
-    return response
+    return response_excel
