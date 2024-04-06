@@ -4,7 +4,7 @@ from nexong.models import *
 from rest_framework.authtoken.models import Token
 from rest_framework.test import APIRequestFactory
 from django.core.files.uploadedfile import SimpleUploadedFile
-import base64
+
 
 class CenterExitApiViewSetTestCase(TestCase):
     def setUp(self):

@@ -150,8 +150,6 @@ class StudentApiViewSetTestCase(TestCase):
         self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
 
     def test_create_student_surname_error(self):
-        # Contar el número de estudiantes antes de la creación
-        numero_estudiantes = Student.objects.count()
 
         # Crear una familia y un centro educativo
         family = Family.objects.create(name="Familia Ruz")
