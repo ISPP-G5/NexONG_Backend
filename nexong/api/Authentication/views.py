@@ -77,7 +77,7 @@ class VolunteerApiViewSet(ModelViewSet):
         return Response(status=status.HTTP_204_NO_CONTENT)
 
 
-def obtainDataFromRequest(request):
+def obtainDataFromRequest(request,returnOnlyUserList=False):
     # Filter ignores caps in name and surname but status being a enum should be exact
     name = request.GET.get("name", None)
     surname = request.GET.get("surname", None)
@@ -91,6 +91,8 @@ def obtainDataFromRequest(request):
     if status is not None:
         args["volunteer__status"] = status
     queryset = User.objects.filter(**args)
+    if returnOnlyUserList:
+        return queryset
     filename = "Datos de los voluntarios"
     objects = []
     for user in queryset:
@@ -266,20 +268,25 @@ def VolunteersExportToExcel(request):
 
 def Download_files(request):
     # Get files
-    zipo = {}
-    zipo["Datos de los voluntarios.pdf"] = VolunteersExportToPdf(request)
-    zipo["Datos de los voluntarios.csv"] = VolunteersExportToCsv(request)
-    zipo["Datos de los voluntarios.xlsx"] = VolunteersExportToExcel(request)
-    # Create zip
+    queryset= obtainDataFromRequest(request, True)
     buffer = io.BytesIO()
     zip_file = zipfile.ZipFile(buffer, "w")
-    for k, v in zipo.items():
-        zip_file.writestr(k, v.content)
+    # Iterate over queryset
+    for user in queryset:
+        user_folder = user.last_name + " " + user.first_name  # file for each volunteer
+        zip_file.writestr(user_folder + "/" + "Documento de inscripción.pdf", user.volunteer.enrollment_document.read())
+        zip_file.writestr(user_folder + "/" + "Hoja de registro.pdf", user.volunteer.registry_sheet.read())
+        zip_file.writestr(user_folder + "/" + "Documentos de delitos sexuales.pdf", user.volunteer.sexual_offenses_document.read())
+        zip_file.writestr(user_folder + "/" + "DNI escaneado.pdf", user.volunteer.scanned_id.read())
+        zip_file.writestr(user_folder + "/" + "Autorización de menores.pdf", user.volunteer.minor_authorization.read())
+        zip_file.writestr(user_folder + "/" + "Identificación autorizada escaneada.pdf", user.volunteer.scanned_authorizer_id.read())
+
     zip_file.close()
+    
     # Return zip
     response = HttpResponse(buffer.getvalue())
     response["Content-Type"] = "application/x-zip-compressed"
-    response["Content-Disposition"] = "attachment; filename=voluntarios.zip"
+    response["Content-Disposition"] = "attachment; filename=Fichas Voluntarios.zip"
 
     return response
 

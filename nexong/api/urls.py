@@ -16,20 +16,20 @@ from .Authentication.views import (
 urlpatterns = [
     path("", include(router_api.urls)),
     path(
-        "export/csv/volunteers", VolunteersExportToCsv, name="export_csv_all_volunteers"
+        "export/csv/volunteers", VolunteersExportToCsv, name="export_csv_volunteers"
     ),
     path(
-        "export/pdf/volunteers", VolunteersExportToPdf, name="export_pdf_all_volunteers"
+        "export/pdf/volunteers", VolunteersExportToPdf, name="export_pdf_volunteers"
     ),
     path(
         "export/excel/volunteers",
         VolunteersExportToExcel,
-        name="export_excel_all_volunteers",
+        name="export_excel_volunteers",
     ),
     path(
-        "export/all/volunteers",
+        "export/files/volunteers",
         Download_files,
-        name="export_excel_all_volunteer_files",
+        name="export_volunteer_files",
     ),
     path("export/csv/donations", DonationsExportToCsv, name="export_csv_all_donations"),
     path("export/pdf/donations", DonationsExportToPdf, name="export_pdf_all_donations"),
