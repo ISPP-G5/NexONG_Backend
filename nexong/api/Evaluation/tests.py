@@ -30,7 +30,7 @@ class Student_Evaluation_ApiViewSetTestCase(TestCase):
             activities_during_exit="",
             status="ACEPTADO",
             current_education_year="TRES AÑOS",
-            education_center_tutor="Don Sebastian Perez",
+            education_center_tutor="Don Perez",
             nationality="España",
             birthdate="2015-04-21",
             family=self.family,
