@@ -211,7 +211,6 @@ class StudentApiViewSetTestCase(TestCase):
         self.assertEqual(response.data["name"], "Amadeo")
         self.assertEqual(response.data["surname"], "Portillo")
 
-
     def test_update_student(self):
         student = Student.objects.create(
             name="Alicia",
@@ -248,8 +247,6 @@ class StudentApiViewSetTestCase(TestCase):
         )
         # Verify that the request was successful (status code 200)
         self.assertEqual(response.status_code, status.HTTP_200_OK)
-
-   
 
     def test_update_student_name_error(self):
         student = Student.objects.create(
