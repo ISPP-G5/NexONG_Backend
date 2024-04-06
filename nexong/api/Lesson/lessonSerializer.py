@@ -44,11 +44,6 @@ class LessonSerializer(ModelSerializer):
 
         validation_error.update(date_validations(attrs))
 
-        if attrs.get("start_date") == attrs.get("end_date"):
-            validation_error["end_date"] = (
-                "The end date must be different from the start date."
-            )
-
         if attendees is not None:
             for student in attendees:
                 if student.is_morning_student != attrs.get("is_morning_lesson"):
