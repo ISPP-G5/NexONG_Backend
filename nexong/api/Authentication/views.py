@@ -78,18 +78,18 @@ class VolunteerApiViewSet(ModelViewSet):
 
 
 def obtainDataFromRequest(request):
-    #Filter ignores caps in name and surname but status being a enum should be exact
+    # Filter ignores caps in name and surname but status being a enum should be exact
     name = request.GET.get("name", None)
     surname = request.GET.get("surname", None)
     status = request.GET.get("status", None)
     args = {}
-    args['role__in'] = ["VOLUNTARIO", "VOLUNTARIO_SOCIO"]
+    args["role__in"] = ["VOLUNTARIO", "VOLUNTARIO_SOCIO"]
     if name is not None:
-        args['first_name__iexact'] = name
+        args["first_name__iexact"] = name
     if surname is not None:
-        args['last_name__iexact'] = surname
+        args["last_name__iexact"] = surname
     if status is not None:
-        args['volunteer__status'] = status
+        args["volunteer__status"] = status
     queryset = User.objects.filter(**args)
     filename = "Datos de los voluntarios"
     objects = []
