@@ -6,7 +6,7 @@ def date_validations(attrs):
     now = date.today()
     start_date = attrs.get("start_date")
     if isinstance(start_date, datetime):
-        now = datetime.now(timezone.utc)  
+        now = datetime.now(timezone.utc)
     if start_date <= now:
         validations["start_date"] = "The start date must be in the future."
     end_date = attrs.get("end_date")

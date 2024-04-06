@@ -79,43 +79,56 @@ class VolunteerApiViewSet(ModelViewSet):
         instance = self.get_object()
         self.perform_destroy(instance)
         return Response(status=status.HTTP_204_NO_CONTENT)
-    
+
+
 def VolunteersExportToCsv(request):
-        response = HttpResponse(content_type="text/csv")
-        response["Content-Disposition"] = 'attachment; filename="Datos_Voluntarios.csv"'
-        queryset = User.objects.filter(role__in=["VOLUNTARIO","VOLUNTARIO_SOCIO"])
+    response = HttpResponse(content_type="text/csv")
+    response["Content-Disposition"] = 'attachment; filename="Datos_Voluntarios.csv"'
+    queryset = User.objects.filter(role__in=["VOLUNTARIO", "VOLUNTARIO_SOCIO"])
 
-        writer = csv.writer(response)
+    writer = csv.writer(response)
 
+    writer.writerow(
+        [
+            "Nombre",
+            "Apellidos",
+            "Estado",
+            "Fecha de comienzo",
+            "Fecha de salida",
+            "Formación académica",
+            "Motivación",
+            "Domicilio",
+            "Código postal",
+            "Fecha de Nacimiento",
+        ]
+    )
+    for user in queryset:
         writer.writerow(
-            ["Nombre", "Apellidos", "Estado", "Fecha de comienzo", "Fecha de salida", "Formación académica", "Motivación", "Domicilio", "Código postal", "Fecha de Nacimiento"]
+            [
+                user.first_name,
+                user.last_name,
+                user.volunteer.status,
+                user.volunteer.start_date,
+                user.volunteer.end_date,
+                user.volunteer.academic_formation,
+                user.volunteer.motivation,
+                user.volunteer.address,
+                user.volunteer.postal_code,
+                user.volunteer.birthdate,
+            ]
         )
-        for user in queryset:
-            writer.writerow(
-                [
-                    user.first_name,
-                    user.last_name,
-                    user.volunteer.status,
-                    user.volunteer.start_date,
-                    user.volunteer.end_date,
-                    user.volunteer.academic_formation,
-                    user.volunteer.motivation,
-                    user.volunteer.address,
-                    user.volunteer.postal_code,
-                    user.volunteer.birthdate
-                   
-                ]
-            )
 
-        return response   
+    return response
+
 
 def obtainDataFromRequest(request):
-    queryset = User.objects.filter(role__in=["VOLUNTARIO","VOLUNTARIO_SOCIO"])
+    queryset = User.objects.filter(role__in=["VOLUNTARIO", "VOLUNTARIO_SOCIO"])
     filename = "Datos de los voluntarios"
     return (
         queryset,
         filename,
     )
+
 
 def CreateResponseObject(filename):
     # Response Object
@@ -124,7 +137,9 @@ def CreateResponseObject(filename):
     styles = getSampleStyleSheet()
 
     # This is the PDF document
-    doc = SimpleDocTemplate(response, pagesize=landscape(A3), title="Datos de los voluntarios")
+    doc = SimpleDocTemplate(
+        response, pagesize=landscape(A3), title="Datos de los voluntarios"
+    )
 
     # Create a Story list to hold elements
     Story = []
@@ -140,18 +155,20 @@ def CreateResponseObject(filename):
         logo,
     )
 
+
 def CreateCoverElements(logo, title, styles, Story):
     cover_elements = [
-            logo,
-            Spacer(1, 12),
-            Paragraph(title, styles["Title"]),
-        ]    
+        logo,
+        Spacer(1, 12),
+        Paragraph(title, styles["Title"]),
+    ]
 
     # Add cover elements to the Story
     Story.extend(cover_elements)
     # Separation for the table
     Story.append(Spacer(1, 50))
     return Story
+
 
 def CreateTableFromResponse(table_data, Story, doc):
     # Create a table
@@ -175,7 +192,8 @@ def CreateTableFromResponse(table_data, Story, doc):
     # Table to Story
     Story.append(table)
     doc.build(Story)
-    
+
+
 def VolunteersExportToPdf(request):
     data = obtainDataFromRequest(request)
 
@@ -201,26 +219,41 @@ def VolunteersExportToPdf(request):
         styles,
         Story,
     )
-    table_data = [["Nombre", "Apellidos", "Estado", "Fecha de comienzo", "Fecha de salida", "Formación académica", "Motivación", "Domicilio", "Código postal", "Fecha de Nacimiento"]
+    table_data = [
+        [
+            "Nombre",
+            "Apellidos",
+            "Estado",
+            "Fecha de comienzo",
+            "Fecha de salida",
+            "Formación académica",
+            "Motivación",
+            "Domicilio",
+            "Código postal",
+            "Fecha de Nacimiento",
+        ]
     ]
 
     for user in queryset:
         table_data.append(
-            [user.first_name,
-                    user.last_name,
-                    user.volunteer.status,
-                    user.volunteer.start_date,
-                    user.volunteer.end_date,
-                    user.volunteer.academic_formation,
-                    user.volunteer.motivation,
-                    user.volunteer.address,
-                    user.volunteer.postal_code,
-                    user.volunteer.birthdate]
+            [
+                user.first_name,
+                user.last_name,
+                user.volunteer.status,
+                user.volunteer.start_date,
+                user.volunteer.end_date,
+                user.volunteer.academic_formation,
+                user.volunteer.motivation,
+                user.volunteer.address,
+                user.volunteer.postal_code,
+                user.volunteer.birthdate,
+            ]
         )
 
     CreateTableFromResponse(table_data, StoryUpdated, doc)
 
     return response
+
 
 def VolunteersExportToExcel(request):
     data = obtainDataFromRequest(request)
@@ -239,22 +272,33 @@ def VolunteersExportToExcel(request):
     workbook = Workbook()
     sheet = workbook.active
 
-    header_row = ["Nombre", "Apellidos", "Estado", "Fecha de comienzo", "Fecha de salida", "Formación académica", "Motivación", "Domicilio", "Código postal", "Fecha de Nacimiento"]
+    header_row = [
+        "Nombre",
+        "Apellidos",
+        "Estado",
+        "Fecha de comienzo",
+        "Fecha de salida",
+        "Formación académica",
+        "Motivación",
+        "Domicilio",
+        "Código postal",
+        "Fecha de Nacimiento",
+    ]
     sheet.append(header_row)
 
     for user in queryset:
         data_row = [
-                    user.first_name,
-                    user.last_name,
-                    user.volunteer.status,
-                    user.volunteer.start_date,
-                    user.volunteer.end_date,
-                    user.volunteer.academic_formation,
-                    user.volunteer.motivation,
-                    user.volunteer.address,
-                    user.volunteer.postal_code,
-                    user.volunteer.birthdate
-                ]
+            user.first_name,
+            user.last_name,
+            user.volunteer.status,
+            user.volunteer.start_date,
+            user.volunteer.end_date,
+            user.volunteer.academic_formation,
+            user.volunteer.motivation,
+            user.volunteer.address,
+            user.volunteer.postal_code,
+            user.volunteer.birthdate,
+        ]
         sheet.append(data_row)
 
     # Save the workbook to the response
@@ -262,22 +306,23 @@ def VolunteersExportToExcel(request):
 
     return response
 
+
 def Download_files(request):
     # Get files
-    zipo={}
+    zipo = {}
     zipo["Datos de los voluntarios.pdf"] = VolunteersExportToPdf(request)
     zipo["Datos de los voluntarios.csv"] = VolunteersExportToCsv(request)
     zipo["Datos de los voluntarios.xlsx"] = VolunteersExportToExcel(request)
     # Create zip
     buffer = io.BytesIO()
-    zip_file = zipfile.ZipFile(buffer, 'w')
-    for k,v in zipo.items():
+    zip_file = zipfile.ZipFile(buffer, "w")
+    for k, v in zipo.items():
         zip_file.writestr(k, v.content)
     zip_file.close()
     # Return zip
     response = HttpResponse(buffer.getvalue())
-    response['Content-Type'] = 'application/x-zip-compressed'
-    response['Content-Disposition'] = 'attachment; filename=voluntarios.zip'
+    response["Content-Type"] = "application/x-zip-compressed"
+    response["Content-Disposition"] = "attachment; filename=voluntarios.zip"
 
     return response
 
