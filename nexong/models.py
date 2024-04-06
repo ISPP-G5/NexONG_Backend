@@ -166,7 +166,7 @@ class Student(models.Model):
     education_center = models.ForeignKey(
         EducationCenter,
         on_delete=models.CASCADE,
-        related_name="education_center",
+        related_name="students",
         null=True,
         blank=True,
     )
