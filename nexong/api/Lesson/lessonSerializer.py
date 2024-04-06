@@ -29,25 +29,32 @@ class LessonSerializer(ModelSerializer):
     def validate(self, attrs):
         validation_error = {}
 
+        max_attendees = attrs.get("capacity")
+        if max_attendees < 1:
+            validation_error["capacity"] = "capacity must be higher than 0."
         attendees = attrs.get("students")
         if attendees:
             num_attendees = len(attendees)
         else:
             num_attendees = 0
-        max_attendees = attrs.get("capacity")
         if max_attendees < num_attendees:
-            validation_error[
-                "capacity"
-            ] = "capacity must be higher or equal to the number of attendees selected."
+            validation_error["capacity"] = (
+                "capacity must be higher or equal to the number of attendees selected."
+            )
 
         validation_error.update(date_validations(attrs))
+
+        if attrs.get("start_date") == attrs.get("end_date"):
+            validation_error["end_date"] = (
+                "The end date must be different from the start date."
+            )
 
         if attendees is not None:
             for student in attendees:
                 if student.is_morning_student != attrs.get("is_morning_lesson"):
-                    validation_error[
-                        "students"
-                    ] = "There is a student with incorrect schedule (is a morning student or not)."
+                    validation_error["students"] = (
+                        "There is a student with incorrect schedule (is a morning student or not)."
+                    )
 
         if validation_error:
             raise serializers.ValidationError(validation_error)

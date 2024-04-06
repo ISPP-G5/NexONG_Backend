@@ -368,7 +368,7 @@ class Meeting(models.Model):
 class Lesson(models.Model):
     name = models.CharField(max_length=100)
     description = models.CharField(max_length=1000)
-    capacity = models.IntegerField(validators=[MinValueValidator(0)], blank=True)
+    capacity = models.IntegerField(validators=[MinValueValidator(1)], blank=True)
     is_morning_lesson = models.BooleanField(default=True)
     educator = models.ForeignKey(
         Educator, on_delete=models.SET_NULL, null=True, related_name="lessons"
