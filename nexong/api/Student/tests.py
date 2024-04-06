@@ -441,6 +441,7 @@ class StudentApiViewSetTestCase(TestCase):
         self.assertEqual(response.status_code, status.HTTP_204_NO_CONTENT)
         self.assertEqual(Student.objects.count(), 0)
 
+
 class QuaterMarkApiViewSetTestCase(TestCase):
     def setUp(self):
         # Crear un usuario de prueba
@@ -454,9 +455,7 @@ class QuaterMarkApiViewSetTestCase(TestCase):
             family=self.family,
         )
         file_content = b"Test file content"
-        self.marks = SimpleUploadedFile(
-            "marks.pdf", file_content
-        )
+        self.marks = SimpleUploadedFile("marks.pdf", file_content)
 
         self.student = Student.objects.create(
             name="Pablo",
@@ -478,25 +477,21 @@ class QuaterMarkApiViewSetTestCase(TestCase):
     def test_create_quaterMarks(self):
         quater = QuarterMarks.objects.count()
         response = self.client.post(
-            "/api/quarter-marks/",data={
-
+            "/api/quarter-marks/",
+            data={
                 "date": "2024-01-21",
-                "marks" : self.marks,
-                "student": self.student.id
+                "marks": self.marks,
+                "student": self.student.id,
             },
             HTTP_AUTHORIZATION=f"Token {self.token.key}",
         )
         print(response)
         self.assertEqual(response.status_code, 201)
-        self.assertEqual(
-            QuarterMarks.objects.count(), quater + 1
-        )
+        self.assertEqual(QuarterMarks.objects.count(), quater + 1)
 
     def test_obtain_quater_authorization(self):
         marks = QuarterMarks.objects.create(
-            date =  "2023-01-21",
-            marks = self.marks,
-            student = self.student
+            date="2023-01-21", marks=self.marks, student=self.student
         )
         response = self.client.get(
             f"/api/quarter-marks/{marks.id}/",
@@ -506,15 +501,10 @@ class QuaterMarkApiViewSetTestCase(TestCase):
 
     def test_delete_quater_authorization_family(self):
         marks = QuarterMarks.objects.create(
-            date =  "2023-06-21",
-            marks = self.marks,
-            student = self.student
+            date="2023-06-21", marks=self.marks, student=self.student
         )
         response = self.client.delete(
             f"/api/quarter-marks/{marks.id}/",
             HTTP_AUTHORIZATION=f"Token {self.token.key}",
         )
         self.assertEqual(response.status_code, 204)
-
-
-
