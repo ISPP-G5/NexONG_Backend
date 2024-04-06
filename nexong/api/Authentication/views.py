@@ -286,21 +286,22 @@ def Download_files(request):
             zip_file.writestr(
                 user_folder + "/" + "Hoja de registro.pdf",
                 user.volunteer.registry_sheet.read(),
-        )
+            )
         if user.volunteer.sexual_offenses_document:
             zip_file.writestr(
                 user_folder + "/" + "Documentos de delitos sexuales.pdf",
                 user.volunteer.sexual_offenses_document.read(),
-        )
+            )
         if user.volunteer.scanned_id:
             zip_file.writestr(
-                user_folder + "/" + "DNI escaneado.pdf", user.volunteer.scanned_id.read()
-        )
+                user_folder + "/" + "DNI escaneado.pdf",
+                user.volunteer.scanned_id.read(),
+            )
         if user.volunteer.minor_authorization:
             zip_file.writestr(
                 user_folder + "/" + "Autorización de menores.pdf",
                 user.volunteer.minor_authorization.read(),
-        )
+            )
         if user.volunteer.scanned_authorizer_id:
             zip_file.writestr(
                 user_folder + "/" + "Identificación autorizada escaneada.pdf",
