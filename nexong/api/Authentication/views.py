@@ -1,3 +1,4 @@
+import io
 from django.utils.http import urlsafe_base64_decode
 import requests
 from django.views import View
@@ -13,7 +14,7 @@ from django.contrib.auth.tokens import default_token_generator
 import csv
 from django.http import HttpResponse
 from openpyxl import Workbook
-from reportlab.lib.pagesizes import letter
+from reportlab.lib.pagesizes import A3, landscape
 from reportlab.platypus import (
     SimpleDocTemplate,
     Paragraph,
@@ -22,6 +23,10 @@ from reportlab.platypus import (
     TableStyle,
     Image,
 )
+import os
+import zipfile
+from reportlab.lib.styles import getSampleStyleSheet
+from reportlab.lib import colors
 from ..permissions import *
 
 
@@ -75,35 +80,206 @@ class VolunteerApiViewSet(ModelViewSet):
         self.perform_destroy(instance)
         return Response(status=status.HTTP_204_NO_CONTENT)
     
-    def VolunteerExportToCsv(request):
+def VolunteersExportToCsv(request):
         response = HttpResponse(content_type="text/csv")
         response["Content-Disposition"] = 'attachment; filename="Datos_Voluntarios.csv"'
-        # Retrieve data from your model
-        queryset = Volunteer.objects.all()
+        queryset = User.objects.filter(role__in=["VOLUNTARIO","VOLUNTARIO_SOCIO"])
 
-        # Create a CSV writer object
         writer = csv.writer(response)
 
         writer.writerow(
-            ["status", "start_date", "end_date", "academic_formation", "motivation", "address", "postal_code", "birthdate"]
+            ["Nombre", "Apellidos", "Estado", "Fecha de comienzo", "Fecha de salida", "Formación académica", "Motivación", "Domicilio", "Código postal", "Fecha de Nacimiento"]
         )
-        # Write data rows
-        for volunteer in queryset:
+        for user in queryset:
             writer.writerow(
                 [
-                    volunteer.status,
-                    volunteer.start_date,
-                    volunteer.end_date,
-                    volunteer.academic_formation,
-                    volunteer.motivation,
-                    volunteer.address,
-                    volunteer.postal_code,
-                    volunteer.birthdate
+                    user.first_name,
+                    user.last_name,
+                    user.volunteer.status,
+                    user.volunteer.start_date,
+                    user.volunteer.end_date,
+                    user.volunteer.academic_formation,
+                    user.volunteer.motivation,
+                    user.volunteer.address,
+                    user.volunteer.postal_code,
+                    user.volunteer.birthdate
                    
                 ]
             )
 
-        return response
+        return response   
+
+def obtainDataFromRequest(request):
+    queryset = User.objects.filter(role__in=["VOLUNTARIO","VOLUNTARIO_SOCIO"])
+    filename = "Datos de los voluntarios"
+    return (
+        queryset,
+        filename,
+    )
+
+def CreateResponseObject(filename):
+    # Response Object
+    response = HttpResponse(content_type="application/pdf")
+    response["Content-Disposition"] = f"attachment; filename={filename}.pdf"
+    styles = getSampleStyleSheet()
+
+    # This is the PDF document
+    doc = SimpleDocTemplate(response, pagesize=landscape(A3), title="Datos de los voluntarios")
+
+    # Create a Story list to hold elements
+    Story = []
+
+    # Add cover page elements
+    logoPath = "static/images/logo.png"
+    logo = Image(logoPath, width=200, height=100)
+    return (
+        response,
+        styles,
+        doc,
+        Story,
+        logo,
+    )
+
+def CreateCoverElements(logo, title, styles, Story):
+    cover_elements = [
+            logo,
+            Spacer(1, 12),
+            Paragraph(title, styles["Title"]),
+        ]    
+
+    # Add cover elements to the Story
+    Story.extend(cover_elements)
+    # Separation for the table
+    Story.append(Spacer(1, 50))
+    return Story
+
+def CreateTableFromResponse(table_data, Story, doc):
+    # Create a table
+    table = Table(table_data)
+
+    # Table style
+    table.setStyle(
+        TableStyle(
+            [
+                ("BACKGROUND", (0, 0), (-1, 0), colors.grey),
+                ("TEXTCOLOR", (0, 0), (-1, 0), colors.whitesmoke),
+                ("ALIGN", (0, 0), (-1, -1), "CENTER"),
+                ("FONTNAME", (0, 0), (-1, 0), "Helvetica-Bold"),
+                ("BOTTOMPADDING", (0, 0), (-1, 0), 12),
+                ("BACKGROUND", (0, 1), (-1, -1), colors.beige),
+                ("GRID", (0, 0), (-1, -1), 1, colors.black),
+            ]
+        )
+    )
+
+    # Table to Story
+    Story.append(table)
+    doc.build(Story)
+    
+def VolunteersExportToPdf(request):
+    data = obtainDataFromRequest(request)
+
+    # Unpack values
+    (
+        queryset,
+        filename,
+    ) = data[:2]
+
+    dataFromResponse = CreateResponseObject(filename)
+    (
+        response,
+        styles,
+        doc,
+        Story,
+        logo,
+    ) = dataFromResponse[:5]
+    title = f"Datos de los voluntarios"
+
+    StoryUpdated = CreateCoverElements(
+        logo,
+        title,
+        styles,
+        Story,
+    )
+    table_data = [["Nombre", "Apellidos", "Estado", "Fecha de comienzo", "Fecha de salida", "Formación académica", "Motivación", "Domicilio", "Código postal", "Fecha de Nacimiento"]
+    ]
+
+    for user in queryset:
+        table_data.append(
+            [user.first_name,
+                    user.last_name,
+                    user.volunteer.status,
+                    user.volunteer.start_date,
+                    user.volunteer.end_date,
+                    user.volunteer.academic_formation,
+                    user.volunteer.motivation,
+                    user.volunteer.address,
+                    user.volunteer.postal_code,
+                    user.volunteer.birthdate]
+        )
+
+    CreateTableFromResponse(table_data, StoryUpdated, doc)
+
+    return response
+
+def VolunteersExportToExcel(request):
+    data = obtainDataFromRequest(request)
+
+    (
+        queryset,
+        filename,
+    ) = data[:2]
+
+    response = HttpResponse(
+        content_type="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
+    )
+    response["Content-Disposition"] = f"attachment; filename={filename}.xlsx"
+
+    # Create a new Excel workbook
+    workbook = Workbook()
+    sheet = workbook.active
+
+    header_row = ["Nombre", "Apellidos", "Estado", "Fecha de comienzo", "Fecha de salida", "Formación académica", "Motivación", "Domicilio", "Código postal", "Fecha de Nacimiento"]
+    sheet.append(header_row)
+
+    for user in queryset:
+        data_row = [
+                    user.first_name,
+                    user.last_name,
+                    user.volunteer.status,
+                    user.volunteer.start_date,
+                    user.volunteer.end_date,
+                    user.volunteer.academic_formation,
+                    user.volunteer.motivation,
+                    user.volunteer.address,
+                    user.volunteer.postal_code,
+                    user.volunteer.birthdate
+                ]
+        sheet.append(data_row)
+
+    # Save the workbook to the response
+    workbook.save(response)
+
+    return response
+
+def Download_files(request):
+    # Get files
+    zipo={}
+    zipo["Datos de los voluntarios.pdf"] = VolunteersExportToPdf(request)
+    zipo["Datos de los voluntarios.csv"] = VolunteersExportToCsv(request)
+    zipo["Datos de los voluntarios.xlsx"] = VolunteersExportToExcel(request)
+    # Create zip
+    buffer = io.BytesIO()
+    zip_file = zipfile.ZipFile(buffer, 'w')
+    for k,v in zipo.items():
+        zip_file.writestr(k, v.content)
+    zip_file.close()
+    # Return zip
+    response = HttpResponse(buffer.getvalue())
+    response['Content-Type'] = 'application/x-zip-compressed'
+    response['Content-Disposition'] = 'attachment; filename=voluntarios.zip'
+
+    return response
 
 
 class FamilyApiViewSet(ModelViewSet):

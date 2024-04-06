@@ -1,6 +1,7 @@
 from django.urls import path, include
 from .routers import router_api
 from .Donation.views import *
+from .Authentication.views import VolunteersExportToCsv, VolunteersExportToPdf, VolunteersExportToExcel, Download_files
 from .Authentication.views import (
     RedirectSocial,
     LogoutAndBlacklistRefreshTokenForUserView,
@@ -9,6 +10,18 @@ from .Authentication.views import (
 
 urlpatterns = [
     path("", include(router_api.urls)),
+    path("export/csv/volunteers", VolunteersExportToCsv, name="export_csv_all_volunteers"),
+    path("export/pdf/volunteers", VolunteersExportToPdf, name="export_pdf_all_volunteers"),
+    path(
+        "export/excel/volunteers",
+        VolunteersExportToExcel,
+        name="export_excel_all_volunteers",
+    ),
+    path(
+        "export/all/volunteers",
+        Download_files,
+        name="export_excel_all_volunteer_files",
+    ),
     path("export/csv/donations", DonationsExportToCsv, name="export_csv_all_donations"),
     path("export/pdf/donations", DonationsExportToPdf, name="export_pdf_all_donations"),
     path(

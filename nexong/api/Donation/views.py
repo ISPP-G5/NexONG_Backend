@@ -37,7 +37,6 @@ class DonationApiViewSet(ModelViewSet):
 def DonationsExportToCsv(request):
     response = HttpResponse(content_type="text/csv")
     response["Content-Disposition"] = 'attachment; filename="Datos_Donaciones.csv"'
-    # Retrieve data from your model
     queryset = Donation.objects.all()
 
     # Create a CSV writer object
