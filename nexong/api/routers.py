@@ -11,6 +11,7 @@ from .Donation.views import *
 from .Evaluation.views import *
 from .PunctualDonation.views import *
 from .HomeDocument.views import *
+from .Schedule.views import *
 
 router_api = DefaultRouter()
 router_api.register(prefix="user", viewset=UserApiViewSet, basename="user")
@@ -67,3 +68,4 @@ router_api.register(
 router_api.register(
     prefix="suggestion", viewset=SuggestionApiViewSet, basename="suggestion"
 )
+router_api.register(prefix="schedule", viewset=ScheduleApiViewSet, basename="schedule")

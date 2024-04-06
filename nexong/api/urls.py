@@ -32,4 +32,5 @@ urlpatterns = [
     path(
         "export/excel/students", StudentsExportToExcel, name="export_excel_all_students"
     ),
+    path("auth/", include("djoser.urls.authtoken")),
 ]

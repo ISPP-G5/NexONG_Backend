@@ -126,16 +126,16 @@ DOCTYPES = [
 
 
 class Family(models.Model):
-    name = models.CharField(max_length=255)
+    name = models.CharField(max_length=75)
 
 
 class EducationCenter(models.Model):
-    name = models.CharField(max_length=255)
+    name = models.CharField(max_length=75)
 
 
 class Student(models.Model):
-    name = models.CharField(max_length=255)
-    surname = models.CharField(max_length=255)
+    name = models.CharField(max_length=75)
+    surname = models.CharField(max_length=75)
     current_education_year = models.CharField(
         max_length=20, choices=CURRENT_EDUCATION_YEAR, default=THREE_YEARS
     )
@@ -152,7 +152,7 @@ class Student(models.Model):
         blank=True,
         validators=[validate_file_extension],
     )
-    nationality = models.CharField(max_length=255)
+    nationality = models.CharField(max_length=75)
     birthdate = models.DateField()
     is_morning_student = models.BooleanField(default=False)
     status = models.CharField(max_length=10, choices=STATUS, default=PENDING, null=True)
@@ -220,8 +220,8 @@ class Donation(models.Model):
 
 
 class PunctualDonation(models.Model):
-    name = models.CharField(max_length=255)
-    surname = models.CharField(max_length=255)
+    name = models.CharField(max_length=75)
+    surname = models.CharField(max_length=75)
     email = models.EmailField()
     proof_of_payment_document = models.FileField(
         upload_to=upload_to_punctual_donation,
@@ -312,7 +312,7 @@ class CustomUserManager(UserManager):
 class User(AbstractUser):
     objects = CustomUserManager()
 
-    username = models.CharField(max_length=100, null=True, blank=True)
+    username = models.CharField(max_length=75, null=True, blank=True)
     id_number = models.CharField(max_length=9, null=True)
     phone = models.IntegerField(
         validators=[MaxValueValidator(999999999), MinValueValidator(600000000)],
@@ -351,6 +351,7 @@ class User(AbstractUser):
     )
 
     is_enabled = models.BooleanField(default=False)
+    is_agreed = models.BooleanField(default=False)
 
     USERNAME_FIELD = "email"
     REQUIRED_FIELDS = []
@@ -360,7 +361,7 @@ class User(AbstractUser):
 
 
 class Meeting(models.Model):
-    name = models.CharField(max_length=100)
+    name = models.CharField(max_length=75)
     description = models.CharField(max_length=1000)
     date = models.DateField(blank=True)
     time = models.TimeField(blank=True)
@@ -368,7 +369,7 @@ class Meeting(models.Model):
 
 
 class Lesson(models.Model):
-    name = models.CharField(max_length=100)
+    name = models.CharField(max_length=75)
     description = models.CharField(max_length=1000)
     capacity = models.IntegerField(validators=[MinValueValidator(0)], blank=True)
     is_morning_lesson = models.BooleanField(default=True)
@@ -390,7 +391,7 @@ class Schedule(models.Model):
 
 
 class EvaluationType(models.Model):
-    name = models.CharField(max_length=100)
+    name = models.CharField(max_length=75)
     description = models.CharField(max_length=1000, null=True, blank=True)
     evaluation_type = models.CharField(
         max_length=10, choices=EVALUATION_TYPE, default=DAILY
@@ -446,7 +447,7 @@ class LessonEvent(models.Model):
 
 
 class Event(models.Model):
-    name = models.CharField(max_length=100)
+    name = models.CharField(max_length=75)
     description = models.CharField(max_length=1000)
     place = models.CharField(max_length=1000)
     max_volunteers = models.IntegerField(validators=[MinValueValidator(0)])
@@ -474,6 +475,6 @@ class CenterExitAuthorization(models.Model):
 
 class Suggestion(models.Model):
     subject = models.CharField(max_length=100)
-    description = models.TextField()
+    description = models.CharField(max_length=1000)
     email = models.EmailField(null=True, blank=True)
     date = models.DateField(auto_now_add=True)
