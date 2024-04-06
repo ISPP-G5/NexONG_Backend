@@ -1,3 +1,4 @@
+import datetime
 from rest_framework import serializers
 from nexong.models import Partner
 from rest_framework.serializers import ModelSerializer
@@ -13,3 +14,8 @@ class MeetingSerializer(ModelSerializer):
     class Meta:
         model = Meeting
         fields = ["id", "name", "description", "date", "time", "attendees", "url"]
+
+    def validate(self, data):
+        if data["date"] < datetime.date.today():
+            raise serializers.ValidationError("Meeting date cannot be in the past")
+        return data
