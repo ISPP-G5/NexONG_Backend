@@ -26,6 +26,14 @@ urlpatterns = [
     re_path(
         r"^NexONG_Backend/files/(?P<path>.*)$", views.serve_file, name="serve_file"
     ),
-    path("activate/<str:uid>/<str:token>",CustomActivateView.as_view(), name="custom-activate",),
-    path('activation-success/', ActivationSuccessView.as_view(), name='activation_success'),
+    path(
+        "activate/<str:uid>/<str:token>",
+        CustomActivateView.as_view(),
+        name="custom-activate",
+    ),
+    path(
+        "activation-success/",
+        ActivationSuccessView.as_view(),
+        name="activation_success",
+    ),
 ]

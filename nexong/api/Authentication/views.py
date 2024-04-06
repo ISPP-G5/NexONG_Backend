@@ -159,7 +159,7 @@ class CustomActivateView(APIView):
                     user.is_enabled = True
                     user.is_active = True
                     user.save()
-                    return redirect(reverse('activation_success'))
+                    return redirect(reverse("activation_success"))
                 else:
                     return Response(
                         {"detail": "Token not valid"},
@@ -177,5 +177,7 @@ class CustomActivateView(APIView):
                 {"detail": "Error making request"},
                 status=status.HTTP_500_INTERNAL_SERVER_ERROR,
             )
+
+
 class ActivationSuccessView(TemplateView):
-    template_name = 'custom_activate.html'
+    template_name = "custom_activate.html"
