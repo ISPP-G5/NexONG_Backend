@@ -12,7 +12,6 @@ from .authSerializer import *
 from rest_framework_simplejwt.tokens import RefreshToken
 from django.contrib.auth.tokens import default_token_generator
 import csv
-from django.http import HttpResponse
 from openpyxl import Workbook
 from reportlab.lib.pagesizes import A3, landscape
 from reportlab.platypus import (
@@ -23,7 +22,6 @@ from reportlab.platypus import (
     TableStyle,
     Image,
 )
-import os
 import zipfile
 from reportlab.lib.styles import getSampleStyleSheet
 from reportlab.lib import colors
