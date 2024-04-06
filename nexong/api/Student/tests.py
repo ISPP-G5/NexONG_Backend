@@ -442,5 +442,80 @@ class StudentApiViewSetTestCase(TestCase):
         self.assertEqual(response.status_code, status.HTTP_204_NO_CONTENT)
         self.assertEqual(Student.objects.count(), 0)
 
+class QuaterMarkApiViewSetTestCase(TestCase):
+    def setUp(self):
+        # Crear un usuario de prueba
+        self.educator = Educator.objects.create(birthdate="1989-04-21")
+        self.education = EducationCenter.objects.create(name="San Francisco Asis")
+        self.family = Family.objects.create(name="Familia Ruz")
+        self.user = User.objects.create(
+            username="testuser4",
+            email="example4@gmail.com",
+            role=FAMILY,
+            family=self.family,
+        )
+        file_content = b"Test file content"
+        self.marks = SimpleUploadedFile(
+            "marks.pdf", file_content
+        )
+
+        self.student = Student.objects.create(
+            name="Pablo",
+            surname="Castillo Priego",
+            education_center=self.education,
+            is_morning_student=True,
+            activities_during_exit="",
+            status="ACEPTADO",
+            current_education_year="TRES AÑOS",
+            education_center_tutor="Don Carlos Sainz",
+            nationality="España",
+            birthdate="2015-04-21",
+            family=self.family,
+        )
+
+        # Crear un token de autenticación para el usuario
+        self.token = Token.objects.create(user=self.user)
+
+    def test_create_quaterMarks(self):
+        quater = QuarterMarks.objects.count()
+        response = self.client.post(
+            "/api/quarter-marks/",data={
+
+                "date": "2024-01-21",
+                "marks" : self.marks,
+                "student": self.student.id
+            },
+            HTTP_AUTHORIZATION=f"Token {self.token.key}",
+        )
+        print(response)
+        self.assertEqual(response.status_code, 201)
+        self.assertEqual(
+            QuarterMarks.objects.count(), quater + 1
+        )
+
+    def test_obtain_quater_authorization(self):
+        marks = QuarterMarks.objects.create(
+            date =  "2023-01-21",
+            marks = self.marks,
+            student = self.student
+        )
+        response = self.client.get(
+            f"/api/quarter-marks/{marks.id}/",
+            HTTP_AUTHORIZATION=f"Token {self.token.key}",
+        )
+        self.assertEqual(response.status_code, 200)
+
+    def test_delete_quater_authorization_family(self):
+        marks = QuarterMarks.objects.create(
+            date =  "2023-06-21",
+            marks = self.marks,
+            student = self.student
+        )
+        response = self.client.delete(
+            f"/api/quarter-marks/{marks.id}/",
+            HTTP_AUTHORIZATION=f"Token {self.token.key}",
+        )
+        self.assertEqual(response.status_code, 204)
+
 
 
