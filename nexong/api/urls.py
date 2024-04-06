@@ -36,4 +36,5 @@ urlpatterns = [
         name="blacklist",
     ),
     path("redirect-social/", RedirectSocial.as_view()),
+    path("auth/", include("djoser.urls.authtoken")),
 ]
