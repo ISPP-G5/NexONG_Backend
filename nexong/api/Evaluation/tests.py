@@ -82,33 +82,36 @@ class Student_Evaluation_ApiViewSetTestCase(TestCase):
 
     def test_update_student_evaluation_permissions_error(self):
         student_evaluation = StudentEvaluation.objects.create(
-            grade=8, 
-            date = "2024-02-17",
-            comment = "Muy bien",
-            evaluation_type= self.evaluation_type,
-            student= self.student)
+            grade=8,
+            date="2024-02-17",
+            comment="Muy bien",
+            evaluation_type=self.evaluation_type,
+            student=self.student,
+        )
         response = self.client.put(
             f"/api/student-evaluation/{student_evaluation.id}/",
             data={
-                "grade":5, 
-                "date" : "2024-02-17",
-                "comment" : "Muy bien",
-                "evaluation_type" : self.evaluation_type.id,
-                "student" : self.student.id
-                
-            },content_type="application/json",
+                "grade": 5,
+                "date": "2024-02-17",
+                "comment": "Muy bien",
+                "evaluation_type": self.evaluation_type.id,
+                "student": self.student.id,
+            },
+            content_type="application/json",
             HTTP_AUTHORIZATION=f"Token {self.token.key}",
         )
         self.assertEqual(response.status_code, status.HTTP_403_FORBIDDEN)
 
     def test_delete_student_evaluation_permissions_error(self):
         student_evaluation2 = StudentEvaluation.objects.create(
-            grade=4, 
-            date = "2024-02-17",
-            comment = "Muy bien",
-            evaluation_type= self.evaluation_type,
-            student= self.student)
+            grade=4,
+            date="2024-02-17",
+            comment="Muy bien",
+            evaluation_type=self.evaluation_type,
+            student=self.student,
+        )
         response = self.client.delete(
-            f"/api/student-evaluation/{student_evaluation2.id}/", HTTP_AUTHORIZATION=f"Token {self.token.key}"
+            f"/api/student-evaluation/{student_evaluation2.id}/",
+            HTTP_AUTHORIZATION=f"Token {self.token.key}",
         )
         self.assertEqual(response.status_code, status.HTTP_403_FORBIDDEN)

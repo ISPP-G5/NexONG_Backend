@@ -6,7 +6,6 @@ from rest_framework.test import APIRequestFactory
 from django.core.files.uploadedfile import SimpleUploadedFile
 
 
-
 class CenterExitApiViewSetTestCase(TestCase):
     def setUp(self):
         self.family = Family.objects.create(name="Familia López")
