@@ -15,12 +15,8 @@ from .Authentication.views import (
 
 urlpatterns = [
     path("", include(router_api.urls)),
-    path(
-        "export/csv/volunteers", VolunteersExportToCsv, name="export_csv_volunteers"
-    ),
-    path(
-        "export/pdf/volunteers", VolunteersExportToPdf, name="export_pdf_volunteers"
-    ),
+    path("export/csv/volunteers", VolunteersExportToCsv, name="export_csv_volunteers"),
+    path("export/pdf/volunteers", VolunteersExportToPdf, name="export_pdf_volunteers"),
     path(
         "export/excel/volunteers",
         VolunteersExportToExcel,
