@@ -10,6 +10,14 @@ class isAuthenticated(BasePermission):
             return False
 
 
+class allowAnyPost(BasePermission):
+    def has_permission(self, request, view):
+        if request.method in ("POST"):
+            return True
+        else:
+            return False
+
+
 class allowAnyGet(BasePermission):
     def has_permission(self, request, view):
         if request.method in ("GET"):
