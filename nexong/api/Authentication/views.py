@@ -79,12 +79,14 @@ class VolunteerApiViewSet(ModelViewSet):
         self.perform_destroy(instance)
         return Response(status=status.HTTP_204_NO_CONTENT)
 
+
 def obtainDataFromRequest(request):
     queryset = User.objects.filter(role__in=["VOLUNTARIO", "VOLUNTARIO_SOCIO"])
     filename = "Datos de los voluntarios"
     objects = []
     for user in queryset:
-        objects.append([
+        objects.append(
+            [
                 user.first_name,
                 user.last_name,
                 user.volunteer.status,
@@ -95,18 +97,19 @@ def obtainDataFromRequest(request):
                 user.volunteer.address,
                 user.volunteer.postal_code,
                 user.volunteer.birthdate,
-            ])
+            ]
+        )
 
     return (
         objects,
         filename,
     )
 
+
 def VolunteersExportToCsv(request):
     response = HttpResponse(content_type="text/csv")
     data, filename = obtainDataFromRequest(request)
-    response["Content-Disposition"] = f'attachment; filename={filename}.csv'
-    
+    response["Content-Disposition"] = f"attachment; filename={filename}.csv"
 
     writer = csv.writer(response)
 
@@ -168,6 +171,7 @@ def CreateCoverElements(logo, title, styles, Story):
     # Separation for the table
     Story.append(Spacer(1, 50))
     return Story
+
 
 def VolunteersExportToPdf(request):
     data = obtainDataFromRequest(request)
