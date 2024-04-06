@@ -34,7 +34,6 @@ class Event_ApiViewSetTestCase(TestCase):
             nationality="España",
             birthdate="2017-04-21",
             family=self.family,
-        
         )
         self.student2 = Student.objects.create(
             name="Andrés",
@@ -73,14 +72,14 @@ class Event_ApiViewSetTestCase(TestCase):
 
     def test_obtain_event_by_family(self):
         event = Event.objects.create(
-            name = "Vienen los lunnis",
-            description =  "Se necesitan 3 voluntarios para hacer de Lucho",
-            place =  "Jardín principal",
-            max_volunteers =  2,
-            max_attendees =  2,
-            price =  5,
-            start_date = "2024-06-12 06:00-00:00",
-            end_date = "2024-06-12 11:00-00:00"
+            name="Vienen los lunnis",
+            description="Se necesitan 3 voluntarios para hacer de Lucho",
+            place="Jardín principal",
+            max_volunteers=2,
+            max_attendees=2,
+            price=5,
+            start_date="2024-06-12 06:00-00:00",
+            end_date="2024-06-12 11:00-00:00",
         )
         event.attendees.add(self.student, self.student2)
         event.volunteers.add(self.voluntario, self.voluntario2)
@@ -99,11 +98,11 @@ class Event_ApiViewSetTestCase(TestCase):
             max_attendees=2,
             price=5,
             start_date="2024-06-12 06:00-00:00",
-            end_date="2024-06-12 11:00-00:00"
+            end_date="2024-06-12 11:00-00:00",
         )
         event1.attendees.add(self.student, self.student2)
         event1.volunteers.add(self.voluntario, self.voluntario2)
-        
+
         # Obtener los IDs de los asistentes y voluntarios
         attendees_ids = [student.id for student in event1.attendees.all()]
         volunteers_ids = [volunteer.id for volunteer in event1.volunteers.all()]
@@ -120,7 +119,7 @@ class Event_ApiViewSetTestCase(TestCase):
                 "start_date": "2024-06-12 06:00-00:00",
                 "end_date": "2024-06-12 11:00-00:00",
                 "attendees": attendees_ids,  # Pasar IDs de los asistentes
-                "volunteers": volunteers_ids  # Pasar IDs de los voluntarios
+                "volunteers": volunteers_ids,  # Pasar IDs de los voluntarios
             },
             content_type="application/json",
             HTTP_AUTHORIZATION=f"Token {self.token.key}",
@@ -133,9 +132,7 @@ class LessonEvent_ApiViewSetTestCase(TestCase):
         self.factory = APIRequestFactory()
 
         self.family = Family.objects.create(name="Familia Bartolomé")
-        self.education_center = EducationCenter.objects.create(
-            name="San José"
-        )
+        self.education_center = EducationCenter.objects.create(name="San José")
         self.educator = Educator.objects.create(birthdate="2000-04-21")
         self.educator2 = Educator.objects.create(birthdate="2001-04-21")
         self.user = User.objects.create(
@@ -158,7 +155,6 @@ class LessonEvent_ApiViewSetTestCase(TestCase):
             nationality="Italia",
             birthdate="2019-04-21",
             family=self.family,
-        
         )
         self.student2 = Student.objects.create(
             name="Andrés",
@@ -206,14 +202,14 @@ class LessonEvent_ApiViewSetTestCase(TestCase):
 
     def test_obtain_lesson_event_by_family(self):
         lessonevent = LessonEvent.objects.create(
-            name = "Vienen los Vengadores",
-            description =  "Se necesitan 2 Vengadores",
-            place =  "Jardín principal",
-            max_volunteers =  2,
-            lesson = self.lesson,
-            price =  5,
-            start_date = "2024-06-12 06:00-00:00",
-            end_date = "2024-06-12 11:00-00:00"
+            name="Vienen los Vengadores",
+            description="Se necesitan 2 Vengadores",
+            place="Jardín principal",
+            max_volunteers=2,
+            lesson=self.lesson,
+            price=5,
+            start_date="2024-06-12 06:00-00:00",
+            end_date="2024-06-12 11:00-00:00",
         )
         lessonevent.attendees.add(self.student, self.student2)
         lessonevent.volunteers.add(self.voluntario, self.voluntario2)
@@ -226,19 +222,19 @@ class LessonEvent_ApiViewSetTestCase(TestCase):
 
     def test_update_lesson_event_error(self):
         lessonevent2 = LessonEvent.objects.create(
-            name = "Vienen la  Liga de la Justicia",
-            description =  "Se necesitan 2 superheroes",
-            place =  "Jardín principal",
-            max_volunteers =  2,
-            lesson = self.lesson,
-            price =  6,
-            start_date = "2024-06-12 06:00-00:00",
-            end_date = "2024-06-12 11:00-00:00"
+            name="Vienen la  Liga de la Justicia",
+            description="Se necesitan 2 superheroes",
+            place="Jardín principal",
+            max_volunteers=2,
+            lesson=self.lesson,
+            price=6,
+            start_date="2024-06-12 06:00-00:00",
+            end_date="2024-06-12 11:00-00:00",
         )
         lessonevent2.attendees.add(self.student, self.student2)
         lessonevent2.volunteers.add(self.voluntario, self.voluntario2)
         lessonevent2.educators.add(self.educator, self.educator2)
-        
+
         # Obtener los IDs de los asistentes y voluntarios
         attendees_ids = [student.id for student in lessonevent2.attendees.all()]
         volunteers_ids = [volunteer.id for volunteer in lessonevent2.volunteers.all()]
@@ -252,19 +248,14 @@ class LessonEvent_ApiViewSetTestCase(TestCase):
                 "place": "Patio Principal",
                 "max_volunteers": 2,
                 "price": 5,
-                "lesson" : self.lesson.id,
+                "lesson": self.lesson.id,
                 "start_date": "2024-06-12 06:00-00:00",
                 "end_date": "2024-06-12 11:00-00:00",
                 "educators": educators_ids,
-                "attendees": attendees_ids,  
-                "volunteers": volunteers_ids  
+                "attendees": attendees_ids,
+                "volunteers": volunteers_ids,
             },
             content_type="application/json",
             HTTP_AUTHORIZATION=f"Token {self.token.key}",
         )
         self.assertEqual(response.status_code, status.HTTP_403_FORBIDDEN)
-
-
-    
-
-    

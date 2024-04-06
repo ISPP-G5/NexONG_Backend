@@ -22,7 +22,6 @@ class Lesson_ApiViewSetTestCase(TestCase):
         )
         self.token = Token.objects.create(user=self.user)
 
-
     def test_obtain_lesson_by_family(self):
         lesson = Lesson.objects.create(
             name="PRIMER CICLO 2",
@@ -41,16 +40,15 @@ class Lesson_ApiViewSetTestCase(TestCase):
 
     def test_create_lesson_by_family_error(self):
         response = self.client.post(
-            f"/api/lesson/",data = {
-            
-            "name":"PRIMER CICLO 2",
-            "description":"Módulo III, tercera planta",
-            "capacity":14,
-            "is_morning_lesson":True,
-            "educator":self.educator,
-            "start_date":"2024-01-28",
-            "end_date":"2024-06-28",
-
+            f"/api/lesson/",
+            data={
+                "name": "PRIMER CICLO 2",
+                "description": "Módulo III, tercera planta",
+                "capacity": 14,
+                "is_morning_lesson": True,
+                "educator": self.educator,
+                "start_date": "2024-01-28",
+                "end_date": "2024-06-28",
             },
             HTTP_AUTHORIZATION=f"Token {self.token.key}",
         )
