@@ -215,7 +215,7 @@ class Donation(models.Model):
     )
     date = models.DateField()
     partner = models.ForeignKey(
-        Partner, on_delete=models.CASCADE, related_name="donations"
+        Partner, on_delete=models.SET_NULL, null=True, related_name="donations"
     )
 
 
@@ -319,9 +319,7 @@ class User(AbstractUser):
         blank=True,
         null=True,
     )
-    password = models.CharField(
-        max_length=100
-    )  # Antes de guardar en la db, se debe hacer user.set_password(password)
+    password = models.CharField(max_length=100)
     email = models.EmailField(unique=True)
     role = models.CharField(
         max_length=25,
@@ -373,7 +371,7 @@ class Lesson(models.Model):
     capacity = models.IntegerField(validators=[MinValueValidator(0)], blank=True)
     is_morning_lesson = models.BooleanField(default=True)
     educator = models.ForeignKey(
-        Educator, on_delete=models.CASCADE, related_name="lessons"
+        Educator, on_delete=models.SET_NULL, null=True, related_name="lessons"
     )
     students = models.ManyToManyField(Student, related_name="lessons", blank=True)
     start_date = models.DateField()
