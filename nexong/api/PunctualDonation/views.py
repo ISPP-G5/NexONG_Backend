@@ -10,7 +10,7 @@ class PunctualDonationApiViewSet(ModelViewSet):
     queryset = PunctualDonation.objects.all()
     http_method_names = ["get", "post", "delete"]
     serializer_class = PunctualDonationSerializer
-    permission_classes = [isAdmin]
+    permission_classes = [allowAnyPost | isAdmin]
 
     def destroy(self, request, *args, **kwargs):
         instance = self.get_object()
