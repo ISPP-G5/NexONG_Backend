@@ -281,6 +281,7 @@ class Volunteer(models.Model):
 
 class Educator(models.Model):
     birthdate = models.DateField(null=True)
+    description = models.CharField(max_length=500, null=True)
 
 
 class CustomUserManager(UserManager):
