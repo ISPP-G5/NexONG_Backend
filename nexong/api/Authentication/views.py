@@ -8,6 +8,7 @@ from rest_framework.viewsets import ModelViewSet
 from rest_framework.response import Response
 from rest_framework import status
 from ...models import *
+from ..Donation.views import CreateTableFromResponse
 from .authSerializer import *
 from rest_framework_simplejwt.tokens import RefreshToken
 from django.contrib.auth.tokens import default_token_generator
@@ -78,11 +79,34 @@ class VolunteerApiViewSet(ModelViewSet):
         self.perform_destroy(instance)
         return Response(status=status.HTTP_204_NO_CONTENT)
 
+def obtainDataFromRequest(request):
+    queryset = User.objects.filter(role__in=["VOLUNTARIO", "VOLUNTARIO_SOCIO"])
+    filename = "Datos de los voluntarios"
+    objects = []
+    for user in queryset:
+        objects.append([
+                user.first_name,
+                user.last_name,
+                user.volunteer.status,
+                user.volunteer.start_date,
+                user.volunteer.end_date,
+                user.volunteer.academic_formation,
+                user.volunteer.motivation,
+                user.volunteer.address,
+                user.volunteer.postal_code,
+                user.volunteer.birthdate,
+            ])
+
+    return (
+        objects,
+        filename,
+    )
 
 def VolunteersExportToCsv(request):
     response = HttpResponse(content_type="text/csv")
-    response["Content-Disposition"] = 'attachment; filename="Datos_Voluntarios.csv"'
-    queryset = User.objects.filter(role__in=["VOLUNTARIO", "VOLUNTARIO_SOCIO"])
+    data, filename = obtainDataFromRequest(request)
+    response["Content-Disposition"] = f'attachment; filename={filename}.csv'
+    
 
     writer = csv.writer(response)
 
@@ -100,32 +124,10 @@ def VolunteersExportToCsv(request):
             "Fecha de Nacimiento",
         ]
     )
-    for user in queryset:
-        writer.writerow(
-            [
-                user.first_name,
-                user.last_name,
-                user.volunteer.status,
-                user.volunteer.start_date,
-                user.volunteer.end_date,
-                user.volunteer.academic_formation,
-                user.volunteer.motivation,
-                user.volunteer.address,
-                user.volunteer.postal_code,
-                user.volunteer.birthdate,
-            ]
-        )
+    for row in data:
+        writer.writerow(row)
 
     return response
-
-
-def obtainDataFromRequest(request):
-    queryset = User.objects.filter(role__in=["VOLUNTARIO", "VOLUNTARIO_SOCIO"])
-    filename = "Datos de los voluntarios"
-    return (
-        queryset,
-        filename,
-    )
 
 
 def CreateResponseObject(filename):
@@ -167,39 +169,11 @@ def CreateCoverElements(logo, title, styles, Story):
     Story.append(Spacer(1, 50))
     return Story
 
-
-def CreateTableFromResponse(table_data, Story, doc):
-    # Create a table
-    table = Table(table_data)
-
-    # Table style
-    table.setStyle(
-        TableStyle(
-            [
-                ("BACKGROUND", (0, 0), (-1, 0), colors.grey),
-                ("TEXTCOLOR", (0, 0), (-1, 0), colors.whitesmoke),
-                ("ALIGN", (0, 0), (-1, -1), "CENTER"),
-                ("FONTNAME", (0, 0), (-1, 0), "Helvetica-Bold"),
-                ("BOTTOMPADDING", (0, 0), (-1, 0), 12),
-                ("BACKGROUND", (0, 1), (-1, -1), colors.beige),
-                ("GRID", (0, 0), (-1, -1), 1, colors.black),
-            ]
-        )
-    )
-
-    # Table to Story
-    Story.append(table)
-    doc.build(Story)
-
-
 def VolunteersExportToPdf(request):
     data = obtainDataFromRequest(request)
 
     # Unpack values
-    (
-        queryset,
-        filename,
-    ) = data[:2]
+    data, filename = obtainDataFromRequest(request)
 
     dataFromResponse = CreateResponseObject(filename)
     (
@@ -232,21 +206,8 @@ def VolunteersExportToPdf(request):
         ]
     ]
 
-    for user in queryset:
-        table_data.append(
-            [
-                user.first_name,
-                user.last_name,
-                user.volunteer.status,
-                user.volunteer.start_date,
-                user.volunteer.end_date,
-                user.volunteer.academic_formation,
-                user.volunteer.motivation,
-                user.volunteer.address,
-                user.volunteer.postal_code,
-                user.volunteer.birthdate,
-            ]
-        )
+    for row in data:
+        table_data.append(row)
 
     CreateTableFromResponse(table_data, StoryUpdated, doc)
 
@@ -256,10 +217,7 @@ def VolunteersExportToPdf(request):
 def VolunteersExportToExcel(request):
     data = obtainDataFromRequest(request)
 
-    (
-        queryset,
-        filename,
-    ) = data[:2]
+    data, filename = obtainDataFromRequest(request)
 
     response = HttpResponse(
         content_type="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
@@ -284,20 +242,8 @@ def VolunteersExportToExcel(request):
     ]
     sheet.append(header_row)
 
-    for user in queryset:
-        data_row = [
-            user.first_name,
-            user.last_name,
-            user.volunteer.status,
-            user.volunteer.start_date,
-            user.volunteer.end_date,
-            user.volunteer.academic_formation,
-            user.volunteer.motivation,
-            user.volunteer.address,
-            user.volunteer.postal_code,
-            user.volunteer.birthdate,
-        ]
-        sheet.append(data_row)
+    for row in data:
+        sheet.append(row)
 
     # Save the workbook to the response
     workbook.save(response)
