@@ -211,42 +211,6 @@ class StudentApiViewSetTestCase(TestCase):
         self.assertEqual(response.data["name"], "Amadeo")
         self.assertEqual(response.data["surname"], "Portillo")
 
-    def test_update_student(self):
-        student = Student.objects.create(
-            name="Alicia",
-            surname="Jurado Ruz",
-            education_center=self.education,
-            is_morning_student=True,
-            activities_during_exit="",
-            status="PENDIENTE",
-            current_education_year="TRES AÑOS",
-            education_center_tutor="Don Carlos Perez",
-            nationality="España",
-            birthdate="2017-04-21",
-            family=self.family,
-        )
-
-        # Authenticate the PUT request with the authentication token
-        response = self.client.put(
-            f"/api/student/{student.id}/",
-            data={
-                "name": "Alicia",
-                "surname": "Jurado Ruz",
-                "education_center": self.education.id,
-                "is_morning_student": True,
-                "activities_during_exit": "",
-                "status": "PENDIENTE",
-                "current_education_year": "TRES AÑOS",
-                "education_center_tutor": "Don José Perez",
-                "nationality": "España",
-                "birthdate": "2017-04-21",
-                "family": self.family.id,
-            },
-            content_type="application/json",
-            HTTP_AUTHORIZATION=f"Token {self.token4.key}",
-        )
-        # Verify that the request was successful (status code 200)
-        self.assertEqual(response.status_code, status.HTTP_200_OK)
 
     def test_update_student(self):
         student = Student.objects.create(
@@ -285,42 +249,7 @@ class StudentApiViewSetTestCase(TestCase):
         # Verify that the request was successful (status code 200)
         self.assertEqual(response.status_code, status.HTTP_200_OK)
 
-    def test_update_student(self):
-        student = Student.objects.create(
-            name="Alicia",
-            surname="Jurado Ruz",
-            education_center=self.education,
-            is_morning_student=True,
-            activities_during_exit="",
-            status="PENDIENTE",
-            current_education_year="TRES AÑOS",
-            education_center_tutor="Don Carlos Perez",
-            nationality="España",
-            birthdate="2017-04-21",
-            family=self.family,
-        )
-
-        # Authenticate the PUT request with the authentication token
-        response = self.client.put(
-            f"/api/student/{student.id}/",
-            data={
-                "name": "Alicia",
-                "surname": "Jurado Ruz",
-                "education_center": self.education.id,
-                "is_morning_student": True,
-                "activities_during_exit": "",
-                "status": "PENDIENTE",
-                "current_education_year": "TRES AÑOS",
-                "education_center_tutor": "Don José Perez",
-                "nationality": "España",
-                "birthdate": "2017-04-21",
-                "family": self.family.id,
-            },
-            content_type="application/json",
-            HTTP_AUTHORIZATION=f"Token {self.token4.key}",
-        )
-        # Verify that the request was successful (status code 200)
-        self.assertEqual(response.status_code, status.HTTP_200_OK)
+   
 
     def test_update_student_name_error(self):
         student = Student.objects.create(
@@ -346,9 +275,9 @@ class StudentApiViewSetTestCase(TestCase):
                 "education_center": self.education.id,
                 "is_morning_student": True,
                 "activities_during_exit": "",
-                "status": "PENDIENTE",
+                "status": "ACEPTADO",
                 "current_education_year": "TRES AÑOS",
-                "education_center_tutor": "Don José Perez",
+                "education_center_tutor": "Don Manuel Perez",
                 "nationality": "España",
                 "birthdate": "2017-04-21",
                 "family": self.family.id,
