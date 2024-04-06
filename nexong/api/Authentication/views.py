@@ -1,3 +1,4 @@
+from django.shortcuts import redirect
 from django.urls import reverse
 from django.utils.http import urlsafe_base64_decode
 import requests
@@ -12,6 +13,7 @@ from .authSerializer import *
 from rest_framework_simplejwt.tokens import RefreshToken
 from django.contrib.auth.tokens import default_token_generator
 from ..permissions import *
+from django.views.generic import TemplateView
 
 
 def process_instance(serializer_class, instance, data):
@@ -157,10 +159,7 @@ class CustomActivateView(APIView):
                     user.is_enabled = True
                     user.is_active = True
                     user.save()
-                    return Response(
-                        {"detail": "User activated successfully"},
-                        status=status.HTTP_200_OK,
-                    )
+                    return redirect(reverse('activation_success'))
                 else:
                     return Response(
                         {"detail": "Token not valid"},
@@ -178,3 +177,5 @@ class CustomActivateView(APIView):
                 {"detail": "Error making request"},
                 status=status.HTTP_500_INTERNAL_SERVER_ERROR,
             )
+class ActivationSuccessView(TemplateView):
+    template_name = 'custom_activate.html'
