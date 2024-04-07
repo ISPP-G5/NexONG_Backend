@@ -478,3 +478,8 @@ class Suggestion(models.Model):
     description = models.CharField(max_length=1000)
     email = models.EmailField(null=True, blank=True)
     date = models.DateField(auto_now_add=True)
+
+class Terms(models.Model):
+    text = models.CharField(max_length=20000)
+    version = models.FloatField(validators=[MinValueValidator(1.0)], default=1.0)
+    date = models.DateField()
