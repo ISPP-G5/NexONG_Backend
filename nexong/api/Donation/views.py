@@ -186,7 +186,6 @@ def DonationsExportToPdf(request):
         )
 
     CreateTableFromResponse(table_data, Story, doc)
-   
 
     return response
 
