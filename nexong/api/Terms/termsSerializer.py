@@ -7,4 +7,3 @@ class TermsSerializer(ModelSerializer):
     class Meta:
         model = Terms
         fields = "__all__"
-
