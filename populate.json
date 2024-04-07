@@ -272,6 +272,7 @@
         "model": "nexong.partner",
         "pk": 1,
         "fields": {
+            "description": "Soy de la zona y me gusta colaborar con la asociación. He participado en varias actividades de la asociación.",
             "address": "Insulinde 11",
             "enrollment_document":"partner_enrollment\\partner_enrollment.txt",
             "birthdate": "1956-07-05"
@@ -281,6 +282,7 @@
         "model": "nexong.partner",
         "pk": 2,
         "fields": {
+            "description": "Socio con gran implicación en la asociación. He colaborado en varias ocasiones en eventos y actividades de la asociación.",
             "address": "Katia 13",
             "enrollment_document":"partner_enrollment\\partner_enrollment.txt",
             "birthdate": "1973-03-05"
@@ -290,6 +292,7 @@
         "model": "nexong.partner",
         "pk": 3,
         "fields": {
+            "description": "Socio con cinco años de antigüedad en la asociación. Colaboro en la organización de eventos de la asociación.",
             "address": "Graad 26",
             "enrollment_document":"partner_enrollment\\partner_enrollment.txt",
             "birthdate": "1981-01-23"
@@ -299,6 +302,7 @@
         "model": "nexong.partner",
         "pk": 4,
         "fields": {
+            "description": "Socio con un año de antigüedad en la asociación. Colaboro en la organización de eventos de la asociación.",
             "address": "Ilinaara 48",
             "enrollment_document":"partner_enrollment\\partner_enrollment.txt",
             "birthdate": "1986-03-28"
@@ -532,14 +536,16 @@
         "model": "nexong.educator",
         "pk": 1,
         "fields": {
-            "birthdate": "1965-08-02"
+            "birthdate": "1965-08-02",
+            "description": "Experiencia en educación infantil. Disponible los martes y jueves por la tarde."
         }
     },
     {
         "model": "nexong.educator",
         "pk": 2,
         "fields": {
-            "birthdate": "1987-07-30"
+            "birthdate": "1987-07-30",
+            "description": "Experiencia en educación primaria. Disponible los lunes y miércoles por la mañana."
         }
     },
     {

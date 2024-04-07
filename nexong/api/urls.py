@@ -9,7 +9,6 @@ from .helpers.volunteerExports import (
 )
 from .Student.views import *
 from .Authentication.views import (
-    RedirectSocial,
     LogoutAndBlacklistRefreshTokenForUserView,
     ActivateUserView,
 )
@@ -44,7 +43,6 @@ urlpatterns = [
         LogoutAndBlacklistRefreshTokenForUserView.as_view(),
         name="blacklist",
     ),
-    path("redirect-social/", RedirectSocial.as_view()),
     path("export/csv/students", StudentsExportToCsv, name="export_csv_all_students"),
     path("export/pdf/students", StudentsExportToPdf, name="export_pdf_all_students"),
     path(
