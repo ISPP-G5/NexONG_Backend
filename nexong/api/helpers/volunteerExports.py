@@ -123,6 +123,7 @@ def CreateCoverElements(logo, title, styles, Story):
     Story.append(Spacer(1, 50))
     return Story
 
+
 def CreateTableFromResponse(table_data, Story, doc):
     # Create a table
     table = Table(table_data)
@@ -145,6 +146,7 @@ def CreateTableFromResponse(table_data, Story, doc):
     # Table to Story
     Story.append(table)
     doc.build(Story)
+
 
 def VolunteersExportToPdf(request):
     data = obtainDataFromRequest(request)
