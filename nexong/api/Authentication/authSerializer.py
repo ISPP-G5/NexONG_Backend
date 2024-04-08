@@ -120,14 +120,16 @@ class UserSerializer(ModelSerializer):
                 validation_error[
                     "id_number"
                 ] = "The id_number does not match the expected pattern."
+        if "terms_version_accepted" in data:
+            latest_terms_version = Terms.objects.latest("date").version
+            if data["terms_version_accepted"] != latest_terms_version:
+                validation_error["terms_version_accepted"] = (
+                    "User must accept latest terms and conditions."
+                )
         if validation_error:
             raise serializers.ValidationError(validation_error)
 
         return data
-    
-    def validate_has_accepted_latest_terms(self):
-        latest_terms_version = Terms.objects.latest("date").version
-        return self.terms_version_accepted == latest_terms_version
 
 class EducatorSerializer(ModelSerializer):
     class Meta:
