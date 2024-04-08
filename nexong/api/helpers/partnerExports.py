@@ -1,4 +1,3 @@
-from ..Donation.views import CreateTableFromResponse
 import csv
 from openpyxl import Workbook
 from reportlab.lib.pagesizes import A4, portrait
@@ -6,11 +5,38 @@ from reportlab.platypus import (
     SimpleDocTemplate,
     Paragraph,
     Spacer,
+    Table,
+    TableStyle,
     Image,
 )
+from reportlab.lib import colors
 from reportlab.lib.styles import getSampleStyleSheet
 from django.http import HttpResponse
 from ...models import User
+
+
+def CreateTableFromResponse(table_data, Story, doc):
+    # Create a table
+    table = Table(table_data)
+
+    # Table style
+    table.setStyle(
+        TableStyle(
+            [
+            ("BACKGROUND", (0, 0), (-1, 0), colors.grey),
+            ("TEXTCOLOR", (0, 0), (-1, 0), colors.whitesmoke),
+            ("ALIGN", (0, 0), (-1, -1), "CENTER"),
+            ("FONTNAME", (0, 0), (-1, 0), "Helvetica-Bold"),
+            ("BOTTOMPADDING", (0, 0), (-1, 0), 12),
+            ("BACKGROUND", (0, 1), (-1, -1), colors.beige),
+            ("GRID", (0, 0), (-1, -1), 1, colors.black),
+             ]
+        )
+     )
+
+    # Table to Story
+    Story.append(table)
+    doc.build(Story)
 
 
 def obtainDataFromRequest(request, returnOnlyUserList=False):
