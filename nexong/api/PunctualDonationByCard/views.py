@@ -13,6 +13,11 @@ import requests
 from django.http import JsonResponse
 
 checkoutSessionID=None
+paymentAmount=None
+paymentName=None
+paymentSurname=None
+paymentEmail=None
+paymentDate=None
 
 class PunctualDonationByCardApiViewSet(ModelViewSet):
     queryset = PunctualDonationByCard.objects.all()
@@ -32,6 +37,10 @@ def process_payment(request):
     stripe.api_key = settings.STRIPE_PRIVATE_KEY
     if request.method == "POST":
         amount = json.loads(request.body)["amount"]  # Monto en centavos
+        name = json.loads(request.body)["name"]
+        surname = json.loads(request.body)["surname"]
+        email = json.loads(request.body)["email"]
+        date = json.loads(request.body)["date"]
         if amount<1:
               return Response({'msg':'La cantidad tiene que ser superior a un euro'})
         try:
@@ -52,8 +61,13 @@ def process_payment(request):
                 success_url=settings.URL_BASE + 'api/payment/success',
                 cancel_url=settings.URL_BASE + 'api/payment/cancel'
             )
-            global checkoutSessionID
+            global checkoutSessionID, paymentAmount, paymentName, paymentEmail, paymentDate, paymentSurname
             checkoutSessionID=checkoutSession.id
+            paymentAmount=amount
+            paymentName=name
+            paymentEmail=email
+            paymentDate=date
+            paymentSurname=surname
         except Exception as e:
             return Response({'msg':'Algo ha ido mal creando la sesión de Stripe', 'error':str(e)}, status=500)
         return Response({'checkout_url': checkoutSession.url}, status=200)
@@ -69,15 +83,7 @@ def obtainCheckoutSession():
     return checkout_session
 
 def payment_success(request):
-    checkout_session = obtainCheckoutSession()
-    amount=int(checkout_session.amount_total/100)
-    email=checkout_session.customer_details.email
-    name=checkout_session.customer_details.name
-    payload = {
-                "amount": amount,
-                "name": name,
-                "email": email,
-            }
+    payload = {"amount": paymentAmount, "name": paymentName, "surname": paymentSurname, "email": paymentEmail, "date": paymentDate}
     response = requests.post(
                 settings.URL_BASE + "api/punctual-donation-by-card/",
                 json=payload,
@@ -86,7 +92,7 @@ def payment_success(request):
     if response.status_code == 200 or response.status_code == 201:
             return JsonResponse(
                     {
-                        "amount": amount,
+                        "amount": paymentAmount,
                         "status": "Se ha creado la donacion puntual",
                     }
                 )
