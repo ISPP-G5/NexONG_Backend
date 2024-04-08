@@ -76,6 +76,7 @@ class CreateUserSerializer(UserCreateSerializer):
             raise serializers.ValidationError("User must accept terms and conditions.")
         return data
 
+
 class UserLoginSerializer(Serializer):
     email = serializers.EmailField()
     password = serializers.CharField(style={"input_type": "password"})
@@ -130,6 +131,8 @@ class UserSerializer(ModelSerializer):
             raise serializers.ValidationError(validation_error)
 
         return data
+
+
 
 class EducatorSerializer(ModelSerializer):
     class Meta:
