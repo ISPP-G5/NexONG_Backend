@@ -12,7 +12,8 @@ from rest_framework.decorators import api_view
 import requests
 from django.http import JsonResponse
 
-checkoutSessionID=None
+checkoutSessionID = None
+
 
 class PunctualDonationByCardApiViewSet(ModelViewSet):
     queryset = PunctualDonationByCard.objects.all()
@@ -27,37 +28,39 @@ class PunctualDonationByCardApiViewSet(ModelViewSet):
 
 
 @csrf_exempt
-@api_view(('POST',))
+@api_view(("POST",))
 def process_payment(request):
     stripe.api_key = settings.STRIPE_PRIVATE_KEY
     if request.method == "POST":
         amount = json.loads(request.body)["amount"]  # Monto en centavos
-        if amount<1:
-              return Response({'msg':'La cantidad tiene que ser superior a un euro'})
+        if amount < 1:
+            return Response({"msg": "La cantidad tiene que ser superior a un euro"})
         try:
             checkoutSession = stripe.checkout.Session.create(
                 line_items=[
                     {
-                        'price_data':{
-                            'currency': 'EUR',
-                            'unit_amount': int(amount)*100,
-                            'product_data':{
-                                 'name': 'Donación puntual'
-                            }
+                        "price_data": {
+                            "currency": "EUR",
+                            "unit_amount": int(amount) * 100,
+                            "product_data": {"name": "Donación puntual"},
                         },
-                        'quantity': 1
+                        "quantity": 1,
                     },
                 ],
-                mode='payment',
-                success_url=settings.URL_BASE + 'api/payment/success',
-                cancel_url=settings.URL_BASE + 'api/payment/cancel'
+                mode="payment",
+                success_url=settings.URL_BASE + "api/payment/success",
+                cancel_url=settings.URL_BASE + "api/payment/cancel",
             )
             global checkoutSessionID
-            checkoutSessionID=checkoutSession.id
+            checkoutSessionID = checkoutSession.id
         except Exception as e:
-            return Response({'msg':'Algo ha ido mal creando la sesión de Stripe', 'error':str(e)}, status=500)
-        return Response({'checkout_url': checkoutSession.url}, status=200)
-    return Response({'msg': 'El método de solicitud debe ser POST'}, status=405)
+            return Response(
+                {"msg": "Algo ha ido mal creando la sesión de Stripe", "error": str(e)},
+                status=500,
+            )
+        return Response({"checkout_url": checkoutSession.url}, status=200)
+    return Response({"msg": "El método de solicitud debe ser POST"}, status=405)
+
 
 def obtainCheckoutSession():
     stripe.api_key = settings.STRIPE_PRIVATE_KEY
@@ -68,33 +71,34 @@ def obtainCheckoutSession():
     checkout_session = stripe.checkout.Session.retrieve(checkout_session_id)
     return checkout_session
 
+
 def payment_success(request):
     checkout_session = obtainCheckoutSession()
-    amount=int(checkout_session.amount_total/100)
-    email=checkout_session.customer_details.email
-    name=checkout_session.customer_details.name
+    amount = int(checkout_session.amount_total / 100)
+    email = checkout_session.customer_details.email
+    name = checkout_session.customer_details.name
     payload = {
-                "amount": amount,
-                "name": name,
-                "email": email,
-            }
+        "amount": amount,
+        "name": name,
+        "email": email,
+    }
     response = requests.post(
-                settings.URL_BASE + "api/punctual-donation-by-card/",
-                json=payload,
-                timeout=15,
-            )
-    if response.status_code == 200 or response.status_code == 201:
-            return JsonResponse(
-                    {
-                        "amount": amount,
-                        "status": "Se ha creado la donacion puntual",
-                    }
-                )
-    else:
-                return JsonResponse(
-                    {"error": "Error al realizar la solicitud POST", "status": "failed"}
-                )
-def payment_cancel(request):
-    return JsonResponse(
-        {"error": "Error al realizar el pago", "status": "failed"}
+        settings.URL_BASE + "api/punctual-donation-by-card/",
+        json=payload,
+        timeout=15,
     )
+    if response.status_code == 200 or response.status_code == 201:
+        return JsonResponse(
+            {
+                "amount": amount,
+                "status": "Se ha creado la donacion puntual",
+            }
+        )
+    else:
+        return JsonResponse(
+            {"error": "Error al realizar la solicitud POST", "status": "failed"}
+        )
+
+
+def payment_cancel(request):
+    return JsonResponse({"error": "Error al realizar el pago", "status": "failed"})

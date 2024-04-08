@@ -24,7 +24,7 @@ from nexong.api.helpers.fileValidations import (
     validate_file_extension,
     validate_image_extension,
 )
-from datetime import datetime 
+from datetime import datetime
 
 ADMIN = "ADMIN"
 EDUCATOR = "EDUCADOR"
@@ -237,6 +237,7 @@ class PunctualDonationByCard(models.Model):
     email = models.EmailField()
     amount = models.IntegerField()
     date = models.DateTimeField(default=datetime.now, blank=True)
+
 
 class HomeDocument(models.Model):
     title = models.CharField(max_length=255)
