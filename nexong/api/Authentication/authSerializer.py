@@ -124,14 +124,13 @@ class UserSerializer(ModelSerializer):
         if "terms_version_accepted" in data:
             latest_terms_version = Terms.objects.latest("date").version
             if data["terms_version_accepted"] != latest_terms_version:
-                validation_error["terms_version_accepted"] = (
-                    "User must accept latest terms and conditions."
-                )
+                validation_error[
+                    "terms_version_accepted"
+                ] = "User must accept latest terms and conditions."
         if validation_error:
             raise serializers.ValidationError(validation_error)
 
         return data
-
 
 
 class EducatorSerializer(ModelSerializer):
