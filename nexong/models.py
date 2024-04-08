@@ -352,6 +352,7 @@ class User(AbstractUser):
 
     is_enabled = models.BooleanField(default=False)
     is_agreed = models.BooleanField(default=False)
+    terms_version_accepted = models.FloatField(validators=[MinValueValidator(1.0)], default=1.0)
 
     USERNAME_FIELD = "email"
     REQUIRED_FIELDS = []
