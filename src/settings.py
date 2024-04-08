@@ -53,7 +53,7 @@ MIDDLEWARE = [
     "django.middleware.clickjacking.XFrameOptionsMiddleware",
     "social_django.middleware.SocialAuthExceptionMiddleware",
 ]
-
+SESSION_ENGINE = "django.contrib.sessions.backends.db"
 ROOT_URLCONF = "src.urls"
 
 TEMPLATES = [
@@ -173,9 +173,7 @@ SIMPLE_JWT = {
 }
 
 white_list = [
-    "http://127.0.0.1:8000/api/auth/o/google-oauth2/",
-    "http://127.0.0.1:8000/",
-    "http://127.0.0.1:8000/api/redirect-social/",
+    "http://127.0.0.1:3000/iniciar-sesion/",
 ]
 
 DJOSER = {
@@ -223,7 +221,10 @@ EMAIL_USE_TLS = True
 EMAIL_HOST_USER = DEFAULT_FROM_EMAIL
 EMAIL_HOST_PASSWORD = "hrge nkbr uapt oyxk"
 
-# HTTPS configuration
+CORS_ORIGIN_ALLOW_ALL = True
+SESSION_COOKIE_SAMESITE = "None"
+CORS_ALLOW_CREDENTIALS = True
+
 if not DEBUG:
     SECURE_SSL_REDIRECT = True
     SECURE_PROXY_SSL_HEADER = ("HTTP_X_FORWARDED_PROTO", "https")
