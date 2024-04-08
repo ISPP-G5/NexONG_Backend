@@ -75,9 +75,9 @@ class CreateUserSerializer(UserCreateSerializer):
         if is_agreed == False:
             raise serializers.ValidationError("User must accept terms and conditions.")
         return data
-    
+
     def validate_has_accepted_latest_terms(self):
-        latest_terms_version = Terms.objects.latest('date').version
+        latest_terms_version = Terms.objects.latest("date").version
         return self.terms_version_accepted == latest_terms_version
 
 
