@@ -1,6 +1,6 @@
 import csv
 from openpyxl import Workbook
-from reportlab.lib.pagesizes import A3, landscape
+from reportlab.lib.pagesizes import A2, landscape
 from reportlab.platypus import (
     SimpleDocTemplate,
     Paragraph,
@@ -40,6 +40,9 @@ def obtainDataFromRequest(request, returnOnlyUserList=False):
             [
                 user.first_name,
                 user.last_name,
+                user.id_number,
+                user.phone,
+                user.email,
                 user.volunteer.status,
                 user.volunteer.start_date,
                 user.volunteer.end_date,
@@ -68,6 +71,9 @@ def VolunteersExportToCsv(request):
         [
             "Nombre",
             "Apellidos",
+            "DNI",
+            "Número de teléfono",
+            "Email",
             "Estado",
             "Fecha de comienzo",
             "Fecha de salida",
@@ -92,7 +98,7 @@ def CreateResponseObject(filename):
 
     # This is the PDF document
     doc = SimpleDocTemplate(
-        response, pagesize=landscape(A3), title="Datos de los voluntarios"
+        response, pagesize=landscape(A2), title="Datos de los voluntarios"
     )
 
     # Create a Story list to hold elements
@@ -174,6 +180,9 @@ def VolunteersExportToPdf(request):
         [
             "Nombre",
             "Apellidos",
+            "DNI",
+            "Número de teléfono",
+            "Email",
             "Estado",
             "Fecha de comienzo",
             "Fecha de salida",
@@ -210,6 +219,9 @@ def VolunteersExportToExcel(request):
     header_row = [
         "Nombre",
         "Apellidos",
+        "DNI",
+        "Número de teléfono",
+        "Email",
         "Estado",
         "Fecha de comienzo",
         "Fecha de salida",
