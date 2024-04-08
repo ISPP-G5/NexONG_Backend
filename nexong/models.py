@@ -239,6 +239,7 @@ class PunctualDonationByCard(models.Model):
     date = models.DateField()
 
 
+
 class HomeDocument(models.Model):
     title = models.CharField(max_length=255)
     document = models.FileField(
