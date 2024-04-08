@@ -76,6 +76,7 @@ class CreateUserSerializer(UserCreateSerializer):
             raise serializers.ValidationError("User must accept terms and conditions.")
         return data
 
+
 class UserLoginSerializer(Serializer):
     email = serializers.EmailField()
     password = serializers.CharField(style={"input_type": "password"})
@@ -124,10 +125,11 @@ class UserSerializer(ModelSerializer):
             raise serializers.ValidationError(validation_error)
 
         return data
-    
+
     def validate_has_accepted_latest_terms(self):
         latest_terms_version = Terms.objects.latest("date").version
         return self.terms_version_accepted == latest_terms_version
+
 
 class EducatorSerializer(ModelSerializer):
     class Meta:
