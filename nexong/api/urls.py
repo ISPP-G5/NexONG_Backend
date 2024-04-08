@@ -7,6 +7,9 @@ from .Authentication.views import (
     ActivateUserView,
 )
 from .PunctualDonationByCard.views import *
+from rest_framework.routers import DefaultRouter
+
+router = DefaultRouter()
 
 urlpatterns = [
     path("", include(router_api.urls)),
@@ -33,4 +36,6 @@ urlpatterns = [
     ),
     path("auth/", include("djoser.urls.authtoken")),
     path("process-payment", process_payment, name="process_payment"),
+    path("payment/success", payment_success, name="payment_success"),
+    path("payment/cancel", payment_cancel, name="payment_cancel"),
 ]

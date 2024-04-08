@@ -5,12 +5,14 @@ from ...models import *
 from .punctualDonationSerializer import PunctualDonationByCardSerializer
 from rest_framework.permissions import AllowAny
 from django.conf import settings
-from django.http import JsonResponse
 import stripe
 from django.views.decorators.csrf import csrf_exempt
 import json
+from rest_framework.decorators import api_view
 import requests
+from django.http import JsonResponse
 
+checkoutSessionID=None
 
 class PunctualDonationByCardApiViewSet(ModelViewSet):
     queryset = PunctualDonationByCard.objects.all()
@@ -25,82 +27,74 @@ class PunctualDonationByCardApiViewSet(ModelViewSet):
 
 
 @csrf_exempt
+@api_view(('POST',))
 def process_payment(request):
     stripe.api_key = settings.STRIPE_PRIVATE_KEY
     if request.method == "POST":
         amount = json.loads(request.body)["amount"]  # Monto en centavos
-        intent = stripe.PaymentIntent.create(
-            amount=amount,
-            currency="usd",
-            payment_method_types=["card"],
-            payment_method="pm_card_visa",
-        )
-        # Confirmar la intención de pago
+        if amount<1:
+              return Response({'msg':'La cantidad tiene que ser superior a un euro'})
         try:
-            intent.confirm()
-        except stripe.error.CardError:
-            # El pago ha fallado debido a un error en la tarjeta
-            return JsonResponse(
-                {
-                    "error": "El pago ha fallado debido a un error en la tarjeta",
-                    "status": "failed",
-                }
+            checkoutSession = stripe.checkout.Session.create(
+                line_items=[
+                    {
+                        'price_data':{
+                            'currency': 'EUR',
+                            'unit_amount': int(amount)*100,
+                            'product_data':{
+                                 'name': 'Donación puntual'
+                            }
+                        },
+                        'quantity': 1
+                    },
+                ],
+                mode='payment',
+                success_url=settings.URL_BASE + 'api/payment/success',
+                cancel_url=settings.URL_BASE + 'api/payment/cancel'
             )
-        except stripe.error.InvalidRequestError:
-            # La intención de pago no es válida
-            return JsonResponse(
-                {"error": "La intención de pago no es válida", "status": "failed"}
-            )
-        except stripe.error.AuthenticationError:
-            # Fallo de autenticación con Stripe
-            return JsonResponse(
-                {"error": "Fallo de autenticación con Stripe", "status": "failed"}
-            )
-        except stripe.error.APIConnectionError:
-            # Error de conexión con la API de Stripe
-            return JsonResponse(
-                {"error": "Error de conexión con la API de Stripe", "status": "failed"}
-            )
-        except stripe.error.StripeError:
-            # Otro tipo de error de Stripe
-            return JsonResponse(
-                {"error": "Error al procesar el pago con Stripe", "status": "failed"}
-            )
+            global checkoutSessionID
+            checkoutSessionID=checkoutSession.id
+        except Exception as e:
+            return Response({'msg':'Algo ha ido mal creando la sesión de Stripe', 'error':str(e)}, status=500)
+        return Response({'checkout_url': checkoutSession.url}, status=200)
+    return Response({'msg': 'El método de solicitud debe ser POST'}, status=405)
 
-        if intent.status == "succeeded":
-            name = json.loads(request.body)["name"]
-            surname = json.loads(request.body)["surname"]
-            email = json.loads(request.body)["email"]
-            date = json.loads(request.body)["date"]
-            payload = {
+def obtainCheckoutSession():
+    stripe.api_key = settings.STRIPE_PRIVATE_KEY
+    global checkoutSessionID
+    # Checkout session ID
+    checkout_session_id = checkoutSessionID
+    # Retrieve the checkout session
+    checkout_session = stripe.checkout.Session.retrieve(checkout_session_id)
+    return checkout_session
+
+def payment_success(request):
+    checkout_session = obtainCheckoutSession()
+    amount=int(checkout_session.amount_total/100)
+    email=checkout_session.customer_details.email
+    name=checkout_session.customer_details.name
+    payload = {
                 "amount": amount,
                 "name": name,
-                "surname": surname,
                 "email": email,
-                "date": date,
             }
-            response = requests.post(
-                "http://localhost:8000/api/punctual-donation-by-card/",
+    response = requests.post(
+                settings.URL_BASE + "api/punctual-donation-by-card/",
                 json=payload,
                 timeout=15,
             )
-            if response.status_code == 200 or response.status_code == 201:
-                return JsonResponse(
+    if response.status_code == 200 or response.status_code == 201:
+            return JsonResponse(
                     {
-                        "client_secret": intent.client_secret,
                         "amount": amount,
-                        "status": "succeeded",
+                        "status": "Se ha creado la donacion puntual",
                     }
                 )
-            else:
+    else:
                 return JsonResponse(
                     {"error": "Error al realizar la solicitud POST", "status": "failed"}
                 )
-        else:
-            # El pago no se ha realizado correctamente
-            return JsonResponse(
-                {
-                    "error": "El pago no se ha realizado correctamente",
-                    "status": "failed",
-                }
-            )
+def payment_cancel(request):
+    return JsonResponse(
+        {"error": "Error al realizar el pago", "status": "failed"}
+    )

@@ -8,7 +8,6 @@ class PunctualDonationByCardSerializer(ModelSerializer):
         fields = [
             "id",
             "name",
-            "surname",
             "email",
             "amount",
             "date",
