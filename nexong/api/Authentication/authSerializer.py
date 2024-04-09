@@ -128,7 +128,6 @@ class UserSerializer(ModelSerializer):
         return data
 
 
-
 class EducatorSerializer(ModelSerializer):
     class Meta:
         model = Educator
