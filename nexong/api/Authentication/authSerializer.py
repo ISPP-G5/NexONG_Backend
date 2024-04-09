@@ -47,7 +47,6 @@ class CreateUserSerializer(UserCreateSerializer):
             "education_center",
             "educator",
             "is_agreed",
-            "is_enabled",
         ]
 
     def validate_first_name(self, data):
@@ -95,33 +94,33 @@ class UserSerializer(ModelSerializer):
         validation_error = {}
         if "role" in data:
             if data["role"] == "EDUCADOR" and data["educator"] is None:
-                validation_error[
-                    "educator"
-                ] = 'Given role "EDUCADOR", this cannot be null.'
+                validation_error["educator"] = (
+                    'Given role "EDUCADOR", this cannot be null.'
+                )
             elif data["role"] == "VOLUNTARIO" and data["volunteer"] is None:
-                validation_error[
-                    "volunteer"
-                ] = 'Given role "VOLUNTARIO", this cannot be null.'
+                validation_error["volunteer"] = (
+                    'Given role "VOLUNTARIO", this cannot be null.'
+                )
             elif data["role"] == "FAMILIA" and data["family"] is None:
-                validation_error[
-                    "family"
-                ] = 'Given role "FAMILIA", this cannot be null.'
+                validation_error["family"] = (
+                    'Given role "FAMILIA", this cannot be null.'
+                )
             elif data["role"] == "SOCIO" and data["partner"] is None:
                 validation_error["partner"] = 'Given role "SOCIO", this cannot be null.'
             elif data["role"] == "VOLUNTARIO_SOCIO" and (
                 data["volunteer"] is None or data["partner"] is None
             ):
-                validation_error[
-                    "volunteer"
-                ] = 'Given role "VOLUNTARIO", this cannot be null.'
+                validation_error["volunteer"] = (
+                    'Given role "VOLUNTARIO", this cannot be null.'
+                )
                 validation_error["partner"] = 'Given role "SOCIO", this cannot be null.'
         if "id_number" in data:
             id_number = data["id_number"]
             pattern = r"^\d{8}[A-Z]$"
             if not re.match(pattern, id_number):
-                validation_error[
-                    "id_number"
-                ] = "The id_number does not match the expected pattern."
+                validation_error["id_number"] = (
+                    "The id_number does not match the expected pattern."
+                )
         if validation_error:
             raise serializers.ValidationError(validation_error)
 
