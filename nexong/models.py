@@ -350,7 +350,7 @@ class User(AbstractUser):
         Educator, on_delete=models.CASCADE, blank=True, null=True
     )
 
-    is_enabled = models.BooleanField(default=False)
+    is_enabled = models.BooleanField(default=False, blank=True)
     is_agreed = models.BooleanField(default=False)
     terms_version_accepted = models.FloatField(
         validators=[MinValueValidator(1.0)], default=1.0
