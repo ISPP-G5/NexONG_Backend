@@ -47,7 +47,7 @@ class CreateUserSerializer(UserCreateSerializer):
             "education_center",
             "educator",
             "is_agreed",
-            "is_enabled"
+            "is_enabled",
         ]
 
     def validate_first_name(self, data):
