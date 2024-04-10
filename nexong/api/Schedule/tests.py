@@ -5,6 +5,7 @@ from rest_framework.test import APIRequestFactory
 from rest_framework import status
 from rest_framework.authtoken.models import Token
 
+
 class AdminScheduleApiViewSetTestCase(TestCase):
     def setUp(self):
         self.factory = APIRequestFactory()
@@ -25,48 +26,55 @@ class AdminScheduleApiViewSetTestCase(TestCase):
         )
 
         self.schedule = Schedule.objects.create(
-            weekday = "MONDAY",
+            weekday="MONDAY",
             start_time="12:00:00",
-            end_time = "13:30:00",
-            lesson = self.lesson
+            end_time="13:30:00",
+            lesson=self.lesson,
         )
-
 
     def test_get_schedule_by_admin(self):
         response = self.client.get(
-            f"/api/schedule/{self.schedule.id}/", HTTP_AUTHORIZATION=f"Token {self.token.key}"
+            f"/api/schedule/{self.schedule.id}/",
+            HTTP_AUTHORIZATION=f"Token {self.token.key}",
         )
         self.assertEqual(response.status_code, status.HTTP_200_OK)
 
     def test_create_schedule_by_admin(self):
         response = self.client.post(
-            f"/api/schedule/", data = {
-                "weekday":"LUNES",
-                "start_time":"12:00:00",
-                "end_time":"13:30:00",
-                "lesson": self.lesson.id
-            },HTTP_AUTHORIZATION=f"Token {self.token.key}"
+            f"/api/schedule/",
+            data={
+                "weekday": "LUNES",
+                "start_time": "12:00:00",
+                "end_time": "13:30:00",
+                "lesson": self.lesson.id,
+            },
+            HTTP_AUTHORIZATION=f"Token {self.token.key}",
         )
         self.assertEqual(response.status_code, status.HTTP_201_CREATED)
 
     def test_create_schedule_error_by_admin(self):
         response = self.client.post(
-            f"/api/schedule/", data = {
-                "weekday":"LUNES",
-                "start_time":"14:00:00",
-                "end_time":"13:30:00",
-                "lesson": self.lesson.id
-            },HTTP_AUTHORIZATION=f"Token {self.token.key}"
+            f"/api/schedule/",
+            data={
+                "weekday": "LUNES",
+                "start_time": "14:00:00",
+                "end_time": "13:30:00",
+                "lesson": self.lesson.id,
+            },
+            HTTP_AUTHORIZATION=f"Token {self.token.key}",
         )
         self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
-    
+
     def test_update_schedule_by_admin(self):
         response = self.client.put(
-            f"/api/schedule/{self.schedule.id}/", data = {
-                "weekday":"LUNES",
-                "start_time":"13:00:00",
-                "end_time":"14:30:00",
-                "lesson": self.lesson.id
-            },content_type="application/json",HTTP_AUTHORIZATION=f"Token {self.token.key}"
+            f"/api/schedule/{self.schedule.id}/",
+            data={
+                "weekday": "LUNES",
+                "start_time": "13:00:00",
+                "end_time": "14:30:00",
+                "lesson": self.lesson.id,
+            },
+            content_type="application/json",
+            HTTP_AUTHORIZATION=f"Token {self.token.key}",
         )
         self.assertEqual(response.status_code, status.HTTP_200_OK)
