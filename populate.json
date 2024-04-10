@@ -58,7 +58,7 @@
             "nationality" : "España",
             "birthdate" : "2021-04-13",
             "family":1,
-            "avatar": "student_avatar\\student_avatar.png"
+            "avatar": null
             }
     },
     {
@@ -78,8 +78,8 @@
             "nationality" : "España",
             "birthdate" : "2014-11-22",
             "family":1,
-            "avatar": "student_avatar\\student_avatar.png"
-            }
+            "avatar": null
+        }
     },
     {
         "model": "nexong.student",
@@ -98,7 +98,7 @@
             "nationality" : "Francia",
             "birthdate" : "2021-5-12",
             "family":2,
-            "avatar": "student_avatar\\student_avatar.png"
+            "avatar": null
             }
     },
     {
@@ -118,8 +118,8 @@
             "nationality" : "España",
             "birthdate" : "2010-2-17",
             "family":2,
-            "avatar": "student_avatar\\student_avatar.png"
-            }
+            "avatar": null
+        }
     },
     {
         "model": "nexong.student",
@@ -138,8 +138,8 @@
             "nationality" : "España",
             "birthdate" : "2010-2-17",
             "family":2,
-            "avatar": "student_avatar\\student_avatar.png"
-            }
+            "avatar": null
+        }
     },
     {
         "model": "nexong.student",
@@ -158,8 +158,8 @@
             "nationality" : "España",
             "birthdate" : "2020-1-1",
             "family":3,
-            "avatar": "student_avatar\\student_avatar.png"
-            }
+            "avatar": null
+        }
     },
     {
         "model": "nexong.student",
@@ -178,8 +178,8 @@
             "nationality" : "España",
             "birthdate" : "2012-10-21",
             "family":3,
-            "avatar": "student_avatar\\student_avatar.png"
-            }
+            "avatar": null
+        }
     },
     {
         "model": "nexong.student",
@@ -198,8 +198,8 @@
             "nationality" : "España",
             "birthdate" : "2012-9-21",
             "family":4,
-            "avatar": "student_avatar\\student_avatar.png"
-            }
+            "avatar": null
+        }
     },
     {
         "model": "nexong.student",
@@ -218,8 +218,8 @@
             "nationality" : "España",
             "birthdate" : "2014-2-8",
             "family":4,
-            "avatar": "student_avatar\\student_avatar.png"
-            }
+            "avatar": null
+        }
     },
     {
         "model": "nexong.student",
@@ -238,8 +238,8 @@
             "nationality" : "España",
             "birthdate" : "2011-2-22",
             "family":4,
-            "avatar": "student_avatar\\student_avatar.png"
-            }
+            "avatar": null
+        }
     },
     {
         "model": "nexong.quartermarks",
@@ -272,6 +272,7 @@
         "model": "nexong.partner",
         "pk": 1,
         "fields": {
+            "description": "Soy de la zona y me gusta colaborar con la asociación. He participado en varias actividades de la asociación.",
             "address": "Insulinde 11",
             "enrollment_document":"partner_enrollment\\partner_enrollment.txt",
             "birthdate": "1956-07-05"
@@ -281,6 +282,7 @@
         "model": "nexong.partner",
         "pk": 2,
         "fields": {
+            "description": "Socio con gran implicación en la asociación. He colaborado en varias ocasiones en eventos y actividades de la asociación.",
             "address": "Katia 13",
             "enrollment_document":"partner_enrollment\\partner_enrollment.txt",
             "birthdate": "1973-03-05"
@@ -290,6 +292,7 @@
         "model": "nexong.partner",
         "pk": 3,
         "fields": {
+            "description": "Socio con cinco años de antigüedad en la asociación. Colaboro en la organización de eventos de la asociación.",
             "address": "Graad 26",
             "enrollment_document":"partner_enrollment\\partner_enrollment.txt",
             "birthdate": "1981-01-23"
@@ -299,6 +302,7 @@
         "model": "nexong.partner",
         "pk": 4,
         "fields": {
+            "description": "Socio con un año de antigüedad en la asociación. Colaboro en la organización de eventos de la asociación.",
             "address": "Ilinaara 48",
             "enrollment_document":"partner_enrollment\\partner_enrollment.txt",
             "birthdate": "1986-03-28"
@@ -532,14 +536,16 @@
         "model": "nexong.educator",
         "pk": 1,
         "fields": {
-            "birthdate": "1965-08-02"
+            "birthdate": "1965-08-02",
+            "description": "Experiencia en educación infantil. Disponible los martes y jueves por la tarde."
         }
     },
     {
         "model": "nexong.educator",
         "pk": 2,
         "fields": {
-            "birthdate": "1987-07-30"
+            "birthdate": "1987-07-30",
+            "description": "Experiencia en educación primaria. Disponible los lunes y miércoles por la mañana."
         }
     },
     {
@@ -552,14 +558,16 @@
             "id_number" : "57935784A",
             "phone" : 605234354,
             "role": "EDUCADOR",
-            "password": "profesol1",
+            "password": "pbkdf2_sha256$720000$ZBJi5MD3v4BJfe4MhVOwmP$7FDA5x713w1KY+5qWlg+YBB2ovpMLGOWr8mh0D284RQ=",
             "email": "palomino@gmail.com",
-            "avatar": "user_avatar\\educator_avatar.png",
+            "avatar": null,
             "family":null,
             "partner":null,
             "volunteer":null,
             "education_center":null,
-            "educator":1
+            "educator":1,
+            "is_enabled":true,
+            "is_agreed":true
             }
     },
     {
@@ -572,14 +580,16 @@
             "id_number" : "69899998D",
             "phone" : 644228657,
             "role": "EDUCADOR",
-            "password": "profesol2",
+            "password": "pbkdf2_sha256$720000$ZBJi5MD3v4BJfe4MhVOwmP$7FDA5x713w1KY+5qWlg+YBB2ovpMLGOWr8mh0D284RQ=",
             "email": "estrellabo@gmail.com",
-            "avatar": "user_avatar\\educator_avatar.png",
+            "avatar": null,
             "family":null,
             "partner":null,
             "volunteer":null,
             "education_center":null,
-            "educator":2
+            "educator":2,
+            "is_enabled":true,
+            "is_agreed":true
             }
     },
     {
@@ -592,13 +602,16 @@
             "id_number" : "57925784A",
             "phone" : 605233333,
             "role": "VOLUNTARIO",
-            "password": "volutalio1",
+            "password": "pbkdf2_sha256$720000$ZBJi5MD3v4BJfe4MhVOwmP$7FDA5x713w1KY+5qWlg+YBB2ovpMLGOWr8mh0D284RQ=",
             "email": "mcast@gmail.com",
-            "avatar": "user_avatar\\volunteer_avatar.png",
+            "avatar": null,
             "family":null,
             "partner":null,
             "volunteer":1,
-            "education_center":null
+            "education_center":null,
+            "educator": null,
+            "is_enabled":true,
+            "is_agreed":true
             }
     },
     {
@@ -611,14 +624,16 @@
             "id_number" : "58673211F",
             "phone" : 654938475,
             "role": "VOLUNTARIO",
-            "password": "volutalio2",
+            "password": "pbkdf2_sha256$720000$ZBJi5MD3v4BJfe4MhVOwmP$7FDA5x713w1KY+5qWlg+YBB2ovpMLGOWr8mh0D284RQ=",
             "email": "julmun@gmail.com",
-            "avatar": "user_avatar\\volunteer_avatar.png",
+            "avatar": null,
             "family":null,
             "partner":null,
             "volunteer":2,
             "education_center":null,
-            "educator":null
+            "educator":null,
+            "is_enabled":true,
+            "is_agreed":true
             }
     },
     {
@@ -631,14 +646,16 @@
             "id_number" : "84756982W",
             "phone" : 699448732,
             "role": "VOLUNTARIO",
-            "password": "volutalio3",
+            "password": "pbkdf2_sha256$720000$ZBJi5MD3v4BJfe4MhVOwmP$7FDA5x713w1KY+5qWlg+YBB2ovpMLGOWr8mh0D284RQ=",
             "email": "javsev@gmail.com",
-            "avatar": "user_avatar\\volunteer_avatar.png",
+            "avatar": null,
             "family":null,
             "partner":null,
             "volunteer":3,
             "education_center":null,
-            "educator":null
+            "educator":null,
+            "is_enabled":true,
+            "is_agreed":true
             }
     },
     {
@@ -651,14 +668,16 @@
             "id_number" : "11660496S",
             "phone" : 699229933,
             "role": "VOLUNTARIO",
-            "password": "volutalio4",
+            "password": "pbkdf2_sha256$720000$ZBJi5MD3v4BJfe4MhVOwmP$7FDA5x713w1KY+5qWlg+YBB2ovpMLGOWr8mh0D284RQ=",
             "email": "matmor@gmail.com",
-            "avatar": "user_avatar\\volunteer_avatar.png",
+            "avatar": null,
             "family":null,
             "partner":null,
             "volunteer":4,
             "education_center":null,
-            "educator":null
+            "educator":null,
+            "is_enabled":true,
+            "is_agreed":true
             }
     },
     {
@@ -671,14 +690,16 @@
             "id_number" : "22339846Y",
             "phone" : 600223958,
             "role": "VOLUNTARIO",
-            "password": "volutalio5",
+            "password": "pbkdf2_sha256$720000$ZBJi5MD3v4BJfe4MhVOwmP$7FDA5x713w1KY+5qWlg+YBB2ovpMLGOWr8mh0D284RQ=",
             "email": "marlor@gmail.com",
-            "avatar": "user_avatar\\volunteer_avatar.png",
+            "avatar": null,
             "family":null,
             "partner":null,
             "volunteer":5,
             "education_center":null,
-            "educator":null
+            "educator":null,
+            "is_enabled":true,
+            "is_agreed":true
             }
     },
     {
@@ -691,14 +712,16 @@
             "id_number" : "99334485R",
             "phone" : 666992343,
             "role": "VOLUNTARIO",
-            "password": "volutalio6",
+            "password": "pbkdf2_sha256$720000$ZBJi5MD3v4BJfe4MhVOwmP$7FDA5x713w1KY+5qWlg+YBB2ovpMLGOWr8mh0D284RQ=",
             "email": "justmel@gmail.com",
-            "avatar": "user_avatar\\volunteer_avatar.png",
+            "avatar": null,
             "family":null,
             "partner":null,
             "volunteer":6,
             "education_center":null,
-            "educator":null
+            "educator":null,
+            "is_enabled":true,
+            "is_agreed":true
             }
     },
     {
@@ -711,14 +734,16 @@
             "id_number" : "48576821J",
             "phone" : 622922922,
             "role": "VOLUNTARIO",
-            "password": "volutalio7",
+            "password": "pbkdf2_sha256$720000$ZBJi5MD3v4BJfe4MhVOwmP$7FDA5x713w1KY+5qWlg+YBB2ovpMLGOWr8mh0D284RQ=",
             "email": "milgar@gmail.com",
-            "avatar": "user_avatar\\volunteer_avatar.png",
+            "avatar": null,
             "family":null,
             "partner":null,
             "volunteer":7,
             "education_center":null,
-            "educator":null
+            "educator":null,
+            "is_enabled":true,
+            "is_agreed":true
             }
     },
     {
@@ -731,14 +756,16 @@
             "id_number" : "57123784T",
             "phone" : 604893860,
             "role": "SOCIO",
-            "password": "parnerio1",
+            "password": "pbkdf2_sha256$720000$ZBJi5MD3v4BJfe4MhVOwmP$7FDA5x713w1KY+5qWlg+YBB2ovpMLGOWr8mh0D284RQ=",
             "email": "esteban@gmail.com",
-            "avatar": "user_avatar\\partner_avatar.png",
+            "avatar": null,
             "family":null,
             "partner":1,
             "volunteer":null,
             "education_center":null,
-            "educator":null
+            "educator":null,
+            "is_enabled":true,
+            "is_agreed":true
             }
     },
     {
@@ -751,14 +778,16 @@
             "id_number" : "29584723P",
             "phone" : 603867312,
             "role": "SOCIO",
-            "password": "parnerio2",
+            "password": "pbkdf2_sha256$720000$ZBJi5MD3v4BJfe4MhVOwmP$7FDA5x713w1KY+5qWlg+YBB2ovpMLGOWr8mh0D284RQ=",
             "email": "marrr@gmail.com",
-            "avatar": "user_avatar\\partner_avatar.png",
+            "avatar": null,
             "family":null,
             "partner":2,
             "volunteer":null,
             "education_center":null,
-            "educator":null
+            "educator":null,
+            "is_enabled":true,
+            "is_agreed":true
             }
     },
     {
@@ -771,14 +800,16 @@
             "id_number" : "98399384L",
             "phone" : 63212452,
             "role": "SOCIO",
-            "password": "parnerio3",
+            "password": "pbkdf2_sha256$720000$ZBJi5MD3v4BJfe4MhVOwmP$7FDA5x713w1KY+5qWlg+YBB2ovpMLGOWr8mh0D284RQ=",
             "email": "marcosot@gmail.com",
-            "avatar": "user_avatar\\partner_avatar.png",
+            "avatar": null,
             "family":null,
             "partner":3,
             "volunteer":null,
             "education_center":null,
-            "educator":null
+            "educator":null,
+            "is_enabled":true,
+            "is_agreed":true
             }
     },
     {
@@ -791,14 +822,16 @@
             "id_number" : "94838877S",
             "phone" : 690847362,
             "role": "SOCIO",
-            "password": "parnerio4",
+            "password": "pbkdf2_sha256$720000$ZBJi5MD3v4BJfe4MhVOwmP$7FDA5x713w1KY+5qWlg+YBB2ovpMLGOWr8mh0D284RQ=",
             "email": "stegg@gmail.com",
-            "avatar": "user_avatar\\partner_avatar.png",
+            "avatar": null,
             "family":null,
             "partner":4,
             "volunteer":null,
             "education_center":null,
-            "educator":null
+            "educator":null,
+            "is_enabled":true,
+            "is_agreed":true
             }
     },
     {
@@ -811,14 +844,16 @@
             "id_number" : "85933958G",
             "phone" : 596748302,
             "role": "FAMILIA",
-            "password": "familia1",
+            "password": "pbkdf2_sha256$720000$ZBJi5MD3v4BJfe4MhVOwmP$7FDA5x713w1KY+5qWlg+YBB2ovpMLGOWr8mh0D284RQ=",
             "email": "annanna@gmail.com",
-            "avatar": "user_avatar\\family_avatar.png",
+            "avatar": null,
             "family":1,
             "partner":null,
             "volunteer":null,
             "education_center":null,
-            "educator":null
+            "educator":null,
+            "is_enabled":true,
+            "is_agreed":true
             }
     },
     {
@@ -831,14 +866,16 @@
             "id_number" : "19993875L",
             "phone" : 99332763,
             "role": "FAMILIA",
-            "password": "familia2",
+            "password": "pbkdf2_sha256$720000$ZBJi5MD3v4BJfe4MhVOwmP$7FDA5x713w1KY+5qWlg+YBB2ovpMLGOWr8mh0D284RQ=",
             "email": "lucgo@gmail.com",
-            "avatar": "user_avatar\\family_avatar.png",
+            "avatar": null,
             "family":2,
             "partner":null,
             "volunteer":null,
             "education_center":null,
-            "educator":null
+            "educator":null,
+            "is_enabled":true,
+            "is_agreed":true
             }
     },
     {
@@ -851,14 +888,16 @@
             "id_number" : "43434325B",
             "phone" : 667695958,
             "role": "FAMILIA",
-            "password": "familia3",
+            "password": "pbkdf2_sha256$720000$ZBJi5MD3v4BJfe4MhVOwmP$7FDA5x713w1KY+5qWlg+YBB2ovpMLGOWr8mh0D284RQ=",
             "email": "cecfer@gmail.com",
-            "avatar": "user_avatar\\family_avatar.png",
+            "avatar": null,
             "family":3,
             "partner":null,
             "volunteer":null,
             "education_center":null,
-            "educator":null
+            "educator":null,
+            "is_enabled":true,
+            "is_agreed":true
             }
     },
     {
@@ -871,14 +910,16 @@
             "id_number" : "85922339G",
             "phone" : 688899953,
             "role": "FAMILIA",
-            "password": "familia4",
+            "password": "pbkdf2_sha256$720000$ZBJi5MD3v4BJfe4MhVOwmP$7FDA5x713w1KY+5qWlg+YBB2ovpMLGOWr8mh0D284RQ=",
             "email": "pedmon@gmail.com",
-            "avatar": "user_avatar\\family_avatar.png",
+            "avatar": null,
             "family":4,
             "partner":null,
             "volunteer":null,
             "education_center":null,
-            "educator":null
+            "educator":null,
+            "is_enabled":true,
+            "is_agreed":true
             }
     },
     {
@@ -891,14 +932,16 @@
             "id_number" : "94862395P",
             "phone" : 699256707,
             "role": "CENTRO EDUCATIVO",
-            "password": "centro1",
+            "password": "pbkdf2_sha256$720000$ZBJi5MD3v4BJfe4MhVOwmP$7FDA5x713w1KY+5qWlg+YBB2ovpMLGOWr8mh0D284RQ=",
             "email": "centro1@gmail.com",
-            "avatar": "user_avatar\\center_avatar.png",
+            "avatar": null,
             "family":null,
             "partner":null,
             "volunteer":null,
             "education_center":1,
-            "educator":null
+            "educator":null,
+            "is_enabled":true,
+            "is_agreed":true
             }
     },
     {
@@ -911,34 +954,16 @@
             "id_number" : "21214509L",
             "phone" : 633933955,
             "role": "CENTRO EDUCATIVO",
-            "password": "centro2",
+            "password": "pbkdf2_sha256$720000$ZBJi5MD3v4BJfe4MhVOwmP$7FDA5x713w1KY+5qWlg+YBB2ovpMLGOWr8mh0D284RQ=",
             "email": "centro2@gmail.com",
-            "avatar": "user_avatar\\center_avatar.png",
+            "avatar": null,
             "family":null,
             "partner":null,
             "volunteer":null,
             "education_center":2,
-            "educator":null
-            }
-    },
-    {
-        "model": "nexong.user",
-        "pk": 20,
-        "fields": {
-            "first_name": "admin",
-            "last_name": "admin",
-            "username": "Admin",
-            "id_number": "85738237V",
-            "phone": 638576655,
-            "role": "ADMIN",
-            "password": "admin",
-            "email": "admin@gmail.com",
-            "avatar": "user_avatar\\admin_avatar.png",
-            "family":null,
-            "partner":null,
-            "volunteer":null,
-            "education_center":null,
-            "educator":null
+            "educator":null,
+            "is_enabled":true,
+            "is_agreed":true
             }
     },
     {
@@ -1558,5 +1583,17 @@
             "is_authorized": true,
             "lesson_event": 2
         }
+    },
+    {
+        
+        "model": "nexong.terms",
+        "pk": 1,
+        "fields": {
+            "text": "Términos y Condiciones de Uso. Por favor, lea estos términos y condiciones de uso (T&C) detenidamente antes de utilizar nuestro servicio.Aceptación de Términos: Al acceder y utilizar nuestro servicio, usted acepta estar sujeto a estos T&C y a todas las leyes y regulaciones aplicables. Si no está de acuerdo con alguno de estos términos, no utilice el servicio.Uso del Servicio: Usted acepta utilizar el servicio únicamente con fines legales y de acuerdo con estos T&C. Se prohíbe el uso del servicio para actividades ilegales o no autorizadas.Propiedad Intelectual: Todo el contenido y los derechos de propiedad intelectual asociados con el servicio son propiedad de NexOng o de sus licenciantes. Usted acepta no copiar, modificar, distribuir, transmitir, mostrar, vender o explotar de otra manera dicho contenido sin el consentimiento previo por escrito de NexOng.Privacidad: El uso del servicio está sujeto a nuestra política de privacidad, que describe cómo recopilamos, usamos y compartimos sus datos personales. Al utilizar el servicio, usted acepta estar sujeto a nuestra política de privacidad.Limitación de Responsabilidad: En la máxima medida permitida por la ley, NexOng no será responsable ante usted por daños directos, indirectos, incidentales, especiales, consecuentes o punitivos que surjan de su uso del servicio.Modificaciones de los Términos: Nos reservamos el derecho de modificar estos T&C en cualquier momento. Cualquier cambio entrará en vigencia inmediatamente después de su publicación en el sitio web. Se le anima a revisar periódicamente estos T&C para estar al tanto de cualquier cambio.Jurisdicción y Ley Aplicable: Estos T&C se regirán e interpretarán de acuerdo con las leyes del [país/estado/provincia], sin tener en cuenta sus conflictos de principios legales.Al utilizar nuestro servicio, usted acepta cumplir con estos T&C. Si tiene alguna pregunta sobre estos términos, por favor contáctenos.NexOng Fecha de última actualización: 2024-04-07",
+            "version": "1.0",
+            "date": "2024-04-07"
+        }
+        
+        
     }
 ]

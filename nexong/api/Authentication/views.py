@@ -1,7 +1,9 @@
+from django.shortcuts import redirect
+from django.urls import reverse
 from django.utils.http import urlsafe_base64_decode
 import requests
 from django.views import View
-from django.http import HttpResponse, JsonResponse
+from django.http import Http404, JsonResponse
 from rest_framework.views import APIView
 from rest_framework.viewsets import ModelViewSet
 from rest_framework.response import Response
@@ -11,6 +13,7 @@ from .authSerializer import *
 from rest_framework_simplejwt.tokens import RefreshToken
 from django.contrib.auth.tokens import default_token_generator
 from ..permissions import *
+from django.views.generic import TemplateView
 
 
 def process_instance(serializer_class, instance, data):
@@ -22,7 +25,7 @@ def process_instance(serializer_class, instance, data):
 
 
 class UserApiViewSet(ModelViewSet):
-    http_method_names = ["get", "put", "delete"]
+    http_method_names = ["get", "put", "delete", "patch"]
     serializer_class = UserSerializer
     queryset = User.objects.all()
     permission_classes = [isAdmin]
@@ -32,7 +35,7 @@ class EducatorApiViewSet(ModelViewSet):
     queryset = Educator.objects.all()
     http_method_names = ["get", "post", "put", "delete"]
     serializer_class = EducatorSerializer
-    permission_classes = [isAdmin]
+    permission_classes = [isAdmin | isEducator]
 
     def destroy(self, request, *args, **kwargs):
         instance = self.get_object()
@@ -44,7 +47,7 @@ class PartnerApiViewSet(ModelViewSet):
     queryset = Partner.objects.all()
     http_method_names = ["get", "post", "put", "delete", "patch"]
     serializer_class = PartnerSerializer
-    permission_classes = [isAdminGetPutAndDelete]
+    permission_classes = [isAdmin | isPartner]
 
     def destroy(self, request, *args, **kwargs):
         instance = self.get_object()
@@ -56,7 +59,7 @@ class VolunteerApiViewSet(ModelViewSet):
     queryset = Volunteer.objects.all()
     http_method_names = ["get", "post", "put", "delete", "patch"]
     serializer_class = VolunteerSerializer
-    permission_classes = [isAdminGetPutAndDelete]
+    permission_classes = [isAdmin | isVolunteer]
 
     def destroy(self, request, *args, **kwargs):
         instance = self.get_object()
@@ -68,7 +71,7 @@ class FamilyApiViewSet(ModelViewSet):
     queryset = Family.objects.all()
     http_method_names = ["get", "post", "put", "delete"]
     serializer_class = FamilySerializer
-    permission_classes = [isAdminGetPutAndDelete]
+    permission_classes = [isAdmin | isFamily]
 
     def destroy(self, request, *args, **kwargs):
         instance = self.get_object()
@@ -80,7 +83,7 @@ class EducationCenterApiViewSet(ModelViewSet):
     queryset = EducationCenter.objects.all()
     http_method_names = ["get", "post", "put", "delete"]
     serializer_class = EducationCenterSerializer
-    permission_classes = [isAdminGetPutAndDelete]
+    permission_classes = [isAdmin | isEducationCenter]
 
     def destroy(self, request, *args, **kwargs):
         instance = self.get_object()
@@ -145,7 +148,7 @@ class ActivateUserView(APIView):
 
 
 class CustomActivateView(APIView):
-    def post(self, request, *args, **kwargs):
+    def get(self, request, *args, **kwargs):
         uid = kwargs.get("uid")
         token = kwargs.get("token")
         try:
@@ -156,8 +159,25 @@ class CustomActivateView(APIView):
                     user.is_enabled = True
                     user.is_active = True
                     user.save()
-                return Response(status=status.HTTP_200_OK)
-        except (TypeError, ValueError, OverflowError, User.DoesNotExist):
+                    return redirect(reverse("activation_success"))
+                else:
+                    return Response(
+                        {"detail": "Token not valid"},
+                        status=status.HTTP_400_BAD_REQUEST,
+                    )
+            else:
+                return Response(
+                    {"detail": "User already activated"}, status=status.HTTP_200_OK
+                )
+        except User.DoesNotExist:
+            raise Http404("User does not exist")
+        except requests.exceptions.RequestException as e:
+            print("Error making request:", e)
             return Response(
-                {"detail": "Token not valid"}, status=status.HTTP_400_BAD_REQUEST
+                {"detail": "Error making request"},
+                status=status.HTTP_500_INTERNAL_SERVER_ERROR,
             )
+
+
+class ActivationSuccessView(TemplateView):
+    template_name = "custom_activate.html"
