@@ -1583,5 +1583,17 @@
             "is_authorized": true,
             "lesson_event": 2
         }
+    },
+    {
+        
+        "model": "nexong.terms",
+        "pk": 1,
+        "fields": {
+            "text": "Términos y Condiciones de Uso. Por favor, lea estos términos y condiciones de uso (T&C) detenidamente antes de utilizar nuestro servicio.Aceptación de Términos: Al acceder y utilizar nuestro servicio, usted acepta estar sujeto a estos T&C y a todas las leyes y regulaciones aplicables. Si no está de acuerdo con alguno de estos términos, no utilice el servicio.Uso del Servicio: Usted acepta utilizar el servicio únicamente con fines legales y de acuerdo con estos T&C. Se prohíbe el uso del servicio para actividades ilegales o no autorizadas.Propiedad Intelectual: Todo el contenido y los derechos de propiedad intelectual asociados con el servicio son propiedad de NexOng o de sus licenciantes. Usted acepta no copiar, modificar, distribuir, transmitir, mostrar, vender o explotar de otra manera dicho contenido sin el consentimiento previo por escrito de NexOng.Privacidad: El uso del servicio está sujeto a nuestra política de privacidad, que describe cómo recopilamos, usamos y compartimos sus datos personales. Al utilizar el servicio, usted acepta estar sujeto a nuestra política de privacidad.Limitación de Responsabilidad: En la máxima medida permitida por la ley, NexOng no será responsable ante usted por daños directos, indirectos, incidentales, especiales, consecuentes o punitivos que surjan de su uso del servicio.Modificaciones de los Términos: Nos reservamos el derecho de modificar estos T&C en cualquier momento. Cualquier cambio entrará en vigencia inmediatamente después de su publicación en el sitio web. Se le anima a revisar periódicamente estos T&C para estar al tanto de cualquier cambio.Jurisdicción y Ley Aplicable: Estos T&C se regirán e interpretarán de acuerdo con las leyes del [país/estado/provincia], sin tener en cuenta sus conflictos de principios legales.Al utilizar nuestro servicio, usted acepta cumplir con estos T&C. Si tiene alguna pregunta sobre estos términos, por favor contáctenos.NexOng Fecha de última actualización: 2024-04-07",
+            "version": "1.0",
+            "date": "2024-04-07"
+        }
+        
+        
     }
 ]

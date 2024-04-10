@@ -12,12 +12,10 @@ from reportlab.platypus import (
     SimpleDocTemplate,
     Paragraph,
     Spacer,
-    Table,
-    TableStyle,
     Image,
 )
+from ..helpers.volunteerExports import CreateTableFromResponse
 from reportlab.lib.styles import getSampleStyleSheet
-from reportlab.lib import colors
 from datetime import datetime
 from ..permissions import *
 
@@ -37,7 +35,6 @@ class DonationApiViewSet(ModelViewSet):
 def DonationsExportToCsv(request):
     response = HttpResponse(content_type="text/csv")
     response["Content-Disposition"] = 'attachment; filename="Datos_Donaciones.csv"'
-    # Retrieve data from your model
     queryset = Donation.objects.all()
 
     # Create a CSV writer object
@@ -99,15 +96,15 @@ def obtainDataFromRequest(request):
                 queryset = Donation.objects.all()
 
     if startDate is None and partner == 0:
-        filename = "Reporte de donaciones global."
+        filename = "Reporte de donaciones global"
     else:
         if partner != 0:
             if startDate is None:
-                filename = f"Reporte_de_donaciones_de_{userOfPartner.name}."
+                filename = f"Reporte_de_donaciones_de_{userOfPartner.name}"
             else:
-                filename = f"Reporte_de_donaciones_entre_{startDate_str}_y_{endDate_str}_de_{userOfPartner.name}."
+                filename = f"Reporte_de_donaciones_entre_{startDate_str}_y_{endDate_str}_de_{userOfPartner.name}"
         else:
-            filename = f"Reporte_de_donaciones_entre_{startDate_str}_y_{endDate_str}."
+            filename = f"Reporte_de_donaciones_entre_{startDate_str}_y_{endDate_str}"
     return (
         startDate_str,
         endDate_str,
@@ -188,27 +185,7 @@ def DonationsExportToPdf(request):
             [donation.quantity, donation.frequency, donation.holder, donation.date]
         )
 
-    # Create a table
-    table = Table(table_data)
-
-    # Table style
-    table.setStyle(
-        TableStyle(
-            [
-                ("BACKGROUND", (0, 0), (-1, 0), colors.grey),
-                ("TEXTCOLOR", (0, 0), (-1, 0), colors.whitesmoke),
-                ("ALIGN", (0, 0), (-1, -1), "CENTER"),
-                ("FONTNAME", (0, 0), (-1, 0), "Helvetica-Bold"),
-                ("BOTTOMPADDING", (0, 0), (-1, 0), 12),
-                ("BACKGROUND", (0, 1), (-1, -1), colors.beige),
-                ("GRID", (0, 0), (-1, -1), 1, colors.black),
-            ]
-        )
-    )
-
-    # Table to Story
-    Story.append(table)
-    doc.build(Story)
+    CreateTableFromResponse(table_data, Story, doc)
 
     return response
 
