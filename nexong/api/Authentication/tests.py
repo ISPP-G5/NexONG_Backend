@@ -3,33 +3,138 @@ from nexong.api.Authentication.views import *
 from nexong.models import *
 from rest_framework.test import APIRequestFactory
 from rest_framework import status
-from rest_framework.test import force_authenticate
 from rest_framework.authtoken.models import Token
 
-class EducationCenterApiViewSetTestCase(TestCase):
+class AdminUserApiViewSetTestCase(TestCase):
     def setUp(self):
         self.factory = APIRequestFactory()
+        self.user = User.objects.create(
+            username="testuser", email="example@gmail.com", role=ADMIN
+        )
+        self.token = Token.objects.create(user=self.user)
 
-    def test_create_education_center(self):
-        # Obtener o crear un superusuario
-        superuser, created = User.objects.get_or_create(username='admin', email='admin@example.com')
-        if created:
-            superuser.set_password('adminpassword')
-            superuser.is_staff = True
-            superuser.is_superuser = True
-            superuser.save()
+        self.family = Family.objects.create(name="Familia López")
+        self.userfamily = User.objects.create(
+            username="testuser2", email="example2@gmail.com", role=FAMILY, family=self.family
+        )
+        self.education_center = EducationCenter.objects.create(name = "San Antonio Lobato")
+        self.partner = Partner.objects.create(address="333 ALO", birthdate="1981-06-21")
+        self.educator = Educator.objects.create(birthdate="2000-04-21")
+        self.volunteer = Volunteer.objects.create(
+            academic_formation="Voluntario Admin ",
+            motivation="Voluntario Admin",
+            status="PENDIENTE",
+            address="Voluntario Admin",
+            postal_code=12350,
+            birthdate="1957-07-05",
+            start_date="1960-07-05",
+            end_date="1980-07-05",
+        )
 
-        # Obtener o crear el token de autenticación del superusuario
-        token, created = Token.objects.get_or_create(user=superuser)
-        data = {
-            'name': 'Escuela Ejemplo',
-        }
-        url = '/api/education-center/'
-        auth_header = f'Token {token.key}'
-        headers = {'HTTP_AUTHORIZATION': auth_header}
-        response = self.client.post(url, data, **headers)
-        self.assertEqual(response.status_code, status.HTTP_201_CREATED)
-        self.assertEqual(EducationCenter.objects.count(), 1)
-        education_center = EducationCenter.objects.first()
-        self.assertEqual(education_center.name, data['name'])
-        self.assertIsInstance(EducationCenterApiViewSet.serializer_class(), EducationCenterSerializer)
+    def test_get_user_by_admin(self):
+        response = self.client.get(
+            f"/api/user/{self.userfamily.id}/", HTTP_AUTHORIZATION=f"Token {self.token.key}"
+        )
+        self.assertEqual(response.status_code, 200)
+
+    def test_update_user_by_admin(self):
+        response = self.client.put(
+            f"/api/user/{self.userfamily.id}/", data = {
+                "first_name": "",
+                "last_name": "",
+                "is_staff": False,
+                "is_active": True,
+                "date_joined": "2024-03-20T13:06:09.673795Z",
+                "username": "testuser3",
+                "id_number": "85738237V",
+                "phone": 638576655,
+                "password": "admin",
+                "email": "admin@gmail.com",
+                "role": "ADMIN",
+                "is_enabled": True,
+                "is_agreed": False,
+                "terms_version_accepted": 1.0,
+                "family": self.family.id,
+            },content_type="application/json",HTTP_AUTHORIZATION=f"Token {self.token.key}"
+        )
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+        self.userfamily.refresh_from_db()
+        self.assertEqual(self.userfamily.username, "testuser3")
+        
+    def test_delete_user_by_admin(self):
+        response = self.client.delete(
+            f"/api/user/{self.userfamily.id}/", HTTP_AUTHORIZATION=f"Token {self.token.key}"
+        )
+        self.assertEqual(response.status_code, status.HTTP_204_NO_CONTENT)
+
+    def test_get_educator_by_admin(self):
+        response = self.client.get(
+            f"/api/educator/{self.educator.id}/", HTTP_AUTHORIZATION=f"Token {self.token.key}"
+        )
+        self.assertEqual(response.status_code, 200)
+
+    def test_get_educator_by_admin(self):
+        response = self.client.get(
+            f"/api/educator/{self.educator.id}/", HTTP_AUTHORIZATION=f"Token {self.token.key}"
+        )
+        self.assertEqual(response.status_code, 200)
+
+    def test_get_partner_by_admin(self):
+        response = self.client.get(
+            f"/api/educator/{self.partner.id}/", HTTP_AUTHORIZATION=f"Token {self.token.key}"
+        )
+        self.assertEqual(response.status_code, 200)
+
+    def test_get_volunteer_by_admin(self):
+        response = self.client.get(
+            f"/api/educator/{self.volunteer.id}/", HTTP_AUTHORIZATION=f"Token {self.token.key}"
+        )
+        self.assertEqual(response.status_code, 200)
+
+    def test_get_education_center_by_admin(self):
+        response = self.client.get(
+            f"/api/education-center/{self.education_center.id}/", HTTP_AUTHORIZATION=f"Token {self.token.key}"
+        )
+        self.assertEqual(response.status_code, 200)
+
+    def test_create_education_center_by_admin(self):
+        response = self.client.post(
+            f"/api/education-center/", data = {
+                "name" : "San Carlos"
+            }, HTTP_AUTHORIZATION=f"Token {self.token.key}"
+        )
+        self.assertEqual(response.status_code, 201)
+
+    def test_create_education_center_error_by_admin(self):
+        response = self.client.post(
+            f"/api/education-center/", data = {
+                "name" : ""
+            }, HTTP_AUTHORIZATION=f"Token {self.token.key}"
+        )
+        self.assertEqual(response.status_code, 400)
+
+    def test_update_education_center_by_admin(self):
+        response = self.client.put(
+            f"/api/education-center/{self.education_center.id}/", data = {
+                "name" : "San Fisichella"
+            }, content_type="application/json",HTTP_AUTHORIZATION=f"Token {self.token.key}"
+        )
+        self.assertEqual(response.status_code, 200)
+
+    def test_update_education_center_error_by_admin(self):
+        response = self.client.put(
+            f"/api/education-center/{self.education_center.id}/", data = {
+                "name" : ""
+            }, content_type="application/json",HTTP_AUTHORIZATION=f"Token {self.token.key}"
+        )
+        self.assertEqual(response.status_code, 400)
+
+    def test_delete_education_center_error_by_admin(self):
+        response = self.client.delete(
+            f"/api/education-center/{self.education_center.id}/", content_type="application/json",HTTP_AUTHORIZATION=f"Token {self.token.key}"
+        )
+        self.assertEqual(response.status_code, 204)
+
+    
+
+    
