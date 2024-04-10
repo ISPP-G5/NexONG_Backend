@@ -9,7 +9,7 @@ class AdminDonationApiViewSetTestCase(TestCase):
     def setUp(self):
         self.factory = APIRequestFactory()
         self.user = User.objects.create(
-            username="testuser", email="example@gmail.com", role=ADMIN
+            username="testuser", email="example2@gmail.com", role=ADMIN
         )
         self.token = Token.objects.create(user=self.user)
         self.partner = Partner.objects.create(address="333 Elm St", birthdate="1996-05-05")

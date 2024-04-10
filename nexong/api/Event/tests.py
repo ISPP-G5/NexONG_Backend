@@ -128,9 +128,9 @@ class AdminEventApiViewSetTestCase(TestCase):
         response = self.client.post(
             "/api/event/", 
             data={
-                "name": "Vienen Barrio Sesamo",
-                "description": "Se necesitan voluntarios",
-                "place": "Patio Principal",
+                "name": "Viene la familia",
+                "description": "Se necesitan gente",
+                "place": "Patio Trasero",
                 "max_volunteers": 2,
                 "max_attendees": 2,
                 "price": 5,
@@ -186,8 +186,8 @@ class AdminEventApiViewSetTestCase(TestCase):
         self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
 
     def test_create_event_hour_start_error_by_admin(self):
-        attendees_ids = [self.student.id, self.student2.id]
-        volunteers_ids = [self.voluntario.id, self.voluntario2.id]  # Asegurarse de que se esté pasando el ID del voluntario
+        attendees_id1 = [self.student.id, self.student2.id]
+        volunteers_id1 = [self.voluntario.id, self.voluntario2.id]  # Asegurarse de que se esté pasando el ID del voluntario
         response = self.client.post(
             "/api/event/", 
             data={
@@ -199,8 +199,8 @@ class AdminEventApiViewSetTestCase(TestCase):
                 "price": 5,
                 "start_date": "2023-06-13T05:00:00Z",  
                 "end_date": "2023-06-13T04:00:00Z",    
-                "attendees": attendees_ids,
-                "volunteers": volunteers_ids, 
+                "attendees": attendees_id1,
+                "volunteers": volunteers_id1, 
             },
             HTTP_AUTHORIZATION=f"Token {self.token.key}",
         )
@@ -235,9 +235,9 @@ class AdminEventApiViewSetTestCase(TestCase):
         self.assertEqual(response.status_code, status.HTTP_204_NO_CONTENT)
 
     def test_create_lesson_event_by_admin(self):
-        attendees_ids = [self.student.id, self.student2.id]
-        volunteers_ids = [self.voluntario.id, self.voluntario2.id]  
-        educators_ids = [self.educator.id, self.educator2.id]
+        attendees_id2 = [self.student.id, self.student2.id]
+        volunteers_id2 = [self.voluntario.id, self.voluntario2.id]  
+        educators_id2 = [self.educator.id, self.educator2.id]
         response = self.client.post(
             "/api/lesson-event/", 
             data={
@@ -249,18 +249,18 @@ class AdminEventApiViewSetTestCase(TestCase):
                 "lesson": self.lesson.id,
                 "start_date": "2025-06-13T05:00:00Z",  
                 "end_date": "2025-06-13T16:00:00Z", 
-                "educators": educators_ids,
-                "attendees": attendees_ids,
-                "volunteers": volunteers_ids,
+                "educators": educators_id2,
+                "attendees": attendees_id2,
+                "volunteers": volunteers_id2,
             },
             HTTP_AUTHORIZATION=f"Token {self.token.key}",
         )
         self.assertEqual(response.status_code, status.HTTP_201_CREATED)
 
     def test_create_lesson_event_lesson_error_by_admin(self):
-        attendees_ids = [self.student.id, self.student2.id]
-        volunteers_ids = [self.voluntario.id, self.voluntario2.id]  
-        educators_ids = [self.educator.id, self.educator2.id]
+        attendees_id3 = [self.student.id, self.student2.id]
+        volunteers_id3 = [self.voluntario.id, self.voluntario2.id]  
+        educators_id3 = [self.educator.id, self.educator2.id]
         response = self.client.post(
             "/api/lesson-event/", 
             data={
@@ -272,9 +272,9 @@ class AdminEventApiViewSetTestCase(TestCase):
                 "lesson": self.lesson2.id,
                 "start_date": "2025-06-13T05:00:00Z",  
                 "end_date": "2025-06-13T16:00:00Z", 
-                "educators": educators_ids,
-                "attendees": attendees_ids,
-                "volunteers": volunteers_ids,
+                "educators": educators_id3,
+                "attendees": attendees_id3,
+                "volunteers": volunteers_id3,
             },
             HTTP_AUTHORIZATION=f"Token {self.token.key}",
 
@@ -282,9 +282,9 @@ class AdminEventApiViewSetTestCase(TestCase):
         self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
 
     def test_create_lesson_event_date_error_by_admin(self):
-        attendees_ids = [self.student.id, self.student2.id]
-        volunteers_ids = [self.voluntario.id, self.voluntario2.id]  
-        educators_ids = [self.educator.id, self.educator2.id]
+        attendees_id4 = [self.student.id, self.student2.id]
+        volunteers_id4 = [self.voluntario.id, self.voluntario2.id]  
+        educators_id4 = [self.educator.id, self.educator2.id]
         response = self.client.post(
             "/api/lesson-event/", 
             data={
@@ -296,18 +296,18 @@ class AdminEventApiViewSetTestCase(TestCase):
                 "lesson": self.lesson.id,
                 "start_date": "2023-06-13T05:00:00Z",  
                 "end_date": "2023-06-13T16:00:00Z", 
-                "educators": educators_ids,
-                "attendees": attendees_ids,
-                "volunteers": volunteers_ids,
+                "educators": educators_id4,
+                "attendees": attendees_id4,
+                "volunteers": volunteers_id4,
             },
             HTTP_AUTHORIZATION=f"Token {self.token.key}",
         )
         self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
 
     def test_create_lesson_event_start_date_error_by_admin(self):
-        attendees_ids = [self.student.id, self.student2.id]
-        volunteers_ids = [self.voluntario.id, self.voluntario2.id]  
-        educators_ids = [self.educator.id, self.educator2.id]
+        attendees_id5 = [self.student.id, self.student2.id]
+        volunteers_id5 = [self.voluntario.id, self.voluntario2.id]  
+        educators_id5 = [self.educator.id, self.educator2.id]
         response = self.client.post(
             "/api/lesson-event/", 
             data={
@@ -319,18 +319,18 @@ class AdminEventApiViewSetTestCase(TestCase):
                 "lesson": self.lesson2.id,
                 "start_date": "2025-06-14T05:00:00Z",  
                 "end_date": "2025-06-13T16:00:00Z", 
-                "educators": educators_ids,
-                "attendees": attendees_ids,
-                "volunteers": volunteers_ids,
+                "educators": educators_id5,
+                "attendees": attendees_id5,
+                "volunteers": volunteers_id5,
             },
             HTTP_AUTHORIZATION=f"Token {self.token.key}",
         )
         self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
 
     def test_create_lesson_event_start_hour_error_by_admin(self):
-        attendees_ids = [self.student.id, self.student2.id]
-        volunteers_ids = [self.voluntario.id, self.voluntario2.id]  
-        educators_ids = [self.educator.id, self.educator2.id]
+        attendees_id6 = [self.student.id, self.student2.id]
+        volunteers_id6 = [self.voluntario.id, self.voluntario2.id]  
+        educators_id6 = [self.educator.id, self.educator2.id]
         response = self.client.post(
             "/api/lesson-event/", 
             data={
@@ -342,9 +342,9 @@ class AdminEventApiViewSetTestCase(TestCase):
                 "lesson": self.lesson2.id,
                 "start_date": "2025-06-13T05:00:00Z",  
                 "end_date": "2025-06-13T04:00:00Z", 
-                "educators": educators_ids,
-                "attendees": attendees_ids,
-                "volunteers": volunteers_ids,
+                "educators": educators_id6,
+                "attendees": attendees_id6,
+                "volunteers": volunteers_id6,
             },
             HTTP_AUTHORIZATION=f"Token {self.token.key}",
         )
