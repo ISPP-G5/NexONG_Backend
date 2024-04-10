@@ -5,6 +5,7 @@ from rest_framework.test import APIRequestFactory
 from rest_framework import status
 from rest_framework.authtoken.models import Token
 
+
 class AdminEventApiViewSetTestCase(TestCase):
     def setUp(self):
         self.factory = APIRequestFactory()
@@ -19,7 +20,6 @@ class AdminEventApiViewSetTestCase(TestCase):
             username="usuariotest",
             email="usuariotets@gmail.com",
             role=ADMIN,
-            
         )
         self.token = Token.objects.create(user=self.user)
 
@@ -105,15 +105,15 @@ class AdminEventApiViewSetTestCase(TestCase):
         )
 
         self.lessonevent = LessonEvent.objects.create(
-                name= "Vienen los del Ríopol",
-                description= "Se necesitan educadoresad",
-                place= "Patio Centrales",
-                max_volunteers= 2,
-                price= 25.0,
-                lesson= self.lesson,
-                start_date= "2025-06-13T05:00:00Z",  
-                end_date= "2025-06-13T16:00:00Z", 
-                )
+            name="Vienen los del Ríopol",
+            description="Se necesitan educadoresad",
+            place="Patio Centrales",
+            max_volunteers=2,
+            price=25.0,
+            lesson=self.lesson,
+            start_date="2025-06-13T05:00:00Z",
+            end_date="2025-06-13T16:00:00Z",
+        )
 
     def test_obtain_event_by_admin(self):
         response = self.client.get(
@@ -124,9 +124,12 @@ class AdminEventApiViewSetTestCase(TestCase):
 
     def test_create_event_by_admin(self):
         attendees_ids = [self.student.id, self.student2.id]
-        volunteers_ids = [self.voluntario.id, self.voluntario2.id]  # Asegurarse de que se esté pasando el ID del voluntario
+        volunteers_ids = [
+            self.voluntario.id,
+            self.voluntario2.id,
+        ]  # Asegurarse de que se esté pasando el ID del voluntario
         response = self.client.post(
-            "/api/event/", 
+            "/api/event/",
             data={
                 "name": "Vienen Barrio Sesamo",
                 "description": "Se necesitan voluntarios",
@@ -134,10 +137,10 @@ class AdminEventApiViewSetTestCase(TestCase):
                 "max_volunteers": 2,
                 "max_attendees": 2,
                 "price": 5,
-                "start_date": "2025-06-12T06:00:00Z",  
-                "end_date": "2025-06-12T11:00:00Z",    
+                "start_date": "2025-06-12T06:00:00Z",
+                "end_date": "2025-06-12T11:00:00Z",
                 "attendees": attendees_ids,
-                "volunteers": volunteers_ids, 
+                "volunteers": volunteers_ids,
             },
             HTTP_AUTHORIZATION=f"Token {self.token.key}",
         )
@@ -145,9 +148,12 @@ class AdminEventApiViewSetTestCase(TestCase):
 
     def test_create_event_date_past_error_by_admin(self):
         attendees_ids = [self.student.id, self.student2.id]
-        volunteers_ids = [self.voluntario.id, self.voluntario2.id]  # Asegurarse de que se esté pasando el ID del voluntario
+        volunteers_ids = [
+            self.voluntario.id,
+            self.voluntario2.id,
+        ]  # Asegurarse de que se esté pasando el ID del voluntario
         response = self.client.post(
-            "/api/event/", 
+            "/api/event/",
             data={
                 "name": "Vienen Barrio Sesamo",
                 "description": "Se necesitan voluntarios",
@@ -155,10 +161,10 @@ class AdminEventApiViewSetTestCase(TestCase):
                 "max_volunteers": 2,
                 "max_attendees": 2,
                 "price": 5,
-                "start_date": "2023-06-12T06:00:00Z",  
-                "end_date": "2023-06-12T11:00:00Z",    
+                "start_date": "2023-06-12T06:00:00Z",
+                "end_date": "2023-06-12T11:00:00Z",
                 "attendees": attendees_ids,
-                "volunteers": volunteers_ids, 
+                "volunteers": volunteers_ids,
             },
             HTTP_AUTHORIZATION=f"Token {self.token.key}",
         )
@@ -166,9 +172,12 @@ class AdminEventApiViewSetTestCase(TestCase):
 
     def test_create_event_date_start_error_by_admin(self):
         attendees_ids = [self.student.id, self.student2.id]
-        volunteers_ids = [self.voluntario.id, self.voluntario2.id]  # Asegurarse de que se esté pasando el ID del voluntario
+        volunteers_ids = [
+            self.voluntario.id,
+            self.voluntario2.id,
+        ]  # Asegurarse de que se esté pasando el ID del voluntario
         response = self.client.post(
-            "/api/event/", 
+            "/api/event/",
             data={
                 "name": "Vienen Barrio Sesamo 45",
                 "description": "Se necesitan voluntarios 56",
@@ -176,10 +185,10 @@ class AdminEventApiViewSetTestCase(TestCase):
                 "max_volunteers": 2,
                 "max_attendees": 2,
                 "price": 5,
-                "start_date": "2023-06-13T06:00:00Z",  
-                "end_date": "2023-06-12T11:00:00Z",    
+                "start_date": "2023-06-13T06:00:00Z",
+                "end_date": "2023-06-12T11:00:00Z",
                 "attendees": attendees_ids,
-                "volunteers": volunteers_ids, 
+                "volunteers": volunteers_ids,
             },
             HTTP_AUTHORIZATION=f"Token {self.token.key}",
         )
@@ -187,9 +196,12 @@ class AdminEventApiViewSetTestCase(TestCase):
 
     def test_create_event_hour_start_error_by_admin(self):
         attendees_ids = [self.student.id, self.student2.id]
-        volunteers_ids = [self.voluntario.id, self.voluntario2.id]  # Asegurarse de que se esté pasando el ID del voluntario
+        volunteers_ids = [
+            self.voluntario.id,
+            self.voluntario2.id,
+        ]  # Asegurarse de que se esté pasando el ID del voluntario
         response = self.client.post(
-            "/api/event/", 
+            "/api/event/",
             data={
                 "name": "Vienen Barrio 65",
                 "description": "Se necesitan voluntarios",
@@ -197,15 +209,14 @@ class AdminEventApiViewSetTestCase(TestCase):
                 "max_volunteers": 2,
                 "max_attendees": 2,
                 "price": 5,
-                "start_date": "2023-06-13T05:00:00Z",  
-                "end_date": "2023-06-13T04:00:00Z",    
+                "start_date": "2023-06-13T05:00:00Z",
+                "end_date": "2023-06-13T04:00:00Z",
                 "attendees": attendees_ids,
-                "volunteers": volunteers_ids, 
+                "volunteers": volunteers_ids,
             },
             HTTP_AUTHORIZATION=f"Token {self.token.key}",
         )
         self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
-
 
     def test_obtain_lesson_event_by_admin(self):
         lessonevent = LessonEvent.objects.create(
@@ -236,10 +247,10 @@ class AdminEventApiViewSetTestCase(TestCase):
 
     def test_create_lesson_event_by_admin(self):
         attendees_ids = [self.student.id, self.student2.id]
-        volunteers_ids = [self.voluntario.id, self.voluntario2.id]  
+        volunteers_ids = [self.voluntario.id, self.voluntario2.id]
         educators_ids = [self.educator.id, self.educator2.id]
         response = self.client.post(
-            "/api/lesson-event/", 
+            "/api/lesson-event/",
             data={
                 "name": "Vienen los del Río",
                 "description": "Se necesitan educadores",
@@ -247,8 +258,8 @@ class AdminEventApiViewSetTestCase(TestCase):
                 "max_volunteers": 2,
                 "price": 25.0,
                 "lesson": self.lesson.id,
-                "start_date": "2025-06-13T05:00:00Z",  
-                "end_date": "2025-06-13T16:00:00Z", 
+                "start_date": "2025-06-13T05:00:00Z",
+                "end_date": "2025-06-13T16:00:00Z",
                 "educators": educators_ids,
                 "attendees": attendees_ids,
                 "volunteers": volunteers_ids,
@@ -259,10 +270,10 @@ class AdminEventApiViewSetTestCase(TestCase):
 
     def test_create_lesson_event_lesson_error_by_admin(self):
         attendees_ids = [self.student.id, self.student2.id]
-        volunteers_ids = [self.voluntario.id, self.voluntario2.id]  
+        volunteers_ids = [self.voluntario.id, self.voluntario2.id]
         educators_ids = [self.educator.id, self.educator2.id]
         response = self.client.post(
-            "/api/lesson-event/", 
+            "/api/lesson-event/",
             data={
                 "name": "Vienen los del Río",
                 "description": "Se necesitan educadores",
@@ -270,23 +281,22 @@ class AdminEventApiViewSetTestCase(TestCase):
                 "max_volunteers": 2,
                 "price": 25.0,
                 "lesson": self.lesson2.id,
-                "start_date": "2025-06-13T05:00:00Z",  
-                "end_date": "2025-06-13T16:00:00Z", 
+                "start_date": "2025-06-13T05:00:00Z",
+                "end_date": "2025-06-13T16:00:00Z",
                 "educators": educators_ids,
                 "attendees": attendees_ids,
                 "volunteers": volunteers_ids,
             },
             HTTP_AUTHORIZATION=f"Token {self.token.key}",
-
         )
         self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
 
     def test_create_lesson_event_date_error_by_admin(self):
         attendees_ids = [self.student.id, self.student2.id]
-        volunteers_ids = [self.voluntario.id, self.voluntario2.id]  
+        volunteers_ids = [self.voluntario.id, self.voluntario2.id]
         educators_ids = [self.educator.id, self.educator2.id]
         response = self.client.post(
-            "/api/lesson-event/", 
+            "/api/lesson-event/",
             data={
                 "name": "Vienen los del Río23",
                 "description": "Se necesitan educadores25",
@@ -294,8 +304,8 @@ class AdminEventApiViewSetTestCase(TestCase):
                 "max_volunteers": 2,
                 "price": 25.0,
                 "lesson": self.lesson.id,
-                "start_date": "2023-06-13T05:00:00Z",  
-                "end_date": "2023-06-13T16:00:00Z", 
+                "start_date": "2023-06-13T05:00:00Z",
+                "end_date": "2023-06-13T16:00:00Z",
                 "educators": educators_ids,
                 "attendees": attendees_ids,
                 "volunteers": volunteers_ids,
@@ -306,10 +316,10 @@ class AdminEventApiViewSetTestCase(TestCase):
 
     def test_create_lesson_event_start_date_error_by_admin(self):
         attendees_ids = [self.student.id, self.student2.id]
-        volunteers_ids = [self.voluntario.id, self.voluntario2.id]  
+        volunteers_ids = [self.voluntario.id, self.voluntario2.id]
         educators_ids = [self.educator.id, self.educator2.id]
         response = self.client.post(
-            "/api/lesson-event/", 
+            "/api/lesson-event/",
             data={
                 "name": "Vienen los del Río78",
                 "description": "Se necesitan educadorespo",
@@ -317,8 +327,8 @@ class AdminEventApiViewSetTestCase(TestCase):
                 "max_volunteers": 2,
                 "price": 30.0,
                 "lesson": self.lesson2.id,
-                "start_date": "2025-06-14T05:00:00Z",  
-                "end_date": "2025-06-13T16:00:00Z", 
+                "start_date": "2025-06-14T05:00:00Z",
+                "end_date": "2025-06-13T16:00:00Z",
                 "educators": educators_ids,
                 "attendees": attendees_ids,
                 "volunteers": volunteers_ids,
@@ -329,10 +339,10 @@ class AdminEventApiViewSetTestCase(TestCase):
 
     def test_create_lesson_event_start_hour_error_by_admin(self):
         attendees_ids = [self.student.id, self.student2.id]
-        volunteers_ids = [self.voluntario.id, self.voluntario2.id]  
+        volunteers_ids = [self.voluntario.id, self.voluntario2.id]
         educators_ids = [self.educator.id, self.educator2.id]
         response = self.client.post(
-            "/api/lesson-event/", 
+            "/api/lesson-event/",
             data={
                 "name": "Vienen los del Río780",
                 "description": "Se necesitan educadorespos",
@@ -340,8 +350,8 @@ class AdminEventApiViewSetTestCase(TestCase):
                 "max_volunteers": 2,
                 "price": 21.0,
                 "lesson": self.lesson2.id,
-                "start_date": "2025-06-13T05:00:00Z",  
-                "end_date": "2025-06-13T04:00:00Z", 
+                "start_date": "2025-06-13T05:00:00Z",
+                "end_date": "2025-06-13T04:00:00Z",
                 "educators": educators_ids,
                 "attendees": attendees_ids,
                 "volunteers": volunteers_ids,
@@ -356,6 +366,3 @@ class AdminEventApiViewSetTestCase(TestCase):
             HTTP_AUTHORIZATION=f"Token {self.token.key}",
         )
         self.assertEqual(response.status_code, status.HTTP_204_NO_CONTENT)
-
-    
-
