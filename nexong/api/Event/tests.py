@@ -123,8 +123,8 @@ class AdminEventApiViewSetTestCase(TestCase):
         self.assertEqual(response.status_code, status.HTTP_200_OK)
 
     def test_create_event_by_admin(self):
-        attendees_ids = [self.student.id, self.student2.id]
-        volunteers_ids = [
+        attendees_ids1 = [self.student.id, self.student2.id]
+        volunteers_ids1 = [
             self.voluntario.id,
             self.voluntario2.id,
         ]  # Asegurarse de que se esté pasando el ID del voluntario
@@ -139,16 +139,16 @@ class AdminEventApiViewSetTestCase(TestCase):
                 "price": 5,
                 "start_date": "2025-06-12T06:00:00Z",
                 "end_date": "2025-06-12T11:00:00Z",
-                "attendees": attendees_ids,
-                "volunteers": volunteers_ids,
+                "attendees": attendees_ids1,
+                "volunteers": volunteers_ids1,
             },
             HTTP_AUTHORIZATION=f"Token {self.token.key}",
         )
         self.assertEqual(response.status_code, status.HTTP_201_CREATED)
 
     def test_create_event_date_past_error_by_admin(self):
-        attendees_ids = [self.student.id, self.student2.id]
-        volunteers_ids = [
+        attendees_ids2 = [self.student.id, self.student2.id]
+        volunteers_ids2 = [
             self.voluntario.id,
             self.voluntario2.id,
         ]  # Asegurarse de que se esté pasando el ID del voluntario
@@ -163,16 +163,16 @@ class AdminEventApiViewSetTestCase(TestCase):
                 "price": 5,
                 "start_date": "2023-06-12T06:00:00Z",
                 "end_date": "2023-06-12T11:00:00Z",
-                "attendees": attendees_ids,
-                "volunteers": volunteers_ids,
+                "attendees": attendees_ids2,
+                "volunteers": volunteers_ids2,
             },
             HTTP_AUTHORIZATION=f"Token {self.token.key}",
         )
         self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
 
     def test_create_event_date_start_error_by_admin(self):
-        attendees_ids = [self.student.id, self.student2.id]
-        volunteers_ids = [
+        attendees_ids3 = [self.student.id, self.student2.id]
+        volunteers_ids3 = [
             self.voluntario.id,
             self.voluntario2.id,
         ]  # Asegurarse de que se esté pasando el ID del voluntario
@@ -187,8 +187,8 @@ class AdminEventApiViewSetTestCase(TestCase):
                 "price": 5,
                 "start_date": "2023-06-13T06:00:00Z",
                 "end_date": "2023-06-12T11:00:00Z",
-                "attendees": attendees_ids,
-                "volunteers": volunteers_ids,
+                "attendees": attendees_ids3,
+                "volunteers": volunteers_ids3,
             },
             HTTP_AUTHORIZATION=f"Token {self.token.key}",
         )
@@ -249,11 +249,11 @@ class AdminEventApiViewSetTestCase(TestCase):
         response = self.client.post(
             "/api/lesson-event/",
             data={
-                "name": "Vienen los del Río",
-                "description": "Se necesitan educadores",
-                "place": "Patio Central",
+                "name": "Vienen los Universitarios",
+                "description": "Se necesitan gente",
+                "place": "Patio Delantero",
                 "max_volunteers": 2,
-                "price": 25.0,
+                "price": 26.0,
                 "lesson": self.lesson.id,
                 "start_date": "2025-06-13T05:00:00Z",  
                 "end_date": "2025-06-13T16:00:00Z", 

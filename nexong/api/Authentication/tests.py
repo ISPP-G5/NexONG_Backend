@@ -10,7 +10,7 @@ class AdminUserApiViewSetTestCase(TestCase):
     def setUp(self):
         self.factory = APIRequestFactory()
         self.user = User.objects.create(
-            username="testuser", email="example@gmail.com", role=ADMIN
+            username="testu", email="example10@gmail.com", role=ADMIN
         )
         self.token = Token.objects.create(user=self.user)
 
