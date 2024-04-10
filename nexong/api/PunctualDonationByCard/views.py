@@ -62,11 +62,11 @@ def process_payment(request):
             )
             global checkoutSessionID, paymentAmount, paymentName, paymentEmail, paymentDate, paymentSurname
             checkoutSessionID = checkoutSession.id
-            paymentAmount=amount
-            paymentName=name
-            paymentEmail=email
-            paymentDate=date
-            paymentSurname=surname
+            paymentAmount = amount
+            paymentName = name
+            paymentEmail = email
+            paymentDate = date
+            paymentSurname = surname
         except Exception as e:
             return Response(
                 {"msg": "Algo ha ido mal creando la sesión de Stripe", "error": str(e)},
@@ -87,7 +87,13 @@ def obtainCheckoutSession():
 
 
 def payment_success(request):
-    payload = {"amount": paymentAmount, "name": paymentName, "surname": paymentSurname, "email": paymentEmail, "date": paymentDate}
+    payload = {
+        "amount": paymentAmount,
+        "name": paymentName,
+        "surname": paymentSurname,
+        "email": paymentEmail,
+        "date": paymentDate,
+    }
 
     response = requests.post(
         settings.URL_BASE + "api/punctual-donation-by-card/",
