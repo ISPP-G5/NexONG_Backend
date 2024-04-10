@@ -85,7 +85,6 @@ class AdminUserApiViewSetTestCase(TestCase):
         )
         self.assertEqual(response.status_code, 200)
 
-
     def test_get_partner_by_admin(self):
         response = self.client.get(
             f"/api/educator/{self.partner.id}/",

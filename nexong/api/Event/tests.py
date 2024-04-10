@@ -196,7 +196,10 @@ class AdminEventApiViewSetTestCase(TestCase):
 
     def test_create_event_hour_start_error_by_admin(self):
         attendees_id1 = [self.student.id, self.student2.id]
-        volunteers_id1 = [self.voluntario.id, self.voluntario2.id]  # Asegurarse de que se esté pasando el ID del voluntario
+        volunteers_id1 = [
+            self.voluntario.id,
+            self.voluntario2.id,
+        ]  # Asegurarse de que se esté pasando el ID del voluntario
         response = self.client.post(
             "/api/event/",
             data={
@@ -206,10 +209,10 @@ class AdminEventApiViewSetTestCase(TestCase):
                 "max_volunteers": 2,
                 "max_attendees": 2,
                 "price": 5,
-                "start_date": "2023-06-13T05:00:00Z",  
-                "end_date": "2023-06-13T04:00:00Z",    
+                "start_date": "2023-06-13T05:00:00Z",
+                "end_date": "2023-06-13T04:00:00Z",
                 "attendees": attendees_id1,
-                "volunteers": volunteers_id1, 
+                "volunteers": volunteers_id1,
             },
             HTTP_AUTHORIZATION=f"Token {self.token.key}",
         )
@@ -244,7 +247,7 @@ class AdminEventApiViewSetTestCase(TestCase):
 
     def test_create_lesson_event_by_admin(self):
         attendees_id2 = [self.student.id, self.student2.id]
-        volunteers_id2 = [self.voluntario.id, self.voluntario2.id]  
+        volunteers_id2 = [self.voluntario.id, self.voluntario2.id]
         educators_id2 = [self.educator.id, self.educator2.id]
         response = self.client.post(
             "/api/lesson-event/",
@@ -255,8 +258,8 @@ class AdminEventApiViewSetTestCase(TestCase):
                 "max_volunteers": 2,
                 "price": 26.0,
                 "lesson": self.lesson.id,
-                "start_date": "2025-06-13T05:00:00Z",  
-                "end_date": "2025-06-13T16:00:00Z", 
+                "start_date": "2025-06-13T05:00:00Z",
+                "end_date": "2025-06-13T16:00:00Z",
                 "educators": educators_id2,
                 "attendees": attendees_id2,
                 "volunteers": volunteers_id2,
@@ -267,7 +270,7 @@ class AdminEventApiViewSetTestCase(TestCase):
 
     def test_create_lesson_event_lesson_error_by_admin(self):
         attendees_id3 = [self.student.id, self.student2.id]
-        volunteers_id3 = [self.voluntario.id, self.voluntario2.id]  
+        volunteers_id3 = [self.voluntario.id, self.voluntario2.id]
         educators_id3 = [self.educator.id, self.educator2.id]
         response = self.client.post(
             "/api/lesson-event/",
@@ -278,8 +281,8 @@ class AdminEventApiViewSetTestCase(TestCase):
                 "max_volunteers": 2,
                 "price": 25.0,
                 "lesson": self.lesson2.id,
-                "start_date": "2025-06-13T05:00:00Z",  
-                "end_date": "2025-06-13T16:00:00Z", 
+                "start_date": "2025-06-13T05:00:00Z",
+                "end_date": "2025-06-13T16:00:00Z",
                 "educators": educators_id3,
                 "attendees": attendees_id3,
                 "volunteers": volunteers_id3,
@@ -290,7 +293,7 @@ class AdminEventApiViewSetTestCase(TestCase):
 
     def test_create_lesson_event_date_error_by_admin(self):
         attendees_id4 = [self.student.id, self.student2.id]
-        volunteers_id4 = [self.voluntario.id, self.voluntario2.id]  
+        volunteers_id4 = [self.voluntario.id, self.voluntario2.id]
         educators_id4 = [self.educator.id, self.educator2.id]
         response = self.client.post(
             "/api/lesson-event/",
@@ -301,8 +304,8 @@ class AdminEventApiViewSetTestCase(TestCase):
                 "max_volunteers": 2,
                 "price": 25.0,
                 "lesson": self.lesson.id,
-                "start_date": "2023-06-13T05:00:00Z",  
-                "end_date": "2023-06-13T16:00:00Z", 
+                "start_date": "2023-06-13T05:00:00Z",
+                "end_date": "2023-06-13T16:00:00Z",
                 "educators": educators_id4,
                 "attendees": attendees_id4,
                 "volunteers": volunteers_id4,
@@ -313,7 +316,7 @@ class AdminEventApiViewSetTestCase(TestCase):
 
     def test_create_lesson_event_start_date_error_by_admin(self):
         attendees_id5 = [self.student.id, self.student2.id]
-        volunteers_id5 = [self.voluntario.id, self.voluntario2.id]  
+        volunteers_id5 = [self.voluntario.id, self.voluntario2.id]
         educators_id5 = [self.educator.id, self.educator2.id]
         response = self.client.post(
             "/api/lesson-event/",
@@ -324,8 +327,8 @@ class AdminEventApiViewSetTestCase(TestCase):
                 "max_volunteers": 2,
                 "price": 30.0,
                 "lesson": self.lesson2.id,
-                "start_date": "2025-06-14T05:00:00Z",  
-                "end_date": "2025-06-13T16:00:00Z", 
+                "start_date": "2025-06-14T05:00:00Z",
+                "end_date": "2025-06-13T16:00:00Z",
                 "educators": educators_id5,
                 "attendees": attendees_id5,
                 "volunteers": volunteers_id5,
@@ -336,7 +339,7 @@ class AdminEventApiViewSetTestCase(TestCase):
 
     def test_create_lesson_event_start_hour_error_by_admin(self):
         attendees_id6 = [self.student.id, self.student2.id]
-        volunteers_id6 = [self.voluntario.id, self.voluntario2.id]  
+        volunteers_id6 = [self.voluntario.id, self.voluntario2.id]
         educators_id6 = [self.educator.id, self.educator2.id]
         response = self.client.post(
             "/api/lesson-event/",
@@ -347,8 +350,8 @@ class AdminEventApiViewSetTestCase(TestCase):
                 "max_volunteers": 2,
                 "price": 21.0,
                 "lesson": self.lesson2.id,
-                "start_date": "2025-06-13T05:00:00Z",  
-                "end_date": "2025-06-13T04:00:00Z", 
+                "start_date": "2025-06-13T05:00:00Z",
+                "end_date": "2025-06-13T04:00:00Z",
                 "educators": educators_id6,
                 "attendees": attendees_id6,
                 "volunteers": volunteers_id6,
