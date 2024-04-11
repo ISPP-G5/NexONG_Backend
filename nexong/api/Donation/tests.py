@@ -13,8 +13,8 @@ class AdminDonationApiViewSetTestCase(TestCase):
             username="testuser", email="example2@gmail.com", role=ADMIN
         )
         self.token = Token.objects.create(user=self.user)
-        self.partner = Partner.objects.create(description = "testdeprueba2",
-            address="333 Elm St", birthdate="1996-05-05"
+        self.partner = Partner.objects.create(
+            description="testdeprueba2", address="333 Elm St", birthdate="1996-05-05"
         )
 
         self.donation = Donation.objects.create(

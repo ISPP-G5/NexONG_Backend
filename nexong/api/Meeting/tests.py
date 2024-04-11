@@ -13,11 +13,13 @@ class AdminMeetingApiViewSetTestCase(TestCase):
             username="testuser", email="example1@gmail.com", role=ADMIN
         )
         self.token = Token.objects.create(user=self.user)
-        self.partner1 = Partner.objects.create(description = "testdeprueba8",
-            address="333 Elm St", birthdate="1996-05-05"
+        self.partner1 = Partner.objects.create(
+            description="testdeprueba8", address="333 Elm St", birthdate="1996-05-05"
         )
-        self.partner2 = Partner.objects.create(description = "testdeprueba10",
-            address="333 Elmlos St", birthdate="1997-05-05"
+        self.partner2 = Partner.objects.create(
+            description="testdeprueba10",
+            address="333 Elmlos St",
+            birthdate="1997-05-05",
         )
         self.meeting = Meeting.objects.create(
             name="hola", description="todo ok", date="2025-01-22", time="17:50-00:00"

@@ -17,7 +17,9 @@ class AdminLessonApiViewSetTestCase(TestCase):
             name="San Francisco Solano"
         )
         self.token = Token.objects.create(user=self.user)
-        self.educator = Educator.objects.create(description = "testdeprueba7",birthdate="2002-04-21")
+        self.educator = Educator.objects.create(
+            description="testdeprueba7", birthdate="2002-04-21"
+        )
         self.lesson = Lesson.objects.create(
             name="PRIMER CICLO 2",
             description="Módulo V, segunda planta",

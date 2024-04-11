@@ -14,8 +14,12 @@ class AdminEventApiViewSetTestCase(TestCase):
         self.education_center = EducationCenter.objects.create(
             name="San Francisco Solano"
         )
-        self.educator = Educator.objects.create(description = "testdeprueba4",birthdate="2000-04-21")
-        self.educator2 = Educator.objects.create(description = "testdeprueba5",birthdate="2001-06-21")
+        self.educator = Educator.objects.create(
+            description="testdeprueba4", birthdate="2000-04-21"
+        )
+        self.educator2 = Educator.objects.create(
+            description="testdeprueba5", birthdate="2001-06-21"
+        )
         self.user = User.objects.create(
             username="usuariotest",
             email="usuariotets@gmail.com",

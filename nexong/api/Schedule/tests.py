@@ -12,7 +12,9 @@ class AdminScheduleApiViewSetTestCase(TestCase):
         self.user = User.objects.create(
             username="testuser", email="example@gmail.com", role=ADMIN
         )
-        self.educator = Educator.objects.create(description = "testdeprueba11",birthdate="2002-04-21")
+        self.educator = Educator.objects.create(
+            description="testdeprueba11", birthdate="2002-04-21"
+        )
         self.token = Token.objects.create(user=self.user)
 
         self.lesson = Lesson.objects.create(
