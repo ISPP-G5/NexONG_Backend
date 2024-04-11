@@ -24,8 +24,8 @@ class AdminUserApiViewSetTestCase(TestCase):
         self.education_center = EducationCenter.objects.create(
             name="San Antonio Lobato"
         )
-        self.partner = Partner.objects.create(address="333 ALO", birthdate="1981-06-21")
-        self.educator = Educator.objects.create(birthdate="2000-04-21")
+        self.partner = Partner.objects.create(description = "testdeprueba",address="333 ALO", birthdate="1981-06-21")
+        self.educator = Educator.objects.create(description = "testdeprueba",birthdate="2000-04-21")
         self.volunteer = Volunteer.objects.create(
             academic_formation="Voluntario Admin ",
             motivation="Voluntario Admin",
