@@ -23,7 +23,7 @@ class EvaluationTypeApiViewSet(ModelViewSet):
     queryset = EvaluationType.objects.all()
     http_method_names = ["get", "post", "put", "delete"]
     serializer_class = EvaluationTypeSerializer
-    permission_classes = [isEducator | isAdmin]
+    permission_classes = [isEducator | isAdmin | isFamilyGet]
 
     def destroy(self, request, *args, **kwargs):
         instance = self.get_object()
