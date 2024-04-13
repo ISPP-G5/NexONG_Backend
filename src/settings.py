@@ -196,7 +196,7 @@ DJOSER = {
     "SOCIAL_AUTH_TOKEN_STRATEGY": "djoser.social.token.jwt.TokenStrategy",
     "SOCIAL_AUTH_ALLOWED_REDIRECT_URIS": white_list,
     "Email":{
-        "activation":"registration/activation_email.html",
+        "activation":"templates/activation_email.html",
     },
 }
 
