@@ -75,6 +75,12 @@ class CreateUserSerializer(UserCreateSerializer):
         if is_agreed == False:
             raise serializers.ValidationError("User must accept terms and conditions.")
         return data
+    
+    def validate_role(self, data):
+        role = data
+        if role == "ADMIN":
+            raise serializers.ValidationError("You cannot create admin users")
+        return data
 
 
 class UserLoginSerializer(Serializer):
@@ -97,6 +103,10 @@ class UserSerializer(ModelSerializer):
                 validation_error[
                     "educator"
                 ] = 'Given role "EDUCADOR", this cannot be null.'
+            elif data["role"] == "ADMIN":
+                validation_error[
+                    "role"
+                ] = 'You cannot create an ADMIN role'
             elif data["role"] == "VOLUNTARIO" and data["volunteer"] is None:
                 validation_error[
                     "volunteer"

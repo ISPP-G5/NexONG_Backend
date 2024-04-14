@@ -12,6 +12,11 @@ from .Authentication.views import (
     LogoutAndBlacklistRefreshTokenForUserView,
     ActivateUserView,
 )
+from .helpers.partnerExports import (
+    PartnersExportToCsv,
+    PartnersExportToPdf,
+    PartnersExportToExcel,
+)
 
 urlpatterns = [
     path("", include(router_api.urls)),
@@ -49,4 +54,7 @@ urlpatterns = [
         "export/excel/students", StudentsExportToExcel, name="export_excel_all_students"
     ),
     path("auth/", include("djoser.urls.authtoken")),
+    path("export/csv/partners", PartnersExportToCsv, name="export_csv_partners"),
+    path("export/pdf/partners", PartnersExportToPdf, name="export_pdf_partners"),
+    path("export/excel/partners", PartnersExportToExcel, name="export_excel_partners"),
 ]
