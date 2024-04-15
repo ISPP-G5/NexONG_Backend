@@ -263,12 +263,12 @@ class AdminEventApiViewSetTestCase(TestCase):
     def setUp(self):
         self.factory = APIRequestFactory()
 
-        self.family = Family.objects.create(name="Familia Pedraza")
+        self.family = Family.objects.create(name="Familia Ruz")
         self.education_center = EducationCenter.objects.create(
-            name="San Francisco Solano"
+            name="San Francisco Asis"
         )
         self.educator = Educator.objects.create(
-            description="testdeprueba4", birthdate="2000-04-21"
+            description="testdeprueba4", birthdate="2002-04-21"
         )
         self.educator2 = Educator.objects.create(
             description="testdeprueba5", birthdate="2001-06-21"
@@ -476,21 +476,21 @@ class AdminEventApiViewSetTestCase(TestCase):
         self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
 
     def test_obtain_lesson_event_by_admin(self):
-        lessonevent = LessonEvent.objects.create(
+        lessonevent2 = LessonEvent.objects.create(
             name="Vienen el Sevilla",
             description="Se necesitan 2 cantautores",
             place="Jardín principal",
             max_volunteers=2,
             lesson=self.lesson,
             price=5,
-            start_date="2024-06-12 06:00-00:00",
-            end_date="2024-06-12 11:00-00:00",
+            start_date="2024-06-13 05:00-00:00",
+            end_date="2024-06-13 11:00-00:00",
         )
-        lessonevent.attendees.add(self.student, self.student2)
-        lessonevent.volunteers.add(self.voluntario, self.voluntario2)
-        lessonevent.educators.add(self.educator, self.educator2)
+        lessonevent2.attendees.add(self.student, self.student2)
+        lessonevent2.volunteers.add(self.voluntario, self.voluntario2)
+        lessonevent2.educators.add(self.educator, self.educator2)
         response = self.client.get(
-            f"/api/lesson-event/{lessonevent.id}/",
+            f"/api/lesson-event/{lessonevent2.id}/",
             HTTP_AUTHORIZATION=f"Token {self.token.key}",
         )
         self.assertEqual(response.status_code, 200)
