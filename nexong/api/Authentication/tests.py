@@ -237,4 +237,3 @@ class AdminUserApiViewSetTestCase(TestCase):
             HTTP_AUTHORIZATION=f"Token {self.token.key}",
         )
         self.assertEqual(response.status_code, 204)
-
