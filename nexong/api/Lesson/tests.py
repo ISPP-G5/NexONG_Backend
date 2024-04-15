@@ -69,6 +69,8 @@ class Lesson_ApiViewSetTestCase(TestCase):
             HTTP_AUTHORIZATION=f"Token {self.token.key}",
         )
         self.assertEqual(response.status_code, status.HTTP_403_FORBIDDEN)
+
+
 class AdminLessonApiViewSetTestCase(TestCase):
     def setUp(self):
         self.factory = APIRequestFactory()
