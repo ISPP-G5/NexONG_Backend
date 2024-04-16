@@ -45,13 +45,20 @@ class VolunteerApiViewSetTestCase(APITestCase):
         }
         add_files_to_volunteer_data(self)
         self.volunteer2 = Volunteer.objects.create(
-            academic_formation="Test formation", motivation="Test motivation", status="PENDIENTE", address="Test address", postal_code= "12345",
-            birthdate= "1956-07-05",
-            start_date= "1956-07-05",
-            end_date= "1956-07-05", 
+            academic_formation="Test formation",
+            motivation="Test motivation",
+            status="PENDIENTE",
+            address="Test address",
+            postal_code="12345",
+            birthdate="1956-07-05",
+            start_date="1956-07-05",
+            end_date="1956-07-05",
         )
         self.user2 = User.objects.create(
-            username="testuser", email="example@gmail.com", role=VOLUNTEER, volunteer= self.volunteer2
+            username="testuser",
+            email="example@gmail.com",
+            role=VOLUNTEER,
+            volunteer=self.volunteer2,
         )
         self.token = Token.objects.create(user=self.user2)
 
