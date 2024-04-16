@@ -3,7 +3,7 @@ from rest_framework.response import Response
 from rest_framework import status
 from ...models import *
 from .punctualDonationSerializer import PunctualDonationByCardSerializer
-from rest_framework.permissions import AllowAny
+from ..permissions import isAdminGet
 from django.conf import settings
 import stripe
 from django.views.decorators.csrf import csrf_exempt
@@ -24,7 +24,7 @@ class PunctualDonationByCardApiViewSet(ModelViewSet):
     queryset = PunctualDonationByCard.objects.all()
     http_method_names = ["get", "post", "delete"]
     serializer_class = PunctualDonationByCardSerializer
-    permission_classes = [AllowAny]
+    permission_classes = [isAdminGet]
 
     def destroy(self, request, *args, **kwargs):
         instance = self.get_object()
@@ -95,22 +95,15 @@ def payment_success(request):
         "date": paymentDate,
     }
 
-    response = requests.post(
-        settings.URL_BASE + "api/punctual-donation-by-card/",
-        json=payload,
-        timeout=15,
-    )
-    if response.status_code == 200 or response.status_code == 201:
-        return JsonResponse(
-            {
-                "amount": paymentAmount,
-                "status": "Se ha creado la donacion puntual",
-            }
+    try:
+        donation = PunctualDonationByCard.objects.create(
+            name=paymentName, surname=paymentSurname, email=paymentEmail, amount=paymentAmount, date=paymentDate
         )
-    else:
-        return JsonResponse(
-            {"error": "Error al realizar la solicitud POST", "status": "failed"}
-        )
+        # If the creation is successful, you can perform additional actions here
+        return JsonResponse({"message": f"Donacion de {donation.amount} euros creada!"})
+    except Exception as e:
+        # If an exception occurs during creation, handle it here
+        return JsonResponse({"message": "Algo ha fallado en la creación de la donación"})
 
 
 def payment_cancel():
