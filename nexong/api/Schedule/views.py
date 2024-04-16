@@ -1,16 +1,16 @@
 from rest_framework.viewsets import ModelViewSet
 from rest_framework.response import Response
 from rest_framework import status
-from ...models import *
-from .punctualDonationSerializer import PunctualDonationSerializer
 from ..permissions import *
+from ...models import *
+from .scheduleSerializer import *
 
 
-class PunctualDonationApiViewSet(ModelViewSet):
-    queryset = PunctualDonation.objects.all()
-    http_method_names = ["get", "post", "delete"]
-    serializer_class = PunctualDonationSerializer
-    permission_classes = [allowAnyPost | isAdmin]
+class ScheduleApiViewSet(ModelViewSet):
+    queryset = Schedule.objects.all()
+    http_method_names = ["get", "post", "put", "delete"]
+    serializer_class = ScheduleSerializer
+    permission_classes = [allowAnyGet | isAdmin]
 
     def destroy(self, request, *args, **kwargs):
         instance = self.get_object()
