@@ -370,3 +370,215 @@ class AdminEventApiViewSetTestCase(TestCase):
             HTTP_AUTHORIZATION=f"Token {self.token.key}",
         )
         self.assertEqual(response.status_code, status.HTTP_204_NO_CONTENT)
+
+class VolunteerEventApiViewSetTestCase(TestCase):
+    def setUp(self):
+        self.factory = APIRequestFactory()
+        self.volunteer = Volunteer.objects.create(
+            academic_formation="Test formation", motivation="Test motivation", status="ACEPTADO", address="Test address", postal_code= "12345",
+            birthdate= "1956-07-05",
+            start_date= "1956-07-05",
+            end_date= "1956-07-05", 
+        )
+        self.family2 = Family.objects.create(name="Familia Pedriza")
+        self.education_center2 = EducationCenter.objects.create(
+            name="San Francisco Pelano"
+        )
+        self.educator = Educator.objects.create(
+            description="testdepruebaPas", birthdate="2000-04-21"
+        )
+        self.educator2 = Educator.objects.create(
+            description="testdepruebaPIM", birthdate="2000-04-22"
+        )
+        self.educator3 = Educator.objects.create(
+            description="testdeprueba5", birthdate="2001-06-21"
+        )
+        self.user2 = User.objects.create(
+            username="usuariotest",
+            email="usuariotets@gmail.com",
+            role=VOLUNTEER,
+            volunteer=self.volunteer,
+        )
+
+        self.token = Token.objects.create(user=self.user2)
+
+        self.student = Student.objects.create(
+            name="José Manuele",
+            surname="Colini",
+            education_center=self.education_center2,
+            is_morning_student=False,
+            activities_during_exit="",
+            status="PENDIENTE",
+            current_education_year="TRES AÑOS",
+            education_center_tutor="Don Pedra Picapiedra",
+            nationality="PeruANA",
+            birthdate="2017-04-21",
+            family=self.family2,
+        )
+        self.student2 = Student.objects.create(
+            name="Jesulin Pedro",
+            surname="De Ubrique",
+            education_center=self.education_center2,
+            is_morning_student=True,
+            activities_during_exit="",
+            status="PENDIENTE",
+            current_education_year="TRES AÑOS",
+            education_center_tutor="Don Pablo Petardos",
+            nationality="España",
+            birthdate="2015-04-21",
+            family=self.family2,
+        )
+        self.lesson = Lesson.objects.create(
+            name="Ciclas",
+            description="Módulo 2",
+            capacity=16,
+            is_morning_lesson=False,
+            educator=self.educator,
+            start_date="2024-01-26",
+            end_date="2024-05-28",
+        )
+        self.lesson.students.add(self.student, self.student2)
+
+        self.voluntario = Volunteer.objects.create(
+            academic_formation="Test volunteer",
+            motivation="Test volunteer",
+            status="PENDIENTE",
+            address="Test address3",
+            postal_code=12350,
+            birthdate="1956-07-06",
+            start_date="1956-07-06",
+            end_date="1956-07-07",
+        )
+        self.voluntario2 = Volunteer.objects.create(
+            academic_formation="Test volunteer7",
+            motivation="Test volunteer7",
+            status="ACEPTADO",
+            address="Test address21",
+            postal_code=12349,
+            birthdate="1956-07-05",
+            start_date="1956-07-05",
+            end_date="1956-07-05",
+        )
+
+        self.event2 = Event.objects.create(
+            name="Feria",
+            description="Se necesitan 2 camareros para atenderlas",
+            place="Cacharritos1",
+            max_volunteers=2,
+            max_attendees=2,
+            price=5,
+            start_date="2024-06-13 06:00-00:00",
+            end_date="2024-06-13 11:00-00:00",
+        )
+        self.event2.attendees.add(self.student, self.student2)
+        self.event2.volunteers.add(self.voluntario, self.voluntario2)
+        self.lessonevent2 = LessonEvent.objects.create(
+            name="Vienen los del Ríopol",
+            description="Se necesitan educadoresad",
+            place="Patio Centrales",
+            max_volunteers=2,
+            price=25.0,
+            lesson=self.lesson,
+            start_date="2025-06-13T05:00:00Z",
+            end_date="2025-06-13T16:00:00Z",
+        )
+
+    def test_obtain_event_by_volunteer(self):
+        response = self.client.get(
+            f"/api/event/{self.event2.id}/",
+            HTTP_AUTHORIZATION=f"Token {self.token.key}",
+        )
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+
+    def test_create_event_by_volunteer_error(self):
+        attendees_ids1 = [self.student.id, self.student2.id]
+        volunteers_ids1 = [
+            self.voluntario.id,
+            self.voluntario2.id,
+        ]  # Asegurarse de que se esté pasando el ID del voluntario
+        response = self.client.post(
+            "/api/event/",
+            data={
+                "name": "Viene la familia Peruana",
+                "description": "Se necesitan gente",
+                "place": "La cocina",
+                "max_volunteers": 2,
+                "max_attendees": 2,
+                "price": 5,
+                "start_date": "2025-06-12T06:00:00Z",
+                "end_date": "2025-06-12T11:00:00Z",
+                "attendees": attendees_ids1,
+                "volunteers": volunteers_ids1,
+            },
+            HTTP_AUTHORIZATION=f"Token {self.token.key}",
+        )
+        self.assertEqual(response.status_code, status.HTTP_403_FORBIDDEN)
+
+    def test_update_event_by_volunteer_error(self):
+        attendees_idsV = [self.student.id, self.student2.id]
+        volunteers_idsV = [
+            self.voluntario.id,
+            self.voluntario2.id,
+        ]  # Asegurarse de que se esté pasando el ID del voluntario
+        response = self.client.put(
+            f"/api/event/{self.event2.id}/",
+            data={
+                "name": "Viene la familia Peruana",
+                "description": "Se necesitan gente",
+                "place": "La cocina",
+                "max_volunteers": 2,
+                "max_attendees": 2,
+                "price": 5,
+                "start_date": "2025-06-12T06:00:00Z",
+                "end_date": "2025-06-12T11:00:00Z",
+                "attendees": attendees_idsV,
+                "volunteers": volunteers_idsV,
+            },
+            content_type="application/json",
+            HTTP_AUTHORIZATION=f"Token {self.token.key}",
+        )
+        self.assertEqual(response.status_code, status.HTTP_401_UNAUTHORIZED)
+
+    def test_obtain_lesson_event_by_volunteer(self):
+        lessonevent = LessonEvent.objects.create(
+            name="Vienen pa Sevilla",
+            description="Se necesitan 2 cacas",
+            place="Jardín principal",
+            max_volunteers=2,
+            lesson=self.lesson,
+            price=5,
+            start_date="2024-06-12 06:00-00:00",
+            end_date="2024-06-12 11:00-00:00",
+        )
+        lessonevent.attendees.add(self.student, self.student2)
+        lessonevent.volunteers.add(self.voluntario, self.voluntario2)
+        lessonevent.educators.add(self.educator, self.educator2)
+        response = self.client.get(
+            f"/api/lesson-event/{lessonevent.id}/",
+            HTTP_AUTHORIZATION=f"Token {self.token.key}",
+        )
+        self.assertEqual(response.status_code, 200)
+
+    def test_update_lesson_event_by_volunteer(self):
+        attendees_idV = [self.student.id, self.student2.id]
+        volunteers_idV = [self.voluntario.id, self.voluntario2.id]
+        educators_idV = [self.educator.id, self.educator2.id]
+        response = self.client.put(
+            f"/api/lesson-event/{self.lessonevent2.id}/",
+            data={
+                "name": "Vienen los Universitarios",
+                "description": "Se necesitan gente",
+                "place": "Patio Delantero",
+                "max_volunteers": 2,
+                "price": 26.0,
+                "lesson": self.lesson.id,
+                "start_date": "2025-06-13T05:00:00Z",
+                "end_date": "2025-06-13T16:00:00Z",
+                "educators": educators_idV,
+                "attendees": attendees_idV,
+                "volunteers": volunteers_idV,
+            },
+            content_type="application/json",
+            HTTP_AUTHORIZATION=f"Token {self.token.key}",
+        )
+        self.assertEqual(response.status_code, status.HTTP_401_UNAUTHORIZED)

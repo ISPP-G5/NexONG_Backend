@@ -207,3 +207,115 @@ class AdminLessonApiViewSetTestCase(TestCase):
             HTTP_AUTHORIZATION=f"Token {self.token.key}",
         )
         self.assertEqual(response.status_code, 204)
+
+class VolunteerLessonApiViewSetTestCase(TestCase):
+    def setUp(self):
+        self.factory = APIRequestFactory()
+        self.volunteer3 = Volunteer.objects.create(
+            academic_formation="Volunteer Admin ",
+            motivation="Volunteer Admin",
+            status="ACEPTADO",
+            address="Volunteer Admin",
+            postal_code=12350,
+            birthdate="1957-07-05",
+            start_date="1960-07-05",
+            end_date="1980-07-05",
+        )
+        self.user2 = User.objects.create(
+            username="testuser", email="example@gmail.com", role=VOLUNTEER, volunteer=self.volunteer3
+        )
+        self.family2 = Family.objects.create(name="Familia Pedraza")
+        self.education_center2 = EducationCenter.objects.create(
+            name="San Francisco Solano"
+        )
+        self.token = Token.objects.create(user=self.user2)
+        self.educator2 = Educator.objects.create(
+            description="testdeprueba7", birthdate="2002-04-21"
+        )
+        self.lesson2 = Lesson.objects.create(
+            name="PRIMER CICLO 2",
+            description="Módulo V, segunda planta",
+            capacity=16,
+            is_morning_lesson=True,
+            educator=self.educator2,
+            start_date="2024-01-28",
+            end_date="2024-05-28",
+        )
+        self.student3 = Student.objects.create(
+            name="Antonio Manuel",
+            surname="Carmona",
+            education_center=self.education_center2,
+            is_morning_student=True,
+            activities_during_exit="",
+            status="ACEPTADO",
+            current_education_year="TRES AÑOS",
+            education_center_tutor="Don Sebastian Perez",
+            nationality="Francia",
+            birthdate="2017-04-21",
+            family=self.family2,
+        )
+        self.student4 = Student.objects.create(
+            name="Andrés Francisco",
+            surname="Montes",
+            education_center=self.education_center2,
+            is_morning_student=True,
+            activities_during_exit="",
+            status="PENDIENTE",
+            current_education_year="TRES AÑOS",
+            education_center_tutor="Don Sebastian Perez",
+            nationality="España",
+            birthdate="2015-04-21",
+            family=self.family2,
+        )
+        self.volunteer2 = Volunteer.objects.create(
+            academic_formation="Volunteer Admin ",
+            motivation="Volunteer Admin",
+            status="ACEPTADO",
+            address="Volunteer Admin",
+            postal_code=12350,
+            birthdate="1957-07-05",
+            start_date="1960-07-05",
+            end_date="1980-07-05",
+        )
+        self.lesson_attendance2 = LessonAttendance.objects.create(
+            date="2025-04-21", lesson=self.lesson2, volunteer=self.volunteer2
+        )
+
+    def test_obtain_lesson_by_volunteer(self):
+        response = self.client.get(
+            f"/api/lesson/{self.lesson2.id}/",
+            HTTP_AUTHORIZATION=f"Token {self.token.key}",
+        )
+        self.assertEqual(response.status_code, 200)
+
+    def test_obtain_lesson_attendance_by_volunteer(self):
+        response = self.client.get(
+            f"/api/lesson-attendance/{self.lesson_attendance2.id}/",
+            HTTP_AUTHORIZATION=f"Token {self.token.key}",
+        )
+        self.assertEqual(response.status_code, 200)
+
+    def test_create_lesson_attendance_by_volunteer(self):
+        response = self.client.post(
+            f"/api/lesson-attendance/",
+            data={
+                "date": "2025-04-21",
+                "lesson": f"{self.lesson2.id}",
+                "volunteer": f"{self.volunteer2.id}"
+            },
+            HTTP_AUTHORIZATION=f"Token {self.token.key}",
+        )
+        self.assertEqual(response.status_code, status.HTTP_201_CREATED)
+
+    def test_update_lesson_attendance_by_volunteer(self):
+        response = self.client.put(
+            f"/api/lesson-attendance/{self.lesson_attendance2.id}/",
+            data={
+                "date": "2025-04-21",
+                "lesson": f"{self.lesson2.id}",
+                "volunteer": f"{self.volunteer3.id}"
+            },
+            content_type="application/json",
+            HTTP_AUTHORIZATION=f"Token {self.token.key}",
+        )
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
