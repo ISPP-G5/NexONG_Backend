@@ -1,4 +1,3 @@
-from rest_framework.exceptions import ValidationError
 from nexong.api.Authentication.views import *
 from nexong.models import *
 from rest_framework.authtoken.models import Token
@@ -18,11 +17,7 @@ class EducatorCenterExitApiViewSetTestCase(APITestCase):
             role=EDUCATOR,
             educator=self.educator,
         )
-        #self.user2 = User.objects.create(
-        #    username="testuser2", email="example2@gmail.com", role=ADMIN
-        #)
         self.token = Token.objects.create(user=self.user)
-        #self.token2 = Token.objects.create(user=self.user2)
         self.educator2 = Educator.objects.create(birthdate="2000-04-21")
         self.educator3 = Educator.objects.create(birthdate="2000-04-22")
         self.education_center = EducationCenter.objects.create(
@@ -125,6 +120,16 @@ class EducatorCenterExitApiViewSetTestCase(APITestCase):
         self.assertEqual(response.status_code, status.HTTP_200_OK)
         self.assertEqual(center_exit.is_authorized, True)
 
+    def test_update_center_authorization_by_educator(self):
+        center_exit = CenterExitAuthorization.objects.create(**self.center_exit)
+        self.center_exit["is_authorized"] = False
+        response = self.client.put(
+            f"/api/center-exit/{center_exit.id}/",
+            self.center_exit,
+            HTTP_AUTHORIZATION=f"Token {self.token.key}",
+        )
+        self.assertEqual(response.status_code, status.HTTP_403_FORBIDDEN)
+        
     def test_delete_center_authorization_by_educator(self):
         center_exit = CenterExitAuthorization.objects.create(**self.center_exit)
         response = self.client.delete(
