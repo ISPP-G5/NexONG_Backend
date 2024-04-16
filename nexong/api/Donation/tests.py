@@ -54,6 +54,8 @@ class AdminDonationApiViewSetTestCase(TestCase):
             HTTP_AUTHORIZATION=f"Token {self.token.key}",
         )
         self.assertEqual(response.status_code, status.HTTP_403_FORBIDDEN)
+
+
 class PartnerDonationApiViewSetTestCase(TestCase):
     def setUp(self):
         self.factory = APIRequestFactory()
@@ -61,7 +63,10 @@ class PartnerDonationApiViewSetTestCase(TestCase):
             description="testdeprueba2", address="333 Elm St", birthdate="1996-05-05"
         )
         self.user2 = User.objects.create(
-            username="testuser", email="example2@gmail.com", role=PARTNER, partner= self.partner2
+            username="testuser",
+            email="example2@gmail.com",
+            role=PARTNER,
+            partner=self.partner2,
         )
         self.token2 = Token.objects.create(user=self.user2)
         self.donation2 = Donation.objects.create(
@@ -101,4 +106,3 @@ class PartnerDonationApiViewSetTestCase(TestCase):
             HTTP_AUTHORIZATION=f"Token {self.token2.key}",
         )
         self.assertEqual(response.status_code, status.HTTP_403_FORBIDDEN)
-

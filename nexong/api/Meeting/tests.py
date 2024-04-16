@@ -63,6 +63,7 @@ class AdminMeetingApiViewSetTestCase(TestCase):
         )
         self.assertEqual(response.status_code, status.HTTP_204_NO_CONTENT)
 
+
 class PartnerMeetingApiViewSetTestCase(TestCase):
     def setUp(self):
         self.factory = APIRequestFactory()
@@ -70,10 +71,13 @@ class PartnerMeetingApiViewSetTestCase(TestCase):
             description="testdeprueba8", address="333 Elm St", birthdate="1996-05-05"
         )
         self.user2 = User.objects.create(
-            username="testuser", email="example1@gmail.com", role=PARTNER, partner=self.partner3
+            username="testuser",
+            email="example1@gmail.com",
+            role=PARTNER,
+            partner=self.partner3,
         )
         self.token = Token.objects.create(user=self.user2)
-        
+
         self.partner4 = Partner.objects.create(
             description="testdeprueba10",
             address="333 Elmlos St",
@@ -101,7 +105,7 @@ class PartnerMeetingApiViewSetTestCase(TestCase):
                 "date": "2025-01-22",
                 "time": "17:50-00:00",
                 "attendees": attendees_ids,
-                "url": f"http://localhost:8000/api/meeting/{self.meeting2.id}/"
+                "url": f"http://localhost:8000/api/meeting/{self.meeting2.id}/",
             },
             content_type="application/json",
             HTTP_AUTHORIZATION=f"Token {self.token.key}",

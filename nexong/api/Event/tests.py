@@ -371,6 +371,7 @@ class AdminEventApiViewSetTestCase(TestCase):
         )
         self.assertEqual(response.status_code, status.HTTP_204_NO_CONTENT)
 
+
 class PartnerEventApiViewSetTestCase(TestCase):
     def setUp(self):
         self.factory = APIRequestFactory()
@@ -391,7 +392,7 @@ class PartnerEventApiViewSetTestCase(TestCase):
             username="usuariotest",
             email="usuariotets@gmail.com",
             role=PARTNER,
-            partner=self.partner3
+            partner=self.partner3,
         )
 
         self.token = Token.objects.create(user=self.user2)
@@ -456,7 +457,7 @@ class PartnerEventApiViewSetTestCase(TestCase):
         )
         self.event2.attendees.add(self.student, self.student2)
         self.event2.volunteers.add(self.voluntario, self.voluntario2)
-       
+
     def test_obtain_event_by_partner(self):
         response = self.client.get(
             f"/api/event/{self.event2.id}/",

@@ -152,11 +152,19 @@ class AdminUserApiViewSetTestCase(TestCase):
         )
         self.assertEqual(response.status_code, 204)
 
+
 class PartnerApiViewSetTestCase(TestCase):
     def setUp(self):
         self.factory = APIRequestFactory()
-        self.partner = Partner.objects.create(address="789 Oak St", birthdate="2000-10-10", description="MONDONGO")
-        self.user = User.objects.create(username = 'testuser', email = "example2@gmail.com", role = PARTNER, partner=self.partner)
+        self.partner = Partner.objects.create(
+            address="789 Oak St", birthdate="2000-10-10", description="MONDONGO"
+        )
+        self.user = User.objects.create(
+            username="testuser",
+            email="example2@gmail.com",
+            role=PARTNER,
+            partner=self.partner,
+        )
         self.token = Token.objects.create(user=self.user)
 
     def test_update_partner(self):
@@ -171,7 +179,7 @@ class PartnerApiViewSetTestCase(TestCase):
                 "birthdate": "2000-10-10",
             },
             content_type="application/json",
-            HTTP_AUTHORIZATION=f'Token {self.token.key}'
+            HTTP_AUTHORIZATION=f"Token {self.token.key}",
         )
         self.assertEqual(response.status_code, 200)
         partner.refresh_from_db()
@@ -179,6 +187,8 @@ class PartnerApiViewSetTestCase(TestCase):
     def test_delete_partner(self):
         partner = Partner.objects.create(address="321 Maple St", birthdate="1970-12-12")
         initial_count = Partner.objects.count()
-        response = self.client.delete(f"/api/partner/{partner.id}/", HTTP_AUTHORIZATION=f'Token {self.token.key}')
+        response = self.client.delete(
+            f"/api/partner/{partner.id}/", HTTP_AUTHORIZATION=f"Token {self.token.key}"
+        )
         self.assertEqual(response.status_code, 204)
         self.assertEqual(Partner.objects.count(), initial_count - 1)
