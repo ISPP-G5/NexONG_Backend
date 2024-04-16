@@ -1275,7 +1275,7 @@
             "name":"Nota Computadores",
             "description":"Nota final para el grupo de primer ciclo",
             "evaluation_type":"ANUAL",
-            "grade_system":"CERO A UNO",
+            "grade_system":"CERO A DIEZ",
             "lesson":1
             }
     },

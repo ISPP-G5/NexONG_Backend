@@ -12,10 +12,12 @@ from .Authentication.views import (
     LogoutAndBlacklistRefreshTokenForUserView,
     ActivateUserView,
 )
+from .helpers.partnerExports import (
+    PartnersExportToCsv,
+    PartnersExportToPdf,
+    PartnersExportToExcel,
+)
 from .PunctualDonationByCard.views import *
-from rest_framework.routers import DefaultRouter
-
-router = DefaultRouter()
 
 urlpatterns = [
     path("", include(router_api.urls)),
@@ -56,4 +58,8 @@ urlpatterns = [
     path("process-payment", process_payment, name="process_payment"),
     path("payment/success", payment_success, name="payment_success"),
     path("payment/cancel", payment_cancel, name="payment_cancel"),
+    path("export/csv/partners", PartnersExportToCsv, name="export_csv_partners"),
+    path("export/pdf/partners", PartnersExportToPdf, name="export_pdf_partners"),
+    path("export/excel/partners", PartnersExportToExcel, name="export_excel_partners"),
+
 ]

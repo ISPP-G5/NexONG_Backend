@@ -189,9 +189,8 @@ DJOSER = {
     "SEND_ACTIVATION_EMAIL": True,
     "SERIALIZERS": {
         "user_create": "nexong.api.Authentication.authSerializer.CreateUserSerializer",
-        "user": "nexong.api.Authentication.authSerializer.CreateUserSerializer",
-        "current_user": "nexong.api.Authentication.authSerializer.CreateUserSerializer",
-        # "user_delete": "djoser.serializers.UserDeleteSerializer",
+        "user": "nexong.api.Authentication.authSerializer.UserSerializer",
+        "current_user": "nexong.api.Authentication.authSerializer.UserSerializer",
     },
     "SOCIAL_AUTH_TOKEN_STRATEGY": "djoser.social.token.jwt.TokenStrategy",
     "SOCIAL_AUTH_ALLOWED_REDIRECT_URIS": white_list,
