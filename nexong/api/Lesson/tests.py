@@ -207,6 +207,8 @@ class AdminLessonApiViewSetTestCase(TestCase):
             HTTP_AUTHORIZATION=f"Token {self.token.key}",
         )
         self.assertEqual(response.status_code, 204)
+
+
 from nexong.api.Authentication.views import *
 from nexong.models import *
 from rest_framework.authtoken.models import Token
@@ -214,10 +216,13 @@ from rest_framework.test import APIRequestFactory
 from rest_framework.test import APITestCase
 from rest_framework import status
 
+
 class EducatorLessonApiViewSetTestCase(APITestCase):
     def setUp(self):
         self.family = Family.objects.create(name="Los Pedraz")
-        self.educator = Educator.objects.create(birthdate="1969-06-09", description="EL profesor de lengua")
+        self.educator = Educator.objects.create(
+            birthdate="1969-06-09", description="EL profesor de lengua"
+        )
         self.factory = APIRequestFactory()
         self.user = User.objects.create(
             username="testuser",
@@ -243,15 +248,14 @@ class EducatorLessonApiViewSetTestCase(APITestCase):
             family=self.family,
         )
         self.lesson = {
-            "name" :"Primera Materia",
-            "description" : "Módulo C, segunda planta",
-            "capacity":50,
-            "is_morning_lesson":True,
-            "educator":self.educator,
+            "name": "Primera Materia",
+            "description": "Módulo C, segunda planta",
+            "capacity": 50,
+            "is_morning_lesson": True,
+            "educator": self.educator,
             "start_date": "2024-01-28",
             "end_date": "2024-05-28",
         }
-
 
     def test_create_lesson_by_educator(self):
         self.lesson["educator"] = self.educator.id
@@ -282,7 +286,7 @@ class EducatorLessonApiViewSetTestCase(APITestCase):
             HTTP_AUTHORIZATION=f"Token {self.token.key}",
         )
         self.assertEqual(response.status_code, status.HTTP_403_FORBIDDEN)
-        
+
     def test_delete_lesson_by_educator(self):
         lesson = Lesson.objects.create(**self.lesson)
         response = self.client.delete(
@@ -291,10 +295,13 @@ class EducatorLessonApiViewSetTestCase(APITestCase):
         )
         self.assertEqual(response.status_code, status.HTTP_403_FORBIDDEN)
 
+
 class EducatorLessonAttendanceApiViewSetTestCase(APITestCase):
     def setUp(self):
         self.family = Family.objects.create(name="Los Pedraz")
-        self.educator = Educator.objects.create(birthdate="1969-06-09", description="EL profesor de lengua")
+        self.educator = Educator.objects.create(
+            birthdate="1969-06-09", description="EL profesor de lengua"
+        )
         self.factory = APIRequestFactory()
         self.user = User.objects.create(
             username="testuser",
@@ -344,7 +351,6 @@ class EducatorLessonAttendanceApiViewSetTestCase(APITestCase):
             "volunteer": self.volunteer,
         }
 
-
     def test_create_lessonAttendance_by_educator(self):
         self.lessonAtendance["lesson"] = self.lesson.id
         self.lessonAtendance["volunteer"] = self.volunteer.id
@@ -377,7 +383,7 @@ class EducatorLessonAttendanceApiViewSetTestCase(APITestCase):
             HTTP_AUTHORIZATION=f"Token {self.token.key}",
         )
         self.assertEqual(response.status_code, status.HTTP_403_FORBIDDEN)
-        
+
     def test_delete_lessonAttendance_by_educator(self):
         lessonAttendance = LessonAttendance.objects.create(**self.lessonAtendance)
         response = self.client.delete(

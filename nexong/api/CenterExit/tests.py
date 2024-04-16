@@ -6,10 +6,13 @@ from rest_framework.test import APITestCase
 from rest_framework import status
 from django.core.files.uploadedfile import SimpleUploadedFile
 
+
 class EducatorCenterExitApiViewSetTestCase(APITestCase):
     def setUp(self):
         self.family = Family.objects.create(name="Los Pedraz")
-        self.educator = Educator.objects.create(birthdate="1969-06-09", description="EL profesor de lengua")
+        self.educator = Educator.objects.create(
+            birthdate="1969-06-09", description="EL profesor de lengua"
+        )
         self.factory = APIRequestFactory()
         self.user = User.objects.create(
             username="testuser",
@@ -129,7 +132,7 @@ class EducatorCenterExitApiViewSetTestCase(APITestCase):
             HTTP_AUTHORIZATION=f"Token {self.token.key}",
         )
         self.assertEqual(response.status_code, status.HTTP_403_FORBIDDEN)
-        
+
     def test_delete_center_authorization_by_educator(self):
         center_exit = CenterExitAuthorization.objects.create(**self.center_exit)
         response = self.client.delete(

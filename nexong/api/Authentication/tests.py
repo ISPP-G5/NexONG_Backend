@@ -14,7 +14,6 @@ class EducatorApiViewSetTestCase(APITestCase):
         self.educator_data = {
             "description": "Test description",
             "birthdate": "1969-06-09",
-          
         }
         self.educator_error_desc = {
             "description": "",
@@ -30,8 +29,8 @@ class EducatorApiViewSetTestCase(APITestCase):
         self.token = Token.objects.create(user=self.user)
 
     def test_create_educator(self):
-        serializerE1 = EducatorSerializer(data = self.educator_error_desc)
-        serializerE2 = EducatorSerializer(data = self.educator_error_date)
+        serializerE1 = EducatorSerializer(data=self.educator_error_desc)
+        serializerE2 = EducatorSerializer(data=self.educator_error_date)
 
         response_error = self.client.post(
             "/api/educator/",
@@ -43,11 +42,16 @@ class EducatorApiViewSetTestCase(APITestCase):
 
         with self.assertRaises(ValidationError) as context1:
             serializerE1.is_valid(raise_exception=True)
-        self.assertEqual(context1.exception.detail["description"][0], "This field may not be blank.")
+        self.assertEqual(
+            context1.exception.detail["description"][0], "This field may not be blank."
+        )
 
         with self.assertRaises(ValidationError) as context2:
             serializerE2.is_valid(raise_exception=True)
-        self.assertEqual(context2.exception.detail["non_field_errors"][0], "Birthdate can't be greater than today")
+        self.assertEqual(
+            context2.exception.detail["non_field_errors"][0],
+            "Birthdate can't be greater than today",
+        )
 
         response = self.client.post(
             "/api/educator/",
@@ -70,7 +74,6 @@ class EducatorApiViewSetTestCase(APITestCase):
         self.assertEqual(response.data["description"], "Test description")
         self.assertEqual(response.data["birthdate"], "1969-06-09")
 
-
     def test_update_educator(self):
         educator = Educator.objects.create(**self.educator_data)
         self.educator_data["description"] = "Updated description"
@@ -81,13 +84,8 @@ class EducatorApiViewSetTestCase(APITestCase):
             HTTP_AUTHORIZATION=f"Token {self.token.key}",
         )
         self.assertEqual(response.status_code, status.HTTP_200_OK)
-        self.assertEqual(
-            Educator.objects.get().description, "Updated description"
-        )
-        self.assertEqual(
-            Educator.objects.get().birthdate, datetime.date(1970, 7, 10)
-        )
-
+        self.assertEqual(Educator.objects.get().description, "Updated description")
+        self.assertEqual(Educator.objects.get().birthdate, datetime.date(1970, 7, 10))
 
     def test_delete_educator(self):
         educator = Educator.objects.create(**self.educator_data)

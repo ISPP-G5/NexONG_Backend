@@ -10,7 +10,9 @@ from django.core.files.uploadedfile import SimpleUploadedFile
 class EducatorStudentApiViewSetTestCase(APITestCase):
     def setUp(self):
         self.family = Family.objects.create(name="Los Pedraz")
-        self.educator = Educator.objects.create(birthdate="1969-06-09", description="EL profesor de lengua")
+        self.educator = Educator.objects.create(
+            birthdate="1969-06-09", description="EL profesor de lengua"
+        )
         self.factory = APIRequestFactory()
         self.user = User.objects.create(
             username="testuser",
@@ -24,18 +26,18 @@ class EducatorStudentApiViewSetTestCase(APITestCase):
         )
         self.student = {
             "name": "Amadeo",
-            "surname" :"Portillo",
-            "education_center":self.education_center,
-            "is_morning_student":True,
-            "activities_during_exit":"",
-            "status":"ACEPTADO",
-            "current_education_year":"TRES AÑOS",
-            "education_center_tutor":"Don Carlos Perez",
-            "nationality":"Alemania",
-            "birthdate":"2015-04-21",
-            "family":self.family,
+            "surname": "Portillo",
+            "education_center": self.education_center,
+            "is_morning_student": True,
+            "activities_during_exit": "",
+            "status": "ACEPTADO",
+            "current_education_year": "TRES AÑOS",
+            "education_center_tutor": "Don Carlos Perez",
+            "nationality": "Alemania",
+            "birthdate": "2015-04-21",
+            "family": self.family,
         }
-        
+
     def test_create_student_by_educator(self):
         self.student["family"] = self.family.id
         self.student["education_center"] = self.education_center.id
@@ -67,7 +69,7 @@ class EducatorStudentApiViewSetTestCase(APITestCase):
             HTTP_AUTHORIZATION=f"Token {self.token.key}",
         )
         self.assertEqual(response.status_code, status.HTTP_403_FORBIDDEN)
-        
+
     def test_delete_student_by_educator(self):
         student = Student.objects.create(**self.student)
         response = self.client.delete(
@@ -76,10 +78,13 @@ class EducatorStudentApiViewSetTestCase(APITestCase):
         )
         self.assertEqual(response.status_code, status.HTTP_403_FORBIDDEN)
 
+
 class EducatorQuarterMArksApiViewSetTestCase(APITestCase):
     def setUp(self):
         self.family = Family.objects.create(name="Los Pedraz")
-        self.educator = Educator.objects.create(birthdate="1969-06-09", description="EL profesor de lengua")
+        self.educator = Educator.objects.create(
+            birthdate="1969-06-09", description="EL profesor de lengua"
+        )
         self.factory = APIRequestFactory()
         self.user = User.objects.create(
             username="testuser",
@@ -104,15 +109,12 @@ class EducatorQuarterMArksApiViewSetTestCase(APITestCase):
             birthdate="2015-04-21",
             family=self.family,
         )
-        self.quartermarks = {
-            "date" : "2024-03-21",
-            "student" : self.student
-        }
+        self.quartermarks = {"date": "2024-03-21", "student": self.student}
         file_content = b"Test file content"
         self.quartermarks["marks"] = SimpleUploadedFile(
             "student_marks.pdf", file_content
         )
-        
+
     def test_create_quarterMarks_by_educator(self):
         self.quartermarks["student"] = self.student.id
         response = self.client.post(
@@ -142,7 +144,7 @@ class EducatorQuarterMArksApiViewSetTestCase(APITestCase):
             HTTP_AUTHORIZATION=f"Token {self.token.key}",
         )
         self.assertEqual(response.status_code, status.HTTP_403_FORBIDDEN)
-        
+
     def test_delete_quarterMarks_by_educator(self):
         quartermarks = QuarterMarks.objects.create(**self.quartermarks)
         response = self.client.delete(
