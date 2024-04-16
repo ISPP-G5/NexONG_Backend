@@ -61,5 +61,4 @@ urlpatterns = [
     path("export/csv/partners", PartnersExportToCsv, name="export_csv_partners"),
     path("export/pdf/partners", PartnersExportToPdf, name="export_pdf_partners"),
     path("export/excel/partners", PartnersExportToExcel, name="export_excel_partners"),
-
 ]
