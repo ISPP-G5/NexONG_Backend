@@ -402,7 +402,7 @@ class VolunteerEventApiViewSetTestCase(TestCase):
 
         self.token = Token.objects.create(user=self.user2)
 
-        self.student = Student.objects.create(
+        self.student3 = Student.objects.create(
             name="José Manuele",
             surname="Colini",
             education_center=self.education_center2,
@@ -415,7 +415,7 @@ class VolunteerEventApiViewSetTestCase(TestCase):
             birthdate="2017-04-21",
             family=self.family2,
         )
-        self.student2 = Student.objects.create(
+        self.student4 = Student.objects.create(
             name="Jesulin Pedro",
             surname="De Ubrique",
             education_center=self.education_center2,
@@ -437,9 +437,9 @@ class VolunteerEventApiViewSetTestCase(TestCase):
             start_date="2024-01-26",
             end_date="2024-05-28",
         )
-        self.lesson.students.add(self.student, self.student2)
+        self.lesson.students.add(self.student3, self.student4)
 
-        self.voluntario = Volunteer.objects.create(
+        self.voluntario3 = Volunteer.objects.create(
             academic_formation="Test volunteer",
             motivation="Test volunteer",
             status="PENDIENTE",
@@ -449,7 +449,7 @@ class VolunteerEventApiViewSetTestCase(TestCase):
             start_date="1956-07-06",
             end_date="1956-07-07",
         )
-        self.voluntario2 = Volunteer.objects.create(
+        self.voluntario4 = Volunteer.objects.create(
             academic_formation="Test volunteer7",
             motivation="Test volunteer7",
             status="ACEPTADO",
@@ -470,8 +470,8 @@ class VolunteerEventApiViewSetTestCase(TestCase):
             start_date="2024-06-13 06:00-00:00",
             end_date="2024-06-13 11:00-00:00",
         )
-        self.event2.attendees.add(self.student, self.student2)
-        self.event2.volunteers.add(self.voluntario, self.voluntario2)
+        self.event2.attendees.add(self.student3, self.student4)
+        self.event2.volunteers.add(self.voluntario3, self.voluntario4)
         self.lessonevent2 = LessonEvent.objects.create(
             name="Vienen los del Ríopol",
             description="Se necesitan educadoresad",
@@ -491,10 +491,10 @@ class VolunteerEventApiViewSetTestCase(TestCase):
         self.assertEqual(response.status_code, status.HTTP_200_OK)
 
     def test_create_event_by_volunteer_error(self):
-        attendees_ids1 = [self.student.id, self.student2.id]
-        volunteers_ids1 = [
-            self.voluntario.id,
-            self.voluntario2.id,
+        attendees_idsV = [self.student3.id, self.student4.id]
+        volunteers_idsV = [
+            self.voluntario3.id,
+            self.voluntario4.id,
         ]  # Asegurarse de que se esté pasando el ID del voluntario
         response = self.client.post(
             "/api/event/",
@@ -507,18 +507,18 @@ class VolunteerEventApiViewSetTestCase(TestCase):
                 "price": 5,
                 "start_date": "2025-06-12T06:00:00Z",
                 "end_date": "2025-06-12T11:00:00Z",
-                "attendees": attendees_ids1,
-                "volunteers": volunteers_ids1,
+                "attendees": attendees_idsV,
+                "volunteers": volunteers_idsV,
             },
             HTTP_AUTHORIZATION=f"Token {self.token.key}",
         )
         self.assertEqual(response.status_code, status.HTTP_403_FORBIDDEN)
 
     def test_update_event_by_volunteer_error(self):
-        attendees_idsV = [self.student.id, self.student2.id]
+        attendees_idsV = [self.student3.id, self.student4.id]
         volunteers_idsV = [
-            self.voluntario.id,
-            self.voluntario2.id,
+            self.voluntario3.id,
+            self.voluntario4.id,
         ]  # Asegurarse de que se esté pasando el ID del voluntario
         response = self.client.put(
             f"/api/event/{self.event2.id}/",
@@ -541,17 +541,17 @@ class VolunteerEventApiViewSetTestCase(TestCase):
 
     def test_obtain_lesson_event_by_volunteer(self):
         lessonevent = LessonEvent.objects.create(
-            name="Vienen pa Sevilla",
-            description="Se necesitan 2 cacas",
-            place="Jardín principal",
+            name="Feriaa",
+            description="Necesitamos camareros",
+            place="Fuera",
             max_volunteers=2,
             lesson=self.lesson,
             price=5,
             start_date="2024-06-12 06:00-00:00",
-            end_date="2024-06-12 11:00-00:00",
+            end_date="2024-07-12 11:00-00:00",
         )
-        lessonevent.attendees.add(self.student, self.student2)
-        lessonevent.volunteers.add(self.voluntario, self.voluntario2)
+        lessonevent.attendees.add(self.student3, self.student4)
+        lessonevent.volunteers.add(self.voluntario3, self.voluntario4)
         lessonevent.educators.add(self.educator, self.educator2)
         response = self.client.get(
             f"/api/lesson-event/{lessonevent.id}/",
@@ -560,9 +560,9 @@ class VolunteerEventApiViewSetTestCase(TestCase):
         self.assertEqual(response.status_code, 200)
 
     def test_update_lesson_event_by_volunteer(self):
-        attendees_idV = [self.student.id, self.student2.id]
-        volunteers_idV = [self.voluntario.id, self.voluntario2.id]
-        educators_idV = [self.educator.id, self.educator2.id]
+        attendees_idV = [self.student3.id, self.student4.id]
+        volunteers_idV = [self.voluntario3.id, self.voluntario4.id]
+        educators_idV = [self.educator3.id, self.educator2.id]
         response = self.client.put(
             f"/api/lesson-event/{self.lessonevent2.id}/",
             data={
