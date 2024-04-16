@@ -7,6 +7,7 @@ from rest_framework import status
 from django.core.files.uploadedfile import SimpleUploadedFile
 from django.test import TestCase
 
+
 def add_files_to_volunteer_data(self):
     file_content = b"Test file content"  # Content of the file
     self.volunteer_data["enrollment_document"] = SimpleUploadedFile(
@@ -90,6 +91,7 @@ class VolunteerApiViewSetTestCase(APITestCase):
         )
         self.assertEqual(response.status_code, status.HTTP_204_NO_CONTENT)
         self.assertEqual(Volunteer.objects.count(), 0)
+
 
 class AdminUserApiViewSetTestCase(TestCase):
     def setUp(self):
