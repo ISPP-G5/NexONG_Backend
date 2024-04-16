@@ -9,7 +9,6 @@ import stripe
 from django.views.decorators.csrf import csrf_exempt
 import json
 from rest_framework.decorators import api_view
-import requests
 from django.http import JsonResponse
 
 checkoutSessionID = None
@@ -87,14 +86,6 @@ def obtainCheckoutSession():
 
 
 def payment_success(request):
-    payload = {
-        "amount": paymentAmount,
-        "name": paymentName,
-        "surname": paymentSurname,
-        "email": paymentEmail,
-        "date": paymentDate,
-    }
-
     try:
         donation = PunctualDonationByCard.objects.create(
             name=paymentName, surname=paymentSurname, email=paymentEmail, amount=paymentAmount, date=paymentDate
@@ -103,7 +94,7 @@ def payment_success(request):
         return JsonResponse({"message": f"Donacion de {donation.amount} euros creada!"})
     except Exception as e:
         # If an exception occurs during creation, handle it here
-        return JsonResponse({"message": "Algo ha fallado en la creación de la donación"})
+        return JsonResponse({"message": f"Algo ha fallado en la creación de la donación {str(e)}"})
 
 
 def payment_cancel():
