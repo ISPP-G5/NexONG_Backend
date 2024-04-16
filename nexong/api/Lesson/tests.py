@@ -208,6 +208,7 @@ class AdminLessonApiViewSetTestCase(TestCase):
         )
         self.assertEqual(response.status_code, 204)
 
+
 class VolunteerLessonApiViewSetTestCase(TestCase):
     def setUp(self):
         self.factory = APIRequestFactory()
@@ -222,7 +223,10 @@ class VolunteerLessonApiViewSetTestCase(TestCase):
             end_date="1980-07-05",
         )
         self.user2 = User.objects.create(
-            username="testuser", email="example@gmail.com", role=VOLUNTEER, volunteer=self.volunteer3
+            username="testuser",
+            email="example@gmail.com",
+            role=VOLUNTEER,
+            volunteer=self.volunteer3,
         )
         self.family2 = Family.objects.create(name="Familia Pedraza")
         self.education_center2 = EducationCenter.objects.create(
@@ -301,7 +305,7 @@ class VolunteerLessonApiViewSetTestCase(TestCase):
             data={
                 "date": "2025-04-21",
                 "lesson": f"{self.lesson2.id}",
-                "volunteer": f"{self.volunteer2.id}"
+                "volunteer": f"{self.volunteer2.id}",
             },
             HTTP_AUTHORIZATION=f"Token {self.token.key}",
         )
@@ -313,7 +317,7 @@ class VolunteerLessonApiViewSetTestCase(TestCase):
             data={
                 "date": "2025-04-21",
                 "lesson": f"{self.lesson2.id}",
-                "volunteer": f"{self.volunteer3.id}"
+                "volunteer": f"{self.volunteer3.id}",
             },
             content_type="application/json",
             HTTP_AUTHORIZATION=f"Token {self.token.key}",

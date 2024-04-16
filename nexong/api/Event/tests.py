@@ -371,14 +371,19 @@ class AdminEventApiViewSetTestCase(TestCase):
         )
         self.assertEqual(response.status_code, status.HTTP_204_NO_CONTENT)
 
+
 class VolunteerEventApiViewSetTestCase(TestCase):
     def setUp(self):
         self.factory = APIRequestFactory()
         self.volunteer = Volunteer.objects.create(
-            academic_formation="Test formation", motivation="Test motivation", status="ACEPTADO", address="Test address", postal_code= "12345",
-            birthdate= "1956-07-05",
-            start_date= "1956-07-05",
-            end_date= "1956-07-05", 
+            academic_formation="Test formation",
+            motivation="Test motivation",
+            status="ACEPTADO",
+            address="Test address",
+            postal_code="12345",
+            birthdate="1956-07-05",
+            start_date="1956-07-05",
+            end_date="1956-07-05",
         )
         self.family2 = Family.objects.create(name="Familia Pedriza")
         self.education_center2 = EducationCenter.objects.create(
