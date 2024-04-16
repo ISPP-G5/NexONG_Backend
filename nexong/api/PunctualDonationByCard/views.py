@@ -88,13 +88,19 @@ def obtainCheckoutSession():
 def payment_success(request):
     try:
         donation = PunctualDonationByCard.objects.create(
-            name=paymentName, surname=paymentSurname, email=paymentEmail, amount=paymentAmount, date=paymentDate
+            name=paymentName,
+            surname=paymentSurname,
+            email=paymentEmail,
+            amount=paymentAmount,
+            date=paymentDate,
         )
         # If the creation is successful, you can perform additional actions here
         return JsonResponse({"message": f"Donacion de {donation.amount} euros creada!"})
     except Exception as e:
         # If an exception occurs during creation, handle it here
-        return JsonResponse({"message": f"Algo ha fallado en la creación de la donación {str(e)}"})
+        return JsonResponse(
+            {"message": f"Algo ha fallado en la creación de la donación {str(e)}"}
+        )
 
 
 def payment_cancel():
