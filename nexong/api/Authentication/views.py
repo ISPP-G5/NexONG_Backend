@@ -159,7 +159,7 @@ class CustomActivateView(APIView):
                     user.is_enabled = True
                     user.is_active = True
                     user.save()
-                    return redirect(reverse("activation_success"))
+                    return redirect("http://127.0.0.1:3000/iniciar-sesion/")
                 else:
                     return Response(
                         {"detail": "Token not valid"},
