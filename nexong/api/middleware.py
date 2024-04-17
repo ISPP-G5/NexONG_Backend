@@ -1,13 +1,24 @@
 from django.http import HttpResponseForbidden
-
+from rest_framework_simplejwt.authentication import JWTAuthentication
 
 class ExportPermission:
-    def __init__(self, response):
-        self.response = response
+    
+    def __init__(self, get_response):
+        self.get_response = get_response
 
     def __call__(self, request):
+        
         if "export" in request.path:
-            if not request.user.is_authenticated or not request.user.role == "ADMIN":
+            authorization_header = request.headers.get("Authorization")
+            if not authorization_header:
                 return HttpResponseForbidden("Acceso denegado")
 
-        return self.response(request)
+            jwt_authentication = JWTAuthentication()
+
+            user, _ = jwt_authentication.authenticate(request)
+            if user.role != "ADMIN":
+                    return HttpResponseForbidden("Acceso denegado")           
+            
+
+        return self.get_response(request)
+      
