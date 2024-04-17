@@ -53,7 +53,6 @@ MIDDLEWARE = [
     "django.middleware.clickjacking.XFrameOptionsMiddleware",
     "social_django.middleware.SocialAuthExceptionMiddleware",
     "nexong.api.middleware.ExportPermission",
-
 ]
 SESSION_ENGINE = "django.contrib.sessions.backends.db"
 ROOT_URLCONF = "src.urls"
