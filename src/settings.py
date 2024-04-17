@@ -195,6 +195,9 @@ DJOSER = {
     },
     "SOCIAL_AUTH_TOKEN_STRATEGY": "djoser.social.token.jwt.TokenStrategy",
     "SOCIAL_AUTH_ALLOWED_REDIRECT_URIS": white_list,
+    "EMAIL": {
+        "activation": "nexong.email.ActivationEmail",
+    },
 }
 
 SOCIAL_AUTH_GOOGLE_OAUTH2_KEY = config("GOOGLE_OAUTH2_KEY")
