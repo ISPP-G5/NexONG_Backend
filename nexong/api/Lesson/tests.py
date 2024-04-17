@@ -4,7 +4,7 @@ from nexong.models import *
 from rest_framework.test import APIRequestFactory
 from rest_framework import status
 from rest_framework.authtoken.models import Token
-
+from rest_framework.test import APITestCase
 
 class AdminLessonApiViewSetTestCase(TestCase):
     def setUp(self):
@@ -207,14 +207,6 @@ class AdminLessonApiViewSetTestCase(TestCase):
             HTTP_AUTHORIZATION=f"Token {self.token.key}",
         )
         self.assertEqual(response.status_code, 204)
-
-
-from nexong.api.Authentication.views import *
-from nexong.models import *
-from rest_framework.authtoken.models import Token
-from rest_framework.test import APIRequestFactory
-from rest_framework.test import APITestCase
-from rest_framework import status
 
 
 class EducatorLessonApiViewSetTestCase(APITestCase):
