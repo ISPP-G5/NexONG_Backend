@@ -8,11 +8,14 @@ from rest_framework import status
 from django.test import TestCase
 from nexong.api.helpers.testsSetup import testSetupEducator
 
+
 class EducatorApiViewSetTestCase(APITestCase):
     def setUp(self):
         testSetupEducator(self)
         self.userAdmin = User.objects.create(
-            username="testAdminUserForEducator", email="exampleAdmin@outlook.com", role=ADMIN
+            username="testAdminUserForEducator",
+            email="exampleAdmin@outlook.com",
+            role=ADMIN,
         )
         self.token2 = Token.objects.create(user=self.userAdmin)
 
@@ -40,7 +43,7 @@ class EducatorApiViewSetTestCase(APITestCase):
             context2.exception.detail["non_field_errors"][0],
             "Birthdate can't be greater than today",
         )
-        
+
         count = Educator.objects.count()
         response = self.client.post(
             "/api/educator/",
@@ -49,7 +52,7 @@ class EducatorApiViewSetTestCase(APITestCase):
             HTTP_AUTHORIZATION=f"Token {self.token2.key}",
         )
         self.assertEqual(response.status_code, status.HTTP_201_CREATED)
-        self.assertEqual(Educator.objects.count(), count+1)
+        self.assertEqual(Educator.objects.count(), count + 1)
         self.assertEqual(response.data["description"], "Test description")
         self.assertEqual(response.data["birthdate"], "1969-06-09")
 
@@ -85,7 +88,7 @@ class EducatorApiViewSetTestCase(APITestCase):
             HTTP_AUTHORIZATION=f"Token {self.token2.key}",
         )
         self.assertEqual(response.status_code, status.HTTP_204_NO_CONTENT)
-        self.assertEqual(Educator.objects.count(), count-1)
+        self.assertEqual(Educator.objects.count(), count - 1)
 
 
 class AdminUserApiViewSetTestCase(TestCase):

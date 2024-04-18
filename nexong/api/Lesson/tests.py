@@ -8,7 +8,6 @@ from rest_framework.test import APITestCase
 from nexong.api.helpers.testsSetup import testSetupEducator
 
 
-
 class AdminLessonApiViewSetTestCase(TestCase):
     def setUp(self):
         self.factory = APIRequestFactory()
@@ -214,8 +213,7 @@ class AdminLessonApiViewSetTestCase(TestCase):
 
 class EducatorLessonApiViewSetTestCase(APITestCase):
     def setUp(self):
-        testSetupEducator(self)   
-        
+        testSetupEducator(self)
 
     def test_create_lesson_by_educator(self):
         self.lesson_data["educator"] = self.educator.id
@@ -259,7 +257,6 @@ class EducatorLessonApiViewSetTestCase(APITestCase):
 class EducatorLessonAttendanceApiViewSetTestCase(APITestCase):
     def setUp(self):
         testSetupEducator(self)
-        
 
     def test_create_lessonAttendance_by_educator(self):
         self.lessonAtendance_data["lesson"] = self.lesson.id
