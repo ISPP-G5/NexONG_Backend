@@ -17,6 +17,7 @@ from .helpers.partnerExports import (
     PartnersExportToPdf,
     PartnersExportToExcel,
 )
+from .PunctualDonationByCard.views import *
 
 urlpatterns = [
     path("", include(router_api.urls)),
@@ -54,6 +55,9 @@ urlpatterns = [
         "export/excel/students", StudentsExportToExcel, name="export_excel_all_students"
     ),
     path("auth/", include("djoser.urls.authtoken")),
+    path("process-payment", process_payment, name="process_payment"),
+    path("payment/success", payment_success, name="payment_success"),
+    path("payment/cancel", payment_cancel, name="payment_cancel"),
     path("export/csv/partners", PartnersExportToCsv, name="export_csv_partners"),
     path("export/pdf/partners", PartnersExportToPdf, name="export_pdf_partners"),
     path("export/excel/partners", PartnersExportToExcel, name="export_excel_partners"),
