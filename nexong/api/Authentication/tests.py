@@ -6,27 +6,15 @@ from rest_framework.test import APIRequestFactory
 from rest_framework.test import APITestCase
 from rest_framework import status
 from django.test import TestCase
-
+from nexong.api.helpers.testsSetup import testSetupEducator
 
 class EducatorApiViewSetTestCase(APITestCase):
     def setUp(self):
-        self.factory = APIRequestFactory()
-        self.educator_data = {
-            "description": "Test description",
-            "birthdate": "1969-06-09",
-        }
-        self.educator_error_desc = {
-            "description": "",
-            "birthdate": "1969-06-09",
-        }
-        self.educator_error_date = {
-            "description": "Test description",
-            "birthdate": "2069-06-09",
-        }
-        self.user = User.objects.create(
-            username="testuser", email="example@gmail.com", role=ADMIN
+        testSetupEducator(self)
+        self.userAdmin = User.objects.create(
+            username="testAdminUserForEducator", email="exampleAdmin@outlook.com", role=ADMIN
         )
-        self.token = Token.objects.create(user=self.user)
+        self.token2 = Token.objects.create(user=self.userAdmin)
 
     def test_create_educator(self):
         serializerE1 = EducatorSerializer(data=self.educator_error_desc)
@@ -36,7 +24,7 @@ class EducatorApiViewSetTestCase(APITestCase):
             "/api/educator/",
             self.educator_error_date,
             format="multipart",
-            HTTP_AUTHORIZATION=f"Token {self.token.key}",
+            HTTP_AUTHORIZATION=f"Token {self.token2.key}",
         )
         self.assertEqual(response_error.status_code, status.HTTP_400_BAD_REQUEST)
 
@@ -52,23 +40,24 @@ class EducatorApiViewSetTestCase(APITestCase):
             context2.exception.detail["non_field_errors"][0],
             "Birthdate can't be greater than today",
         )
-
+        
+        count = Educator.objects.count()
         response = self.client.post(
             "/api/educator/",
             self.educator_data,
             format="multipart",
-            HTTP_AUTHORIZATION=f"Token {self.token.key}",
+            HTTP_AUTHORIZATION=f"Token {self.token2.key}",
         )
         self.assertEqual(response.status_code, status.HTTP_201_CREATED)
-        self.assertEqual(Educator.objects.count(), 1)
-        self.assertEqual(Educator.objects.get().description, "Test description")
-        self.assertEqual(Educator.objects.get().birthdate, datetime.date(1969, 6, 9))
+        self.assertEqual(Educator.objects.count(), count+1)
+        self.assertEqual(response.data["description"], "Test description")
+        self.assertEqual(response.data["birthdate"], "1969-06-09")
 
     def test_retrieve_educator(self):
         educator = Educator.objects.create(**self.educator_data)
         response = self.client.get(
             f"/api/educator/{educator.id}/",
-            HTTP_AUTHORIZATION=f"Token {self.token.key}",
+            HTTP_AUTHORIZATION=f"Token {self.token2.key}",
         )
         self.assertEqual(response.status_code, status.HTTP_200_OK)
         self.assertEqual(response.data["description"], "Test description")
@@ -81,20 +70,22 @@ class EducatorApiViewSetTestCase(APITestCase):
         response = self.client.put(
             f"/api/educator/{educator.id}/",
             self.educator_data,
-            HTTP_AUTHORIZATION=f"Token {self.token.key}",
+            HTTP_AUTHORIZATION=f"Token {self.token2.key}",
         )
         self.assertEqual(response.status_code, status.HTTP_200_OK)
-        self.assertEqual(Educator.objects.get().description, "Updated description")
-        self.assertEqual(Educator.objects.get().birthdate, datetime.date(1970, 7, 10))
+        self.assertEqual(response.data["description"], "Updated description")
+        self.assertEqual(response.data["birthdate"], "1970-07-10")
 
     def test_delete_educator(self):
         educator = Educator.objects.create(**self.educator_data)
+        count = Educator.objects.count()
+
         response = self.client.delete(
             f"/api/educator/{educator.id}/",
-            HTTP_AUTHORIZATION=f"Token {self.token.key}",
+            HTTP_AUTHORIZATION=f"Token {self.token2.key}",
         )
         self.assertEqual(response.status_code, status.HTTP_204_NO_CONTENT)
-        self.assertEqual(Educator.objects.count(), 0)
+        self.assertEqual(Educator.objects.count(), count-1)
 
 
 class AdminUserApiViewSetTestCase(TestCase):
