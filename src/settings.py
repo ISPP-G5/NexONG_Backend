@@ -51,6 +51,7 @@ MIDDLEWARE = [
     "django.contrib.messages.middleware.MessageMiddleware",
     "django.middleware.clickjacking.XFrameOptionsMiddleware",
     "social_django.middleware.SocialAuthExceptionMiddleware",
+    "nexong.api.middleware.ExportPermission",
 ]
 SESSION_ENGINE = "django.contrib.sessions.backends.db"
 ROOT_URLCONF = "src.urls"
@@ -194,6 +195,9 @@ DJOSER = {
     },
     "SOCIAL_AUTH_TOKEN_STRATEGY": "djoser.social.token.jwt.TokenStrategy",
     "SOCIAL_AUTH_ALLOWED_REDIRECT_URIS": white_list,
+    "EMAIL": {
+        "activation": "nexong.email.ActivationEmail",
+    },
 }
 
 
