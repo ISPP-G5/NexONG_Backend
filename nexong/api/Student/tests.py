@@ -8,7 +8,7 @@ from rest_framework import status
 class EducatorStudentApiViewSetTestCase(APITestCase):
     def setUp(self):
         testSetupEducator(self)
-      
+
     def test_create_student_by_educator(self):
         self.student_data["family"] = self.family.id
         self.student_data["education_center"] = self.education_center.id

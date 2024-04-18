@@ -5,12 +5,10 @@ from rest_framework import status
 from nexong.api.helpers.testsSetup import testSetupEducator
 
 
-
 class EducatorEvaluationTypeTestCase(APITestCase):
     def setUp(self):
         testSetupEducator(self)
-        
-        
+
     def test_create_evaluation_type_by_educator(self):
         self.evaluation_type_data["lesson"] = self.lesson.id
         self.evaluation_type_data_bad_request["lesson"] = self.lesson.id
@@ -96,7 +94,7 @@ class EducatorEvaluationTypeTestCase(APITestCase):
             HTTP_AUTHORIZATION=f"Token {self.token.key}",
         )
         self.assertEqual(response.status_code, status.HTTP_204_NO_CONTENT)
-        self.assertEqual(EvaluationType.objects.count(), count-1)
+        self.assertEqual(EvaluationType.objects.count(), count - 1)
         self.assertEqual(response2.status_code, status.HTTP_403_FORBIDDEN)
 
 
@@ -156,9 +154,7 @@ class EducatorStudentEvaluationTestCase(APITestCase):
             HTTP_AUTHORIZATION=f"Token {self.token.key}",
         )
         self.assertEqual(response.status_code, status.HTTP_200_OK)
-        self.assertEqual(
-            response.data["comment"], "Mejoro tras la revision"
-        )
+        self.assertEqual(response.data["comment"], "Mejoro tras la revision")
 
         student_eval_forbid = StudentEvaluation.objects.create(
             **self.student_eval_data_forbiden

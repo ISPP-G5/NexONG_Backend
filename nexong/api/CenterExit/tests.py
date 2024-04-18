@@ -8,7 +8,6 @@ from nexong.api.helpers.testsSetup import testSetupEducator
 class EducatorCenterExitApiViewSetTestCase(APITestCase):
     def setUp(self):
         testSetupEducator(self)
-       
 
     def test_create_center_exit_by_educator(self):
         response = self.client.post(
