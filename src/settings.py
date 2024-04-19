@@ -47,16 +47,13 @@ if APPENGINE_URL:
 
     ALLOWED_HOSTS = [urlparse(APPENGINE_URL).netloc]
     CSRF_TRUSTED_ORIGINS = [APPENGINE_URL]
-    SECURE_SSL_REDIRECT = True
     CORS_ALLOWED_ORIGINS = [env("FRONTEND_URL")]
 else:
     ALLOWED_HOSTS = ["*"]
     CORS_ALLOWED_ORIGINS = ["http://localhost:3000", "http://127.0.0.1:3000"]
-# Once deployed, add the domain to the front end here
 
 APPEND_SLASH = True
 URL_BASE = "http://localhost:8000/"
-# Application definition
 
 INSTALLED_APPS = [
     "django.contrib.admin",
@@ -169,9 +166,9 @@ if DEBUG == 0:
     DEFAULT_FILE_STORAGE = "storages.backends.gcloud.GoogleCloudStorage"
     STATICFILES_STORAGE = "storages.backends.gcloud.GoogleCloudStorage"
     GS_BUCKET_NAME = env("GS_BUCKET_NAME")
-    STATIC_ROOT = BASE_DIR / "staticfiles"
 
 STATIC_URL = "static/"
+STATIC_ROOT = BASE_DIR / "staticfiles"
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/5.0/ref/settings/#default-auto-field
@@ -252,17 +249,9 @@ DJOSER = {
 SOCIAL_AUTH_GOOGLE_OAUTH2_KEY = env("GOOGLE_OAUTH2_KEY")
 SOCIAL_AUTH_GOOGLE_OAUTH2_SECRET = env("GOOGLE_OAUTH2_SECRET")
 # Stripe
-STRIPE_PUBLIC_KEY = config("STRIPE_PUBLIC_KEY")
-STRIPE_PRIVATE_KEY = config("STRIPE_PRIVATE_KEY")
+STRIPE_PUBLIC_KEY = env("STRIPE_PUBLIC_KEY")
+STRIPE_PRIVATE_KEY = env("STRIPE_PRIVATE_KEY")
 
-
-SOCIAL_AUTH_GOOGLE_OAUTH2_SCOPE = [
-    "https://www.googleapis.com/auth/userinfo.email",
-    "https://www.googleapis.com/auth/userinfo.profile",
-    "openid",
-]
-
-SOCIAL_AUTH_GOOGLE_OAUTH2_EXTRA_DATA = ["first_name", "last_name"]
 
 MEDIA_URL = "NexONG_Backend/files/"
 MEDIA_ROOT = "files"
@@ -276,12 +265,4 @@ EMAIL_USE_TLS = True
 EMAIL_HOST_USER = DEFAULT_FROM_EMAIL
 EMAIL_HOST_PASSWORD = "hrge nkbr uapt oyxk"
 
-CORS_ORIGIN_ALLOW_ALL = True
-SESSION_COOKIE_SAMESITE = "None"
-CORS_ALLOW_CREDENTIALS = True
 
-if DEBUG == 0:
-    SECURE_SSL_REDIRECT = True
-    SECURE_PROXY_SSL_HEADER = ("HTTP_X_FORWARDED_PROTO", "https")
-    SESSION_COOKIE_SECURE = True
-    CSRF_COOKIE_SECURE = True
