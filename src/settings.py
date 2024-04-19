@@ -55,8 +55,7 @@ else:
 # Once deployed, add the domain to the front end here
 
 APPEND_SLASH = True
-
-
+URL_BASE = "http://localhost:8000/"
 # Application definition
 
 INSTALLED_APPS = [
@@ -86,6 +85,7 @@ MIDDLEWARE = [
     "django.contrib.messages.middleware.MessageMiddleware",
     "django.middleware.clickjacking.XFrameOptionsMiddleware",
     "social_django.middleware.SocialAuthExceptionMiddleware",
+    "nexong.api.middleware.ExportPermission",
 ]
 SESSION_ENGINE = "django.contrib.sessions.backends.db"
 ROOT_URLCONF = "src.urls"
@@ -243,10 +243,18 @@ DJOSER = {
     },
     "SOCIAL_AUTH_TOKEN_STRATEGY": "djoser.social.token.jwt.TokenStrategy",
     "SOCIAL_AUTH_ALLOWED_REDIRECT_URIS": white_list,
+    "EMAIL": {
+        "activation": "nexong.email.ActivationEmail",
+    },
 }
+
 
 SOCIAL_AUTH_GOOGLE_OAUTH2_KEY = env("GOOGLE_OAUTH2_KEY")
 SOCIAL_AUTH_GOOGLE_OAUTH2_SECRET = env("GOOGLE_OAUTH2_SECRET")
+# Stripe
+STRIPE_PUBLIC_KEY = config("STRIPE_PUBLIC_KEY")
+STRIPE_PRIVATE_KEY = config("STRIPE_PRIVATE_KEY")
+
 
 SOCIAL_AUTH_GOOGLE_OAUTH2_SCOPE = [
     "https://www.googleapis.com/auth/userinfo.email",
