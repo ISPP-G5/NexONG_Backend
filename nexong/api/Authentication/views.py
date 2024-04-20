@@ -166,7 +166,7 @@ class CustomActivateView(APIView):
                         status=status.HTTP_400_BAD_REQUEST,
                     )
             else:
-                return redirect(reverse('activation_success'))
+                return redirect(reverse("activation_success"))
         except User.DoesNotExist:
             raise Http404("User does not exist")
         except requests.exceptions.RequestException as e:
