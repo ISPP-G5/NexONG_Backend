@@ -1,0 +1,15 @@
+{% load i18n %}
+
+{% block subject %}
+{% blocktrans %}Activación de cuenta en {{ site_name }}{% endblocktrans %}
+{% endblock subject %}
+
+
+{% block html_body %}
+<p>{% blocktrans %}
+Estás recibiendo este correo porque necesitas finalizar el proceso de activación de tu cuenta en {{ protocol }}://{{ domain }}/{{ url|safe }}
+{% endblocktrans %}</p>
+<p>Al pulsar el botón, se activará su cuenta y será redirigido a la página de inicio de sesión: </p>
+<p style="margin-bottom:100px"><a style="display: inline-block; padding: 10px 20px; background-color: #add8e6; color: #333333; text-decoration: none;" href="{{ protocol }}://{{ domain }}/{{ url|safe }}">Activar cuenta</a></p>
+
+{% endblock html_body %}
