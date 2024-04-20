@@ -11,7 +11,7 @@ class SuggestionApiViewSet(ModelViewSet):
     queryset = Suggestion.objects.all()
     http_method_names = ["get", "post", "delete"]
     serializer_class = SuggestionSerializer
-    permission_classes = [isAdminGetAndDelete]
+    permission_classes = [isAdminGetAndDelete | allowAnyPost]
 
     def create(self, request, *args, **kwargs):
         serializer = self.get_serializer(data=request.data)
