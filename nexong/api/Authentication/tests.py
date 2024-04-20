@@ -1,9 +1,181 @@
-from django.test import TestCase
+from rest_framework.exceptions import ValidationError
 from nexong.api.Authentication.views import *
 from nexong.models import *
-from rest_framework.test import APIRequestFactory
-from rest_framework import status
 from rest_framework.authtoken.models import Token
+from rest_framework.test import APIRequestFactory
+from rest_framework.test import APITestCase
+from rest_framework import status
+from django.test import TestCase
+from nexong.api.helpers.testsSetup import testSetupEducator
+
+
+class EducatorApiViewSetTestCase(APITestCase):
+    def setUp(self):
+        testSetupEducator(self)
+        self.userAdmin = User.objects.create(
+            username="testAdminUserForEducator",
+            email="exampleAdmin@outlook.com",
+            role=ADMIN,
+        )
+        self.token2 = Token.objects.create(user=self.userAdmin)
+
+    def test_create_educator(self):
+        serializerE1 = EducatorSerializer(data=self.educator_error_desc)
+        serializerE2 = EducatorSerializer(data=self.educator_error_date)
+
+        response_error = self.client.post(
+            "/api/educator/",
+            self.educator_error_date,
+            format="multipart",
+            HTTP_AUTHORIZATION=f"Token {self.token2.key}",
+        )
+        self.assertEqual(response_error.status_code, status.HTTP_400_BAD_REQUEST)
+
+        with self.assertRaises(ValidationError) as context1:
+            serializerE1.is_valid(raise_exception=True)
+        self.assertEqual(
+            context1.exception.detail["description"][0], "This field may not be blank."
+        )
+
+        with self.assertRaises(ValidationError) as context2:
+            serializerE2.is_valid(raise_exception=True)
+        self.assertEqual(
+            context2.exception.detail["non_field_errors"][0],
+            "Birthdate can't be greater than today",
+        )
+
+        count = Educator.objects.count()
+        response = self.client.post(
+            "/api/educator/",
+            self.educator_data,
+            format="multipart",
+            HTTP_AUTHORIZATION=f"Token {self.token2.key}",
+        )
+        self.assertEqual(response.status_code, status.HTTP_201_CREATED)
+        self.assertEqual(Educator.objects.count(), count + 1)
+        self.assertEqual(response.data["description"], "Test description")
+        self.assertEqual(response.data["birthdate"], "1969-06-09")
+
+    def test_retrieve_educator(self):
+        educator = Educator.objects.create(**self.educator_data)
+        response = self.client.get(
+            f"/api/educator/{educator.id}/",
+            HTTP_AUTHORIZATION=f"Token {self.token2.key}",
+        )
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+        self.assertEqual(response.data["description"], "Test description")
+        self.assertEqual(response.data["birthdate"], "1969-06-09")
+
+    def test_update_educator(self):
+        educator = Educator.objects.create(**self.educator_data)
+        self.educator_data["description"] = "Updated description"
+        self.educator_data["birthdate"] = "1970-07-10"
+        response = self.client.put(
+            f"/api/educator/{educator.id}/",
+            self.educator_data,
+            HTTP_AUTHORIZATION=f"Token {self.token2.key}",
+        )
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+        self.assertEqual(response.data["description"], "Updated description")
+        self.assertEqual(response.data["birthdate"], "1970-07-10")
+
+    def test_delete_educator(self):
+        educator = Educator.objects.create(**self.educator_data)
+        count = Educator.objects.count()
+
+        response = self.client.delete(
+            f"/api/educator/{educator.id}/",
+            HTTP_AUTHORIZATION=f"Token {self.token2.key}",
+        )
+        self.assertEqual(response.status_code, status.HTTP_204_NO_CONTENT)
+        self.assertEqual(Educator.objects.count(), count - 1)
+
+
+class FamilyApiViewSetTestCase(TestCase):
+    def setUp(self):
+        self.factory = APIRequestFactory()
+        self.user = User.objects.create(
+            username="testuser", email="example@gmail.com", role=ADMIN
+        )
+        education = EducationCenter.objects.create(name="San Francisco Solano")
+        self.user1 = User.objects.create(
+            username="testuser1",
+            email="example1@gmail.com",
+            role=EDUCATION_CENTER,
+            education_center=education,
+        )
+        family = Family.objects.create(name="Familia López")
+        self.user2 = User.objects.create(
+            username="testuser2", email="example2@gmail.com", role=FAMILY, family=family
+        )
+        self.token = Token.objects.create(user=self.user)
+        self.token1 = Token.objects.create(user=self.user1)
+        self.token2 = Token.objects.create(user=self.user2)
+
+    def test_create_family_admin(self):
+        familias_creadas = Family.objects.count()
+        response = self.client.post(
+            "/api/family/",
+            {"name": "Familia López"},
+            HTTP_AUTHORIZATION=f"Token {self.token.key}",
+        )
+        self.assertEqual(response.status_code, 201)
+        self.assertEqual(Family.objects.count(), familias_creadas + 1)
+        family = Family.objects.first()
+        self.assertEqual(family.name, "Familia López")
+
+    def test_obtain_family(self):
+        family = Family.objects.create(name="Familia Lopez")
+        response = self.client.get(
+            f"/api/family/{family.id}/", HTTP_AUTHORIZATION=f"Token {self.token.key}"
+        )
+        self.assertEqual(response.status_code, 200)
+        self.assertEqual(response.data["name"], "Familia Lopez")
+
+    def test_update_family(self):
+        family = Family.objects.create(name="Familia López")
+        response = self.client.put(
+            f"/api/family/{family.id}/",
+            data={"id": family.id, "name": "Familia Ruz"},
+            content_type="application/json",
+            HTTP_AUTHORIZATION=f"Token {self.token2.key}",
+        )
+        self.assertEqual(response.status_code, 200)
+        family.refresh_from_db()
+        self.assertEqual(family.name, "Familia Ruz")
+
+    def test_delete_family(self):
+        family = Family.objects.create(name="Familia Lopez")
+        initial_count = Family.objects.count()
+        response = self.client.delete(
+            f"/api/family/{family.id}/", HTTP_AUTHORIZATION=f"Token {self.token.key}"
+        )
+        self.assertEqual(response.status_code, 204)
+        self.assertEqual(Family.objects.count(), initial_count - 1)
+
+    def test_obtain_family_permissions_error(self):
+        family = Family.objects.create(name="Familia Lopez")
+        response = self.client.get(
+            f"/api/family/{family.id}/", HTTP_AUTHORIZATION=f"Token {self.token1.key}"
+        )
+        self.assertEqual(response.status_code, 403)
+
+    def test_update_family_permissions_error(self):
+        family = Family.objects.create(name="Familia Lopez")
+        response = self.client.put(
+            f"/api/family/{family.id}/",
+            data={"id": family.id, "name": "Familia Ruz"},
+            content_type="application/json",
+            HTTP_AUTHORIZATION=f"Token {self.token1.key}",
+        )
+        self.assertEqual(response.status_code, 403)
+
+    def test_delete_family_permissions_error(self):
+        family = Family.objects.create(name="Familia Lopez")
+        response = self.client.delete(
+            f"/api/family/{family.id}/", HTTP_AUTHORIZATION=f"Token {self.token1.key}"
+        )
+        self.assertEqual(response.status_code, 403)
 
 
 class AdminUserApiViewSetTestCase(TestCase):

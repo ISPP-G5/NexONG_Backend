@@ -5,6 +5,7 @@ from nexong.models import *
 from rest_framework.serializers import ModelSerializer
 from rest_framework.serializers import Serializer
 from djoser.serializers import UserCreateSerializer
+from nexong.api.helpers.serializerValidators import has_numbers
 
 
 class LogoutAndBlacklistSerializer(Serializer):
@@ -52,11 +53,15 @@ class CreateUserSerializer(UserCreateSerializer):
     def validate_first_name(self, data):
         if not data:
             raise serializers.ValidationError("This field may not be blank.")
+        if has_numbers(data):
+            raise serializers.ValidationError("First name cannot contain numbers")
         return data
 
     def validate_last_name(self, data):
         if not data:
             raise serializers.ValidationError("This field may not be blank.")
+        if has_numbers(data):
+            raise serializers.ValidationError("Last name cannot contain numbers")
         return data
 
     def validate_id_number(self, data):
