@@ -156,6 +156,7 @@ class CenterExitApiViewSetTestCase(TestCase):
         self.assertEqual(response.status_code, 204)
         self.assertEqual(CenterExitAuthorization.objects.count(), initial_count - 1)
 
+
 class EducatorCenterExitApiViewSetTestCase(APITestCase):
     def setUp(self):
         testSetupEducator(self)
