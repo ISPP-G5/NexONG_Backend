@@ -195,6 +195,7 @@ class EducatorStudentEvaluationTestCase(APITestCase):
         self.assertEqual(StudentEvaluation.objects.count(), 1)
         self.assertEqual(response2.status_code, status.HTTP_403_FORBIDDEN)
 
+
 class Student_Evaluation_ApiViewSetTestCase(TestCase):
     def setUp(self):
         self.factory = APIRequestFactory()

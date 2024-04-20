@@ -9,7 +9,6 @@ from nexong.api.helpers.testsSetup import testSetupEducator
 from rest_framework.test import APITestCase
 
 
-
 def add_files_to_student_data(self):
     file_content = b"Test file content"  # Content of the file
     self.student_data["enrollment_document"] = SimpleUploadedFile(
@@ -437,6 +436,7 @@ class QuaterMarkApiViewSetTestCase(TestCase):
             HTTP_AUTHORIZATION=f"Token {self.token.key}",
         )
         self.assertEqual(response.status_code, 204)
+
 
 class EducatorStudentApiViewSetTestCase(APITestCase):
     def setUp(self):
