@@ -44,16 +44,22 @@ if APPENGINE_URL:
     # ensure a scheme is present in the URL before it's processed.
     if not urlparse(APPENGINE_URL).scheme:
         APPENGINE_URL = f"https://{APPENGINE_URL}"
-
+    
     ALLOWED_HOSTS = [urlparse(APPENGINE_URL).netloc]
     CSRF_TRUSTED_ORIGINS = [APPENGINE_URL]
     CORS_ALLOWED_ORIGINS = [env("FRONTEND_URL")]
+    
 else:
     ALLOWED_HOSTS = ["*"]
     CORS_ALLOWED_ORIGINS = ["http://localhost:3000", "http://127.0.0.1:3000"]
+    
 
 APPEND_SLASH = True
-URL_BASE = "http://localhost:8000/"
+
+if DEBUG == 1:
+    URL_BASE = APPENGINE_URL + "/"
+else:
+    URL_BASE = "http://localhost:8000/"
 
 INSTALLED_APPS = [
     "django.contrib.admin",
@@ -111,7 +117,7 @@ WSGI_APPLICATION = "src.wsgi.application"
 # Database
 # https://docs.djangoproject.com/en/5.0/ref/settings/#databases
 
-if DEBUG == 1:
+if DEBUG == 0:
     DATABASES = {
         "default": {
             "ENGINE": "django.db.backends.postgresql",
