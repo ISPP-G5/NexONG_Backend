@@ -46,7 +46,7 @@
         "fields": {
             "name": "Emilio",
             "surname": "Enriquez",
-            "education_center": 1,
+            "education_center": null,
             "is_morning_student": true,
             "activities_during_exit": "",
             "status": "ACEPTADO",
