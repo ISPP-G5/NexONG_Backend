@@ -40,6 +40,7 @@ DEBUG = env("DEBUG", default=False, cast=bool)
 
 # SECURITY WARNING: don't run with debug turned on in production!
 APPENGINE_URL = env("APPENGINE_URL", default=None)
+FRONTEND_URL = env("FRONTEND_URL", default="http://localhost:3000")
 if APPENGINE_URL:
     # ensure a scheme is present in the URL before it's processed.
     if not urlparse(APPENGINE_URL).scheme:
@@ -47,7 +48,8 @@ if APPENGINE_URL:
     
     ALLOWED_HOSTS = [urlparse(APPENGINE_URL).netloc]
     CSRF_TRUSTED_ORIGINS = [APPENGINE_URL]
-    CORS_ALLOWED_ORIGINS = [env("FRONTEND_URL")]
+    CORS_ALLOWED_ORIGINS = [FRONTEND_URL]
+    CORS_ALLOW_CREDENTIALS = True
     
 else:
     ALLOWED_HOSTS = ["*"]
@@ -56,7 +58,7 @@ else:
 
 APPEND_SLASH = True
 
-if DEBUG == 0:
+if DEBUG == 1:
     URL_BASE = APPENGINE_URL + "/"
 else:
     URL_BASE = "http://localhost:8000/"
