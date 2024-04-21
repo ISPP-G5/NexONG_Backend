@@ -10,6 +10,7 @@ from django.views.decorators.csrf import csrf_exempt
 import json
 from rest_framework.decorators import api_view
 from django.http import JsonResponse
+from datetime import datetime
 
 checkoutSessionID = None
 paymentAmount = None
@@ -40,7 +41,7 @@ def process_payment(request):
         name = json.loads(request.body)["name"]
         surname = json.loads(request.body)["surname"]
         email = json.loads(request.body)["email"]
-        date = json.loads(request.body)["date"]
+        date = datetime.today().strftime("%Y-%m-%d")
         if amount < 1:
             return Response({"msg": "La cantidad tiene que ser superior a un euro"})
         try:
