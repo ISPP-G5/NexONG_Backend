@@ -166,7 +166,7 @@
     },
     {
         "model": "nexong.user",
-        "pk": 1,
+        "pk": 2,
         "fields": {
             "first_name": "Palomino",
             "last_name": "Vergara",
