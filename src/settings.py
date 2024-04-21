@@ -58,7 +58,7 @@ else:
 
 APPEND_SLASH = True
 
-if DEBUG == 1:
+if DEBUG == 0:
     URL_BASE = APPENGINE_URL + "/"
 else:
     URL_BASE = "http://localhost:8000/"
