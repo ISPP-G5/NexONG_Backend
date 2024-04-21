@@ -150,8 +150,8 @@ REST_FRAMEWORK = {
     ),
     # The request per minute must be studied
     "DEFAULT_THROTTLE_RATES": {
-        "anon": "10/minute",  # 10 requests per minute for anonymous
-        "user": "30/minute",  # 30 requests per minute for users
+        "anon": "100000000000000000/minute",  # 10 requests per minute for anonymous
+        "user": "300000000000000000/minute",  # 30 requests per minute for users
     },
 }
 
