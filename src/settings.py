@@ -56,7 +56,7 @@ else:
 
 APPEND_SLASH = True
 
-if DEBUG == 1:
+if DEBUG == 0:
     URL_BASE = APPENGINE_URL + "/"
 else:
     URL_BASE = "http://localhost:8000/"
@@ -117,7 +117,7 @@ WSGI_APPLICATION = "src.wsgi.application"
 # Database
 # https://docs.djangoproject.com/en/5.0/ref/settings/#databases
 
-if DEBUG == 0:
+if DEBUG == 1:
     DATABASES = {
         "default": {
             "ENGINE": "django.db.backends.postgresql",
