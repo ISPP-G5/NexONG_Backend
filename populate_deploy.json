@@ -1,0 +1,190 @@
+[
+    {
+        "model": "nexong.user",
+        "pk": 1,
+        "fields": {
+            "first_name": "Administrador",
+            "last_name": "Manos Abiertas",
+            "username": "Administrador macn",
+            "id_number" : "98765432P",
+            "phone" : 987654321,
+            "role": "ADMIN",
+            "password": "pbkdf2_sha256$720000$6AuGVdEwfJTtLg7hR7UOJW$btpkLuHrCx9IWBIHptZxqI6Uf8sLjPOdjCKT+tlYhkk=",
+            "email": "info.nexong@gmail.com",
+            "avatar": null,
+            "family":null,
+            "partner":null,
+            "volunteer":null,
+            "education_center":null,
+            "educator":null,
+            "is_enabled":true,
+            "is_agreed":true
+            }   
+    },
+    {
+        
+        "model": "nexong.terms",
+        "pk": 1,
+        "fields": {
+            "text": "Términos y Condiciones de Uso. Por favor, lea estos términos y condiciones de uso (T&C) detenidamente antes de utilizar nuestro servicio.Aceptación de Términos: Al acceder y utilizar nuestro servicio, usted acepta estar sujeto a estos T&C y a todas las leyes y regulaciones aplicables. Si no está de acuerdo con alguno de estos términos, no utilice el servicio.Uso del Servicio: Usted acepta utilizar el servicio únicamente con fines legales y de acuerdo con estos T&C. Se prohíbe el uso del servicio para actividades ilegales o no autorizadas.Propiedad Intelectual: Todo el contenido y los derechos de propiedad intelectual asociados con el servicio son propiedad de NexOng o de sus licenciantes. Usted acepta no copiar, modificar, distribuir, transmitir, mostrar, vender o explotar de otra manera dicho contenido sin el consentimiento previo por escrito de NexOng.Privacidad: El uso del servicio está sujeto a nuestra política de privacidad, que describe cómo recopilamos, usamos y compartimos sus datos personales. Al utilizar el servicio, usted acepta estar sujeto a nuestra política de privacidad.Limitación de Responsabilidad: En la máxima medida permitida por la ley, NexOng no será responsable ante usted por daños directos, indirectos, incidentales, especiales, consecuentes o punitivos que surjan de su uso del servicio.Modificaciones de los Términos: Nos reservamos el derecho de modificar estos T&C en cualquier momento. Cualquier cambio entrará en vigencia inmediatamente después de su publicación en el sitio web. Se le anima a revisar periódicamente estos T&C para estar al tanto de cualquier cambio.Jurisdicción y Ley Aplicable: Estos T&C se regirán e interpretarán de acuerdo con las leyes del [país/estado/provincia], sin tener en cuenta sus conflictos de principios legales.Al utilizar nuestro servicio, usted acepta cumplir con estos T&C. Si tiene alguna pregunta sobre estos términos, por favor contáctenos.NexOng Fecha de última actualización: 2024-04-07",
+            "version": "1.0",
+            "date": "2024-04-07"
+        }
+        
+        
+    },
+    {
+        "model": "nexong.family",
+        "pk": 1,
+        "fields": {
+            "name": "Familia Enriquez"
+        }
+    },
+    {
+        "model": "nexong.student",
+        "pk": 1,
+        "fields": {
+            "name": "Emilio",
+            "surname": "Enriquez",
+            "education_center": null,
+            "is_morning_student": true,
+            "activities_during_exit": "",
+            "status": "ACEPTADO",
+            "current_education_year": "TRES AÑOS",
+            "education_center_tutor": "Don Carlos Perez",
+            "enrollment_document": "student_enrollment\\student_enrollment.txt",
+            "scanned_sanitary_card": "student_sanitary\\student_sanitary.txt",
+            "nationality" : "España",
+            "birthdate" : "2021-04-13",
+            "family":1,
+            "avatar": null
+            }
+    },
+    {
+        "model": "nexong.user",
+        "pk": 14,
+        "fields": {
+            "first_name": "Anna",
+            "last_name": "Enriquez",
+            "username": "Anna Enriquez",
+            "id_number" : "85933958G",
+            "phone" : 596748302,
+            "role": "FAMILIA",
+            "password": "pbkdf2_sha256$720000$ZBJi5MD3v4BJfe4MhVOwmP$7FDA5x713w1KY+5qWlg+YBB2ovpMLGOWr8mh0D284RQ=",
+            "email": "annanna@gmail.com",
+            "avatar": null,
+            "family":1,
+            "partner":null,
+            "volunteer":null,
+            "education_center":null,
+            "educator":null,
+            "is_enabled":true,
+            "is_agreed":true
+            }
+    },
+    {
+        "model": "nexong.partner",
+        "pk": 1,
+        "fields": {
+            "description": "Soy de la zona y me gusta colaborar con la asociación. He participado en varias actividades de la asociación.",
+            "address": "Insulinde 11",
+            "enrollment_document":"partner_enrollment\\partner_enrollment.txt",
+            "birthdate": "1956-07-05"
+        }
+    },
+    {
+        "model": "nexong.user",
+        "pk": 10,
+        "fields": {
+            "first_name": "Esteban",
+            "last_name": "Rodriguez",
+            "username": "Esteban Rodriguez",
+            "id_number" : "57123784T",
+            "phone" : 604893860,
+            "role": "SOCIO",
+            "password": "pbkdf2_sha256$720000$ZBJi5MD3v4BJfe4MhVOwmP$7FDA5x713w1KY+5qWlg+YBB2ovpMLGOWr8mh0D284RQ=",
+            "email": "esteban@gmail.com",
+            "avatar": null,
+            "family":null,
+            "partner":1,
+            "volunteer":null,
+            "education_center":null,
+            "educator":null,
+            "is_enabled":true,
+            "is_agreed":true
+            }
+    },
+    {
+        "model": "nexong.volunteer",
+        "pk": 1,
+        "fields": {
+            "academic_formation": "Bachiller",
+            "motivation" : "Mi padre me ha animado a ello y estoy interesado en ayudar",
+            "status":"ACEPTADO",
+            "address": "Rue de Saint-Ghislain 2",
+            "postal_code": 33317,
+            "enrollment_document" : "volunteer_enrollment\\volunteer_enrollment.txt",
+            "registry_sheet": "volunteer_registry\\volunteer_registry.txt",
+            "sexual_offenses_document": "volunteer_offenses\\volunteer_offenses.txt",
+            "scanned_id": "volunteer_id\\volunteer_id.txt",
+            "minor_authorization": "volunteer_minor\\volunteer_minor.txt",
+            "scanned_authorizer_id": "volunteer_authorizer\\volunteer_authorizer.txt",
+            "birthdate" : "1995-11-22",
+            "start_date": "2024-01-23",
+            "end_date": null
+        }
+    },
+    {
+        "model": "nexong.user",
+        "pk": 3,
+        "fields": {
+            "first_name": "Marco",
+            "last_name": "Castilla",
+            "username": "Marco Castilla",
+            "id_number" : "57925784A",
+            "phone" : 605233333,
+            "role": "VOLUNTARIO",
+            "password": "pbkdf2_sha256$720000$ZBJi5MD3v4BJfe4MhVOwmP$7FDA5x713w1KY+5qWlg+YBB2ovpMLGOWr8mh0D284RQ=",
+            "email": "mcast@gmail.com",
+            "avatar": null,
+            "family":null,
+            "partner":null,
+            "volunteer":1,
+            "education_center":null,
+            "educator": null,
+            "is_enabled":true,
+            "is_agreed":true
+            }
+    },
+    {
+        "model": "nexong.educator",
+        "pk": 1,
+        "fields": {
+            "birthdate": "1965-08-02",
+            "description": "Experiencia en educación infantil. Disponible los martes y jueves por la tarde."
+        }
+    },
+    {
+        "model": "nexong.user",
+        "pk": 2,
+        "fields": {
+            "first_name": "Palomino",
+            "last_name": "Vergara",
+            "username": "Palomino Vergara",
+            "id_number" : "57935784A",
+            "phone" : 605234354,
+            "role": "EDUCADOR",
+            "password": "pbkdf2_sha256$720000$ZBJi5MD3v4BJfe4MhVOwmP$7FDA5x713w1KY+5qWlg+YBB2ovpMLGOWr8mh0D284RQ=",
+            "email": "palomino@gmail.com",
+            "avatar": null,
+            "family":null,
+            "partner":null,
+            "volunteer":null,
+            "education_center":null,
+            "educator":1,
+            "is_enabled":true,
+            "is_agreed":true
+            }
+    }
+
+]

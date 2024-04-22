@@ -14,6 +14,7 @@ from rest_framework_simplejwt.tokens import RefreshToken
 from django.contrib.auth.tokens import default_token_generator
 from ..permissions import *
 from django.views.generic import TemplateView
+from django.conf import settings
 
 
 def process_instance(serializer_class, instance, data):
@@ -159,7 +160,7 @@ class CustomActivateView(APIView):
                     user.is_enabled = True
                     user.is_active = True
                     user.save()
-                    return redirect("http://127.0.0.1:3000/iniciar-sesion/")
+                    return redirect(settings.FRONTEND_URL + "iniciar-sesion")
                 else:
                     return Response(
                         {"detail": "Token not valid"},

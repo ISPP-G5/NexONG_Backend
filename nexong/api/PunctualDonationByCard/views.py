@@ -37,7 +37,7 @@ class PunctualDonationByCardApiViewSet(ModelViewSet):
 def process_payment(request):
     stripe.api_key = settings.STRIPE_PRIVATE_KEY
     if request.method == "POST":
-        amount = json.loads(request.body)["amount"]  # Monto en centavos
+        amount = json.loads(request.body)["amount"]
         name = json.loads(request.body)["name"]
         surname = json.loads(request.body)["surname"]
         email = json.loads(request.body)["email"]
