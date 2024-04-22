@@ -10,7 +10,7 @@ class HomeDocumentApiViewSet(ModelViewSet):
     queryset = HomeDocument.objects.all()
     http_method_names = ["get", "post", "put", "delete", "patch"]
     serializer_class = HomeDocumentSerializer
-    permission_classes = [isAuthenticated]
+    permission_classes = [allowAnyGet | isAdmin]
 
     def destroy(self, request, *args, **kwargs):
         instance = self.get_object()

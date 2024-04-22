@@ -5,6 +5,7 @@ from nexong.models import *
 from rest_framework.serializers import ModelSerializer
 from rest_framework.serializers import Serializer
 from djoser.serializers import UserCreateSerializer
+from nexong.api.helpers.serializerValidators import has_numbers
 
 
 class LogoutAndBlacklistSerializer(Serializer):
@@ -33,21 +34,57 @@ class ActivateSerializer(ModelSerializer):
 class CreateUserSerializer(UserCreateSerializer):
     class Meta(UserCreateSerializer.Meta):
         model = User
-        fields = ["email", "first_name", "last_name", "id_number", "phone", "password"]
+        fields = [
+            "email",
+            "first_name",
+            "last_name",
+            "id_number",
+            "phone",
+            "password",
+            "role",
+            "family",
+            "partner",
+            "volunteer",
+            "education_center",
+            "educator",
+            "is_agreed",
+        ]
 
     def validate_first_name(self, data):
         if not data:
             raise serializers.ValidationError("This field may not be blank.")
+        if has_numbers(data):
+            raise serializers.ValidationError("First name cannot contain numbers")
         return data
 
     def validate_last_name(self, data):
         if not data:
             raise serializers.ValidationError("This field may not be blank.")
+        if has_numbers(data):
+            raise serializers.ValidationError("Last name cannot contain numbers")
         return data
 
     def validate_id_number(self, data):
         if not data:
             raise serializers.ValidationError("This field may not be blank.")
+        else:
+            pattern = r"^\d{8}[A-Z]$"
+            if not re.match(pattern, data):
+                raise serializers.ValidationError(
+                    "The id_number does not match the expected pattern."
+                )
+        return data
+
+    def validate_is_agreed(self, data):
+        is_agreed = data
+        if is_agreed == False:
+            raise serializers.ValidationError("User must accept terms and conditions.")
+        return data
+
+    def validate_role(self, data):
+        role = data
+        if role == "ADMIN":
+            raise serializers.ValidationError("You cannot create admin users")
         return data
 
 
@@ -66,30 +103,37 @@ class UserSerializer(ModelSerializer):
 
     def validate(self, data):
         validation_error = {}
-        if data["role"] == "EDUCADOR" and data["educator"] is None:
-            validation_error["educator"] = 'Given role "EDUCADOR", this cannot be null.'
-        elif data["role"] == "VOLUNTARIO" and data["volunteer"] is None:
-            validation_error[
-                "volunteer"
-            ] = 'Given role "VOLUNTARIO", this cannot be null.'
-        elif data["role"] == "FAMILIA" and data["family"] is None:
-            validation_error["family"] = 'Given role "FAMILIA", this cannot be null.'
-        elif data["role"] == "SOCIO" and data["partner"] is None:
-            validation_error["partner"] = 'Given role "SOCIO", this cannot be null.'
-        elif data["role"] == "VOLUNTARIO_SOCIO" and (
-            data["volunteer"] is None or data["partner"] is None
-        ):
-            validation_error[
-                "volunteer"
-            ] = 'Given role "VOLUNTARIO", this cannot be null.'
-            validation_error["partner"] = 'Given role "SOCIO", this cannot be null.'
-
-        id_number = data["id_number"]
-        pattern = r"^\d{8}[A-Z]$"
-        if not re.match(pattern, id_number):
-            validation_error[
-                "id_number"
-            ] = "The id_number does not match the expected pattern."
+        if "role" in data:
+            if data["role"] == "EDUCADOR" and data["educator"] is None:
+                validation_error[
+                    "educator"
+                ] = 'Given role "EDUCADOR", this cannot be null.'
+            elif data["role"] == "ADMIN":
+                validation_error["role"] = "You cannot create an ADMIN role"
+            elif data["role"] == "VOLUNTARIO" and data["volunteer"] is None:
+                validation_error[
+                    "volunteer"
+                ] = 'Given role "VOLUNTARIO", this cannot be null.'
+            elif data["role"] == "FAMILIA" and data["family"] is None:
+                validation_error[
+                    "family"
+                ] = 'Given role "FAMILIA", this cannot be null.'
+            elif data["role"] == "SOCIO" and data["partner"] is None:
+                validation_error["partner"] = 'Given role "SOCIO", this cannot be null.'
+            elif data["role"] == "VOLUNTARIO_SOCIO" and (
+                data["volunteer"] is None or data["partner"] is None
+            ):
+                validation_error[
+                    "volunteer"
+                ] = 'Given role "VOLUNTARIO", this cannot be null.'
+                validation_error["partner"] = 'Given role "SOCIO", this cannot be null.'
+        if "id_number" in data:
+            id_number = data["id_number"]
+            pattern = r"^\d{8}[A-Z]$"
+            if not re.match(pattern, id_number):
+                validation_error[
+                    "id_number"
+                ] = "The id_number does not match the expected pattern."
         if validation_error:
             raise serializers.ValidationError(validation_error)
 

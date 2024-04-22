@@ -1,29 +1,56 @@
 import os
 from pathlib import Path
 from datetime import timedelta
-from decouple import config
+from urllib.parse import urlparse
+import environ
+import io
+from google.cloud import secretmanager
+from google.oauth2 import service_account
 
-# Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
+env = environ.Env(DEBUG=(bool, False))
+env_file = os.path.join(BASE_DIR, ".env")
+env.read_env(env_file)
 
-# Quick-start development settings - unsuitable for production
-# See https://docs.djangoproject.com/en/5.0/howto/deployment/checklist/
+if os.path.isfile(env_file):
+    env.read_env(env_file)
+elif os.environ.get("GOOGLE_CLOUD_PROJECT", None):
+    project_id = os.environ.get("GOOGLE_CLOUD_PROJECT")
+    client = secretmanager.SecretManagerServiceClient()
+    settings_name = os.environ.get("SETTINGS_NAME", "django-settings")
+    name = f"projects/{project_id}/secrets/{settings_name}/versions/latest"
+    payload = client.access_secret_version(name=name).payload.data.decode("UTF-8")
+    env.read_env(io.StringIO(payload))
+else:
+    raise Exception("No local .env or GOOGLE_CLOUD_PROJECT detected. No secrets found.")
 
-# SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = "django-insecure-908#c4*6a*!(2ncjv!#$kh6c%%)q^rn0n2c4o*w(i6ry5$jjy+"
+SECRET_KEY = env("SECRET_KEY")
 
-# SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = env("DEBUG", default=False, cast=bool)
 
-# SECURITY WARNING: don't run with debug turned on in production!
-ALLOWED_HOSTS = []
-CSRF_TRUSTED_ORIGINS = ["moz-extension://d8e9b363-83a5-44fc-9519-03eadf6efffb"]
-CORS_ALLOWED_ORIGINS = ["http://localhost:3000", "http://127.0.0.1:3000"]
+APPENGINE_URL = env("APPENGINE_URL", default=None)
+FRONTEND_URL = env("FRONTEND_URL", default="http://localhost:3000")
+if APPENGINE_URL:
+    if not urlparse(APPENGINE_URL).scheme:
+        APPENGINE_URL = f"https://{APPENGINE_URL}"
+
+    ALLOWED_HOSTS = [urlparse(APPENGINE_URL).netloc]
+    CSRF_TRUSTED_ORIGINS = [APPENGINE_URL]
+    CORS_ALLOWED_ORIGINS = [FRONTEND_URL]
+    CORS_ALLOW_CREDENTIALS = True
+
+else:
+    ALLOWED_HOSTS = ["*"]
+    CORS_ALLOWED_ORIGINS = ["http://localhost:3000", "http://127.0.0.1:3000"]
+
+
 APPEND_SLASH = True
 
-
-# Application definition
+if DEBUG == 0:
+    URL_BASE = APPENGINE_URL + "/"
+else:
+    URL_BASE = "http://localhost:8000/"
 
 INSTALLED_APPS = [
     "django.contrib.admin",
@@ -52,8 +79,9 @@ MIDDLEWARE = [
     "django.contrib.messages.middleware.MessageMiddleware",
     "django.middleware.clickjacking.XFrameOptionsMiddleware",
     "social_django.middleware.SocialAuthExceptionMiddleware",
+    "nexong.api.middleware.ExportPermission",
 ]
-
+SESSION_ENGINE = "django.contrib.sessions.backends.db"
 ROOT_URLCONF = "src.urls"
 
 TEMPLATES = [
@@ -76,24 +104,19 @@ TEMPLATES = [
 
 WSGI_APPLICATION = "src.wsgi.application"
 
-
-# Database
-# https://docs.djangoproject.com/en/5.0/ref/settings/#databases
-
-DATABASES = {
-    "default": {
-        "ENGINE": "django.db.backends.postgresql",
-        "NAME": "nexongdb",
-        "USER": "nexong",
-        "PASSWORD": "nexong",
-        "HOST": "localhost",
-        "PORT": "5432",
+if DEBUG == 1:
+    DATABASES = {
+        "default": {
+            "ENGINE": "django.db.backends.postgresql",
+            "NAME": "nexongdb",
+            "USER": "nexong",
+            "PASSWORD": "nexong",
+            "HOST": "localhost",
+            "PORT": "5432",
+        }
     }
-}
-
-
-# Password validation
-# https://docs.djangoproject.com/en/5.0/ref/settings/#auth-password-validators
+else:
+    DATABASES = {"default": env.db()}
 
 AUTH_PASSWORD_VALIDATORS = [
     {
@@ -110,10 +133,6 @@ AUTH_PASSWORD_VALIDATORS = [
     },
 ]
 
-
-# Internationalization
-# https://docs.djangoproject.com/en/5.0/topics/i18n/
-
 LANGUAGE_CODE = "en-us"
 
 TIME_ZONE = "UTC"
@@ -122,36 +141,33 @@ USE_I18N = True
 
 USE_TZ = True
 
-
-# Static files (CSS, JavaScript, Images)
-# https://docs.djangoproject.com/en/5.0/howto/static-files/
+if DEBUG == 0:
+    GS_CREDENTIALS = service_account.Credentials.from_service_account_file(
+        os.path.join(BASE_DIR, "gcpCredentials.json")
+    )
+    DEFAULT_FILE_STORAGE = "storages.backends.gcloud.GoogleCloudStorage"
+    STATICFILES_STORAGE = "storages.backends.gcloud.GoogleCloudStorage"
+    GS_BUCKET_NAME = env("GS_BUCKET_NAME")
 
 STATIC_URL = "static/"
-
-# Default primary key field type
-# https://docs.djangoproject.com/en/5.0/ref/settings/#default-auto-field
+STATIC_ROOT = BASE_DIR / "staticfiles"
 
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 
 AUTH_USER_MODEL = "nexong.User"
 
 REST_FRAMEWORK = {
-    # Uncomment to only let authenticated to our api
-    # 'DEFAULT_PERMISSION_CLASSES': (
-    #     'rest_framework.permissions.IsAuthenticated',
-    # ),
     "DEFAULT_AUTHENTICATION_CLASSES": (
-        "rest_framework_simplejwt.authentication.JWTAuthentication",  # Do not delete this comma, it breaks things somehow....
+        "rest_framework_simplejwt.authentication.JWTAuthentication",
         "rest_framework.authentication.TokenAuthentication",
     ),
     "DEFAULT_THROTTLE_CLASSES": (
         "rest_framework.throttling.AnonRateThrottle",
         "rest_framework.throttling.UserRateThrottle",
     ),
-    # The request per minute must be studied
     "DEFAULT_THROTTLE_RATES": {
-        "anon": "10/minute",  # 10 requests per minute for anonymous
-        "user": "30/minute",  # 30 requests per minute for users
+        "anon": "100/minute",
+        "user": "300/minute",
     },
 }
 
@@ -166,24 +182,15 @@ SIMPLE_JWT = {
     "REFRESH_TOKEN_LIFETIME": timedelta(days=14),
     "ROTATE_REFRESH_TOKENS": True,
     "BLACKLIST_AFTER_ROTATION": True,
-    # "SIGNING_KEY": env("SIGNING_KEY"),
     "AUTH_HEADER_NAME": "HTTP_AUTHORIZATION",
     "AUTH_TOKEN_CLASSES": ("rest_framework_simplejwt.tokens.AccessToken",),
     "TOKEN_TYPE_CLAIM": "token_type",
 }
 
-white_list = [
-    "http://127.0.0.1:8000/api/auth/o/google-oauth2/",
-    "http://127.0.0.1:8000/",
-    "http://127.0.0.1:8000/api/redirect-social/",
-]
-
 DJOSER = {
     "LOGIN_FIELD": "email",
-    # "USER_CREATE_PASSWORD_RETYPE": True,
     "USERNAME_CHANGED_EMAIL_CONFIRMATION": True,
     "PASSWORD_CHANGED_EMAIL_CONFIRMATION": True,
-    # "SEND_CONFIRMATION_EMAIL": True,
     "PASSWORD_RESET_CONFIRM_URL": "password/reset/confirm/{uid}/{token}",
     "SET_PASSWORD_RETYPE": True,
     "PASSWORD_RESET_CONFIRM_RETYPE": True,
@@ -192,29 +199,21 @@ DJOSER = {
     "SEND_ACTIVATION_EMAIL": True,
     "SERIALIZERS": {
         "user_create": "nexong.api.Authentication.authSerializer.CreateUserSerializer",
-        "user": "nexong.api.Authentication.authSerializer.CreateUserSerializer",
-        "current_user": "nexong.api.Authentication.authSerializer.CreateUserSerializer",
-        # "user_delete": "djoser.serializers.UserDeleteSerializer",
+        "user": "nexong.api.Authentication.authSerializer.UserSerializer",
+        "current_user": "nexong.api.Authentication.authSerializer.UserSerializer",
     },
-    "SOCIAL_AUTH_TOKEN_STRATEGY": "djoser.social.token.jwt.TokenStrategy",
-    "SOCIAL_AUTH_ALLOWED_REDIRECT_URIS": white_list,
+    "EMAIL": {
+        "activation": "nexong.email.ActivationEmail",
+    },
 }
 
-SOCIAL_AUTH_GOOGLE_OAUTH2_KEY = config("GOOGLE_OAUTH2_KEY")
-SOCIAL_AUTH_GOOGLE_OAUTH2_SECRET = config("GOOGLE_OAUTH2_SECRET")
+STRIPE_PUBLIC_KEY = env("STRIPE_PUBLIC_KEY")
+STRIPE_PRIVATE_KEY = env("STRIPE_PRIVATE_KEY")
 
-SOCIAL_AUTH_GOOGLE_OAUTH2_SCOPE = [
-    "https://www.googleapis.com/auth/userinfo.email",
-    "https://www.googleapis.com/auth/userinfo.profile",
-    "openid",
-]
-
-SOCIAL_AUTH_GOOGLE_OAUTH2_EXTRA_DATA = ["first_name", "last_name"]
 
 MEDIA_URL = "NexONG_Backend/files/"
 MEDIA_ROOT = "files"
 
-# Configuracion de email
 DEFAULT_FROM_EMAIL = "info.nexong@gmail.com"
 EMAIL_BACKEND = "django.core.mail.backends.smtp.EmailBackend"
 EMAIL_HOST = "smtp.gmail.com"

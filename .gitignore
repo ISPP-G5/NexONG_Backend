@@ -169,3 +169,7 @@ nexong/migrations
 
 # Server files
 files/
+staticfiles/
+
+# GCP credentials
+gcpCredentials.json

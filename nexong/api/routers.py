@@ -1,3 +1,4 @@
+from nexong.api.Terms.views import *
 from .Event.views import *
 from rest_framework.routers import DefaultRouter
 from .CenterExit.views import *
@@ -11,6 +12,8 @@ from .Donation.views import *
 from .Evaluation.views import *
 from .PunctualDonation.views import *
 from .HomeDocument.views import *
+from .Schedule.views import *
+from .PunctualDonationByCard.views import *
 
 router_api = DefaultRouter()
 router_api.register(prefix="user", viewset=UserApiViewSet, basename="user")
@@ -52,6 +55,11 @@ router_api.register(
     basename="punctualdonation",
 )
 router_api.register(
+    prefix="punctual-donation-by-card",
+    viewset=PunctualDonationByCardApiViewSet,
+    basename="punctualdonationbycard-list",
+)
+router_api.register(
     prefix="home-document", viewset=HomeDocumentApiViewSet, basename="homedocument"
 )
 router_api.register(
@@ -67,3 +75,5 @@ router_api.register(
 router_api.register(
     prefix="suggestion", viewset=SuggestionApiViewSet, basename="suggestion"
 )
+router_api.register(prefix="schedule", viewset=ScheduleApiViewSet, basename="schedule")
+router_api.register(prefix="terms", viewset=TermsApiViewSet, basename="terms")
