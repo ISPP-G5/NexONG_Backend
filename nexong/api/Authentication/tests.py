@@ -1,4 +1,3 @@
-
 from rest_framework.exceptions import ValidationError
 from nexong.api.Authentication.views import *
 from nexong.models import *
@@ -270,6 +269,7 @@ class FamilyApiViewSetTestCase(TestCase):
             f"/api/family/{family.id}/", HTTP_AUTHORIZATION=f"Token {self.token1.key}"
         )
         self.assertEqual(response.status_code, 403)
+
 
 class AdminUserApiViewSetTestCase(TestCase):
     def setUp(self):
