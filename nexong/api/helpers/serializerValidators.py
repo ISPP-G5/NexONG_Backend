@@ -16,3 +16,7 @@ def date_validations(attrs):
         validations["end_date"] = "The end date must be after the start date."
 
     return validations
+
+
+def has_numbers(inputString):
+    return any(char.isdigit() for char in inputString)

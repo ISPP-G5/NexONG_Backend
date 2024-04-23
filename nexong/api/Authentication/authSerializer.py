@@ -5,6 +5,7 @@ from nexong.models import *
 from rest_framework.serializers import ModelSerializer
 from rest_framework.serializers import Serializer
 from djoser.serializers import UserCreateSerializer
+from nexong.api.helpers.serializerValidators import has_numbers
 
 
 class LogoutAndBlacklistSerializer(Serializer):
@@ -52,11 +53,15 @@ class CreateUserSerializer(UserCreateSerializer):
     def validate_first_name(self, data):
         if not data:
             raise serializers.ValidationError("This field may not be blank.")
+        if has_numbers(data):
+            raise serializers.ValidationError("First name cannot contain numbers")
         return data
 
     def validate_last_name(self, data):
         if not data:
             raise serializers.ValidationError("This field may not be blank.")
+        if has_numbers(data):
+            raise serializers.ValidationError("Last name cannot contain numbers")
         return data
 
     def validate_id_number(self, data):
@@ -74,6 +79,12 @@ class CreateUserSerializer(UserCreateSerializer):
         is_agreed = data
         if is_agreed == False:
             raise serializers.ValidationError("User must accept terms and conditions.")
+        return data
+
+    def validate_role(self, data):
+        role = data
+        if role == "ADMIN":
+            raise serializers.ValidationError("You cannot create admin users")
         return data
 
 
@@ -97,6 +108,8 @@ class UserSerializer(ModelSerializer):
                 validation_error[
                     "educator"
                 ] = 'Given role "EDUCADOR", this cannot be null.'
+            elif data["role"] == "ADMIN":
+                validation_error["role"] = "You cannot create an ADMIN role"
             elif data["role"] == "VOLUNTARIO" and data["volunteer"] is None:
                 validation_error[
                     "volunteer"

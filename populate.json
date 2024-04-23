@@ -965,6 +965,30 @@
             "is_enabled":true,
             "is_agreed":true
             }
+            
+    },
+    {
+        "model": "nexong.user",
+        "pk": 20,
+        "fields": {
+            "first_name": "Administrador",
+            "last_name": "Manos Abiertas",
+            "username": "Administrador macn",
+            "id_number" : "98765432P",
+            "phone" : 987654321,
+            "role": "ADMIN",
+            "password": "pbkdf2_sha256$720000$6AuGVdEwfJTtLg7hR7UOJW$btpkLuHrCx9IWBIHptZxqI6Uf8sLjPOdjCKT+tlYhkk=",
+            "email": "info.nexong@gmail.com",
+            "avatar": null,
+            "family":null,
+            "partner":null,
+            "volunteer":null,
+            "education_center":null,
+            "educator":null,
+            "is_enabled":true,
+            "is_agreed":true
+            }
+            
     },
     {
         "model": "nexong.suggestion",
