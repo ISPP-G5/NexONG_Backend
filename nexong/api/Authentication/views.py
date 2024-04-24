@@ -14,6 +14,7 @@ from rest_framework_simplejwt.tokens import RefreshToken
 from django.contrib.auth.tokens import default_token_generator
 from ..permissions import *
 from django.views.generic import TemplateView
+from django.conf import settings
 
 
 def process_instance(serializer_class, instance, data):
@@ -159,16 +160,14 @@ class CustomActivateView(APIView):
                     user.is_enabled = True
                     user.is_active = True
                     user.save()
-                    return redirect(reverse("activation_success"))
+                    return redirect(settings.FRONTEND_URL + "iniciar-sesion")
                 else:
                     return Response(
                         {"detail": "Token not valid"},
                         status=status.HTTP_400_BAD_REQUEST,
                     )
             else:
-                return Response(
-                    {"detail": "User already activated"}, status=status.HTTP_200_OK
-                )
+                return redirect(reverse("activation_success"))
         except User.DoesNotExist:
             raise Http404("User does not exist")
         except requests.exceptions.RequestException as e:
