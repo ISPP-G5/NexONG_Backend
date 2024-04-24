@@ -717,8 +717,8 @@ class VolunteerEventApiViewSetTestCase(TestCase):
         self.assertEqual(response.status_code, status.HTTP_403_FORBIDDEN)
 
     def test_update_event_by_volunteer(self):
-        volunteers_ids = [1,2]
-        attendees_ids = list(self.event2.attendees.values_list('id', flat=True))
+        volunteers_ids = [1, 2]
+        attendees_ids = list(self.event2.attendees.values_list("id", flat=True))
         response = self.client.put(
             f"/api/event/{self.event2.id}/",
             data={
