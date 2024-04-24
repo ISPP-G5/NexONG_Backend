@@ -625,3 +625,154 @@ class AdminEventApiViewSetTestCase(TestCase):
             HTTP_AUTHORIZATION=f"Token {self.token.key}",
         )
         self.assertEqual(response.status_code, status.HTTP_204_NO_CONTENT)
+
+
+class VolunteerEventApiViewSetTestCase(TestCase):
+    def setUp(self):
+        self.factory = APIRequestFactory()
+        self.volunteer = Volunteer.objects.create(
+            id=1,
+            academic_formation="Test formation",
+            motivation="Test motivation",
+            status="ACEPTADO",
+            address="Test address",
+            postal_code="12345",
+            birthdate="1956-07-05",
+            start_date="1956-07-05",
+        )
+        self.volunteer2 = Volunteer.objects.create(
+            id=2,
+            academic_formation="Test formation2",
+            motivation="Test motivation2",
+            status="ACEPTADO",
+            address="Test address2",
+            postal_code="12345",
+            birthdate="1956-07-05",
+            start_date="1956-07-05",
+        )
+        self.educator = Educator.objects.create(
+            description="testdepruebaPas", birthdate="2000-04-21"
+        )
+        self.user2 = User.objects.create(
+            username="usuariotest",
+            email="usuariotets@gmail.com",
+            role=VOLUNTEER,
+            volunteer=self.volunteer,
+        )
+
+        self.token = Token.objects.create(user=self.user2)
+        self.lesson = Lesson.objects.create(
+            name="Ciclas",
+            description="Módulo 2",
+            capacity=16,
+            is_morning_lesson=False,
+            educator=self.educator,
+            start_date="2024-01-26",
+            end_date="2024-05-28",
+        )
+
+        self.event2 = Event.objects.create(
+            name="Feria",
+            description="Se necesitan 2 camareros para atenderlas",
+            place="Cacharritos1",
+            max_volunteers=2,
+            max_attendees=2,
+            price=5,
+            start_date="2024-06-13 06:00-00:00",
+            end_date="2024-06-13 11:00-00:00",
+        )
+        self.lessonevent2 = LessonEvent.objects.create(
+            name="Vienen los del Ríopol",
+            description="Se necesitan educadoresad",
+            place="Patio Centrales",
+            max_volunteers=3,
+            price=25.0,
+            lesson=self.lesson,
+            start_date="2025-06-13T05:00:00Z",
+            end_date="2025-06-13T16:00:00Z",
+        )
+
+    def test_obtain_event_by_volunteer(self):
+        response = self.client.get(
+            f"/api/event/{self.event2.id}/",
+            HTTP_AUTHORIZATION=f"Token {self.token.key}",
+        )
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+
+    def test_create_event_by_volunteer_errpr(self):
+        response = self.client.post(
+            "/api/event/",
+            data={
+                "name": "Viene la familia Peruana",
+                "description": "Se necesitan gente",
+                "place": "La cocina",
+                "max_volunteers": 2,
+                "max_attendees": 2,
+                "price": 5,
+                "start_date": "2025-06-12T06:00:00Z",
+                "end_date": "2025-06-12T11:00:00Z",
+            },
+            HTTP_AUTHORIZATION=f"Token {self.token.key}",
+        )
+        self.assertEqual(response.status_code, status.HTTP_403_FORBIDDEN)
+
+    def test_update_event_by_volunteer(self):
+        volunteers_ids = [1, 2]
+        attendees_ids = list(self.event2.attendees.values_list("id", flat=True))
+        response = self.client.put(
+            f"/api/event/{self.event2.id}/",
+            data={
+                "name": self.event2.name,
+                "description": self.event2.description,
+                "place": self.event2.place,
+                "max_volunteers": self.event2.max_volunteers,
+                "max_attendees": self.event2.max_attendees,
+                "price": self.event2.price,
+                "start_date": self.event2.start_date,
+                "end_date": self.event2.end_date,
+                "volunteers": volunteers_ids,  # Pass the volunteer IDs in the request data
+                "attendees": attendees_ids,
+            },
+            content_type="application/json",
+            HTTP_AUTHORIZATION=f"Token {self.token.key}",
+        )
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+
+    def test_obtain_lesson_event_by_volunteer(self):
+        lessonevent = LessonEvent.objects.create(
+            name="Feriaa",
+            description="Necesitamos camareros",
+            place="Fuera",
+            max_volunteers=2,
+            lesson=self.lesson,
+            price=5,
+            start_date="2024-06-12 06:00-00:00",
+            end_date="2024-07-12 11:00-00:00",
+        )
+        response = self.client.get(
+            f"/api/lesson-event/{lessonevent.id}/",
+            HTTP_AUTHORIZATION=f"Token {self.token.key}",
+        )
+        self.assertEqual(response.status_code, 200)
+
+    def test_update_lesson_event_by_volunteer(self):
+        volunteers_ids = [1, 2]
+        data = {
+            "name": self.lessonevent2.name,
+            "description": self.lessonevent2.description,
+            "place": self.lessonevent2.place,
+            "max_volunteers": self.lessonevent2.max_volunteers,
+            "price": self.lessonevent2.price,
+            "lesson": self.lessonevent2.lesson.id,
+            "start_date": self.lessonevent2.start_date,
+            "end_date": self.lessonevent2.end_date,
+            "volunteers": volunteers_ids,  # Pass the volunteer IDs in the request data
+        }
+        response = self.client.put(
+            f"/api/lesson-event/{self.lessonevent2.id}/",
+            data=data,  # Updating volunteers field
+            content_type="application/json",
+            HTTP_AUTHORIZATION=f"Token {self.token.key}",
+        )
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+        self.lessonevent2.refresh_from_db()
