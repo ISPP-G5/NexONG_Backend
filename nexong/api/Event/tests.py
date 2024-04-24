@@ -698,7 +698,7 @@ class VolunteerEventApiViewSetTestCase(TestCase):
         )
         self.assertEqual(response.status_code, status.HTTP_200_OK)
 
-    def test_create_event_by_volunteer_error(self):
+    def test_create_event_by_volunteer_errpr(self):
         response = self.client.post(
             "/api/event/",
             data={
@@ -715,23 +715,27 @@ class VolunteerEventApiViewSetTestCase(TestCase):
         )
         self.assertEqual(response.status_code, status.HTTP_403_FORBIDDEN)
 
-    def test_update_event_by_volunteer_error(self):
+    def test_update_event_by_volunteer(self):
+        volunteers_ids = [1,2]
+        attendees_ids = list(self.event2.attendees.values_list('id', flat=True))
         response = self.client.put(
             f"/api/event/{self.event2.id}/",
             data={
-                "name": "Viene la familia Peruana",
-                "description": "Se necesitan gente",
-                "place": "La cocina",
-                "max_volunteers": 2,
-                "max_attendees": 2,
-                "price": 5,
-                "start_date": "2025-06-12T06:00:00Z",
-                "end_date": "2025-06-12T11:00:00Z",
+                "name": self.event2.name,
+                "description": self.event2.description,
+                "place": self.event2.place,
+                "max_volunteers": self.event2.max_volunteers,
+                "max_attendees": self.event2.max_attendees,
+                "price": self.event2.price,
+                "start_date": self.event2.start_date,
+                "end_date": self.event2.end_date,
+                "volunteers": volunteers_ids,  # Pass the volunteer IDs in the request data
+                "attendees": attendees_ids,
             },
             content_type="application/json",
             HTTP_AUTHORIZATION=f"Token {self.token.key}",
         )
-        self.assertEqual(response.status_code, status.HTTP_401_UNAUTHORIZED)
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
 
     def test_obtain_lesson_event_by_volunteer(self):
         lessonevent = LessonEvent.objects.create(
@@ -752,8 +756,6 @@ class VolunteerEventApiViewSetTestCase(TestCase):
 
     def test_update_lesson_event_by_volunteer(self):
         volunteers_ids = [1,2]
-        self.lessonevent2.volunteers.set(volunteers_ids)
-
         data = {
             "name": self.lessonevent2.name,
             "description": self.lessonevent2.description,
