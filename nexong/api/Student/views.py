@@ -8,6 +8,7 @@ from rest_framework import status
 from ..permissions import *
 import csv
 import codecs
+from datetime import timedelta, date
 from django.http import HttpResponse
 from django.utils.encoding import smart_str
 from datetime import datetime
@@ -30,6 +31,16 @@ class StudentApiViewSet(ModelViewSet):
     http_method_names = ["get", "post", "put", "delete", "patch"]
     serializer_class = StudentSerializer
     permission_classes = [isFamily | isEducatorGet | isEducationCenter | isAdmin]
+
+    def retrieve(self, request, *args, **kwargs):
+        instance = self.get_object()
+        if (instance.acceptance_date) and (
+            instance.acceptance_date + timedelta(days=365) <= date.today()
+        ):
+            instance.status = "CADUCADO"
+            instance.save()
+        serializer = self.get_serializer(instance)
+        return Response(serializer.data)
 
     def destroy(self, request, *args, **kwargs):
         instance = self.get_object()
@@ -2254,31 +2265,48 @@ def StudentsExportToPdf(request):
     for student in queryset:
         # Truncate long strings
         table_row = [
-            student.name[:15]
-            if isinstance(student.name, str) and len(student.name) > 15
-            else student.name,
-            student.surname[:15]
-            if isinstance(student.surname, str) and len(student.surname) > 15
-            else student.surname,
-            student.current_education_year[:30]
-            if isinstance(student.current_education_year, str)
-            and len(student.current_education_year) > 30
-            else student.current_education_year,
-            student.nationality[:15]
-            if isinstance(student.nationality, str) and len(student.nationality) > 15
-            else student.nationality,
-            str(student.birthdate)[:15]
-            if isinstance(student.birthdate, str) and len(str(student.birthdate)) > 15
-            else student.birthdate,
+            (
+                student.name[:15]
+                if isinstance(student.name, str) and len(student.name) > 15
+                else student.name
+            ),
+            (
+                student.surname[:15]
+                if isinstance(student.surname, str) and len(student.surname) > 15
+                else student.surname
+            ),
+            (
+                student.current_education_year[:30]
+                if isinstance(student.current_education_year, str)
+                and len(student.current_education_year) > 30
+                else student.current_education_year
+            ),
+            (
+                student.nationality[:15]
+                if isinstance(student.nationality, str)
+                and len(student.nationality) > 15
+                else student.nationality
+            ),
+            (
+                str(student.birthdate)[:15]
+                if isinstance(student.birthdate, str)
+                and len(str(student.birthdate)) > 15
+                else student.birthdate
+            ),
             student.is_morning_student,
             student.status,
-            student.education_center.name[:20]
-            if isinstance(student.education_center.name, str)
-            and len(student.education_center.name) > 20
-            else student.education_center.name,
-            student.family.name[:20]
-            if isinstance(student.family.name, str) and len(student.family.name) > 20
-            else student.family.name,
+            (
+                student.education_center.name[:20]
+                if isinstance(student.education_center.name, str)
+                and len(student.education_center.name) > 20
+                else student.education_center.name
+            ),
+            (
+                student.family.name[:20]
+                if isinstance(student.family.name, str)
+                and len(student.family.name) > 20
+                else student.family.name
+            ),
         ]
         table_data.append(table_row)
 
