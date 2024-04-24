@@ -275,6 +275,7 @@ class AdminLessonApiViewSetTestCase(TestCase):
         )
         self.assertEqual(response.status_code, 204)
 
+
 class VolunteerLessonApiViewSetTestCase(TestCase):
     def setUp(self):
         self.factory = APIRequestFactory()
@@ -349,6 +350,7 @@ class VolunteerLessonApiViewSetTestCase(TestCase):
             HTTP_AUTHORIZATION=f"Token {self.token.key}",
         )
         self.assertEqual(response.status_code, status.HTTP_200_OK)
+
 
 class EducatorLessonApiViewSetTestCase(APITestCase):
     def setUp(self):
