@@ -294,10 +294,6 @@ class VolunteerLessonApiViewSetTestCase(TestCase):
             role=VOLUNTEER,
             volunteer=self.volunteer3,
         )
-        self.family2 = Family.objects.create(name="Familia Pedraza")
-        self.education_center2 = EducationCenter.objects.create(
-            name="San Francisco Solano"
-        )
         self.token = Token.objects.create(user=self.user2)
         self.educator2 = Educator.objects.create(
             description="testdeprueba7", birthdate="2002-04-21"
@@ -311,44 +307,8 @@ class VolunteerLessonApiViewSetTestCase(TestCase):
             start_date="2024-01-28",
             end_date="2024-05-28",
         )
-        self.student3 = Student.objects.create(
-            name="Antonio Manuel",
-            surname="Carmona",
-            education_center=self.education_center2,
-            is_morning_student=True,
-            activities_during_exit="",
-            status="ACEPTADO",
-            current_education_year="TRES AÑOS",
-            education_center_tutor="Don Sebastian Perez",
-            nationality="Francia",
-            birthdate="2017-04-21",
-            family=self.family2,
-        )
-        self.student4 = Student.objects.create(
-            name="Andrés Francisco",
-            surname="Montes",
-            education_center=self.education_center2,
-            is_morning_student=True,
-            activities_during_exit="",
-            status="PENDIENTE",
-            current_education_year="TRES AÑOS",
-            education_center_tutor="Don Sebastian Perez",
-            nationality="España",
-            birthdate="2015-04-21",
-            family=self.family2,
-        )
-        self.volunteer2 = Volunteer.objects.create(
-            academic_formation="Volunteer Admin ",
-            motivation="Volunteer Admin",
-            status="ACEPTADO",
-            address="Volunteer Admin",
-            postal_code=12350,
-            birthdate="1957-07-05",
-            start_date="1960-07-05",
-            end_date="1980-07-05",
-        )
         self.lesson_attendance2 = LessonAttendance.objects.create(
-            date="2025-04-21", lesson=self.lesson2, volunteer=self.volunteer2
+            date="2025-04-21", lesson=self.lesson2, volunteer=self.volunteer3
         )
 
     def test_obtain_lesson_by_volunteer(self):
@@ -371,7 +331,7 @@ class VolunteerLessonApiViewSetTestCase(TestCase):
             data={
                 "date": "2025-04-21",
                 "lesson": f"{self.lesson2.id}",
-                "volunteer": f"{self.volunteer2.id}",
+                "volunteer": f"{self.volunteer3.id}",
             },
             HTTP_AUTHORIZATION=f"Token {self.token.key}",
         )
