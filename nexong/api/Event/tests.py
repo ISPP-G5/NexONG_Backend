@@ -4,6 +4,7 @@ from nexong.models import *
 from rest_framework.authtoken.models import Token
 from rest_framework.test import APIRequestFactory
 
+
 class Event_ApiViewSetTestCase(TestCase):
     def setUp(self):
         self.factory = APIRequestFactory()
@@ -751,7 +752,7 @@ class VolunteerEventApiViewSetTestCase(TestCase):
         self.assertEqual(response.status_code, 200)
 
     def test_update_lesson_event_by_volunteer(self):
-        volunteers_ids = [1,2]
+        volunteers_ids = [1, 2]
         self.lessonevent2.volunteers.set(volunteers_ids)
 
         data = {
