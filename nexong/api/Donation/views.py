@@ -34,10 +34,10 @@ class DonationApiViewSet(ModelViewSet):
         serializer = self.get_serializer(instance, data=request.data, partial=True)
         if request.method in ("PUT") and request.data["iban"] != old_donation.iban:
             return Response(status=status.HTTP_401_UNAUTHORIZED)
-        serializer.is_valid(raise_exception=True)     
+        serializer.is_valid(raise_exception=True)
         serializer.save()
         return Response(serializer.data)
-    
+
     def destroy(self, request, *args, **kwargs):
         instance = self.get_object()
         self.perform_destroy(instance)
