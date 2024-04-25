@@ -8,7 +8,7 @@ from .lessonSerializer import *
 
 class LessonApiViewSet(ModelViewSet):
     queryset = Lesson.objects.all()
-    http_method_names = ["get", "post", "put", "delete"]
+    http_method_names = ["get", "post", "put", "delete", "patch"]
     serializer_class = LessonSerializer
     permission_classes = [
         isEducatorGet | isFamilyGet | isVolunteerGet | isEducationCenterGet | isAdmin
