@@ -30,17 +30,18 @@ class LessonSerializer(ModelSerializer):
         validation_error = {}
 
         max_attendees = attrs.get("capacity")
-        if max_attendees < 1:
-            validation_error["capacity"] = "capacity must be higher than 0."
-        attendees = attrs.get("students")
-        if attendees:
-            num_attendees = len(attendees)
-        else:
-            num_attendees = 0
-        if max_attendees < num_attendees:
-            validation_error[
-                "capacity"
-            ] = "capacity must be higher or equal to the number of attendees selected."
+        if max_attendees is not None:
+            if max_attendees < 1:
+                validation_error["capacity"] = "capacity must be higher than 0."
+            attendees = attrs.get("students")
+            if attendees:
+                num_attendees = len(attendees)
+            else:
+                num_attendees = 0
+            if max_attendees < num_attendees:
+                validation_error[
+                    "capacity"
+                ] = "capacity must be higher or equal to the number of attendees selected."
 
         validation_error.update(date_validations(attrs))
 
