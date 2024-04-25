@@ -14,7 +14,7 @@ def date_validations(attrs):
     if end_date is not None:
         if end_date <= now:
             validations["end_date"] = "The end date must be in the future."
-        if start_date is not None:        
+        if start_date is not None:
             if end_date <= start_date:
                 validations["end_date"] = "The end date must be after the start date."
 
