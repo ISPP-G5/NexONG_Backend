@@ -26,6 +26,14 @@ from reportlab.lib.styles import getSampleStyleSheet
 from reportlab.lib import colors
 
 
+def update_student_status(student):
+    if student.acceptance_date and (
+        student.acceptance_date + timedelta(days=365) <= date.today()
+    ):
+        student.status = "CADUCADO"
+        student.save()
+
+
 class StudentApiViewSet(ModelViewSet):
     queryset = Student.objects.all()
     http_method_names = ["get", "post", "put", "delete", "patch"]
@@ -34,11 +42,7 @@ class StudentApiViewSet(ModelViewSet):
 
     def retrieve(self, request, *args, **kwargs):
         instance = self.get_object()
-        if (instance.acceptance_date) and (
-            instance.acceptance_date + timedelta(days=365) <= date.today()
-        ):
-            instance.status = "CADUCADO"
-            instance.save()
+        update_student_status(instance)
         serializer = self.get_serializer(instance)
         return Response(serializer.data)
 
@@ -92,6 +96,7 @@ def StudentsExportToCsv(request):
 
     # Write data rows
     for student in queryset:
+        update_student_status(student)
         writer.writerow(
             [
                 smart_str(student.name),
@@ -2263,6 +2268,7 @@ def StudentsExportToPdf(request):
     ]
 
     for student in queryset:
+        update_student_status(student)
         # Truncate long strings
         table_row = [
             (
@@ -2371,6 +2377,7 @@ def StudentsExportToExcel(request):
     sheet.append(header_row)
 
     for student in queryset:
+        update_student_status(student)
         data_row = [
             student.name,
             student.surname,
