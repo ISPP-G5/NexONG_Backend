@@ -1,0 +1,16 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Pago Fallido</title>
+    <script>
+        setTimeout(function() {
+            window.location.href = "{{ cancel_redirect }}";
+        }, 5000);  
+    </script>
+</head>
+<body>
+    <h1>Pago fallido</h1>
+    <p>Ha habido un problema. Intentelo de nuevo.</p>
+    <p>Redirigiendo a la página de la organización...</p>
+</body>
+</html>
