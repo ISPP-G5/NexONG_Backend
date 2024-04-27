@@ -28,26 +28,35 @@ class LessonSerializer(ModelSerializer):
 
     def validate(self, attrs):
         validation_error = {}
-
         max_attendees = attrs.get("capacity")
-        if max_attendees is not None:
-            if max_attendees < 1:
-                validation_error["capacity"] = "capacity must be higher than 0."
-            attendees = attrs.get("students")
-            if attendees:
-                num_attendees = len(attendees)
-            else:
-                num_attendees = 0
-            if max_attendees < num_attendees:
-                validation_error[
-                    "capacity"
-                ] = "capacity must be higher or equal to the number of attendees selected."
+        attendees = attrs.get("students")
+        m_lesson = attrs.get("is_morning_lesson")
+        lesson=None
+        if self.context["request"].method == "PATCH":
+            lesson = self.context.get("lesson")
+            if max_attendees is None:
+                max_attendees = lesson.capacity
+            if attendees is None:
+                attendees = list(lesson.students.all())
+            if m_lesson is None:
+                m_lesson = lesson.is_morning_lesson
 
-        validation_error.update(date_validations(attrs))
+        if max_attendees < 1:
+            validation_error["capacity"] = "capacity must be higher than 0."
+        if attendees:
+            num_attendees = len(attendees)
+        else:
+            num_attendees = 0
+        if max_attendees < num_attendees:
+            validation_error[
+                "capacity"
+            ] = "capacity must be higher or equal to the number of attendees selected."
 
-        if attendees is not None:
+        validation_error.update(date_validations(attrs, lesson))
+
+        if attendees:
             for student in attendees:
-                if student.is_morning_student != attrs.get("is_morning_lesson"):
+                if student.is_morning_student != m_lesson:
                     validation_error[
                         "students"
                     ] = "There is a student with incorrect schedule (is a morning student or not)."
