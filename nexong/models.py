@@ -256,6 +256,7 @@ class Volunteer(models.Model):
     status = models.CharField(max_length=10, choices=STATUS, default=PENDING)
     address = models.CharField(max_length=255)
     postal_code = models.CharField(max_length=255)
+    watchedFormation = models.BooleanField(default=False)
     enrollment_document = models.FileField(
         upload_to=upload_to_enrollment_document,
         validators=[validate_file_extension],
