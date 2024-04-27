@@ -58,9 +58,9 @@ class LessonSerializer(ModelSerializer):
             start_date = lesson.start_date
             end_date = lesson.end_date
             if end_date <= start_date:
-                validation_error["end_date"] = "The end date must be after the start date."
-            
-
+                validation_error[
+                    "end_date"
+                ] = "The end date must be after the start date."
 
         if attendees:
             for student in attendees:
