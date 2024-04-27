@@ -401,7 +401,7 @@
             "status":"ACEPTADO",
             "address": "Rue de Saint-Ghislain 2",
             "postal_code": 33317,
-            "watchedFormation": false,
+            "watchedFormation": true,
             "enrollment_document" : "volunteer_enrollment\\volunteer_enrollment.txt",
             "registry_sheet": "volunteer_registry\\volunteer_registry.txt",
             "sexual_offenses_document": "volunteer_offenses\\volunteer_offenses.txt",
