@@ -31,7 +31,7 @@ class LessonSerializer(ModelSerializer):
         max_attendees = attrs.get("capacity")
         attendees = attrs.get("students")
         m_lesson = attrs.get("is_morning_lesson")
-        lesson=None
+        lesson = None
         if self.context["request"].method == "PATCH":
             lesson = self.context.get("lesson")
             if max_attendees is None:

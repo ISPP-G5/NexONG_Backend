@@ -17,7 +17,12 @@ class LessonApiViewSet(ModelViewSet):
     def partial_update(self, request, pk, *args, **kwargs):
         instance = self.get_object()
         lesson = Lesson.objects.get(pk=pk)
-        serializer = self.get_serializer(instance, data=request.data, context={"lesson": lesson, "request": request}, partial =True)
+        serializer = self.get_serializer(
+            instance,
+            data=request.data,
+            context={"lesson": lesson, "request": request},
+            partial=True,
+        )
         serializer.is_valid(raise_exception=True)
         serializer.save()
         return Response(serializer.data)

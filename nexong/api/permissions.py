@@ -196,10 +196,11 @@ class isEducationCenterGet(BasePermission):
 class isVolunteer(BasePermission):
     def has_permission(self, request, view):
         if request.user.is_authenticated:
-            if view.__class__.__name__ ==  "VolunteerApiViewSet":
+            if view.__class__.__name__ == "VolunteerApiViewSet":
                 return (
                     request.user.role == "VOLUNTARIO"
-                    or request.user.role == "VOLUNTARIO_SOCIO")          
+                    or request.user.role == "VOLUNTARIO_SOCIO"
+                )
             else:
                 return (
                     request.user.role == "VOLUNTARIO"
@@ -207,17 +208,20 @@ class isVolunteer(BasePermission):
                 ) and request.user.volunteer.status == "ACEPTADO"
         else:
             return False
+
     def has_object_permission(self, request, view, obj):
         if request.user.is_authenticated:
             if isinstance(obj, Volunteer):
                 return (
                     request.user.role == "VOLUNTARIO"
-                    or request.user.role == "VOLUNTARIO_SOCIO") and obj == request.user.volunteer
+                    or request.user.role == "VOLUNTARIO_SOCIO"
+                ) and obj == request.user.volunteer
             else:
                 return (
                     request.user.role == "VOLUNTARIO"
                     or request.user.role == "VOLUNTARIO_SOCIO"
                 ) and request.user.volunteer.status == "ACEPTADO"
+
 
 class isVolunteerPutAndGet(BasePermission):
     def has_permission(self, request, view):
