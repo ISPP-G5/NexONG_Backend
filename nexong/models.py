@@ -163,6 +163,7 @@ class Student(models.Model):
         null=True,
         blank=True,
     )
+    acceptance_date = models.DateField(null=True)
     education_center = models.ForeignKey(
         EducationCenter,
         on_delete=models.CASCADE,
