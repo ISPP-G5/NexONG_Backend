@@ -1,16 +1,11 @@
 from datetime import datetime, timezone, date
 
 
-def date_validations(attrs, obj=None):
+def date_validations(attrs):
     validations = {}
     now = date.today()
     end_date = attrs.get("end_date")
     start_date = attrs.get("start_date")
-
-    if start_date is None:
-        start_date = obj.start_date
-    if end_date is None:
-        end_date = obj.end_date
 
     if isinstance(start_date, datetime):
         now = datetime.now(timezone.utc)

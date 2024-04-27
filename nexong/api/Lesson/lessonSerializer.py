@@ -52,7 +52,15 @@ class LessonSerializer(ModelSerializer):
                 "capacity"
             ] = "capacity must be higher or equal to the number of attendees selected."
 
-        validation_error.update(date_validations(attrs, lesson))
+        if lesson is None:
+            validation_error.update(date_validations(attrs))
+        else:
+            start_date = lesson.start_date
+            end_date = lesson.end_date
+            if end_date <= start_date:
+                validation_error["end_date"] = "The end date must be after the start date."
+            
+
 
         if attendees:
             for student in attendees:
