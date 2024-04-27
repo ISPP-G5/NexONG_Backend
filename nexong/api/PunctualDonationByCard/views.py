@@ -1,3 +1,4 @@
+from django.shortcuts import render
 from rest_framework.viewsets import ModelViewSet
 from rest_framework.response import Response
 from rest_framework import status
@@ -95,14 +96,25 @@ def payment_success(request):
             amount=paymentAmount,
             date=paymentDate,
         )
-        # If the creation is successful, you can perform additional actions here
-        return JsonResponse({"message": f"Donacion de {donation.amount} euros creada!"})
+        success_redirect = settings.FRONTEND_URL
+        return render(
+            request,
+            "payment_success.html",
+            {"donation": donation, "success_redirect": success_redirect},
+        )
     except Exception as e:
-        # If an exception occurs during creation, handle it here
         return JsonResponse(
             {"message": f"Algo ha fallado en la creación de la donación {str(e)}"}
         )
 
 
 def payment_cancel():
-    return JsonResponse({"error": "Error al realizar el pago", "status": "failed"})
+    cancel_redirect = settings.FRONTEND_URL + "/donaciones"
+    return render(
+        "payment_cancel.html",
+        {
+            "error": "Error al realizar el pago",
+            "status": "failed",
+            "cancel_redirect": cancel_redirect,
+        },
+    )
