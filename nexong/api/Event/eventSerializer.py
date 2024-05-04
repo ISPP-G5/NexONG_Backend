@@ -118,7 +118,10 @@ class EventSerializer(ModelSerializer):
         validation_error = {}
 
         attendees_emails = attrs.get("attendees")
-        num_attendees = len(attendees_emails)
+        if attendees_emails is not None:
+            num_attendees = len(attendees_emails)
+        else:
+            num_attendees = 0
         max_attendees = attrs.get("max_attendees")
 
         start_date = attrs.get("start_date")
@@ -130,7 +133,11 @@ class EventSerializer(ModelSerializer):
                 "max_attendees"
             ] = "max_attendees must be higher or equal to the number of attendees selected."
 
-        num_volunteers = len(attrs.get("volunteers"))
+        volunteers = attrs.get("volunteers")
+        if volunteers is not None:
+            num_volunteers = len(volunteers)
+        else:
+            num_volunteers = 0
         max_volunteers = attrs.get("max_volunteers")
 
         if max_volunteers < num_volunteers:

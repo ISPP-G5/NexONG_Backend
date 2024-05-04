@@ -24,7 +24,19 @@ class DonationApiViewSet(ModelViewSet):
     queryset = Donation.objects.all()
     http_method_names = ["get", "post", "put", "delete", "patch"]
     serializer_class = DonationSerializer
-    permission_classes = [isPartnerPostAndGet | isAdminGetAndDelete]
+    permission_classes = [isPartner | isAdminGetAndDelete]
+
+    def update(self, request, pk, *args, **kwargs):
+        instance = self.get_object()
+        old_donation = Donation.objects.get(pk=pk)
+        if request.method in ("PATCH") and "iban" in request.data:
+            return Response(status=status.HTTP_401_UNAUTHORIZED)
+        serializer = self.get_serializer(instance, data=request.data, partial=True)
+        if request.method in ("PUT") and request.data["iban"] != old_donation.iban:
+            return Response(status=status.HTTP_401_UNAUTHORIZED)
+        serializer.is_valid(raise_exception=True)
+        serializer.save()
+        return Response(serializer.data)
 
     def destroy(self, request, *args, **kwargs):
         instance = self.get_object()

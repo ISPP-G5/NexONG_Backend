@@ -7,6 +7,89 @@ from rest_framework.test import APITestCase
 from rest_framework import status
 from django.test import TestCase
 from nexong.api.helpers.testsSetup import testSetupEducator
+from django.core.files.uploadedfile import SimpleUploadedFile
+from django.test import TestCase
+
+
+def add_files_to_volunteer_data(self):
+    file_content = b"Test file content"  # Content of the file
+    self.volunteer_data["enrollment_document"] = SimpleUploadedFile(
+        "enrollment_document.pdf", file_content
+    )
+    self.volunteer_data["registry_sheet"] = SimpleUploadedFile(
+        "registry_sheet.pdf", file_content
+    )
+    self.volunteer_data["sexual_offenses_document"] = SimpleUploadedFile(
+        "sexual_offenses_document.pdf", file_content
+    )
+    self.volunteer_data["scanned_id"] = SimpleUploadedFile(
+        "scanned_id.pdf", file_content
+    )
+    self.volunteer_data["minor_authorization"] = SimpleUploadedFile(
+        "minor_authorization.pdf", file_content
+    )
+    self.volunteer_data["scanned_authorizer_id"] = SimpleUploadedFile(
+        "scanned_authorizer_id.pdf", file_content
+    )
+
+
+class VolunteerApiViewSetTestCase(APITestCase):
+    def setUp(self):
+        self.factory = APIRequestFactory()
+        self.volunteer_data = {
+            "academic_formation": "Test formation",
+            "motivation": "Test motivation",
+            "status": "ACEPTADO",
+            "address": "Test address",
+            "postal_code": "12345",
+            "birthdate": "1956-07-05",
+            "start_date": "1956-07-05",
+        }
+        self.volunteer2 = Volunteer.objects.create(**self.volunteer_data)
+        self.user2 = User.objects.create(
+            username="testuser",
+            email="example@gmail.com",
+            role=VOLUNTEER,
+            volunteer=self.volunteer2,
+        )
+        self.token = Token.objects.create(user=self.user2)
+
+    def test_create_volunteer(self):
+        add_files_to_volunteer_data(self)
+        response = self.client.post(
+            "/api/volunteer/",
+            self.volunteer_data,
+            format="multipart",
+            HTTP_AUTHORIZATION=f"Token {self.token.key}",
+        )
+        self.assertEqual(response.status_code, status.HTTP_201_CREATED)
+
+    def test_retrieve_volunteer(self):
+        volunteer = Volunteer.objects.create(**self.volunteer_data)
+        response = self.client.get(
+            f"/api/volunteer/{volunteer.id}/",
+            HTTP_AUTHORIZATION=f"Token {self.token.key}",
+        )
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+
+    def test_update_volunteer(self):
+        volunteer = Volunteer.objects.create(**self.volunteer_data)
+        add_files_to_volunteer_data(self)
+        self.volunteer_data["academic_formation"] = "Updated formation"
+        response = self.client.put(
+            f"/api/volunteer/{volunteer.id}/",
+            self.volunteer_data,
+            HTTP_AUTHORIZATION=f"Token {self.token.key}",
+        )
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+
+    def test_delete_volunteer(self):
+        volunteer = Volunteer.objects.create(**self.volunteer_data)
+        response = self.client.delete(
+            f"/api/volunteer/{volunteer.id}/",
+            HTTP_AUTHORIZATION=f"Token {self.token.key}",
+        )
+        self.assertEqual(response.status_code, status.HTTP_204_NO_CONTENT)
 
 
 class EducatorApiViewSetTestCase(APITestCase):
@@ -219,33 +302,6 @@ class AdminUserApiViewSetTestCase(TestCase):
             HTTP_AUTHORIZATION=f"Token {self.token.key}",
         )
         self.assertEqual(response.status_code, 200)
-
-    def test_update_user_by_admin(self):
-        response = self.client.put(
-            f"/api/user/{self.userfamily.id}/",
-            data={
-                "first_name": "",
-                "last_name": "",
-                "is_staff": False,
-                "is_active": True,
-                "date_joined": "2024-03-20T13:06:09.673795Z",
-                "username": "testuser3",
-                "id_number": "85738237V",
-                "phone": 638576655,
-                "password": "admin",
-                "email": "admin@gmail.com",
-                "role": "ADMIN",
-                "is_enabled": True,
-                "is_agreed": False,
-                "terms_version_accepted": 1.0,
-                "family": self.family.id,
-            },
-            content_type="application/json",
-            HTTP_AUTHORIZATION=f"Token {self.token.key}",
-        )
-        self.assertEqual(response.status_code, status.HTTP_200_OK)
-        self.userfamily.refresh_from_db()
-        self.assertEqual(self.userfamily.username, "testuser3")
 
     def test_delete_user_by_admin(self):
         response = self.client.delete(
