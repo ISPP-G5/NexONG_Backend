@@ -776,3 +776,120 @@ class VolunteerEventApiViewSetTestCase(TestCase):
         )
         self.assertEqual(response.status_code, status.HTTP_200_OK)
         self.lessonevent2.refresh_from_db()
+
+class PartnerEventApiViewSetTestCase(TestCase):
+    def setUp(self):
+        self.factory = APIRequestFactory()
+        self.partner3 = Partner.objects.create(
+            description="testdeprueba22", address="333 Elm St", birthdate="1996-05-05"
+        )
+        self.family2 = Family.objects.create(name="Familia Pedriza")
+        self.education_center2 = EducationCenter.objects.create(
+            name="San Francisco Pelano"
+        )
+        self.educator2 = Educator.objects.create(
+            description="testdeprueba4", birthdate="2000-04-22"
+        )
+        self.educator3 = Educator.objects.create(
+            description="testdeprueba5", birthdate="2001-06-21"
+        )
+        self.user2 = User.objects.create(
+            username="usuariotest",
+            email="usuariotets@gmail.com",
+            role=PARTNER,
+            partner=self.partner3
+        )
+
+        self.token = Token.objects.create(user=self.user2)
+
+        self.student = Student.objects.create(
+            name="José Manuela",
+            surname="Colino",
+            education_center=self.education_center2,
+            is_morning_student=False,
+            activities_during_exit="",
+            status="PENDIENTE",
+            current_education_year="TRES AÑOS",
+            education_center_tutor="Don Pedro Picapiedra",
+            nationality="PeruANO",
+            birthdate="2017-04-21",
+            family=self.family2,
+        )
+        self.student2 = Student.objects.create(
+            name="Jesulin Antonio",
+            surname="De Ubrique",
+            education_center=self.education_center2,
+            is_morning_student=True,
+            activities_during_exit="",
+            status="PENDIENTE",
+            current_education_year="TRES AÑOS",
+            education_center_tutor="Don Pablo Motos",
+            nationality="España",
+            birthdate="2015-04-21",
+            family=self.family2,
+        )
+
+        self.voluntario = Volunteer.objects.create(
+            academic_formation="Test partner",
+            motivation="Test partneer",
+            status="PENDIENTE",
+            address="Test address3",
+            postal_code=12350,
+            birthdate="1956-07-06",
+            start_date="1956-07-06",
+            end_date="1956-07-07",
+        )
+        self.voluntario2 = Volunteer.objects.create(
+            academic_formation="Test formation7",
+            motivation="Test motivation7",
+            status="ACEPTADO",
+            address="Test address8",
+            postal_code=12349,
+            birthdate="1956-07-05",
+            start_date="1956-07-05",
+            end_date="1956-07-05",
+        )
+
+        self.event2 = Event.objects.create(
+            name="Feria noseque",
+            description="Se necesitan 2 camareros para atenderlos",
+            place="Cacharritos",
+            max_volunteers=2,
+            max_attendees=2,
+            price=5,
+            start_date="2024-06-13 06:00-00:00",
+            end_date="2024-06-13 11:00-00:00",
+        )
+        self.event2.attendees.add(self.student, self.student2)
+        self.event2.volunteers.add(self.voluntario, self.voluntario2)
+        
+    def test_obtain_event_by_partner(self):
+        response = self.client.get(
+            f"/api/event/{self.event2.id}/",
+            HTTP_AUTHORIZATION=f"Token {self.token.key}",
+        )
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+
+    def test_create_event_by_partner_error(self):
+        attendees_ids1 = [self.student.id, self.student2.id]
+        volunteers_ids1 = [
+            self.voluntario.id,
+            self.voluntario2.id,
+        ]  # Asegurarse de que se esté pasando el ID del voluntario
+        response = self.client.post(
+            "/api/event/",
+            data={
+                "name": "Viene la familia Peruana",
+                "description": "Se necesitan gente",
+                "place": "La cocina",
+                "max_volunteers": 2,
+                "max_attendees": 2,
+                "price": 5,
+                "start_date": "2025-06-12T06:00:00Z",
+                "end_date": "2025-06-12T11:00:00Z",
+                "attendees": attendees_ids1,
+                "volunteers": volunteers_ids1,
+            },
+            HTTP_AUTHORIZATION=f"Token {self.token.key}",
+        )
+        self.assertEqual(response.status_code, status.HTTP_403_FORBIDDEN)
