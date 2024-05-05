@@ -49,7 +49,7 @@ class VolunteerApiViewSetTestCase(APITestCase):
         self.user3 = User.objects.create(
             username="testuser",
             email="example@gmail.com",
-            role=ADMIN,
+            role=VOLUNTEER,
             volunteer=self.volunteer3,
         )
         self.token = Token.objects.create(user=self.user3)
@@ -65,28 +65,25 @@ class VolunteerApiViewSetTestCase(APITestCase):
         self.assertEqual(response.status_code, status.HTTP_201_CREATED)
 
     def test_retrieve_volunteer(self):
-        volunteer = Volunteer.objects.create(**self.volunteer_data)
         response = self.client.get(
-            f"/api/volunteer/{volunteer.id}/",
+            f"/api/volunteer/{self.volunteer3.id}/",
             HTTP_AUTHORIZATION=f"Token {self.token.key}",
         )
         self.assertEqual(response.status_code, status.HTTP_200_OK)
 
     def test_update_volunteer(self):
-        volunteer = Volunteer.objects.create(**self.volunteer_data)
         add_files_to_volunteer_data(self)
         self.volunteer_data["academic_formation"] = "Updated formation"
         response = self.client.put(
-            f"/api/volunteer/{volunteer.id}/",
+            f"/api/volunteer/{self.volunteer3.id}/",
             self.volunteer_data,
             HTTP_AUTHORIZATION=f"Token {self.token.key}",
         )
         self.assertEqual(response.status_code, status.HTTP_200_OK)
 
     def test_delete_volunteer(self):
-        volunteer = Volunteer.objects.create(**self.volunteer_data)
         response = self.client.delete(
-            f"/api/volunteer/{volunteer.id}/",
+            f"/api/volunteer/{self.volunteer3.id}/",
             HTTP_AUTHORIZATION=f"Token {self.token.key}",
         )
         self.assertEqual(response.status_code, status.HTTP_204_NO_CONTENT)
