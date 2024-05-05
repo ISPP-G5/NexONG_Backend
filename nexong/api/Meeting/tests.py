@@ -100,8 +100,8 @@ class PartnerMeetingApiViewSetTestCase(TestCase):
         response = self.client.put(
             f"/api/meeting/{self.meeting2.id}/",
             data={
-                "name": "PruebaPapi",
-                "description": "Prueba Chulo",
+                "name": "Prueba Update meeting",
+                "description": "Prueba Update meeting",
                 "date": "2025-01-22",
                 "time": "17:50-00:00",
                 "attendees": attendees_ids,

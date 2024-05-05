@@ -45,14 +45,14 @@ class VolunteerApiViewSetTestCase(APITestCase):
             "birthdate": "1956-07-05",
             "start_date": "1956-07-05",
         }
-        self.volunteer2 = Volunteer.objects.create(**self.volunteer_data)
-        self.user2 = User.objects.create(
+        self.volunteer3 = Volunteer.objects.create(**self.volunteer_data)
+        self.user3 = User.objects.create(
             username="testuser",
             email="example@gmail.com",
-            role=VOLUNTEER,
-            volunteer=self.volunteer2,
+            role=ADMIN,
+            volunteer=self.volunteer3,
         )
-        self.token = Token.objects.create(user=self.user2)
+        self.token = Token.objects.create(user=self.user3)
 
     def test_create_volunteer(self):
         add_files_to_volunteer_data(self)

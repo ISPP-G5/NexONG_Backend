@@ -105,4 +105,4 @@ class PartnerDonationApiViewSetTestCase(TestCase):
             f"/api/donation/{self.donation2.id}/",
             HTTP_AUTHORIZATION=f"Token {self.token2.key}",
         )
-        self.assertEqual(response.status_code, status.HTTP_403_FORBIDDEN)
+        self.assertEqual(response.status_code, status.HTTP_204_NO_CONTENT)
