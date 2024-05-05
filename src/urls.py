@@ -29,7 +29,7 @@ urlpatterns = [
     path(
         "activate/<str:uid>/<str:token>",
         CustomActivateView.as_view(),
-        name="custom-activate",
+        name="activate",
     ),
     path(
         "activation-success/",
