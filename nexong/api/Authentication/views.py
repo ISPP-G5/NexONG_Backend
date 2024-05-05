@@ -150,6 +150,7 @@ class ActivateUserView(APIView):
 
 class CustomActivateView(APIView):
     FRONTEND_BASE_URL = "http://localhost:3000/"
+
     def get(self, request, *args, **kwargs):
         uid = kwargs.get("uid")
         token = kwargs.get("token")
