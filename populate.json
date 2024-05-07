@@ -86,7 +86,7 @@
         "pk": 3,
         "fields": {
             "name": "Alberto",
-            "surname": "Gómez",
+            "surname": "Gomez",
             "education_center": 2,
             "is_morning_student": true,
             "activities_during_exit": "",
@@ -1214,7 +1214,7 @@
         "pk": 11,
         "fields": {
             "lesson": 4,
-            "student": 2
+            "student": 5
         }
     },
     {
@@ -1230,15 +1230,7 @@
         "pk": 13,
         "fields": {
             "lesson": 4,
-            "student": 7
-        }
-    },
-    {
-        "model": "nexong.lesson_students",
-        "pk": 14,
-        "fields": {
-            "lesson": 4,
-            "student": 8
+            "student": 4
         }
     },
     {
