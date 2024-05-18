@@ -149,8 +149,6 @@ class ActivateUserView(APIView):
 
 
 class CustomActivateView(APIView):
-    FRONTEND_BASE_URL = "http://localhost:3000/"
-
     def get(self, request, *args, **kwargs):
         uid = kwargs.get("uid")
         token = kwargs.get("token")
@@ -162,8 +160,7 @@ class CustomActivateView(APIView):
                     user.is_enabled = True
                     user.is_active = True
                     user.save()
-                    login = self.FRONTEND_BASE_URL + "iniciar-sesion"
-                    return redirect(login)
+                    return redirect(settings.FRONTEND_URL + "/iniciar-sesion")
                 else:
                     return Response(
                         {"detail": "Token not valid"},
