@@ -61,7 +61,7 @@ class LessonEventApiViewSet(ModelViewSet):
     serializer_class = LessonEventSerializer
     permission_classes = [
         isVolunteerPutAndGet
-        | isFamilyGet
+        | isFamily
         | isEducatorPutAndGet
         | isEducationCenterGet
         | isAdmin

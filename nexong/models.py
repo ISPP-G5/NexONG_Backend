@@ -163,6 +163,7 @@ class Student(models.Model):
         null=True,
         blank=True,
     )
+    acceptance_date = models.DateField(null=True)
     education_center = models.ForeignKey(
         EducationCenter,
         on_delete=models.CASCADE,
@@ -255,6 +256,7 @@ class Volunteer(models.Model):
     status = models.CharField(max_length=10, choices=STATUS, default=PENDING)
     address = models.CharField(max_length=255)
     postal_code = models.CharField(max_length=255)
+    watchedFormation = models.BooleanField(default=False)
     enrollment_document = models.FileField(
         upload_to=upload_to_enrollment_document,
         validators=[validate_file_extension],

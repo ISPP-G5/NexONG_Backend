@@ -276,6 +276,82 @@ class AdminLessonApiViewSetTestCase(TestCase):
         self.assertEqual(response.status_code, 204)
 
 
+class VolunteerLessonApiViewSetTestCase(TestCase):
+    def setUp(self):
+        self.factory = APIRequestFactory()
+        self.volunteer3 = Volunteer.objects.create(
+            academic_formation="Volunteer Admin ",
+            motivation="Volunteer Admin",
+            status="ACEPTADO",
+            address="Volunteer Admin",
+            postal_code=12350,
+            birthdate="1957-07-05",
+            start_date="1960-07-05",
+            end_date="1980-07-05",
+        )
+        self.user2 = User.objects.create(
+            username="testuser",
+            email="example@gmail.com",
+            role=VOLUNTEER,
+            volunteer=self.volunteer3,
+        )
+        self.token = Token.objects.create(user=self.user2)
+        self.educator2 = Educator.objects.create(
+            description="testdeprueba7", birthdate="2002-04-21"
+        )
+        self.lesson2 = Lesson.objects.create(
+            name="PRIMER CICLO 2",
+            description="Módulo V, segunda planta",
+            capacity=16,
+            is_morning_lesson=True,
+            educator=self.educator2,
+            start_date="2024-01-28",
+            end_date="2024-05-28",
+        )
+        self.lesson_attendance2 = LessonAttendance.objects.create(
+            date="2025-04-21", lesson=self.lesson2, volunteer=self.volunteer3
+        )
+
+    def test_obtain_lesson_by_volunteer(self):
+        response = self.client.get(
+            f"/api/lesson/{self.lesson2.id}/",
+            HTTP_AUTHORIZATION=f"Token {self.token.key}",
+        )
+        self.assertEqual(response.status_code, 200)
+
+    def test_obtain_lesson_attendance_by_volunteer(self):
+        response = self.client.get(
+            f"/api/lesson-attendance/{self.lesson_attendance2.id}/",
+            HTTP_AUTHORIZATION=f"Token {self.token.key}",
+        )
+        self.assertEqual(response.status_code, 200)
+
+    def test_create_lesson_attendance_by_volunteer(self):
+        response = self.client.post(
+            f"/api/lesson-attendance/",
+            data={
+                "date": "2025-04-21",
+                "lesson": f"{self.lesson2.id}",
+                "volunteer": f"{self.volunteer3.id}",
+            },
+            HTTP_AUTHORIZATION=f"Token {self.token.key}",
+        )
+        self.assertEqual(response.status_code, status.HTTP_201_CREATED)
+
+    def test_update_lesson_attendance_by_volunteer(self):
+        response = self.client.put(
+            f"/api/lesson-attendance/{self.lesson_attendance2.id}/",
+            data={
+                "date": "2025-04-21",
+                "lesson": f"{self.lesson2.id}",
+                "volunteer": f"{self.volunteer3.id}",
+            },
+            content_type="application/json",
+            HTTP_AUTHORIZATION=f"Token {self.token.key}",
+        )
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+
+
 class EducatorLessonApiViewSetTestCase(APITestCase):
     def setUp(self):
         testSetupEducator(self)

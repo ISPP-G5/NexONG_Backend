@@ -160,7 +160,7 @@ class CustomActivateView(APIView):
                     user.is_enabled = True
                     user.is_active = True
                     user.save()
-                    return redirect(settings.FRONTEND_URL + "iniciar-sesion")
+                    return redirect(settings.FRONTEND_URL + "/iniciar-sesion")
                 else:
                     return Response(
                         {"detail": "Token not valid"},

@@ -1,0 +1,16 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Pago Exitoso</title>
+    <script>
+        setTimeout(function() {
+            window.location.href = "{{ success_redirect }}";
+        }, 5000);  
+    </script>
+</head>
+<body>
+    <h1>¡Pago exitoso!</h1>
+    <p>Gracias por tu donación de {{ donation.amount }} euros.</p>
+    <p>Redirigiendo a la página de la organización...</p>
+</body>
+</html>
